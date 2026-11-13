@@ -1,10 +1,10 @@
 {
-  "name": "AITube \u2014 \u7528\u5927\u767d\u8bdd\u8bb2\u900f AI \u6982\u5ff5\u4e0e\u7cbe\u9009\u89c6\u9891\u7247\u6bb5",
+  "name": "AITube \u2014 \u770b\u61c2 AI\uff0c\u53ea\u770b\u6700\u503c\u5f97\u770b\u7684\u90a3\u51e0\u5206\u949f",
   "short_name": "AITube",
   "start_url": "./zh/",
   "display": "standalone",
-  "background_color": "#FAF8F3",
-  "theme_color": "#1B5E6B",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
       "src": "./icon-192.png",

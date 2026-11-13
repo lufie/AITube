@@ -2,12 +2,10 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import ConceptHorizonMap from "../../../components/ConceptHorizonMap.astro";
 import ConceptTimelineCard from "../../../components/ConceptTimelineCard.astro";
-import { LANGS, LIFECYCLE_META, UI, withBase, type Lang, type Lifecycle } from "../../../lib/i18n";
+import { LANGS, LIFECYCLE_META, UI, withBase, type Lang } from "../../../lib/i18n";
 import {
   CONCEPTS,
   ERAS,
-  NODES,
-  TAXONOMY_DIMS,
   buildSparklineGeometry,
   getNodesForConcept,
   splitParadigmShift,
@@ -21,37 +19,34 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = UI[lang];
-const domainDim = TAXONOMY_DIMS.find((d) => d.key === "domain")!;
-const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
-const romanEras = ["I", "II", "III", "IV", "V"];
 
 const focusPresets =
   lang === "zh"
     ? [
-        { id: "all", label: `🌐 看全部 ${CONCEPTS.length} 个词`, desc: "把 2017 到 2026 年最重要的 22 个 AI 概念按时间顺序摆在一张图上，一眼看清谁先谁后、谁带火了谁。" },
-        { id: "surging", label: "🔥 只看今年最火的 6 个新词", desc: "只看 2026 年大家讨论最多、变化最快的 6 个新方向：MCP 万能插头、慢思考推理模型、给 AI 整理信息、命令行编程助手、SKILL.md 技能包、懂物理的世界模型。" },
-        { id: "beginner", label: "🌱 小白先懂这 5 个词", desc: "先把复杂的工程词统统藏起来！顺着看懂这 5 个最基础的词（注意力机制 → 拆词与找近义词 → 怎么提问 → 喂外部资料 → 让 AI 用工具），别人聊 AI 你就听得懂了。" },
-        { id: "applied", label: "⚡ 干活最常用的 6 招", desc: "只看普通人和产品团队马上能拿来干活的 6 样本事：一次塞进整本书、控制画图姿势、搭生图流水线、说话写软件、双保险搜资料、让 AI 替你点电脑。" },
-        { id: "career", label: "🧭 转行必学的 5 项基本功", desc: "只看招 AI 工程师最看重的 5 项硬本事：算清模型成本账、把模型教听话、低成本微调与本地跑、画好防跑偏流程图、上线前自动打分测试。" },
-        { id: "evolved", label: "↻ 避坑：已有更好做法的老概念 (4)", desc: "看看哪些前两年很火的做法（比如死背提示词咒语、粗暴切碎文档），现在已经有了更省心的新办法，别再走弯路。" },
+        { id: "all", label: `全部 (${CONCEPTS.length})` },
+        { id: "surging", label: "今年最火 (6)" },
+        { id: "beginner", label: "小白必懂 (5)" },
+        { id: "applied", label: "日常应用 (6)" },
+        { id: "career", label: "开发基本功 (5)" },
+        { id: "evolved", label: "已有新做法 (4)" },
       ]
     : [
-        { id: "all", label: `🌐 All ${CONCEPTS.length} Topics`, desc: "See all 22 core AI ideas from 2017 to 2026 on one timeline — trace what came first and what unlocked what." },
-        { id: "surging", label: "🔥 6 Hottest in 2026", desc: "Spotlight the 6 fastest-rising 2026 shifts: MCP universal plug, think-before-answering models, Context Engineering, CLI coding agents, SKILL.md & World Models." },
-        { id: "beginner", label: "🌱 5 Beginner Basics", desc: "Hide advanced engineering noise — learn the 5 essential building blocks in plain order." },
-        { id: "applied", label: "⚡ 6 Everyday Work Skills", desc: "Focus on the 6 most practical skills for shipping work, docs Q&A, coding, and visual media today." },
-        { id: "career", label: "🧭 5 Core Dev Skills", desc: "Focus on core AI engineering fundamentals: model cost tradeoffs, post-training, local fine-tuning, workflows & automated testing." },
-        { id: "evolved", label: "↻ 4 Replaced Old Habits", desc: "See which 2022–2024 habits have been replaced by much smarter 2026 practices." },
+        { id: "all", label: `All (${CONCEPTS.length})` },
+        { id: "surging", label: "Trending in 2026 (6)" },
+        { id: "beginner", label: "Beginner Basics (5)" },
+        { id: "applied", label: "Everyday Work (6)" },
+        { id: "career", label: "Core Engineering (5)" },
+        { id: "evolved", label: "Updated Habits (4)" },
       ];
 
 const title =
   lang === "zh"
-    ? "一张图看懂 AI 是怎么一步步发展到今天的（2017–2026 概念时间线）— AITube"
-    : "AI Concept Timeline: How 22 Key Ideas Connected (2017–2026) — AITube";
+    ? "AI 概念时间线（2017–2026）— AITube"
+    : "AI Concept Timeline (2017–2026) — AITube";
 const desc =
   lang === "zh"
-    ? "按你的需求（小白扫盲 / 日常干活 / 转行开发 / 看新趋势）一键圈出重点，用大白话讲清 2017–2026 年 22 个 AI 核心词的来龙去脉。"
-    : "Filter 22 core AI topics (2017–2026) by your goal, see when each idea took off, and understand what changed in plain English.";
+    ? "按时间顺序梳理 2017–2026 年最核心的 22 个 AI 概念，一眼看清每个新词解决什么问题、怎么一步步演变。"
+    : "Trace 22 core AI concepts from 2017 to 2026 — see when each idea broke out and what changed in plain language.";
 
 const schema = {
   "@context": "https://schema.org",
@@ -84,135 +79,75 @@ const schema = {
   ogImage={`/og/timeline-${lang}.png`}
   schema={schema}
 >
-  <section style="padding:32px 0 26px;border-bottom:1px solid var(--border-subtle);">
+  <section class="at-page-header" style="padding-bottom:24px;">
     <div class="at-container">
-      <div class="at-kicker">
-        {lang === "zh" ? "2017 → 2026 发展时间线 · 看清每个新词从哪来、有什么用" : "2017 → 2026 TIMELINE · WHERE EVERY AI IDEA CAME FROM"}
-      </div>
-      <h1 style="font-size:clamp(1.85rem,3vw,2.55rem);margin:8px 0 10px;">
-        {lang === "zh" ? "AI 概念时间线：这 22 个词是怎么一步步火起来的" : "AI Concept Timeline: How 22 Key Ideas Grew (2017–2026)"}
-      </h1>
-      <p style="max-width:72ch;color:var(--ink-secondary);font-size:0.96rem;margin-bottom:18px;">
-        {lang === "zh"
-          ? `一下子看 22 个词容易眼花？先点下面一行按钮挑你的身份，上面的关系图和下面的讲解卡片就会只留下最适合你的那几个（共配好 ${NODES.length} 支精华视频片段）。`
-          : `22 topics feel like a lot at once? Pick a quick filter below and both the map and cards will spotlight just what matters for you (${NODES.length} video highlights).`}
-      </p>
-
-      <!-- Audience Quick-Focus Lens Bar -->
-      <div class="at-preset-bar" role="group" aria-label={lang === "zh" ? "按人群快筛" : "Quick audience filters"}>
-        <div class="at-filter-row">
-          {focusPresets.map((pr, idx) => (
-            <button
-              type="button"
-              class={`at-preset-pill ${idx === 0 ? "is-active" : ""}`}
-              data-tl-preset={pr.id}
-              data-preset-desc={pr.desc}
-            >
-              {pr.label}
-            </button>
-          ))}
-        </div>
-        <div id="tl-preset-banner" class="at-preset-desc">
-          {focusPresets[0].desc}
-        </div>
+      <div style="max-width:68ch;">
+        <h1 class="at-page-h1">
+          {lang === "zh" ? "AI 概念时间线" : "AI Concept Timeline"}
+        </h1>
+        <p class="at-page-lead">{desc}</p>
       </div>
 
       <ConceptHorizonMap lang={lang} mode="timeline" />
     </div>
   </section>
 
+  <!-- Single Clean Sticky Filter & View Bar (Replaces 20+ Duplicate Controls) -->
   <div class="at-timeline-toolbar">
-    <div class="at-container" style="display:flex;flex-direction:column;gap:8px;">
-      <div class="at-filter-row" role="group" aria-label="Era filter">
-        <button type="button" class="at-chip is-active" data-tl-era="all">{t.allEras} ({CONCEPTS.length})</button>
-        {ERAS.map((era) => (
-          <button type="button" class="at-chip" data-tl-era={era.id}>
-            <span class="at-mono" style="font-size:0.73rem;">{era.period}</span> · {era[lang].title}
+    <div class="at-container" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div class="at-filter-row" role="group" aria-label="Focus lens">
+        {focusPresets.map((pr, idx) => (
+          <button
+            type="button"
+            class={`at-chip ${idx === 0 ? "is-active" : ""}`}
+            data-tl-preset={pr.id}
+          >
+            {pr.label}
           </button>
         ))}
       </div>
 
-      <div class="at-filter-row" style="justify-content:space-between;">
-        <div class="at-filter-row">
-          <button type="button" class="at-chip is-active" data-tl-life="all">{t.allLifecycles}</button>
-          {lifecycles.map((lf) => (
-            <button type="button" class="at-chip" data-tl-life={lf}>
-              {LIFECYCLE_META[lf].icon} {LIFECYCLE_META[lf][lang]}
-            </button>
-          ))}
-          <span style="color:var(--border-strong);">|</span>
-          <select
-            id="tl-domain-select"
-            aria-label={t.allDomains}
-            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.8rem;"
-          >
-            <option value="all">{t.allDomains}</option>
-            {domainDim.items.map((it) => (
-              <option value={it.slug}>{it[lang].name}</option>
-            ))}
-          </select>
-        </div>
-
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <input
-            type="search"
-            id="tl-search"
-            placeholder={lang === "zh" ? "搜概念名字或大白话…" : "Search topics..."}
-            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.81rem;width:176px;"
-          />
-          <span class="at-mono" id="tl-count" style="font-size:0.78rem;color:var(--ink-muted);">
-            {CONCEPTS.length}/{CONCEPTS.length}
-          </span>
-          <!-- View Density Switcher -->
-          <div class="at-view-switch" role="group" aria-label="View mode">
-            <button type="button" class="at-view-btn is-active" data-tl-view="editorial">
-              ☷ {t.editorialView}
-            </button>
-            <button type="button" class="at-view-btn" data-tl-view="matrix">
-              ▤ {t.matrixView}
-            </button>
-          </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <input
+          type="search"
+          id="tl-search"
+          placeholder={lang === "zh" ? "搜概念…" : "Filter topics..."}
+          style="padding:6px 14px;border:0;border-radius:999px;background:var(--bg-elevated);font-size:0.83rem;width:168px;outline:none;"
+        />
+        <div class="at-segmented" role="group" aria-label="View mode" style="padding:3px;">
+          <button type="button" class="at-seg-btn is-active" data-tl-view="editorial" style="padding:4px 12px;font-size:0.8rem;">
+            {t.editorialView}
+          </button>
+          <button type="button" class="at-seg-btn" data-tl-view="matrix" style="padding:4px 12px;font-size:0.8rem;">
+            {t.matrixView}
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="at-container" style="padding-bottom:58px;">
-    <!-- View 1: Dual-Column Editorial Cards Workspace -->
+  <div class="at-container" style="padding-bottom:68px;">
     <div class="at-tl-workspace" id="tl-editorial-view">
-      <aside class="at-era-rail" aria-label="Era scrubber">
-        <div class="at-kicker" style="font-size:0.68rem;margin-bottom:4px;padding-left:8px;">
-          {lang === "zh" ? "按年份阶段跳看" : "JUMP BY PERIOD"}
-        </div>
-        {ERAS.map((era, idx) => {
-          const cnt = CONCEPTS.filter((c) => c.eraId === era.id).length;
-          return (
-            <a href={`#${era.id}`} class={`at-era-rail-link ${idx === 0 ? "is-current" : ""}`} data-era-spy={era.id}>
-              <div class="at-mono" style="font-size:0.68rem;color:var(--accent-signal);">
-                {lang === "zh" ? `第 ${idx + 1} 阶段 · ${era.period}` : `STAGE ${romanEras[idx]} · ${era.period}`}
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:6px;">
-                <span>{era[lang].title}</span>
-                <span class="at-mono" style="font-size:0.68rem;color:var(--ink-muted);">{cnt}</span>
-              </div>
-            </a>
-          );
-        })}
+      <aside class="at-era-rail" aria-label="Era navigation">
+        {ERAS.map((era, idx) => (
+          <a href={`#${era.id}`} class={`at-era-rail-link ${idx === 0 ? "is-current" : ""}`} data-era-spy={era.id}>
+            <div class="at-mono" style="font-size:0.72rem;color:var(--ink-muted);">{era.period}</div>
+            <div>{era[lang].title}</div>
+          </a>
+        ))}
       </aside>
 
       <div>
-        {ERAS.map((era, idx) => {
+        {ERAS.map((era) => {
           const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
           return (
             <section class="at-era-block" id={era.id} data-era-section={era.id}>
               <div class="at-era-header">
-                <div>
-                  <span class="at-mono" style="font-size:0.78rem;color:var(--accent-signal);font-weight:650;">
-                    {lang === "zh" ? `第 ${idx + 1} 阶段 · ${era.period}` : `STAGE ${romanEras[idx]} · ${era.period}`}
-                  </span>
-                  <h2 style="font-size:1.55rem;margin-top:2px;">{era[lang].title}</h2>
-                </div>
-                <p style="max-width:54ch;font-size:0.88rem;color:var(--ink-secondary);">{era[lang].subtitle}</p>
+                <div class="at-kicker" style="margin-bottom:4px;">{era.period}</div>
+                <h2 style="font-size:1.5rem;">{era[lang].title}</h2>
+                <p style="margin-top:4px;max-width:60ch;font-size:0.92rem;color:var(--ink-secondary);">
+                  {era[lang].subtitle}
+                </p>
               </div>
 
               <div class="at-concept-list">
@@ -226,84 +161,59 @@ const schema = {
       </div>
     </div>
 
-    <!-- View 2: Compact 22-Concept Comparative Matrix -->
+    <!-- Clean One-Table Overview -->
     <div class="at-matrix-wrap" id="tl-matrix-view" style="display:none;">
       <table class="at-matrix-table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>{lang === "zh" ? "概念名字与适合谁看" : "Topic & Best For"}</th>
-            <th>{lang === "zh" ? "出现时间 → ★ 火起来" : "First Seen → ★ Took Off"}</th>
-            <th>{lang === "zh" ? "以前怎么做 → 现在怎么做" : "Old Way → Smarter Way Now"}</th>
-            <th>{lang === "zh" ? "近四年热度走势" : "4-Year Trend"}</th>
-            <th>{lang === "zh" ? "好视频" : "Videos"}</th>
+            <th>{lang === "zh" ? "概念" : "Topic"}</th>
+            <th>{lang === "zh" ? "爆发时间" : "Breakout"}</th>
+            <th>{lang === "zh" ? "现在做法" : "Current Practice"}</th>
+            <th>{lang === "zh" ? "近四年热度" : "Trend"}</th>
+            <th>{lang === "zh" ? "视频" : "Videos"}</th>
           </tr>
         </thead>
         <tbody>
           {CONCEPTS.map((c) => {
             const loc = c[lang];
             const lf = LIFECYCLE_META[c.lifecycle];
-            const aud = CONCEPT_AUDIENCE[c.slug] || {
-              role: "career",
-              zhBadge: "🧭 转行必学基本功",
-              enBadge: "🧭 Core Dev Skill",
-            };
+            const aud = CONCEPT_AUDIENCE[c.slug] || { role: "career" };
             const sh = splitParadigmShift(loc.paradigmShift);
-            const sp = buildSparklineGeometry(c.trendSeries, 118, 30, 3);
-            const infPt = sp.points[c.inflectionIndex] || sp.points[sp.points.length - 1];
-            const cutsCnt = getNodesForConcept(c.slug).length;
+            const sp = buildSparklineGeometry(c.trendSeries, 104, 26, 3);
+            const cnt = getNodesForConcept(c.slug).length;
             return (
               <tr
                 data-matrix-row
+                data-concept-slug={c.slug}
                 data-era={c.eraId}
                 data-lifecycle={c.lifecycle}
                 data-domain={c.domain}
                 data-audience={aud.role}
                 data-search={`${c.en.name} ${c.zh.name} ${loc.oneLiner} ${loc.paradigmShift}`.toLowerCase()}
               >
-                <td class="at-mono" style="color:var(--ink-muted);font-size:0.76rem;">
-                  #{String(c.order).padStart(2, "0")}
-                </td>
                 <td>
-                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} style="font-weight:600;color:var(--ink-primary);display:block;margin-bottom:4px;">
+                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} style="font-weight:600;color:var(--ink-primary);">
                     {loc.shortName}
                   </a>
-                  <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                    <span class="at-audience-pill" style="font-size:0.66rem;padding:1px 6px;">
-                      {lang === "zh" ? aud.zhBadge : aud.enBadge}
-                    </span>
-                    <span class={`at-life at-life-${c.lifecycle}`} style="font-size:0.66rem;padding:1px 6px;">
-                      {lf.icon} {lf[lang]}
-                    </span>
+                  <div style="margin-top:3px;">
+                    <span class={`at-life at-life-${c.lifecycle}`}>{lf[lang]}</span>
                   </div>
                 </td>
-                <td class="at-mono" style="font-size:0.75rem;white-space:nowrap;">
-                  {c.originQuarter} → <strong style="color:var(--accent-signal);">{c.inflectionQuarter}</strong>
+                <td class="at-mono" style="white-space:nowrap;color:var(--ink-secondary);">
+                  {c.inflectionQuarter}
                 </td>
-                <td style="max-width:340px;font-size:0.8rem;">
-                  {sh.before && (
-                    <span style="color:var(--ink-muted);text-decoration:line-through;margin-right:5px;">
-                      {sh.before}
-                    </span>
-                  )}
-                  <span class="at-mono" style="color:var(--accent-primary);margin-right:5px;">→</span>
-                  <span>{sh.after}</span>
+                <td style="max-width:360px;font-size:0.84rem;color:var(--ink-secondary);">
+                  {sh.after}
                 </td>
                 <td>
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <svg width="118" height="30" viewBox="0 0 118 30" aria-hidden="true">
-                      <path d={sp.areaPath} fill="var(--accent-primary-soft)" />
-                      <path d={sp.path} fill="none" stroke="var(--accent-primary)" stroke-width="1.8" />
-                      <circle cx={infPt.x} cy={infPt.y} r="3" fill="var(--accent-signal)" />
-                    </svg>
-                    <span class="at-mono" style="font-size:0.72rem;color:var(--accent-primary);white-space:nowrap;">
-                      {c.momentum}
-                    </span>
-                  </div>
+                  <svg width="104" height="26" viewBox="0 0 104 26" aria-hidden="true">
+                    <path d={sp.areaPath} fill="var(--accent-primary-soft)" />
+                    <path d={sp.path} fill="none" stroke="var(--accent-primary)" stroke-width="1.8" />
+                  </svg>
                 </td>
-                <td class="at-mono" style="white-space:nowrap;">
-                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} style="color:var(--accent-primary);font-weight:600;">
-                    {cutsCnt} →
+                <td class="at-mono">
+                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} class="at-text-link" style="font-size:0.82rem;">
+                    {cnt} ›
                   </a>
                 </td>
               </tr>
@@ -317,177 +227,118 @@ const schema = {
   <script is:inline>
     (() => {
       let activePreset = "all";
-      let activeEra = "all";
-      let activeLife = "all";
-      let activeDomain = "all";
       let query = "";
+      let viewMode = "editorial";
 
       const cards = [...document.querySelectorAll("[data-concept-card]")];
       const matrixRows = [...document.querySelectorAll("[data-matrix-row]")];
-      const hzNodes = [...document.querySelectorAll("[data-hz-slug]")];
+      const hzNodes = [...document.querySelectorAll("#hz-timeline [data-hz-slug]")];
       const sections = [...document.querySelectorAll("[data-era-section]")];
-      const countEl = document.getElementById("tl-count");
-      const domainSel = document.getElementById("tl-domain-select");
-      const searchIn = document.getElementById("tl-search");
+      const railLinks = [...document.querySelectorAll("[data-era-spy]")];
+      const searchInput = document.getElementById("tl-search");
       const edView = document.getElementById("tl-editorial-view");
       const mxView = document.getElementById("tl-matrix-view");
-      const presetBanner = document.getElementById("tl-preset-banner");
 
-      const presetFocusSlug = {
-        surging: "context-engineering",
-        beginner: "transformer-attention",
-        applied: "hybrid-agentic-rag",
-        career: "llm-evals-observability",
-        evolved: "prompt-cot",
-      };
+      function matchesItem(el) {
+        const elLife = el.getAttribute("data-lifecycle");
+        const elAud = el.getAttribute("data-audience");
+        const s = el.getAttribute("data-search") || "";
 
-      function matchesPreset(el) {
-        if (activePreset === "all") return true;
-        if (activePreset === "surging") return el.getAttribute("data-lifecycle") === "surging";
-        if (activePreset === "evolved") return el.getAttribute("data-lifecycle") === "evolved";
-        return el.getAttribute("data-audience") === activePreset;
-      }
-
-      function matches(el) {
-        const okPreset = matchesPreset(el);
-        const okEra = activeEra === "all" || el.getAttribute("data-era") === activeEra;
-        const okLife = activeLife === "all" || el.getAttribute("data-lifecycle") === activeLife;
-        const okDom = activeDomain === "all" || el.getAttribute("data-domain") === activeDomain;
-        const okQ = !query || (el.getAttribute("data-search") || "").includes(query);
-        return okPreset && okEra && okLife && okDom && okQ;
+        if (activePreset === "surging" && elLife !== "surging") return false;
+        if (activePreset === "evolved" && elLife !== "evolved") return false;
+        if ((activePreset === "beginner" || activePreset === "applied" || activePreset === "career") && elAud !== activePreset) {
+          return false;
+        }
+        if (query && !s.includes(query)) return false;
+        return true;
       }
 
       function apply() {
-        let shown = 0;
-        const visSlugs = new Set();
-        for (const card of cards) {
-          const vis = matches(card);
-          card.style.display = vis ? "" : "none";
-          if (vis) {
-            shown++;
-            const s = card.getAttribute("data-concept-slug");
-            if (s) visSlugs.add(s);
-          }
-        }
-        for (const row of matrixRows) {
-          row.style.display = matches(row) ? "" : "none";
-        }
-        for (const hn of hzNodes) {
-          const s = hn.getAttribute("data-hz-slug");
-          hn.classList.toggle("is-filtered-out", shown < cards.length && !visSlugs.has(s));
-        }
-        for (const sec of sections) {
-          const hasVis = [...sec.querySelectorAll("[data-concept-card]")].some((c) => c.style.display !== "none");
-          sec.style.display = hasVis ? "" : "none";
-        }
-        if (countEl) countEl.textContent = `${shown}/${cards.length}`;
+        const visibleSlugs = new Set();
+        cards.forEach((card) => {
+          const ok = matchesItem(card);
+          card.style.display = ok ? "" : "none";
+          if (ok) visibleSlugs.add(card.getAttribute("data-concept-slug"));
+        });
+        matrixRows.forEach((row) => {
+          row.style.display = matchesItem(row) ? "" : "none";
+        });
+        hzNodes.forEach((nd) => {
+          const slug = nd.getAttribute("data-hz-slug");
+          nd.classList.toggle("is-filtered-out", !visibleSlugs.has(slug));
+        });
+        sections.forEach((sec) => {
+          const anyVisible = [...sec.querySelectorAll("[data-concept-card]")].some((c) => c.style.display !== "none");
+          sec.style.display = anyVisible ? "" : "none";
+        });
       }
 
-      function setPreset(id) {
-        activePreset = id || "all";
+      function activatePreset(pid) {
+        activePreset = pid;
         document.querySelectorAll("[data-tl-preset]").forEach((b) => {
-          const on = b.getAttribute("data-tl-preset") === activePreset;
-          b.classList.toggle("is-active", on);
-          if (on && presetBanner) {
-            presetBanner.textContent = b.getAttribute("data-preset-desc") || "";
-          }
+          b.classList.toggle("is-active", b.getAttribute("data-tl-preset") === pid);
         });
-        const sync = window["__syncHorizon_hz-timeline"];
-        if (sync && typeof sync.focusConcept === "function") {
-          sync.focusConcept(presetFocusSlug[activePreset] || null);
-        }
         apply();
       }
 
       function setView(mode) {
-        document.querySelectorAll("[data-tl-view]").forEach((b) =>
-          b.classList.toggle("is-active", b.getAttribute("data-tl-view") === mode)
-        );
+        viewMode = mode === "matrix" ? "matrix" : "editorial";
+        document.querySelectorAll("[data-tl-view]").forEach((b) => {
+          b.classList.toggle("is-active", b.getAttribute("data-tl-view") === viewMode);
+        });
         if (edView && mxView) {
-          edView.style.display = mode === "matrix" ? "none" : "";
-          mxView.style.display = mode === "matrix" ? "block" : "none";
+          edView.style.display = viewMode === "editorial" ? "" : "none";
+          mxView.style.display = viewMode === "matrix" ? "" : "none";
         }
       }
 
       document.querySelectorAll("[data-tl-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const p = btn.getAttribute("data-tl-preset") || "all";
-          setPreset(p);
-          try {
-            const url = new URL(window.location.href);
-            if (p === "all") url.searchParams.delete("preset");
-            else url.searchParams.set("preset", p);
-            window.history.replaceState({}, "", url);
-          } catch {}
+          activatePreset(btn.getAttribute("data-tl-preset") || "all");
         });
-      });
-
-      document.querySelectorAll("[data-tl-era]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          activeEra = btn.getAttribute("data-tl-era") || "all";
-          document.querySelectorAll("[data-tl-era]").forEach((b) => b.classList.toggle("is-active", b === btn));
-          apply();
-        });
-      });
-      document.querySelectorAll("[data-tl-life]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          activeLife = btn.getAttribute("data-tl-life") || "all";
-          document.querySelectorAll("[data-tl-life]").forEach((b) => b.classList.toggle("is-active", b === btn));
-          apply();
-        });
-      });
-      domainSel?.addEventListener("change", () => {
-        activeDomain = domainSel.value;
-        apply();
-      });
-      searchIn?.addEventListener("input", () => {
-        query = searchIn.value.trim().toLowerCase();
-        apply();
       });
 
       document.querySelectorAll("[data-tl-view]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const mode = btn.getAttribute("data-tl-view") || "editorial";
-          setView(mode);
+          setView(btn.getAttribute("data-tl-view") || "editorial");
         });
       });
 
-      // Hydrate URL ?preset= and ?view=
+      searchInput?.addEventListener("input", () => {
+        query = searchInput.value.trim().toLowerCase();
+        apply();
+      });
+
+      cards.forEach((card) => {
+        const slug = card.getAttribute("data-concept-slug");
+        card.addEventListener("mouseenter", () => {
+          const hook = window.__syncHorizon_hz_timeline || window["__syncHorizon_hz-timeline"];
+          if (hook && typeof hook.focusConcept === "function") hook.focusConcept(slug);
+        });
+      });
+
+      if ("IntersectionObserver" in window && sections.length && railLinks.length) {
+        const obs = new IntersectionObserver(
+          (entries) => {
+            const visible = entries.filter((e) => e.isIntersecting);
+            if (!visible.length) return;
+            const id = visible[0].target.getAttribute("id");
+            railLinks.forEach((lk) => {
+              lk.classList.toggle("is-current", lk.getAttribute("data-era-spy") === id);
+            });
+          },
+          { rootMargin: "-18% 0px -65% 0px", threshold: 0.05 }
+        );
+        sections.forEach((s) => obs.observe(s));
+      }
+
       try {
         const sp = new URLSearchParams(window.location.search);
         const qPreset = sp.get("preset");
         const qView = sp.get("view");
         if (qView === "matrix") setView("matrix");
-        if (qPreset) setPreset(qPreset);
+        if (qPreset) activatePreset(qPreset);
       } catch {}
-
-      // Scroll-spy for Left Era Scrubber Rail
-      const spyLinks = [...document.querySelectorAll("[data-era-spy]")];
-      if ("IntersectionObserver" in window && spyLinks.length) {
-        const obs = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                const id = entry.target.getAttribute("data-era-section");
-                spyLinks.forEach((lk) => lk.classList.toggle("is-current", lk.getAttribute("data-era-spy") === id));
-              }
-            }
-          },
-          { rootMargin: "-180px 0px -65% 0px" }
-        );
-        sections.forEach((s) => obs.observe(s));
-      }
-
-      // Sync card hover to Horizon Map
-      cards.forEach((card) => {
-        card.addEventListener("mouseenter", () => {
-          const s = card.getAttribute("data-concept-slug");
-          const sync = window["__syncHorizon_hz-timeline"];
-          if (s && sync && typeof sync.focusConcept === "function") {
-            sync.focusConcept(s);
-          }
-        });
-      });
     })();
   </script>
 </BaseLayout>

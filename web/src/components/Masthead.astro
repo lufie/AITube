@@ -1,7 +1,6 @@
 ---
 import LogoMark from "./LogoMark.astro";
 import { UI, otherLang, stripBase, switchLangPath, withBase, type Lang } from "../lib/i18n";
-import { NODES } from "../lib/content";
 
 interface Props {
   lang: Lang;
@@ -24,7 +23,7 @@ const navItems = [
 <header class="at-masthead">
   <div class="at-container at-masthead-inner">
     <a href={withBase(`/${lang}/`)} class="at-brand" aria-label={t.siteName}>
-      <LogoMark size={28} />
+      <LogoMark size={24} />
       <span>AITube</span>
     </a>
 
@@ -45,26 +44,23 @@ const navItems = [
 
     <div class="at-actions">
       <button type="button" class="at-search-trigger" data-open-search aria-label={t.searchBtn}>
-        <span>⌕ {t.searchBtn}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7.5" />
+          <path d="m20 20-3.8-3.8" />
+        </svg>
+        <span>{t.searchBtn}</span>
         <span class="at-kbd">⌘K</span>
       </button>
 
-      <a
-        href={withBase(`/${lang}/roadmap/`)}
-        class="at-icon-btn at-mono"
-        title={t.readProgressTitle}
-        data-read-counter
-        data-total={NODES.length}
-      >
-        0/{NODES.length}
-      </a>
-
-      <a href={altHref} class="at-icon-btn at-mono" hreflang={altLang === "zh" ? "zh-CN" : "en"}>
+      <a href={altHref} class="at-icon-btn" hreflang={altLang === "zh" ? "zh-CN" : "en"}>
         {t.langLabel}
       </a>
 
-      <button type="button" class="at-icon-btn" data-theme-toggle aria-label={t.themeToggle} title={t.themeToggle}>
-        ◐
+      <button type="button" class="at-icon-btn" data-theme-toggle aria-label={t.themeToggle} title={t.themeToggle} style="padding:0 9px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+        </svg>
       </button>
     </div>
   </div>

@@ -1,62 +1,44 @@
 ---
 import { UI, withBase, type Lang } from "../lib/i18n";
-import { CONCEPTS, NODES, getTotalHoursSaved } from "../lib/content";
+import { CONCEPTS, NODES } from "../lib/content";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = UI[lang];
-const hrs = getTotalHoursSaved();
-const surging = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 6);
 ---
 <footer class="at-footer">
   <div class="at-container">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-bottom:24px;">
-      <div>
-        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">AITube · 2017–2026</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap;">
+      <div style="max-width:44ch;">
+        <div style="color:var(--ink-primary);font-weight:650;font-size:0.95rem;margin-bottom:6px;">AITube</div>
         <p style="line-height:1.55;">{t.footerNote}</p>
-        <p class="at-mono" style="margin-top:8px;font-size:0.76rem;">
+        <p style="margin-top:8px;font-size:0.78rem;">
           {lang === "zh"
-            ? `${CONCEPTS.length} 个核心词 · ${NODES.length} 支精华片段 · 替你省 ~${hrs} 小时`
-            : `${CONCEPTS.length} Topics · ${NODES.length} Highlights · ~${hrs}h Saved`}
+            ? `收录 ${CONCEPTS.length} 个核心概念 · ${NODES.length} 支精选视频与解读`
+            : `${CONCEPTS.length} Core Concepts · ${NODES.length} Curated Video Highlights`}
         </p>
       </div>
 
-      <div>
-        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
-          {lang === "zh" ? "快速找重点" : "Quick Links"}
-        </div>
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <a href={withBase(`/${lang}/`)}>{t.navHome}</a>
+      <div style="display:flex;gap:40px;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="color:var(--ink-primary);font-weight:600;font-size:0.8rem;">
+            {lang === "zh" ? "浏览" : "Explore"}
+          </span>
           <a href={withBase(`/${lang}/roadmap/`)}>{t.navRoadmap}</a>
           <a href={withBase(`/${lang}/timeline/`)}>{t.navTimeline}</a>
           <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
           <a href={withBase(`/${lang}/vault/`)}>{t.navVault}</a>
         </div>
-      </div>
 
-      <div>
-        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
-          {lang === "zh" ? "今年最火的 6 个新方向" : "Hot in 2026"}
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
-          {surging.map((c) => (
-            <a href={withBase(`/${lang}/concepts/${c.slug}/`)} class="at-lineage-pill">
-              {c[lang].shortName}
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
-          {lang === "zh" ? "公开目录与站点地图" : "Open Index & Sitemap"}
-        </div>
-        <div style="display:flex;flex-direction:column;gap:5px;" class="at-mono">
-          <a href={withBase("/llms.txt")}>/llms.txt</a>
-          <a href={withBase("/llms-full.txt")}>/llms-full.txt</a>
-          <a href={withBase("/sitemap.xml")}>/sitemap.xml</a>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="color:var(--ink-primary);font-weight:600;font-size:0.8rem;">
+            {lang === "zh" ? "索引" : "Index"}
+          </span>
+          <a href={withBase("/llms.txt")}>llms.txt</a>
+          <a href={withBase("/llms-full.txt")}>llms-full.txt</a>
+          <a href={withBase("/sitemap.xml")}>sitemap.xml</a>
         </div>
       </div>
     </div>

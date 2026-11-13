@@ -32,81 +32,68 @@ const shift = splitParadigmShift(loc.paradigmShift);
 const allNodes = getNodesForConcept(concept.slug);
 const galleryNodes = allNodes.slice(0, 24);
 
-const chart = buildSparklineGeometry(concept.trendSeries, 396, 114, 10);
+const chart = buildSparklineGeometry(concept.trendSeries, 360, 96, 8);
 const inflectPt = chart.points[concept.inflectionIndex] || chart.points[chart.points.length - 1];
 const pathname = `/${lang}/concepts/${concept.slug}/`;
 const schema = buildConceptSchema(concept, allNodes, lang, pathname);
 ---
 <BaseLayout
-  title={`${loc.name} (${concept.originQuarter} → ${concept.inflectionQuarter}) — AITube`}
+  title={`${loc.name} — AITube`}
   description={`${loc.oneLiner} ${loc.whyNow}`}
   lang={lang}
   pathname={pathname}
   ogImage={`/og/concepts/${concept.slug}.png`}
   schema={schema}
 >
-  <section style="padding:32px 0 28px;border-bottom:1px solid var(--border-subtle);">
+  <section class="at-page-header" style="border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
-      <nav class="at-mono" style="font-size:0.76rem;color:var(--ink-muted);margin-bottom:12px;">
-        <a href={withBase(`/${lang}/`)}>AITube</a> / <a href={withBase(`/${lang}/timeline/`)}>{t.navTimeline}</a> / <span>{loc.shortName}</span>
+      <nav style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:16px;display:flex;gap:6px;align-items:center;">
+        <a href={withBase(`/${lang}/timeline/`)}>{t.navTimeline}</a>
+        <span>/</span>
+        <span>{loc.shortName}</span>
       </nav>
 
-      <div style="display:grid;grid-template-columns:1.22fr 0.88fr;gap:28px;align-items:start;" class="at-hero-grid">
+      <div style="display:grid;grid-template-columns:minmax(0, 1.3fr) minmax(0, 0.85fr);gap:40px;align-items:start;" class="at-concept-top">
         <div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
-            <span class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);">
-              {lang === "zh" ? `核心概念 #${String(concept.order).padStart(2, "0")}` : `TOPIC #${String(concept.order).padStart(2, "0")}`}
-            </span>
+            <span class={`at-life at-life-${concept.lifecycle}`}>{life[lang]}</span>
             {era && (
-              <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-lineage-pill at-mono" style="font-size:0.73rem;">
+              <a href={withBase(`/${lang}/timeline/#${era.id}`)} style="font-size:0.8rem;color:var(--ink-muted);">
                 {era.period} · {era[lang].title}
               </a>
             )}
-            <span class={`at-life at-life-${concept.lifecycle}`}>
-              {life.icon} {life[lang]}
-            </span>
           </div>
 
-          <h1 style="font-size:clamp(1.85rem,3vw,2.55rem);margin-bottom:10px;">{loc.name}</h1>
-          <p style="font-size:1rem;color:var(--ink-secondary);margin-bottom:14px;">{loc.oneLiner}</p>
+          <h1 class="at-page-h1" style="font-size:clamp(1.85rem,3vw,2.45rem);">{loc.name}</h1>
+          <p style="margin-top:12px;font-size:1.02rem;color:var(--ink-secondary);line-height:1.6;">{loc.oneLiner}</p>
 
-          {shift.before ? (
-            <div class="at-shift-split">
-              <div class="at-shift-col-before">
-                <div class="at-mono" style="font-size:0.66rem;letter-spacing:0.06em;margin-bottom:2px;">{t.beforeLabel}</div>
-                <div style="text-decoration:line-through;">{shift.before}</div>
-              </div>
-              <div class="at-mono" style="display:flex;align-items:center;color:var(--accent-signal);font-weight:700;">→</div>
-              <div class="at-shift-col-after">
-                <div class="at-mono" style="font-size:0.66rem;letter-spacing:0.06em;color:var(--accent-primary);margin-bottom:2px;">{t.afterLabel}</div>
-                <div>{shift.after}</div>
-              </div>
-            </div>
-          ) : (
-            <div class="at-shift-split" style="grid-template-columns:1fr;">
-              <div class="at-shift-col-after" style="border-left:0;padding-left:0;">{shift.after}</div>
-            </div>
-          )}
+          <div class="at-shift-bar" style="background:var(--bg-elevated);margin-top:18px;">
+            <strong style="color:var(--ink-primary);font-weight:600;">
+              {lang === "zh" ? "现在做法：" : "Current practice: "}
+            </strong>
+            <span>{shift.after}</span>
+          </div>
 
-          <p style="margin-top:12px;font-size:0.9rem;color:var(--ink-secondary);">
-            <strong style="color:var(--ink-primary);">{lang === "zh" ? "为什么现在值得你花几分钟搞懂：" : "Why this matters right now:"}</strong> {loc.whyNow}
+          <p style="margin-top:14px;font-size:0.9rem;color:var(--ink-secondary);line-height:1.58;">
+            <strong style="color:var(--ink-primary);">{lang === "zh" ? "为什么值得看：" : "Why it matters: "}</strong>
+            {loc.whyNow}
           </p>
 
           {(concept.lineage.from.length > 0 || concept.lineage.into.length > 0) && (
-            <div class="at-lineage-row" style="margin-top:14px;">
+            <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;">
               {concept.lineage.from.map((s) => {
                 const up = getConcept(s);
                 return up ? (
-                  <a href={withBase(`/${lang}/concepts/${up.slug}/`)} class="at-lineage-pill">
-                    ↖ {t.lineageFrom}: {up[lang].shortName}
+                  <a href={withBase(`/${lang}/concepts/${up.slug}/`)} class="at-lineage-pill" style="background:var(--bg-elevated);">
+                    {t.lineageFrom}：{up[lang].shortName}
                   </a>
                 ) : null;
               })}
               {concept.lineage.into.map((s) => {
                 const dn = getConcept(s);
                 return dn ? (
-                  <a href={withBase(`/${lang}/concepts/${dn.slug}/`)} class="at-lineage-pill">
-                    ↘ {t.lineageInto}: {dn[lang].shortName}
+                  <a href={withBase(`/${lang}/concepts/${dn.slug}/`)} class="at-lineage-pill" style="background:var(--bg-elevated);">
+                    {t.lineageInto}：{dn[lang].shortName}
                   </a>
                 ) : null;
               })}
@@ -115,88 +102,73 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
         </div>
 
         <div
-          class="at-spark-box"
-          style="padding:16px 18px;"
+          class="at-side-card"
           data-spark-box
           data-pts={JSON.stringify(chart.points)}
           data-labels={JSON.stringify(SERIES_LABELS)}
           data-default-mom={concept.momentum}
           data-inflect-idx={concept.inflectionIndex}
         >
-          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.74rem;margin-bottom:8px;gap:6px;flex-wrap:wrap;">
-            <span>{lang === "zh" ? `${concept.originQuarter} 首次提出` : `Born ${concept.originQuarter}`}</span>
-            <span style="color:var(--accent-signal);">★ {lang === "zh" ? `${concept.inflectionQuarter} 火起来` : `Took off ${concept.inflectionQuarter}`}</span>
-            <span data-sp-mid style="color:var(--accent-primary);font-weight:650;">{concept.momentum}</span>
+          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--ink-muted);margin-bottom:10px;gap:8px;flex-wrap:wrap;">
+            <span>{lang === "zh" ? `${concept.originQuarter} 提出` : `Proposed ${concept.originQuarter}`}</span>
+            <span data-sp-mid style="color:var(--ink-primary);font-weight:600;">{concept.momentum}</span>
           </div>
           <svg
             width="100%"
-            viewBox="0 0 396 114"
+            viewBox="0 0 360 96"
             style="display:block;cursor:crosshair;"
             role="img"
             aria-label="Concept trend curve"
             data-spark-svg
           >
-            <line x1="10" y1="57" x2="386" y2="57" stroke="var(--border-subtle)" stroke-width="1" stroke-dasharray="3 3" />
             <path d={chart.areaPath} fill="var(--accent-primary-soft)" />
             <path
               d={chart.path}
               fill="none"
               stroke="var(--accent-primary)"
-              stroke-width="2.8"
+              stroke-width="2.4"
               stroke-linecap="round"
             />
             <line
               data-sp-guide
               x1={inflectPt.x}
-              y1="8"
+              y1="6"
               x2={inflectPt.x}
-              y2="106"
+              y2="90"
               stroke="var(--accent-signal)"
-              stroke-width="1.2"
+              stroke-width="1"
               stroke-dasharray="3 3"
-              opacity="0.55"
+              opacity="0.45"
             />
-            {chart.points.map((pt, idx) => (
-              <circle
-                cx={pt.x}
-                cy={pt.y}
-                r={idx === concept.inflectionIndex ? 4.8 : 2.5}
-                fill={idx === concept.inflectionIndex ? "var(--accent-signal)" : "var(--accent-primary)"}
-              />
-            ))}
             <circle
               data-sp-dot
               cx={inflectPt.x}
               cy={inflectPt.y}
-              r="5.6"
+              r="4.8"
               fill="var(--accent-signal)"
-              stroke="var(--bg-canvas)"
-              stroke-width="1.8"
             />
           </svg>
-          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.66rem;color:var(--ink-muted);margin-top:5px;">
-            {SERIES_LABELS.filter((_, idx) => idx % 2 === 0 || idx === 9).map((lb) => (
-              <span>{lb}</span>
-            ))}
+          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--ink-muted);margin-top:8px;">
+            <span>2022</span>
+            <span>{lang === "zh" ? `${concept.inflectionQuarter} 爆发` : `Breakout ${concept.inflectionQuarter}`}</span>
+            <span>2026</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="at-container" style="padding:32px 24px 56px;">
+  <section class="at-container" style="padding:40px 28px 68px;">
     <div class="at-section-head">
       <h2>
-        {lang === "zh"
-          ? `帮你挑好的精华视频与好文（共 ${allNodes.length} 支，点开直达重点）`
-          : `Hand-Picked Video Highlights & Guides (${allNodes.length} Total)`}
+        {lang === "zh" ? `精选视频与解读（${allNodes.length}）` : `Curated Videos & Guides (${allNodes.length})`}
       </h2>
-      <div class="at-filter-row">
-        <button type="button" class="at-chip is-active" data-role-filter="all">
-          {lang === "zh" ? "全部类型" : "All Types"} ({galleryNodes.length})
+      <div class="at-segmented" role="group" aria-label="Filter by type" style="padding:3px;">
+        <button type="button" class="at-seg-btn is-active" data-role-filter="all" style="padding:5px 14px;font-size:0.82rem;">
+          {lang === "zh" ? "全部" : "All"}
         </button>
         {(["origin", "practice", "frontier"] as const).map((r) => (
-          <button type="button" class="at-chip" data-role-filter={r}>
+          <button type="button" class="at-seg-btn" data-role-filter={r} style="padding:5px 14px;font-size:0.82rem;">
             {ROLE_META[r][lang]}
           </button>
         ))}
@@ -211,55 +183,47 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
       ))}
     </div>
 
-    <details style="margin-top:32px;border:1px solid var(--border-subtle);border-radius:6px;padding:14px 18px;background:var(--bg-elevated);">
-      <summary style="cursor:pointer;font-weight:580;">
-        {t.fullArchiveSummary} ({allNodes.length})
-      </summary>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-        {allNodes.map((n, idx) => (
-          <a
-            href={withBase(`/${lang}/nodes/${n.slug}/`)}
-            style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--border-subtle);font-size:0.86rem;"
-          >
-            <span>
-              <span class="at-mono" style="color:var(--ink-muted);margin-right:8px;">{String(idx + 1).padStart(2, "0")}</span>
-              {n[lang].title}
-            </span>
-            <span class="at-mono" style="color:var(--ink-muted);white-space:nowrap;">
-              {n.source.channelName} ·{" "}
-              {n.source.kind === "video-cut"
-                ? `${formatTime(n.source.startSec || 0)}–${formatTime(n.source.endSec || 0)}`
-                : `${n.source.readingMinutes}m`}
-            </span>
-          </a>
-        ))}
-      </div>
-    </details>
-
-    <details style="margin-top:16px;border:1px solid var(--border-subtle);border-radius:6px;padding:14px 18px;">
-      <summary style="cursor:pointer;font-weight:580;">{t.faqHeading}</summary>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:12px;font-size:0.9rem;">
-        <div>
-          <strong>{lang === "zh" ? `1. ${loc.shortName} 和以前的老办法比，到底改了什么？` : `1. What actually changed with ${loc.shortName}?`}</strong>
-          <p style="color:var(--ink-secondary);margin-top:4px;">{loc.paradigmShift}</p>
+    {allNodes.length > 24 && (
+      <details style="margin-top:36px;border-radius:14px;padding:16px 20px;background:var(--bg-elevated);">
+        <summary style="cursor:pointer;font-weight:600;font-size:0.9rem;">
+          {t.fullArchiveSummary} ({allNodes.length})
+        </summary>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+          {allNodes.map((n, idx) => (
+            <a
+              href={withBase(`/${lang}/nodes/${n.slug}/`)}
+              style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--border-subtle);font-size:0.86rem;"
+            >
+              <span>
+                <span class="at-mono" style="color:var(--ink-muted);margin-right:8px;">{String(idx + 1).padStart(2, "0")}</span>
+                {n[lang].title}
+              </span>
+              <span class="at-mono" style="color:var(--ink-muted);white-space:nowrap;">
+                {n.source.channelName} ·{" "}
+                {n.source.kind === "video-cut"
+                  ? `${formatTime(n.source.startSec || 0)}–${formatTime(n.source.endSec || 0)}`
+                  : `${n.source.readingMinutes}m`}
+              </span>
+            </a>
+          ))}
         </div>
-        <div>
-          <strong>{lang === "zh" ? `2. 为什么现在值得花几分钟搞懂 ${loc.shortName}？` : `2. Why is ${loc.shortName} worth learning in 2026?`}</strong>
-          <p style="color:var(--ink-secondary);margin-top:4px;">{loc.whyNow}</p>
-        </div>
-      </div>
-    </details>
+      </details>
+    )}
   </section>
 
   <script is:inline>
-    document.querySelectorAll("[data-role-filter]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const r = btn.getAttribute("data-role-filter") || "all";
-        document.querySelectorAll("[data-role-filter]").forEach((b) => b.classList.toggle("is-active", b === btn));
-        document.querySelectorAll("[data-card-role]").forEach((el) => {
-          el.style.display = r === "all" || el.getAttribute("data-card-role") === r ? "flex" : "none";
+    (() => {
+      const btns = [...document.querySelectorAll("[data-role-filter]")];
+      const items = [...document.querySelectorAll("[data-card-role]")];
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.getAttribute("data-role-filter") || "all";
+          btns.forEach((b) => b.classList.toggle("is-active", b === btn));
+          items.forEach((el) => {
+            el.style.display = val === "all" || el.getAttribute("data-card-role") === val ? "flex" : "none";
+          });
         });
       });
-    });
+    })();
   </script>
 </BaseLayout>

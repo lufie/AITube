@@ -1,10 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PersonaCompass from "../../components/PersonaCompass.astro";
-import HeroWaveRadar from "../../components/HeroWaveRadar.astro";
 import { LANGS, UI, withBase, type Lang } from "../../lib/i18n";
-import { CONCEPTS, ERAS, NODES } from "../../lib/content";
-import { DIRECTORY_SCENARIOS, SHIFT_CHEATSHEET } from "../../lib/personas";
+import { CONCEPTS, ERAS, NODES, VAULT_ITEMS } from "../../lib/content";
+import { DIRECTORY_SCENARIOS } from "../../lib/personas";
 import { orgAndSiteGraph } from "../../lib/seo";
 
 export function getStaticPaths() {
@@ -13,24 +12,23 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = UI[lang];
-const romanEras = ["I", "II", "III", "IV", "V"];
 
-const heroPrompts =
-  lang === "zh"
-    ? [
-        { label: "🌱 AI 到底是怎么学会说话的？", q: "Karpathy" },
-        { label: "⚡ 几十份文档喂给 AI 怎么不瞎编？", q: "NotebookLM" },
-        { label: "🔌 大家都在聊的 MCP 是什么？", q: "MCP" },
-        { label: "🎬 怎么让 AI 做视频主角不换脸？", q: "ComfyUI" },
-      ]
-    : [
-        { label: "🌱 How ChatGPT actually learns to talk", q: "Karpathy" },
-        { label: "⚡ Ask your PDFs with zero made-up facts", q: "NotebookLM" },
-        { label: "🔌 What is MCP in plain English?", q: "MCP" },
-        { label: "🎬 Keep the same character face in AI video", q: "ComfyUI" },
-      ];
+const stripEmoji = (s: string) => s.replace(/^[^\w\u4e00-\u9fff]+\s*/, "");
 
-const scenarioCards = DIRECTORY_SCENARIOS.filter((s) => s.id !== "all");
+const collections = [
+  ...DIRECTORY_SCENARIOS.filter((s) => s.id !== "all").map((sc) => ({
+    href: withBase(`/${lang}/directory/?preset=${sc.id}`),
+    title: stripEmoji(lang === "zh" ? sc.zhTitle : sc.enTitle),
+    sub: lang === "zh" ? sc.zhSub : sc.enSub,
+    cta: lang === "zh" ? "浏览视频" : "Browse videos",
+  })),
+  {
+    href: withBase(`/${lang}/vault/`),
+    title: lang === "zh" ? "拿来即用的项目模板箱" : "Ready-to-Use Templates",
+    sub: lang === "zh" ? `AGENTS.md · SKILL.md 等 ${VAULT_ITEMS.length} 份现成模板` : `${VAULT_ITEMS.length} copy-paste templates & prompts`,
+    cta: lang === "zh" ? "查看模板" : "Open templates",
+  },
+];
 
 const schema = {
   "@context": "https://schema.org",
@@ -45,89 +43,59 @@ const schema = {
   ogImage={`/og/home-${lang}.png`}
   schema={schema}
 >
-  <!-- ZONE 1: Calm Centered Header + 4-Persona Interactive Triage Compass -->
+  <!-- Shelf 1: Minimal Hero + Segmented Track Switcher + 3 Featured Videos -->
   <section class="at-home-hero">
     <div class="at-container">
       <div class="at-home-intro">
-        <div class="at-kicker">{t.heroKicker}</div>
-        <h1 class="at-home-h1">{t.heroTitle}</h1>
-        <p class="at-home-sub">{t.heroSubtitle}</p>
+        <h1 class="at-page-h1">{t.heroTitle}</h1>
+        <p class="at-page-lead">{t.heroSubtitle}</p>
 
-        <div class="at-home-search-wrap">
-          <button type="button" class="at-hero-search-btn at-hero-search-centered" data-open-search>
-            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-              ⌕ {t.searchPlaceholder}
-            </span>
-            <span class="at-kbd">⌘K</span>
-          </button>
-
-          <div class="at-prompt-row" style="justify-content:center;margin-bottom:0;" aria-label={lang === "zh" ? "大家常搜的问题" : "Popular questions"}>
-            {heroPrompts.map((hp) => (
-              <button type="button" class="at-prompt-chip" data-open-search data-search-q={hp.q}>
-                {hp.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <button type="button" class="at-home-search" data-open-search>
+          <span style="display:inline-flex;align-items:center;gap:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;" aria-hidden="true">
+              <circle cx="11" cy="11" r="7.5" />
+              <path d="m20 20-3.8-3.8" />
+            </svg>
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{t.searchPlaceholder}</span>
+          </span>
+          <span class="at-kbd">⌘K</span>
+        </button>
       </div>
 
       <PersonaCompass lang={lang} />
     </div>
   </section>
 
-  <!-- ZONE 2: "Learn New, Skip Old" 4-Row Paradigm Cheat Sheet + 4-Wave Radar -->
-  <section class="at-section">
+  <!-- Shelf 2: Signature 2017–2026 5-Stage Chronological Overview -->
+  <section class="at-section-soft">
     <div class="at-container">
       <div class="at-section-head">
         <div>
-          <div class="at-kicker" style="color:var(--accent-signal);">
-            {lang === "zh" ? "第 2 步 · 30 秒看清现在该学什么（别再把时间花在老办法上）" : "STEP 2 · 30-SECOND REALITY CHECK — SKIP OUTDATED HABITS"}
-          </div>
           <h2>{t.eraStripHeading}</h2>
+          <p style="color:var(--ink-secondary);font-size:0.94rem;margin-top:4px;">
+            {lang === "zh"
+              ? "按出现与普及的时间顺序，看清今天的热门技术是怎么一步步长出来的。"
+              : "See how today's most important AI techniques grew step by step."}
+          </p>
         </div>
-        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
+        <a href={withBase(`/${lang}/timeline/`)} class="at-text-link">
           {t.ctaTimeline}
         </a>
       </div>
 
-      <div class="at-cheatsheet-grid">
-        <div class="at-cheatsheet-card">
-          <div class="at-cheatsheet-head at-mono">
-            <span>{lang === "zh" ? "✕ 以前费力不讨好的老办法" : "✕ OLD WAY (STOP OVERDOING THIS)"}</span>
-            <span style="color:var(--accent-primary);">{lang === "zh" ? "✓ 现在聪明人都在用的做法" : "✓ SMARTER WAY IN 2026"}</span>
-          </div>
-
-          <div class="at-cheatsheet-list">
-            {SHIFT_CHEATSHEET.map((row) => (
-              <a href={withBase(`/${lang}/concepts/${row.conceptSlug}/`)} class="at-cheatsheet-row">
-                <div class="at-cheatsheet-old">
-                  {lang === "zh" ? row.zhOld : row.enOld}
-                </div>
-                <div class="at-mono" style="color:var(--accent-signal);font-weight:700;">→</div>
-                <div class="at-cheatsheet-new">
-                  <span>{lang === "zh" ? row.zhNew : row.enNew}</span>
-                  <span class="at-mono at-cheatsheet-tag">{row.tag}</span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <HeroWaveRadar lang={lang} />
-      </div>
-
-      <!-- Clean 5-Era Macro Story Strip -->
-      <div class="at-era-strip" style="margin-top:20px;">
-        {ERAS.map((era, idx) => {
-          const cnt = CONCEPTS.filter((c) => c.eraId === era.id).length;
+      <div class="at-era-strip">
+        {ERAS.map((era) => {
+          const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
           return (
             <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-era-card">
-              <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--accent-signal);font-weight:650;">
-                <span>{lang === "zh" ? `第 ${idx + 1} 阶段 · ${era.period}` : `STAGE ${romanEras[idx]} · ${era.period}`}</span>
-                <span style="color:var(--ink-muted);">{cnt} {lang === "zh" ? "个核心词" : "topics"}</span>
+              <span class="at-era-year">{era.period}</span>
+              <h3 class="at-era-title">{era[lang].title}</h3>
+              <p class="at-era-desc">{era[lang].subtitle}</p>
+              <div class="at-era-tags">
+                {eraConcepts.slice(0, 3).map((c) => (
+                  <span class="at-era-tag">{c[lang].shortName}</span>
+                ))}
               </div>
-              <strong style="font-family:var(--font-serif);font-size:1.05rem;">{era[lang].title}</strong>
-              <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.45;">{era[lang].subtitle}</p>
             </a>
           );
         })}
@@ -135,35 +103,26 @@ const schema = {
     </div>
   </section>
 
-  <!-- ZONE 3: Direct Scenario Doors (5 Clean Cards -> Filtered Directory) -->
-  <section class="at-section" style="border-bottom:0;">
+  <!-- Shelf 3: 6 Calm Topic Collections -->
+  <section class="at-section" style="border-top:0;">
     <div class="at-container">
       <div class="at-section-head">
-        <div>
-          <div class="at-kicker">
-            {lang === "zh" ? "第 3 步 · 带着具体问题来的？按你想做的事直接挑视频" : "STEP 3 · HAVE A SPECIFIC GOAL? PICK BY USE CASE"}
-          </div>
-          <h2>
-            {lang === "zh" ? "不用管复杂分类，点你想解决的事，直接看精选片段" : "Skip the Jargon — Pick What You Want to Do Today"}
-          </h2>
-        </div>
-        <a href={withBase(`/${lang}/directory/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
-          {lang === "zh" ? `逛逛全部 ${NODES.length} 支视频片段 →` : `All ${NODES.length} highlights →`}
+        <h2>{lang === "zh" ? "按主题探索" : "Explore by Topic"}</h2>
+        <a href={withBase(`/${lang}/directory/`)} class="at-text-link">
+          {lang === "zh" ? `全部 ${NODES.length} 支视频 ›` : `All ${NODES.length} videos ›`}
         </a>
       </div>
 
-      <div class="at-scenario-doors">
-        {scenarioCards.map((sc) => (
-          <a href={withBase(`/${lang}/directory/?preset=${sc.id}`)} class="at-scenario-door">
-            <div style="font-weight:650;font-size:1.02rem;color:var(--ink-primary);">
-              {lang === "zh" ? sc.zhTitle : sc.enTitle}
+      <div class="at-collections-grid">
+        {collections.map((col) => (
+          <a href={col.href} class="at-collection-card">
+            <div>
+              <h3 style="font-size:1.08rem;margin-bottom:6px;">{col.title}</h3>
+              <p style="font-size:0.86rem;color:var(--ink-secondary);">{col.sub}</p>
             </div>
-            <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:4px;">
-              {lang === "zh" ? sc.zhSub : sc.enSub}
-            </div>
-            <div class="at-mono" style="margin-top:12px;font-size:0.75rem;color:var(--accent-primary);font-weight:600;">
-              {lang === "zh" ? "看看这组精选片段 →" : "See highlights →"}
-            </div>
+            <span class="at-text-link" style="font-size:0.84rem;">
+              {col.cta} ›
+            </span>
           </a>
         ))}
       </div>

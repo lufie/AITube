@@ -12,19 +12,19 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const t = UI[lang];
 
-const roleGuides =
+const roleTabs =
   lang === "zh"
     ? [
-        { role: "beginner", stage: "stage-0", jump: "跳到第 0 阶 ↓", icon: "🌱", who: "我是纯小白", tip: "直接看「第 0 阶」前 3 支视频，半小时就能听懂 AI 到底是怎么回事" },
-        { role: "applied", stage: "stage-1", jump: "跳到第 1 阶 ↓", icon: "⚡", who: "我想直接拿来用", tip: "不用管底层公式，直接从「第 1 阶」学怎么提问、喂文档和做图视频" },
-        { role: "career", stage: "stage-2", jump: "跳到第 2 阶 ↓", icon: "🧭", who: "我想转行做开发", tip: "重点看「第 2 阶 + 第 3 阶」：让 AI 查资料、连工具、自动写代码和测准不准" },
-        { role: "frontier", stage: "stage-3", jump: "跳到第 3 阶 ↓", icon: "🔭", who: "我想看最新趋势", tip: "直接跳到「第 3 阶」：看今年最火的信息整理术、SKILL.md 技能包和自动防翻车测试" },
+        { role: "beginner", stage: "stage-0", label: "第 0 阶 · 零基础" },
+        { role: "applied", stage: "stage-1", label: "第 1 阶 · 日常应用" },
+        { role: "career", stage: "stage-2", label: "第 2 阶 · 转行开发" },
+        { role: "frontier", stage: "stage-3", label: "第 3 阶 · 上线实战" },
       ]
     : [
-        { role: "beginner", stage: "stage-0", jump: "Stage 00 ↓", icon: "🌱", who: "Starting from Zero", tip: "Watch the Top 3 highlights in Stage 00 — build visual intuition in 35 minutes" },
-        { role: "applied", stage: "stage-1", jump: "Stage 01 ↓", icon: "⚡", who: "Use AI at Work", tip: "Skip the math — start at Stage 01 for clear prompts, NotebookLM & ComfyUI" },
-        { role: "career", stage: "stage-2", jump: "Stage 02 ↓", icon: "🧭", who: "Move into AI Dev", tip: "Focus on Stage 02 + 03: tool calling, hybrid search, MCP & automated testing" },
-        { role: "frontier", stage: "stage-3", jump: "Stage 03 ↓", icon: "🔭", who: "Track What's New", tip: "Jump straight to Stage 03: Context Engineering, SKILL.md & Subagents" },
+        { role: "beginner", stage: "stage-0", label: "Stage 0 · Basics" },
+        { role: "applied", stage: "stage-1", label: "Stage 1 · Daily Use" },
+        { role: "career", stage: "stage-2", label: "Stage 2 · Build Apps" },
+        { role: "frontier", stage: "stage-3", label: "Stage 3 · Production" },
       ];
 
 const stageStarterMap: Record<string, string[]> = {
@@ -50,21 +50,14 @@ const stageStarterMap: Record<string, string[]> = {
   ],
 };
 
-const stageAudienceLabel: Record<string, { zh: string; en: string }> = {
-  "stage-0": { zh: "🌱 适合：完全没基础，想先听懂大白话原理", en: "🌱 Best for: Complete beginners building intuition" },
-  "stage-1": { zh: "⚡ 适合：日常办公提问、整理私有资料、画图做视频", en: "⚡ Best for: Everyday work, private docs & visuals" },
-  "stage-2": { zh: "🧭 适合：想自己动手做 AI 工具、接知识库和写代码", en: "🧭 Best for: Building AI apps, search & coding tools" },
-  "stage-3": { zh: "🔭 适合：想把 AI 产品真正上线、不瞎编也不翻车", en: "🔭 Best for: Production reliability, Skills & Evals" },
-};
-
 const title =
   lang === "zh"
-    ? `分步学习单：从零基础小白到做出靠谱 AI 应用的 4 个台阶（${SPINE_NODES.length} 支必看）— AITube`
-    : `Step-by-Step AI Path: 4 Clear Stages (${SPINE_NODES.length} Essential Highlights) — AITube`;
+    ? `学习路线：4 个阶段循序渐进掌握 AI（${SPINE_NODES.length} 支核心精选）— AITube`
+    : `Learning Pathways: 4 Clear Stages (${SPINE_NODES.length} Essential Highlights) — AITube`;
 const desc =
   lang === "zh"
-    ? "不用一口气看几百个视频：先选最像你的起点，每个台阶先看最关键的 3 支视频就够了，想深挖再展开。"
-    : "Don't binge hundreds of videos at once. Pick your starting stage, watch the Top 3 highlights first, and expand deeper tutorials anytime.";
+    ? "不用一次看完所有内容：先选适合你的起点，每一阶先看最关键的 3 支视频即可。"
+    : "Start at the stage that matches your background — watch just the Top 3 highlights per stage first.";
 
 const schema = {
   "@context": "https://schema.org",
@@ -85,41 +78,32 @@ const schema = {
   ogImage={`/og/roadmap-${lang}.png`}
   schema={schema}
 >
-  <section style="padding:36px 0 26px;border-bottom:1px solid var(--border-subtle);background:linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-canvas) 100%);">
+  <section class="at-page-header">
     <div class="at-container">
-      <div class="at-kicker">
-        {lang === "zh" ? `分步学习单 · 不用从头硬啃 ${SPINE_NODES.length} 支视频，每个台阶先看前 3 支就够了` : `STEP-BY-STEP PATH · WATCH JUST 3 HIGHLIGHTS PER STAGE FIRST`}
+      <div class="at-page-header-center">
+        <h1 class="at-page-h1">{t.roadmapHeading}</h1>
+        <p class="at-page-lead">{desc}</p>
       </div>
-      <h1 style="font-size:clamp(1.8rem,2.9vw,2.45rem);margin:8px 0 10px;">
-        {t.roadmapHeading}
-      </h1>
-      <p style="max-width:68ch;color:var(--ink-secondary);margin-bottom:20px;">
-        {lang === "zh"
-          ? "每个人的基础和目的不一样，千万别从同一集硬看。点选下面最像你的卡片，直接跳到适合你的那一级台阶；每一阶默认只摆出最关键的 3 支入门片，看完还想深挖再点展开。"
-          : "Everyone starts from a different place. Pick the card that sounds like you below to jump straight to the right stage — each stage shows just its Top 3 highlights first."}
-      </p>
 
-      <!-- 4-Persona Starting-Point Selector -->
-      <div class="at-roadmap-guides">
-        {roleGuides.map((g) => (
-          <a href={`#${g.stage}`} class="at-roadmap-guide-card" data-rm-role={g.role} data-rm-target={g.stage}>
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;">
-              <strong style="font-size:0.96rem;color:var(--ink-primary);">
-                {g.icon} {g.who}
-              </strong>
-              <span class="at-mono" style="font-size:0.72rem;color:var(--accent-primary);font-weight:650;">
-                {g.jump}
-              </span>
-            </div>
-            <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.45;">{g.tip}</p>
-          </a>
-        ))}
+      <div style="margin-top:26px;display:flex;justify-content:center;">
+        <div class="at-segmented" role="group" aria-label="Starting stage">
+          {roleTabs.map((g, idx) => (
+            <a
+              href={`#${g.stage}`}
+              class={`at-seg-btn ${idx === 0 ? "is-active" : ""}`}
+              data-rm-role={g.role}
+              data-rm-target={g.stage}
+            >
+              {g.label}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <div class="at-container" style="padding-bottom:56px;">
-    {STAGES.map((st) => {
+  <div class="at-container" style="padding-bottom:68px;">
+    {STAGES.map((st, sIdx) => {
       const stageNodes = SPINE_NODES.filter((n) => n.stageId === st.id);
       const prefSlugs = stageStarterMap[st.id] || [];
       const coreNodes = prefSlugs
@@ -130,32 +114,29 @@ const schema = {
         .slice(0, 3) as typeof stageNodes;
       const coreSet = new Set(coreNodes.map((n) => n.slug));
       const extraNodes = stageNodes.filter((n) => !coreSet.has(n.slug));
-      const audMeta = stageAudienceLabel[st.id];
 
       return (
-        <section class="at-section at-stage-block" id={st.id} data-stage-section={st.id}>
+        <section
+          class="at-section"
+          id={st.id}
+          data-stage-section={st.id}
+          style={sIdx === 0 ? "scroll-margin-top:76px;" : "scroll-margin-top:76px;"}
+        >
           <div class="at-section-head">
-            <div>
-              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
-                <span class="at-kicker" style="margin-bottom:0;">
-                  {st[lang].code} · {lang === "zh" ? `共 ${stageNodes.length} 支必看片段` : `${stageNodes.length} ESSENTIAL HIGHLIGHTS`}
-                </span>
-                {audMeta && (
-                  <span class="at-audience-pill">
-                    {audMeta[lang]}
-                  </span>
-                )}
-                <span class="at-stage-rec-badge at-mono" data-rec-badge={st.id} style="display:none;">
-                  ★ {lang === "zh" ? "最适合你从这里开始" : "YOUR RECOMMENDED START"}
+            <div style="max-width:66ch;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                <span class="at-kicker">{st[lang].code}</span>
+                <span
+                  class="at-life at-life-mainstream"
+                  data-rec-badge={st.id}
+                  style="display:none;"
+                >
+                  {lang === "zh" ? "推荐起点" : "Recommended Start"}
                 </span>
               </div>
               <h2>{st[lang].title}</h2>
-              <p style="color:var(--ink-secondary);margin-top:6px;max-width:66ch;">{st[lang].summary}</p>
+              <p style="color:var(--ink-secondary);margin-top:6px;font-size:0.95rem;">{st[lang].summary}</p>
             </div>
-          </div>
-
-          <div class="at-mono" style="font-size:0.75rem;color:var(--accent-signal);font-weight:650;margin-bottom:12px;">
-            ★ {lang === "zh" ? "这一阶先看下面这 3 支就够了（每支都帮你掐好了最干货的几分钟）" : "START HERE: WATCH THESE 3 HIGHLIGHTS FIRST"}
           </div>
 
           <div class="at-grid-cards">
@@ -165,28 +146,28 @@ const schema = {
           </div>
 
           {extraNodes.length > 0 && (
-            <div style="margin-top:18px;">
+            <div style="margin-top:26px;">
               <button
                 type="button"
-                class="at-stage-expand-btn at-mono"
+                class="at-btn-ghost"
                 data-toggle-stage={st.id}
                 data-label-closed={
                   lang === "zh"
-                    ? `+ 展开这一阶另外 ${extraNodes.length} 支补充实操视频 ▾`
-                    : `+ Show ${extraNodes.length} more hands-on highlights in this stage ▾`
+                    ? `展开本阶其余 ${extraNodes.length} 支进阶视频 ▾`
+                    : `Show ${extraNodes.length} more videos in this stage ▾`
                 }
                 data-label-open={
                   lang === "zh"
-                    ? `− 收起另外 ${extraNodes.length} 支补充视频 ▴`
-                    : `− Hide ${extraNodes.length} extra highlights ▴`
+                    ? `收起其余 ${extraNodes.length} 支视频 ▴`
+                    : `Hide ${extraNodes.length} extra videos ▴`
                 }
               >
                 {lang === "zh"
-                  ? `+ 展开这一阶另外 ${extraNodes.length} 支补充实操视频 ▾`
-                  : `+ Show ${extraNodes.length} more hands-on highlights in this stage ▾`}
+                  ? `展开本阶其余 ${extraNodes.length} 支进阶视频 ▾`
+                  : `Show ${extraNodes.length} more videos in this stage ▾`}
               </button>
 
-              <div class="at-grid-cards" data-stage-extra={st.id} style="display:none;margin-top:16px;">
+              <div class="at-grid-cards" data-stage-extra={st.id} style="display:none;margin-top:24px;">
                 {extraNodes.map((n) => (
                   <MediaCard node={n} lang={lang} />
                 ))}
@@ -197,9 +178,9 @@ const schema = {
       );
     })}
 
-    <div style="padding-top:12px;text-align:center;">
-      <a href={withBase(`/${lang}/directory/`)} class="at-btn-ghost">
-        {lang === "zh" ? "已经有具体想学的工具或问题？去精选视频库直接搜 →" : "Looking for a specific tool or question? Browse Video Library →"}
+    <div style="padding-top:16px;text-align:center;">
+      <a href={withBase(`/${lang}/directory/`)} class="at-text-link">
+        {lang === "zh" ? "想直接按问题或工具找视频？前往视频库 ›" : "Looking for a specific tool or topic? Browse Video Library ›"}
       </a>
     </div>
   </div>

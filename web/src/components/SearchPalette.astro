@@ -11,10 +11,10 @@ const quickTerms =
   lang === "zh"
     ? [
         { label: "怎么喂资料不瞎编", q: "NotebookLM" },
-        { label: "MCP 万能插头", q: "MCP" },
+        { label: "MCP 是什么", q: "MCP" },
         { label: "SKILL.md 技能包", q: "SKILL.md" },
         { label: "慢思考推理模型", q: "慢思考" },
-        { label: "做视频主角不换脸", q: "ComfyUI" },
+        { label: "视频主角不换脸", q: "ComfyUI" },
       ]
     : [
         { label: "Private docs Q&A", q: "NotebookLM" },
@@ -25,25 +25,24 @@ const quickTerms =
       ];
 ---
 <dialog class="at-dialog" id="at-search-dialog" data-lang={lang} data-corpus-url={corpusUrl}>
-  <div style="padding:14px 16px;border-bottom:1px solid var(--border-subtle);display:flex;gap:10px;align-items:center;">
-    <span class="at-mono" style="color:var(--accent-primary);">⌕</span>
+  <div style="padding:16px 18px;border-bottom:1px solid var(--border-subtle);display:flex;gap:10px;align-items:center;">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7.5" />
+      <path d="m20 20-3.8-3.8" />
+    </svg>
     <input
       type="search"
       id="at-search-input"
       placeholder={t.searchPlaceholder}
       autocomplete="off"
-      style="flex:1;border:0;background:transparent;outline:none;font-size:0.96rem;"
+      style="flex:1;border:0;background:transparent;outline:none;font-size:0.98rem;"
     />
-    <span class="at-kbd">↑↓ ↵</span>
-    <button type="button" class="at-icon-btn at-mono" data-close-search style="height:28px;padding:0 8px;">ESC</button>
+    <button type="button" class="at-icon-btn" data-close-search style="height:26px;padding:0 10px;font-size:0.74rem;">ESC</button>
   </div>
 
-  <div style="padding:8px 16px;border-bottom:1px solid var(--border-subtle);display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--bg-elevated);">
-    <span class="at-mono" style="font-size:0.68rem;color:var(--ink-muted);">
-      {lang === "zh" ? "大家常问：" : "TRY ASKING:"}
-    </span>
+  <div style="padding:10px 18px;border-bottom:1px solid var(--border-subtle);display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
     {quickTerms.map((qt) => (
-      <button type="button" class="at-prompt-chip" data-quick-term={qt.q} style="font-size:0.72rem;padding:2px 8px;">
+      <button type="button" class="at-chip" data-quick-term={qt.q} style="font-size:0.75rem;padding:4px 10px;">
         {qt.label}
       </button>
     ))}
@@ -51,12 +50,12 @@ const quickTerms =
 
   <div
     id="at-search-results"
-    style="max-height:58vh;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px;"
+    style="max-height:56vh;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:2px;"
   >
-    <p style="font-size:0.84rem;color:var(--ink-muted);">
+    <p style="padding:10px 6px;font-size:0.84rem;color:var(--ink-muted);">
       {lang === "zh"
-        ? "直接用大白话搜就行，比如「AI 怎么思考」「喂资料」「写代码」「MCP」「不换脸」。"
-        : "Type any question in plain English — e.g. how LLMs talk, private docs Q&A, MCP, SKILL.md, or ComfyUI."}
+        ? "输入你想解决的问题或任何 AI 概念名称。"
+        : "Type any plain-English question or AI topic."}
     </p>
   </div>
 </dialog>
@@ -118,65 +117,61 @@ const quickTerms =
             })
             .filter((x) => x.score > 0)
             .sort((a, b) => b.score - a.score)
-            .slice(0, 14)
+            .slice(0, 12)
             .map((x) => x.it);
 
-      activeIdx = 0;
       if (!hits.length) {
-        box.innerHTML = `<p style="font-size:0.85rem;color:var(--ink-muted);">${
-          lang === "zh" ? "没搜到完全一致的词，换个日常词试试？比如搜「喂资料」「写代码」「MCP」或「画图」。" : "No exact matches yet — try broader words like MCP, docs, coding, or video."
+        box.innerHTML = `<p style="padding:12px 6px;font-size:0.84rem;color:var(--ink-muted);">${
+          lang === "zh" ? "没有找到匹配结果，试试换个日常词。" : "No matches found — try simpler words."
         }</p>`;
         return;
       }
-
+      activeIdx = 0;
       box.innerHTML = hits
         .map(
           (h, idx) => `
           <a href="${h.href}" class="at-search-hit ${idx === 0 ? "is-selected" : ""}">
             <div style="min-width:0;">
-              <div style="font-size:0.71rem;font-family:var(--font-mono);color:var(--accent-primary);">${h.badge}</div>
-              <div style="font-weight:580;font-size:0.93rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.title}</div>
-              <div style="font-size:0.8rem;color:var(--ink-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.sub}</div>
+              <div style="font-weight:580;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.title}</div>
+              <div style="font-size:0.78rem;color:var(--ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.sub}</div>
             </div>
-            <span class="at-mono" style="font-size:0.78rem;color:var(--ink-muted);">↵</span>
+            <span style="font-size:0.74rem;color:var(--accent-primary);white-space:nowrap;font-weight:550;">${h.badge}</span>
           </a>`
         )
         .join("");
     }
 
-    async function openModal(prefill = "") {
-      dialog.showModal();
+    async function openModal(prefill) {
+      if (!dialog.open) dialog.showModal();
       await ensureCorpus();
-      if (typeof prefill === "string" && prefill) input.value = prefill;
-      renderHits(input.value);
+      if (typeof prefill === "string") {
+        input.value = prefill;
+      }
       input.focus();
+      renderHits(input.value);
     }
 
-    document.querySelectorAll("[data-open-search]").forEach((btn) => {
+    document.querySelectorAll("[data-open-search]").forEach((btn) =>
       btn.addEventListener("click", () => {
-        const q = btn.getAttribute("data-search-q") || "";
-        openModal(q);
-      });
-    });
-    dialog.querySelectorAll("[data-quick-term]").forEach((btn) => {
+        const q = btn.getAttribute("data-search-q");
+        openModal(q !== null ? q : undefined);
+      })
+    );
+    document.querySelectorAll("[data-quick-term]").forEach((btn) =>
       btn.addEventListener("click", () => {
-        input.value = btn.getAttribute("data-quick-term") || "";
-        renderHits(input.value);
+        const q = btn.getAttribute("data-quick-term") || "";
+        input.value = q;
+        renderHits(q);
         input.focus();
-      });
-    });
-    document.querySelectorAll("[data-close-search]").forEach((btn) => {
-      btn.addEventListener("click", () => dialog.close());
-    });
+      })
+    );
+    document.querySelectorAll("[data-close-search]").forEach((btn) =>
+      btn.addEventListener("click", () => dialog.close())
+    );
     dialog.addEventListener("click", (e) => {
       if (e.target === dialog) dialog.close();
     });
-    window.addEventListener("keydown", (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        openModal();
-      }
-    });
+    input.addEventListener("input", () => renderHits(input.value));
     input.addEventListener("keydown", (e) => {
       const items = [...box.querySelectorAll(".at-search-hit")];
       if (!items.length) return;
@@ -188,12 +183,20 @@ const quickTerms =
         e.preventDefault();
         activeIdx = (activeIdx - 1 + items.length) % items.length;
         syncSelected();
-      } else if (e.key === "Enter" && items[activeIdx]) {
-        e.preventDefault();
-        window.location.href = items[activeIdx].getAttribute("href");
+      } else if (e.key === "Enter") {
+        const target = items[activeIdx];
+        if (target) {
+          e.preventDefault();
+          window.location.href = target.getAttribute("href");
+        }
       }
     });
-    input.addEventListener("input", () => renderHits(input.value));
-    window.__openAITubeSearch = openModal;
+    window.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (dialog.open) dialog.close();
+        else openModal();
+      }
+    });
   })();
 </script>

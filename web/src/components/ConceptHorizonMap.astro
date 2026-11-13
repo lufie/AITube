@@ -6,7 +6,7 @@ import {
   getNodesForConcept,
   splitParadigmShift,
 } from "../lib/content";
-import { BASE_PREFIX, LIFECYCLE_META, UI, withBase, type Lang } from "../lib/i18n";
+import { BASE_PREFIX, UI, withBase, type Lang } from "../lib/i18n";
 
 interface Props {
   lang: Lang;
@@ -28,16 +28,8 @@ const clientMeta = Object.fromEntries(
     return [
       c.slug,
       {
-        order: String(c.order).padStart(2, "0"),
         name: c[lang].name,
-        short: c[lang].shortName,
-        origin: c.originQuarter,
         inflect: c.inflectionQuarter,
-        momentum: c.momentum,
-        lifeIcon: LIFECYCLE_META[c.lifecycle].icon,
-        lifeLabel: LIFECYCLE_META[c.lifecycle][lang],
-        life: c.lifecycle,
-        before: sh.before,
         after: sh.after,
         from: c.lineage.from,
         into: c.lineage.into,
@@ -51,30 +43,27 @@ const uid = `hz-${mode}`;
 ---
 <div class="at-horizon-shell" id={uid} data-horizon-root data-mode={mode}>
   <div class="at-horizon-head">
-    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
-      <span class="at-kicker">{lang === "zh" ? "概念关系全景图" : "CONCEPT CONNECTION MAP"}</span>
-      <strong style="font-family:var(--font-serif);font-size:1.08rem;">{t.horizonTitle}</strong>
-      <span style="font-size:0.78rem;color:var(--ink-muted);">{t.horizonHint}</span>
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+      <strong style="font-size:0.96rem;font-weight:650;">{t.horizonTitle}</strong>
+      <span style="font-size:0.8rem;color:var(--ink-muted);">{t.horizonHint}</span>
     </div>
 
-    <div class="at-mono" style="display:flex;align-items:center;gap:12px;font-size:0.71rem;color:var(--ink-secondary);flex-wrap:wrap;">
-      <span style="display:inline-flex;align-items:center;gap:4px;">
-        <span style="width:8px;height:8px;border-radius:50%;border:2px solid var(--accent-primary);display:inline-block;"></span>
-        {lang === "zh" ? "首次提出" : "First proposed"}
+    <div style="display:flex;align-items:center;gap:14px;font-size:0.75rem;color:var(--ink-muted);flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;gap:5px;">
+        <span style="width:7px;height:7px;border-radius:50%;border:1.8px solid var(--accent-primary);display:inline-block;"></span>
+        {lang === "zh" ? "提出时间" : "Proposed"}
       </span>
-      <span style="display:inline-flex;align-items:center;gap:4px;">
-        <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-signal);display:inline-block;"></span>
-        {lang === "zh" ? "真正火起来" : "Took off"}
+      <span style="display:inline-flex;align-items:center;gap:5px;">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--accent-signal);display:inline-block;"></span>
+        {lang === "zh" ? "爆发普及" : "Breakout"}
       </span>
-      <span style="color:var(--accent-primary);">┄▸ {t.lineageFrom}</span>
-      <span style="color:var(--accent-signal);">━▸ {t.lineageInto}</span>
       <button
         type="button"
         data-hz-clear
-        class="at-chip at-mono"
-        style="padding:2px 8px;font-size:0.69rem;"
+        class="at-chip"
+        style="padding:3px 10px;font-size:0.74rem;background:var(--bg-canvas);"
       >
-        {lang === "zh" ? "显示全部 22 个" : "Show All 22"}
+        {lang === "zh" ? "看全部全景" : "Show All"}
       </button>
     </div>
   </div>
@@ -89,12 +78,11 @@ const uid = `hz-${mode}`;
     >
       <defs>
         <linearGradient id={`${uid}-span`} x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.55" />
-          <stop offset="100%" stop-color="var(--accent-signal)" stop-opacity="0.95" />
+          <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="var(--accent-signal)" stop-opacity="0.9" />
         </linearGradient>
       </defs>
 
-      <!-- Swimlane alternating bands & left labels -->
       {layout.lanes.map((ln, idx) => (
         <g>
           <rect
@@ -103,7 +91,7 @@ const uid = `hz-${mode}`;
             width={layout.width}
             height={ln.height}
             fill={idx % 2 === 1 ? "var(--bg-elevated)" : "transparent"}
-            opacity="0.65"
+            opacity="0.45"
           />
           <line
             x1="0"
@@ -114,38 +102,36 @@ const uid = `hz-${mode}`;
             stroke-width="1"
           />
           <text
-            x="16"
-            y={ln.yTop + 23}
+            x="18"
+            y={ln.yTop + 26}
             fill="var(--ink-primary)"
-            font-size="12.5"
+            font-size="12"
             font-weight="600"
             font-family="var(--font-sans)"
           >
             {ln.title}
           </text>
           <text
-            x="16"
-            y={ln.yTop + 38}
+            x="18"
+            y={ln.yTop + 42}
             fill="var(--ink-muted)"
-            font-size="9.8"
-            font-family="var(--font-mono)"
+            font-size="10"
+            font-family="var(--font-sans)"
           >
             {ln.sub}
           </text>
         </g>
       ))}
 
-      <!-- Left gutter vertical separator -->
       <line
         x1={layout.leftGutter}
         y1="12"
         x2={layout.leftGutter}
         y2={layout.height - 6}
-        stroke="var(--border-strong)"
+        stroke="var(--border-subtle)"
         stroke-width="1"
       />
 
-      <!-- Chronological X-axis ticks & vertical guide rules -->
       {layout.axisTicks.map((tk) => (
         <g>
           <line
@@ -159,31 +145,18 @@ const uid = `hz-${mode}`;
           />
           <text
             x={tk.x}
-            y="25"
+            y="24"
             text-anchor="middle"
-            fill={tk.label === "2026" ? "var(--accent-signal)" : "var(--ink-secondary)"}
+            fill={tk.label === "2026" ? "var(--accent-primary)" : "var(--ink-muted)"}
             font-size="11"
-            font-weight={tk.label === "2026" ? "700" : "600"}
-            font-family="var(--font-mono)"
+            font-weight={tk.label === "2026" ? "650" : "500"}
+            font-family="var(--font-sans)"
           >
             {tk.label}
           </text>
         </g>
       ))}
 
-      <!-- Scale compression indicator between 2017 and 2020 -->
-      <text
-        x={(layout.axisTicks[0].x + layout.axisTicks[1].x) / 2}
-        y="25"
-        text-anchor="middle"
-        fill="var(--ink-muted)"
-        font-size="9.5"
-        font-family="var(--font-mono)"
-      >
-        //
-      </text>
-
-      <!-- Causal Lineage Bezier Arcs -->
       <g>
         {layout.edges.map((ed) => (
           <path
@@ -195,12 +168,11 @@ const uid = `hz-${mode}`;
         ))}
       </g>
 
-      <!-- 22 Chronological Concept Span Nodes -->
       <g>
         {layout.nodes.map((nd) => {
           const c = nd.concept;
-          const label = `#${String(c.order).padStart(2, "0")} ${c[lang].shortName}`;
-          const pillW = Math.min(168, Math.max(78, label.length * (lang === "zh" ? 8.8 : 6.1) + 16));
+          const label = c[lang].shortName;
+          const pillW = Math.min(156, Math.max(70, label.length * (lang === "zh" ? 10.2 : 6.2) + 18));
           const pillX = nd.labelLeft ? nd.xOrigin - pillW - 7 : nd.xInflect + 8;
           const textX = pillX + pillW / 2;
           const isSurging = c.lifecycle === "surging";
@@ -215,54 +187,50 @@ const uid = `hz-${mode}`;
               data-lifecycle={c.lifecycle}
               data-domain={c.domain}
             >
-              <!-- Span line from originQuarter to inflectionQuarter -->
               <line
                 x1={nd.xOrigin}
                 y1={nd.y}
                 x2={nd.xInflect}
                 y2={nd.y}
                 stroke={`url(#${uid}-span)`}
-                stroke-width="3"
+                stroke-width="2.6"
                 stroke-linecap="round"
               />
-              <!-- Origin hollow circle -->
               <circle
                 cx={nd.xOrigin}
                 cy={nd.y}
-                r="3.6"
+                r="3.4"
                 fill="var(--bg-canvas)"
                 stroke="var(--accent-primary)"
-                stroke-width="2"
+                stroke-width="1.8"
               />
-              <!-- Breakout inflection halo & beacon -->
               {isSurging && (
                 <circle
                   cx={nd.xInflect}
                   cy={nd.y}
-                  r="8.5"
+                  r="8"
                   fill="var(--accent-signal-soft)"
                 />
               )}
               <circle
                 cx={nd.xInflect}
                 cy={nd.y}
-                r="4.8"
+                r="4.4"
                 fill={isSurging ? "var(--accent-signal)" : "var(--accent-primary)"}
                 stroke="var(--bg-canvas)"
                 stroke-width="1.4"
               />
-              <!-- Label Pill -->
               <rect
                 class="at-hz-pill"
                 x={pillX}
-                y={nd.y - 10}
+                y={nd.y - 10.5}
                 width={pillW}
-                height="20"
-                rx="4"
+                height="21"
+                rx="10.5"
               />
               <text
                 x={textX}
-                y={nd.y + 3.8}
+                y={nd.y + 3.6}
                 text-anchor="middle"
                 fill="var(--ink-primary)"
                 font-size="10.4"
@@ -278,58 +246,34 @@ const uid = `hz-${mode}`;
     </svg>
   </div>
 
-  <!-- Live Inspector Readout HUD -->
   <div class="at-horizon-hud" data-hz-hud>
     <div style="min-width:0;flex:1;">
-      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:4px;">
-        <span class="at-mono" data-hud-code style="font-size:0.75rem;color:var(--accent-primary);font-weight:650;">
-          #{String(defaultConcept.order).padStart(2, "0")}
-        </span>
-        <strong data-hud-name style="font-family:var(--font-serif);font-size:1.08rem;">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;">
+        <strong data-hud-name style="font-size:0.98rem;font-weight:650;">
           {defaultConcept[lang].name}
         </strong>
-        <span class="at-mono" data-hud-span style="font-size:0.74rem;padding:1px 7px;border-radius:3px;background:var(--bg-canvas);border:1px solid var(--border-subtle);">
-          {defaultConcept.originQuarter} → ★ {defaultConcept.inflectionQuarter}
-        </span>
-        <span class="at-mono" data-hud-mom style="font-size:0.74rem;color:var(--accent-signal);font-weight:600;">
-          {defaultConcept.momentum}
+        <span data-hud-span class="at-mono" style="font-size:0.78rem;color:var(--ink-muted);">
+          {lang === "zh" ? `${defaultConcept.inflectionQuarter} 爆发` : `Breakout ${defaultConcept.inflectionQuarter}`}
         </span>
       </div>
-      <div style="font-size:0.83rem;color:var(--ink-secondary);display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
-        <span class="at-mono" style="font-size:0.71rem;color:var(--ink-muted);">{t.paradigmShiftLabel}:</span>
-        <span data-hud-before style="color:var(--ink-muted);text-decoration:line-through;">{defaultShift.before}</span>
-        <span class="at-mono" style="color:var(--accent-primary);">→</span>
-        <span data-hud-after style="color:var(--ink-primary);font-weight:550;">{defaultShift.after}</span>
+      <div data-hud-after style="font-size:0.84rem;color:var(--ink-secondary);margin-top:2px;">
+        {defaultShift.after}
       </div>
     </div>
 
-    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;">
-      {mode === "timeline" ? (
-        <a
-          href={`#concept-${defaultConcept.slug}`}
-          data-hud-jump
-          class="at-btn-ghost at-mono"
-          style="padding:7px 12px;font-size:0.78rem;"
-        >
+    <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+      {mode === "timeline" && (
+        <a href={`#concept-${defaultConcept.slug}`} data-hud-jump class="at-text-link" style="font-size:0.84rem;">
           {t.scrollToCard}
-        </a>
-      ) : (
-        <a
-          href={withBase(`/${lang}/timeline/#concept-${defaultConcept.slug}`)}
-          data-hud-jump
-          class="at-btn-ghost at-mono"
-          style="padding:7px 12px;font-size:0.78rem;"
-        >
-          {lang === "zh" ? "在时间线定位 →" : "Locate on Timeline →"}
         </a>
       )}
       <a
         href={withBase(`/${lang}/concepts/${defaultConcept.slug}/`)}
         data-hud-hub
-        class="at-btn-primary at-mono"
-        style="padding:7px 13px;font-size:0.78rem;"
+        class="at-btn-primary"
+        style="padding:7px 16px;font-size:0.82rem;"
       >
-        {t.viewConceptHub} (<span data-hud-cuts>{defaultNodeCount}</span>) →
+        {t.viewConceptHub} (<span data-hud-cuts>{defaultNodeCount}</span>)
       </a>
     </div>
   </div>
@@ -348,11 +292,8 @@ const uid = `hz-${mode}`;
       const edgeEls = [...root.querySelectorAll("[data-edge-from]")];
       const clearBtn = root.querySelector("[data-hz-clear]");
 
-      const hudCode = root.querySelector("[data-hud-code]");
       const hudName = root.querySelector("[data-hud-name]");
       const hudSpan = root.querySelector("[data-hud-span]");
-      const hudMom = root.querySelector("[data-hud-mom]");
-      const hudBefore = root.querySelector("[data-hud-before]");
       const hudAfter = root.querySelector("[data-hud-after]");
       const hudJump = root.querySelector("[data-hud-jump]");
       const hudHub = root.querySelector("[data-hud-hub]");
@@ -393,11 +334,8 @@ const uid = `hz-${mode}`;
           ed.classList.toggle("is-downstream", f === slug && downSet.has(t));
         });
 
-        if (hudCode) hudCode.textContent = `#${m.order}`;
         if (hudName) hudName.textContent = m.name;
-        if (hudSpan) hudSpan.textContent = `${m.origin} → ★ ${m.inflect}`;
-        if (hudMom) hudMom.textContent = m.momentum;
-        if (hudBefore) hudBefore.textContent = m.before || "";
+        if (hudSpan) hudSpan.textContent = lang === "zh" ? `${m.inflect} 爆发` : `Breakout ${m.inflect}`;
         if (hudAfter) hudAfter.textContent = m.after || "";
         if (hudCuts) hudCuts.textContent = String(m.cuts);
         if (hudHub) hudHub.setAttribute("href", `${basePrefix}/${lang}/concepts/${slug}/`);
@@ -409,7 +347,6 @@ const uid = `hz-${mode}`;
         }
       }
 
-      // Highlight Context Engineering causal web on initial paint so users immediately see the magic
       focusConcept("context-engineering");
 
       nodeEls.forEach((el) => {
@@ -462,7 +399,6 @@ const uid = `hz-${mode}`;
         focusConcept(null);
       });
 
-      // Expose filter & hover hooks so Timeline page cards & toolbar sync seamlessly with Horizon Map
       window[`__syncHorizon_${uid}`] = { focusConcept };
     })();
   </script>

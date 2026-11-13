@@ -1,5 +1,5 @@
 ---
-import { getWaveformBars, type MediaNode } from "../lib/content";
+import type { MediaNode } from "../lib/content";
 import { UI, formatTime, type Lang } from "../lib/i18n";
 
 interface Props {
@@ -10,7 +10,6 @@ const { node, lang } = Astro.props;
 const loc = node[lang];
 const s = node.source;
 const t = UI[lang];
-const bars = getWaveformBars(node.slug, 38);
 const ytThumb = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/maxresdefault.jpg` : null;
 const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg` : null;
 ---
@@ -26,7 +25,7 @@ const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/
   {s.kind === "video-cut" && s.platform === "youtube" && s.videoId ? (
     <div
       id="at-stage-poster"
-      style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:22px;cursor:pointer;"
+      style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;cursor:pointer;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);"
       role="button"
       tabindex="0"
       aria-label={t.watchSlice}
@@ -35,77 +34,55 @@ const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/
         src={ytThumb || ""}
         data-fallback={ytFallback || ""}
         alt={loc.title}
-        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.42;"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.58;"
         onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}else{this.style.display='none';}"
       />
-      <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;">
-        <span class="at-pill-dark">
-          {lang === "zh" ? `YouTube 精华片段 · ${s.channelName}` : `YOUTUBE HIGHLIGHT · ${s.channelName}`}
-        </span>
-        <span class="at-pill-dark">
-          {formatTime(s.startSec || 0)} – {formatTime(s.endSec || 0)} / {formatTime(s.totalDurationSec || 0)}
-        </span>
-      </div>
+      <div style="position:absolute;inset:0;background:radial-gradient(circle, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.58) 100%);pointer-events:none;"></div>
 
-      <div style="position:relative;z-index:2;margin:auto;text-align:center;">
+      <div style="position:relative;z-index:2;text-align:center;">
         <div
-          style="display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:6px;background:var(--accent-primary);color:#fff;font-weight:600;font-size:0.98rem;box-shadow:0 10px 30px rgba(0,0,0,0.45);"
+          style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:999px;background:rgba(255,255,255,0.94);color:#1d1d1f;font-weight:650;font-size:0.96rem;box-shadow:0 12px 32px rgba(0,0,0,0.38);"
         >
-          <span>▶</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="7 4 20 12 7 20 7 4" />
+          </svg>
           <span>
-            {t.watchSlice} ({formatTime(s.startSec || 0)}–{formatTime(s.endSec || 0)})
+            {t.watchSlice} · {formatTime(s.startSec || 0)}–{formatTime(s.endSec || 0)}
           </span>
         </div>
-        <div style="margin-top:8px;font-size:0.78rem;color:rgba(243,241,235,0.78);" class="at-mono">
-          youtube-nocookie.com · {lang === "zh" ? "点一下直接播放精华片段（已跳过片头废话，原生无遮挡）" : "Click to play clean highlight (fluff skipped, unobstructed native player)"}
-        </div>
-      </div>
-
-      <div style="position:relative;z-index:2;display:flex;align-items:flex-end;gap:4px;height:32px;opacity:0.65;">
-        {bars.map((h) => (
-          <span style={`flex:1;background:#52adc0;border-radius:1px;height:${Math.round((h / 100) * 30)}px;`} />
-        ))}
       </div>
     </div>
   ) : s.kind === "video-cut" && s.platform === "bilibili" && s.videoId ? (
-    <div style="position:absolute;inset:0;padding:28px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div style="display:flex;justify-content:space-between;">
-        <span class="at-pill-dark">{lang === "zh" ? `B 站精选片段 · ${s.videoId}` : `BILIBILI HIGHLIGHT · ${s.videoId}`}</span>
-        <span class="at-pill-dark">
-          {formatTime(s.startSec || 0)} – {formatTime(s.endSec || 0)}
-        </span>
-      </div>
-      <div style="margin:auto;text-align:center;max-width:520px;">
-        <p style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:14px;">{s.originalTitle}</p>
-        <a
-          href={`https://www.bilibili.com/video/${s.videoId}/?t=${s.startSec || 0}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="at-btn-primary"
-        >
-          ▶ {lang === "zh" ? `去 B 站直接从 ${formatTime(s.startSec || 0)} 看起 ↗` : `Open Bilibili at ${formatTime(s.startSec || 0)} ↗`}
-        </a>
-      </div>
-      <div class="at-mono" style="font-size:0.76rem;color:rgba(243,241,235,0.68);">
-        {lang === "zh" ? `UP 主：${s.channelName} · 原视频总长 ${formatTime(s.totalDurationSec || 0)}` : `Creator: ${s.channelName} · Full length ${formatTime(s.totalDurationSec || 0)}`}
-      </div>
+    <div style="position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);">
+      <p style="font-size:0.84rem;color:rgba(245,245,247,0.68);margin-bottom:8px;">
+        Bilibili · {s.channelName}
+      </p>
+      <p style="font-size:1.25rem;font-weight:600;max-width:48ch;margin-bottom:20px;">{s.originalTitle}</p>
+      <a
+        href={`https://www.bilibili.com/video/${s.videoId}/?t=${s.startSec || 0}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="at-btn-primary"
+        style="background:#ffffff;color:#1d1d1f;"
+      >
+        ▶ {lang === "zh" ? `在 B 站从 ${formatTime(s.startSec || 0)} 播放 ↗` : `Watch on Bilibili at ${formatTime(s.startSec || 0)} ↗`}
+      </a>
     </div>
   ) : (
-    <div style="position:absolute;inset:0;padding:30px;display:flex;flex-direction:column;justify-content:space-between;">
-      <div style="display:flex;justify-content:space-between;">
-        <span class="at-pill-dark">{lang === "zh" ? "一手深度好文" : "PRIMARY WRITTEN GUIDE"}</span>
-        <span class="at-pill-dark">{lang === "zh" ? `约 ${s.readingMinutes || 12} 分钟读完` : `${s.readingMinutes || 12} MIN READ`}</span>
-      </div>
-      <div style="margin:auto;text-align:center;max-width:560px;">
-        <p class="at-mono" style="font-size:0.78rem;color:#52adc0;margin-bottom:8px;">{s.channelName}</p>
-        <p style="font-family:var(--font-serif);font-size:1.38rem;margin-bottom:16px;">{s.originalTitle}</p>
-        <a href={s.articleUrl} target="_blank" rel="noopener noreferrer" class="at-btn-primary">
-          {t.readDigest} ↗
-        </a>
-      </div>
-      <div class="at-mono" style="font-size:0.75rem;color:rgba(243,241,235,0.65);text-align:center;">
-        {s.articleUrl}
-      </div>
+    <div style="position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);">
+      <p style="font-size:0.84rem;color:rgba(245,245,247,0.68);margin-bottom:8px;">
+        {s.channelName} · {lang === "zh" ? `约 ${s.readingMinutes || 12} 分钟阅读` : `${s.readingMinutes || 12} min read`}
+      </p>
+      <p style="font-size:1.3rem;font-weight:600;max-width:48ch;margin-bottom:20px;">{s.originalTitle}</p>
+      <a
+        href={s.articleUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="at-btn-primary"
+        style="background:#ffffff;color:#1d1d1f;"
+      >
+        {t.readDigest} ↗
+      </a>
     </div>
   )}
 </div>

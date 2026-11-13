@@ -27,7 +27,7 @@ const allNodes = getNodesByFacet(dimension, slug);
 const galleryNodes = allNodes.slice(0, 24);
 const pathname = `/${lang}/topics/${dimension}/${slug}/`;
 
-const title = `${found.item[lang].name} (${found.dim[lang].label}) — AITube`;
+const title = `${found.item[lang].name} — AITube`;
 const desc = found.item[lang].desc;
 
 const schema = {
@@ -56,20 +56,22 @@ const schema = {
   ogImage={`/og/directory-${lang}.png`}
   schema={schema}
 >
-  <section style="padding:32px 0 24px;border-bottom:1px solid var(--border-subtle);">
+  <section class="at-page-header" style="border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
-      <nav class="at-mono" style="font-size:0.76rem;color:var(--ink-muted);margin-bottom:10px;">
-        <a href={withBase(`/${lang}/`)}>AITube</a> / <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a> / <span>{found.item[lang].name}</span>
+      <nav style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:14px;display:flex;gap:6px;align-items:center;">
+        <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
+        <span>/</span>
+        <span>{found.item[lang].name}</span>
       </nav>
-      <div class="at-kicker">
-        {found.dim[lang].label} · {lang === "zh" ? `共收录 ${allNodes.length} 支精选片段` : `${allNodes.length} HAND-PICKED HIGHLIGHTS`}
+      <div class="at-kicker" style="margin-bottom:6px;">
+        {found.dim[lang].label} · {allNodes.length}
       </div>
-      <h1 style="font-size:clamp(1.8rem,2.8vw,2.45rem);margin:6px 0 10px;">{found.item[lang].name}</h1>
-      <p style="color:var(--ink-secondary);max-width:68ch;">{desc}</p>
+      <h1 class="at-page-h1">{found.item[lang].name}</h1>
+      <p class="at-page-lead" style="max-width:64ch;">{desc}</p>
     </div>
   </section>
 
-  <section class="at-container" style="padding:28px 24px 56px;">
+  <section class="at-container" style="padding:36px 28px 68px;">
     <div class="at-grid-cards">
       {galleryNodes.map((n) => (
         <MediaCard node={n} lang={lang} />
@@ -77,15 +79,15 @@ const schema = {
     </div>
 
     {allNodes.length > 24 && (
-      <details style="margin-top:28px;border:1px solid var(--border-subtle);border-radius:6px;padding:14px 18px;background:var(--bg-elevated);">
-        <summary style="cursor:pointer;font-weight:580;">
+      <details style="margin-top:36px;border-radius:14px;padding:16px 20px;background:var(--bg-elevated);">
+        <summary style="cursor:pointer;font-weight:600;font-size:0.9rem;">
           {t.fullArchiveSummary} ({allNodes.length})
         </summary>
         <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
           {allNodes.map((n, idx) => (
             <a
               href={withBase(`/${lang}/nodes/${n.slug}/`)}
-              style="display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--border-subtle);font-size:0.86rem;"
+              style="display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--border-subtle);font-size:0.86rem;"
             >
               <span>
                 <span class="at-mono" style="color:var(--ink-muted);margin-right:8px;">{String(idx + 1).padStart(2, "0")}</span>

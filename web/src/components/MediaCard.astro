@@ -1,6 +1,6 @@
 ---
-import { getConcept, getWaveformBars, type MediaNode } from "../lib/content";
-import { LIFECYCLE_META, ROLE_META, formatSliceMinutes, formatTime, withBase, type Lang } from "../lib/i18n";
+import { getConcept, type MediaNode } from "../lib/content";
+import { formatDurationBadge, withBase, type Lang } from "../lib/i18n";
 
 interface Props {
   node: MediaNode;
@@ -10,34 +10,16 @@ const { node, lang } = Astro.props;
 const loc = node[lang];
 const s = node.source;
 const concept = getConcept(node.primaryConcept);
-const bars = getWaveformBars(node.slug, 26);
 
-const rawBadgeLeft =
-  s.kind === "article-digest"
-    ? lang === "zh"
-      ? "深度好文"
-      : "GUIDE"
-    : s.isShort
-      ? lang === "zh"
-        ? "短视频"
-        : "SHORT"
-      : s.platform === "bilibili"
-        ? lang === "zh"
-          ? "B站"
-          : "BILIBILI"
-        : "YouTube";
-
-const badgeLeft = node.isSpine ? (lang === "zh" ? `★ 必看 · ${rawBadgeLeft}` : `★ ${rawBadgeLeft}`) : rawBadgeLeft;
-
-const badgeRight =
+const durBadge =
   s.kind === "video-cut"
-    ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} · ${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)}`
+    ? formatDurationBadge(s.startSec || 0, s.endSec || 60, lang)
     : lang === "zh"
-      ? `约 ${s.readingMinutes || 10} 分钟读完`
-      : `${s.readingMinutes || 10}m read`;
+      ? `${s.readingMinutes || 10} 分钟阅读`
+      : `${s.readingMinutes || 10} min read`;
 
 const ytThumb = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg` : null;
-const lifeMeta = concept ? LIFECYCLE_META[concept.lifecycle] : null;
+const topicName = concept ? concept[lang].shortName : node.primaryConcept;
 ---
 <article
   class="at-card"
@@ -50,7 +32,7 @@ const lifeMeta = concept ? LIFECYCLE_META[concept.lifecycle] : null;
   data-stacks={node.facets.stacks.join(",")}
   data-platform={s.isShort ? "shorts" : s.platform}
 >
-  <a href={withBase(`/${lang}/nodes/${node.slug}/`)} style="display:flex;flex-direction:column;flex:1;">
+  <a href={withBase(`/${lang}/nodes/${node.slug}/`)} class="at-card-link">
     <div class="at-card-poster">
       {ytThumb && (
         <img
@@ -59,50 +41,30 @@ const lifeMeta = concept ? LIFECYCLE_META[concept.lifecycle] : null;
           loading="lazy"
           decoding="async"
           class="at-card-thumb"
-          onerror="this.style.display='none'"
+          onerror="this.remove()"
         />
       )}
-      <div class="at-card-badges">
-        <div style="display:flex;align-items:center;gap:5px;">
-          <span class="at-pill-dark">{badgeLeft}</span>
-          <span class="at-card-done-pill">✓ {lang === "zh" ? "已看完" : "WATCHED"}</span>
-        </div>
-        <span class="at-pill-dark">{badgeRight}</span>
-      </div>
 
-      <div class="at-card-wave" aria-hidden="true">
-        {bars.map((h) => (
-          <span style={`height:${Math.round((h / 100) * 22)}px;`} />
-        ))}
-      </div>
+      <span class="at-card-play-glyph" aria-hidden="true">
+        {s.kind === "article-digest" ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+          </svg>
+        ) : (
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="8 5 19 12 8 19 8 5" />
+          </svg>
+        )}
+      </span>
 
-      <div class="at-card-peek" aria-hidden="true">
-        {loc.steps.map((st, idx) => (
-          <div style="display:flex;gap:6px;align-items:baseline;">
-            <span class="at-mono" style="color:#52adc0;font-size:0.72rem;">0{idx + 1}</span>
-            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{st.title}</span>
-          </div>
-        ))}
-      </div>
+      <span class="at-card-done-pill">✓ {lang === "zh" ? "已看" : "Watched"}</span>
+      <span class="at-card-dur">{durBadge}</span>
     </div>
 
     <div class="at-card-body">
-      <div class="at-card-concept-row">
-        <span>
-          {lifeMeta ? `${lifeMeta.icon} ` : ""}
-          {concept ? concept[lang].shortName : node.primaryConcept}
-        </span>
-        <span style="color:var(--ink-muted);">{ROLE_META[node.conceptRole][lang]}</span>
-      </div>
-
       <h3 class="at-card-title">{loc.title}</h3>
-      <p class="at-card-why">{loc.whyWatch}</p>
-
-      <div class="at-card-foot">
-        <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:65%;">{s.channelName}</span>
-        <span class="at-mono" style="color:var(--accent-signal);">
-          {lang === "zh" ? `省 ${s.hoursSaved} 小时` : `Saves ${s.hoursSaved}h`}
-        </span>
+      <div class="at-card-meta">
+        {s.channelName} · {topicName}
       </div>
     </div>
   </a>

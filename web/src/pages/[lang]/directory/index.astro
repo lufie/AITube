@@ -4,15 +4,11 @@ import MediaCard from "../../../components/MediaCard.astro";
 import {
   BASE_PREFIX,
   LANGS,
-  LIFECYCLE_META,
-  ROLE_META,
   UI,
-  formatSliceMinutes,
-  formatTime,
+  formatDurationBadge,
   type Lang,
-  type Lifecycle,
 } from "../../../lib/i18n";
-import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS, getConcept, getWaveformBars } from "../../../lib/content";
+import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS, getConcept } from "../../../lib/content";
 import { DIRECTORY_SCENARIOS } from "../../../lib/personas";
 import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
 
@@ -23,34 +19,19 @@ export function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const basePrefix = BASE_PREFIX;
 const t = UI[lang];
-const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
 const initialNodes = NODES.slice(0, 24);
-const doneBadgeText = lang === "zh" ? "已看完" : "WATCHED";
+const doneBadgeText = lang === "zh" ? "已看" : "Watched";
+const stripEmoji = (s: string) => s.replace(/^[^\w\u4e00-\u9fff]+\s*/, "");
 
 const clientCatalog = NODES.map((n) => {
   const c = getConcept(n.primaryConcept);
   const s = n.source;
-  const rawLeft =
-    s.kind === "article-digest"
-      ? lang === "zh"
-        ? "深度好文"
-        : "GUIDE"
-      : s.isShort
-        ? lang === "zh"
-          ? "短视频"
-          : "SHORT"
-        : s.platform === "bilibili"
-          ? lang === "zh"
-            ? "B站"
-            : "BILIBILI"
-          : "YouTube";
-  const badgeLeft = n.isSpine ? (lang === "zh" ? `★ 必看 · ${rawLeft}` : `★ ${rawLeft}`) : rawLeft;
-  const badgeRight =
+  const durBadge =
     s.kind === "video-cut"
-      ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} · ${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)}`
+      ? formatDurationBadge(s.startSec || 0, s.endSec || 60, lang)
       : lang === "zh"
-        ? `约 ${s.readingMinutes || 10} 分钟读完`
-        : `${s.readingMinutes || 10}m read`;
+        ? `${s.readingMinutes || 10} 分钟阅读`
+        : `${s.readingMinutes || 10} min read`;
 
   const sliceSec =
     s.kind === "video-cut"
@@ -61,40 +42,32 @@ const clientCatalog = NODES.map((n) => {
     slug: n.slug,
     order: n.order,
     isSpine: n.isSpine ? 1 : 0,
-    stage: n.stageId,
-    diff: n.facets.difficulty,
     era: c?.eraId || "",
     life: c?.lifecycle || "mainstream",
-    lifeIcon: c ? LIFECYCLE_META[c.lifecycle].icon : "●",
     conceptName: c ? c[lang].shortName : n.primaryConcept,
-    roleName: ROLE_META[n.conceptRole][lang],
     domains: n.facets.domains,
     tasks: n.facets.tasks,
     stacks: n.facets.stacks,
     plat: s.isShort ? "shorts" : s.platform,
+    kind: s.kind,
     ytId: s.platform === "youtube" ? s.videoId || "" : "",
-    badgeLeft,
-    badgeRight,
+    durBadge,
     title: n[lang].title,
-    why: n[lang].whyWatch,
-    steps: n[lang].steps.map((st) => st.title),
-    bars: getWaveformBars(n.slug, 22).map((h) => Math.round((h / 100) * 22)),
     ch: s.channelName,
     hours: s.hoursSaved || 0.5,
     dur: sliceSec,
-    saved: lang === "zh" ? `省 ${s.hoursSaved} 小时` : `Saves ${s.hoursSaved}h`,
     q: `${n[lang].title} ${n[lang].whyWatch} ${s.channelName} ${c ? c[lang].shortName : ""} ${n[lang].searchQuestions.join(" ")}`.toLowerCase(),
   };
 });
 
 const title =
   lang === "zh"
-    ? `精选 AI 视频库（${NODES.length} 支挑好的精华片段 · 点开直达重点）— AITube`
-    : `AI Video Library (${NODES.length} Hand-Picked Highlights) — AITube`;
+    ? `精选视频库（${NODES.length} 支精华片段）— AITube`
+    : `Video Library (${NODES.length} Curated Highlights) — AITube`;
 const desc =
   lang === "zh"
-    ? `每支长视频都帮你掐好了最干货的那几分钟。按你想解决的事（零基础科普、让 AI 写代码、喂私有资料、画图做视频、看新趋势）一键筛出好片。`
-    : `Skip long intros — filter ${NODES.length} hand-picked AI video highlights by your practical goal or favorite tools.`;
+    ? `从上千小时公开课与分享中挑出 ${NODES.length} 支核心片段，跳过冗长片头，点开直达重点。`
+    : `Browse ${NODES.length} hand-picked AI video highlights — jump straight to the clearest minutes.`;
 
 const schema = {
   "@context": "https://schema.org",
@@ -115,34 +88,31 @@ const schema = {
   ogImage={`/og/directory-${lang}.png`}
   schema={schema}
 >
-  <section style="padding:30px 0 22px;border-bottom:1px solid var(--border-subtle);background:linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-canvas) 100%);">
+  <section class="at-page-header" style="padding-bottom:24px;border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
-      <div class="at-kicker">
-        {lang === "zh" ? `精选干货视频库 · 共 ${NODES.length} 支已帮你跳过片头废话的精华片段` : `HAND-PICKED VIDEO HIGHLIGHTS · ${NODES.length} FLUFF-FREE CUTS`}
-      </div>
-      <h1 style="font-size:clamp(1.75rem,2.8vw,2.35rem);margin:6px 0 8px;">
-        {lang === "zh" ? "精选 AI 视频库：你想解决什么事，直接挑片段看" : "AI Video Library: Pick Your Goal and Watch the Best Minutes"}
-      </h1>
-      <p style="color:var(--ink-secondary);max-width:68ch;font-size:0.95rem;margin-bottom:18px;">
-        {lang === "zh"
-          ? "每支一两个小时的长视频我们都提前替你看过了，直接截出最讲人话、最有干货的那几分钟。先点下面你关心的事快速挑片；想找特定工具也可以在左边细筛。"
-          : "We watched the full talks so you don't have to — every card jumps straight to the clearest minutes. Pick a goal card below, or filter by tool on the left."}
-      </p>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:24px;">
+        <div style="max-width:58ch;">
+          <h1 class="at-page-h1">{t.navDirectory}</h1>
+          <p class="at-page-lead" style="margin-top:8px;font-size:0.98rem;">{desc}</p>
+        </div>
 
-      <!-- 6 One-Click Scenario Cards -->
-      <div class="at-dir-scenarios" role="group" aria-label="Scenario presets">
+        <input
+          type="search"
+          id="dir-query"
+          placeholder={lang === "zh" ? "搜索视频标题、作者或概念…" : "Search videos, creators, or topics..."}
+          style="width:min(340px, 100%);padding:10px 16px;border:0;border-radius:999px;background:var(--bg-elevated);font-size:0.88rem;outline:none;"
+        />
+      </div>
+
+      <!-- Clean Single-Row Topic Pills -->
+      <div class="at-filter-row" role="group" aria-label="Topic presets">
         {DIRECTORY_SCENARIOS.map((sc, idx) => (
           <button
             type="button"
-            class={`at-dir-scenario-btn ${idx === 0 ? "is-active" : ""}`}
+            class={`at-chip ${idx === 0 ? "is-active" : ""}`}
             data-d-preset={sc.id}
           >
-            <div style="font-weight:650;font-size:0.9rem;color:var(--ink-primary);">
-              {lang === "zh" ? sc.zhTitle : sc.enTitle}
-            </div>
-            <div style="font-size:0.75rem;color:var(--ink-muted);margin-top:2px;">
-              {lang === "zh" ? sc.zhSub : sc.enSub}
-            </div>
+            {stripEmoji(lang === "zh" ? sc.zhTitle : sc.enTitle)}
           </button>
         ))}
       </div>
@@ -154,33 +124,54 @@ const schema = {
       <button
         type="button"
         id="dir-mobile-toggle"
-        class="at-btn-ghost at-mobile-filter-btn at-mono"
-        style="width:100%;justify-content:space-between;margin-bottom:12px;font-size:0.82rem;"
+        class="at-btn-ghost at-mobile-filter-btn"
+        style="width:100%;justify-content:space-between;margin-bottom:14px;font-size:0.84rem;"
       >
-        <span>⚲ {t.mobileFiltersBtn}</span>
+        <span>{t.mobileFiltersBtn}</span>
         <span id="dir-mobile-badge">▾</span>
       </button>
 
-      <aside class="at-dir-sidebar" id="dir-sidebar" aria-label="Faceted filters">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <span class="at-mono" style="font-size:0.75rem;font-weight:650;">
-            {lang === "zh" ? "按更多条件细筛" : "MORE FILTERS"}
+      <aside class="at-dir-sidebar" id="dir-sidebar" aria-label="Filters">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <span style="font-size:0.78rem;font-weight:650;color:var(--ink-muted);">
+            {lang === "zh" ? "筛选" : "Filters"}
           </span>
-          <button type="button" id="dir-reset" class="at-mono" style="border:0;background:transparent;color:var(--accent-primary);font-size:0.75rem;cursor:pointer;">
+          <button type="button" id="dir-reset" style="border:0;background:transparent;color:var(--accent-primary);font-size:0.78rem;cursor:pointer;padding:0;">
             {t.clearFilters}
           </button>
         </div>
 
         <details class="at-facet-details" open>
-          <summary class="at-facet-title">{lang === "zh" ? "按出现的年份阶段" : "By Time Period"}</summary>
-          <div style="margin-top:6px;">
+          <summary>{lang === "zh" ? "内容形式" : "Format"}</summary>
+          <div>
+            <button type="button" class="at-facet-btn is-active" data-d-plat="all">
+              <span>{t.allSources}</span>
+            </button>
+            <button type="button" class="at-facet-btn" data-d-plat="youtube">
+              <span>YouTube</span>
+            </button>
+            <button type="button" class="at-facet-btn" data-d-plat="shorts">
+              <span>{lang === "zh" ? "短视频" : "Shorts"}</span>
+            </button>
+            <button type="button" class="at-facet-btn" data-d-plat="bilibili">
+              <span>Bilibili</span>
+            </button>
+            <button type="button" class="at-facet-btn" data-d-plat="editorial">
+              <span>{lang === "zh" ? "深度好文" : "Guides"}</span>
+            </button>
+          </div>
+        </details>
+
+        <details class="at-facet-details" open>
+          <summary>{lang === "zh" ? "发展阶段" : "Time Period"}</summary>
+          <div>
             {ERAS.map((era) => {
               const eraSlugs = new Set(CONCEPTS.filter((c) => c.eraId === era.id).map((c) => c.slug));
               const cnt = NODES.filter((n) => eraSlugs.has(n.primaryConcept)).length;
               return (
                 <button type="button" class="at-facet-btn" data-f-era={era.id} data-f-label={`${era.period} · ${era[lang].title}`}>
-                  <span>{era.period} · {era[lang].title}</span>
-                  <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
+                  <span>{era[lang].title}</span>
+                  <span class="at-mono" style="font-size:0.74rem;color:var(--ink-muted);">{cnt}</span>
                 </button>
               );
             })}
@@ -189,8 +180,8 @@ const schema = {
 
         {TAXONOMY_DIMS.map((dim, dIdx) => (
           <details class="at-facet-details" open={dIdx === 0}>
-            <summary class="at-facet-title">{dim[lang].label}</summary>
-            <div style="margin-top:6px;">
+            <summary>{dim[lang].label}</summary>
+            <div>
               {dim.items.map((item) => {
                 const cnt = NODES.filter((n) => n.facets[dim.prop].includes(item.slug)).length;
                 return (
@@ -202,7 +193,7 @@ const schema = {
                     data-f-label={item[lang].name}
                   >
                     <span>{item[lang].name}</span>
-                    <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
+                    <span class="at-mono" style="font-size:0.74rem;color:var(--ink-muted);">{cnt}</span>
                   </button>
                 );
               })}
@@ -213,49 +204,23 @@ const schema = {
     </div>
 
     <div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border-subtle);">
-        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-          <input
-            type="search"
-            id="dir-query"
-            placeholder={t.searchPlaceholder}
-            style="flex:1;min-width:220px;padding:9px 12px;border:1px solid var(--border-strong);border-radius:4px;background:var(--bg-canvas);font-size:0.9rem;"
-          />
-          <select
-            id="dir-sort"
-            aria-label="Sort order"
-            style="padding:9px 11px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-elevated);font-size:0.82rem;"
-          >
-            <option value="editorial">{t.sortEditorial}</option>
-            <option value="saved">{t.sortSaved}</option>
-            <option value="shortest">{t.sortShortest}</option>
-          </select>
-          <span class="at-mono" id="dir-count" style="font-size:0.82rem;color:var(--ink-secondary);">
-            {t.showingCount}: {NODES.length}
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span class="at-mono" id="dir-count" style="font-size:0.86rem;color:var(--ink-secondary);font-weight:500;">
+            {lang === "zh" ? `共 ${NODES.length} 支内容` : `${NODES.length} videos`}
           </span>
+          <div id="dir-active-pills" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
         </div>
 
-        <div class="at-filter-row" style="justify-content:space-between;">
-          <div class="at-filter-row">
-            <button type="button" class="at-chip is-active" data-d-life="all">{t.allLifecycles}</button>
-            {lifecycles.map((lf) => (
-              <button type="button" class="at-chip" data-d-life={lf}>
-                {LIFECYCLE_META[lf].icon} {LIFECYCLE_META[lf][lang]}
-              </button>
-            ))}
-          </div>
-
-          <div class="at-filter-row">
-            <button type="button" class="at-chip is-active" data-d-plat="all">{t.allSources}</button>
-            <button type="button" class="at-chip" data-d-plat="youtube">YouTube</button>
-            <button type="button" class="at-chip" data-d-plat="shorts">{lang === "zh" ? "短视频" : "Shorts"}</button>
-            <button type="button" class="at-chip" data-d-plat="bilibili">{lang === "zh" ? "B站" : "Bilibili"}</button>
-            <button type="button" class="at-chip" data-d-plat="web">{lang === "zh" ? "好文拆解" : "Guides"}</button>
-          </div>
-        </div>
-
-        <!-- Active Filter Chips Strip -->
-        <div id="dir-active-pills" class="at-filter-row" style="display:none;"></div>
+        <select
+          id="dir-sort"
+          aria-label="Sort order"
+          style="padding:6px 12px;border:0;border-radius:999px;background:var(--bg-elevated);font-size:0.82rem;color:var(--ink-secondary);cursor:pointer;"
+        >
+          <option value="editorial">{t.sortEditorial}</option>
+          <option value="shortest">{t.sortShortest}</option>
+          <option value="saved">{t.sortSaved}</option>
+        </select>
       </div>
 
       <div class="at-grid-cards" id="dir-grid">
@@ -264,181 +229,119 @@ const schema = {
         ))}
       </div>
 
-      <div style="margin-top:28px;text-align:center;">
+      <div style="margin-top:36px;text-align:center;">
         <button type="button" id="dir-load-more" class="at-btn-ghost">
-          {t.loadMore} (24 / {NODES.length})
+          {t.loadMore}
         </button>
       </div>
     </div>
   </div>
 
   <script type="application/json" id="dir-catalog-json" set:html={JSON.stringify(clientCatalog)} />
-  <script is:inline define:vars={{ lang, basePrefix, loadMoreLabel: t.loadMore, showingLabel: t.showingCount, doneBadgeText }}>
+
+  <script is:inline define:vars={{ lang, basePrefix, doneBadgeText }}>
     (() => {
-      const catalog = JSON.parse(document.getElementById("dir-catalog-json")?.textContent || "[]");
+      const raw = document.getElementById("dir-catalog-json");
       const grid = document.getElementById("dir-grid");
+      const loadBtn = document.getElementById("dir-load-more");
       const countEl = document.getElementById("dir-count");
-      const moreBtn = document.getElementById("dir-load-more");
-      const qInput = document.getElementById("dir-query");
-      const sortSel = document.getElementById("dir-sort");
-      const resetBtn = document.getElementById("dir-reset");
+      const queryEl = document.getElementById("dir-query");
+      const sortEl = document.getElementById("dir-sort");
+      const resetEl = document.getElementById("dir-reset");
       const activeBox = document.getElementById("dir-active-pills");
-      const mobileToggle = document.getElementById("dir-mobile-toggle");
       const sidebar = document.getElementById("dir-sidebar");
+      const mobBtn = document.getElementById("dir-mobile-toggle");
+      const mobBadge = document.getElementById("dir-mobile-badge");
+      if (!raw || !grid || !loadBtn) return;
+
+      const catalog = JSON.parse(raw.textContent || "[]");
+      const PAGE_SIZE = 24;
+      let limit = PAGE_SIZE;
 
       const state = {
-        preset: "all",
         era: null,
-        domains: null,
-        tasks: null,
-        stacks: null,
-        life: "all",
+        eraLabel: "",
         plat: "all",
         q: "",
         sort: "editorial",
-        page: 1,
+        domains: new Map(),
+        tasks: new Map(),
+        stacks: new Map(),
       };
-      const PAGE_SIZE = 24;
 
-      function matchesScenario(it, preset) {
-        if (!preset || preset === "all") return true;
-        if (preset === "beginner") {
-          return it.stage === "stage-0" || it.diff === "intro";
-        }
-        if (preset === "coding" || preset === "applied") {
-          return (
-            it.tasks.includes("agentic-coding") ||
-            it.stacks.includes("cursor-ai-ide")
-          );
-        }
-        if (preset === "rag-agent") {
-          return (
-            it.tasks.includes("rag-knowledge") ||
-            it.tasks.includes("tool-mcp-skills") ||
-            it.tasks.includes("agent-orchestration")
-          );
-        }
-        if (preset === "multimodal") {
-          return it.tasks.includes("multimodal-creation") || it.stacks.includes("comfy-visual-gen");
-        }
-        if (preset === "frontier") {
-          return it.life === "surging" || it.tasks.includes("evals-finetuning");
-        }
-        return true;
+      function esc(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
       }
 
-      // Hydrate initial filters from URL query string if present
-      try {
-        const sp = new URLSearchParams(window.location.search);
-        if (sp.get("preset")) {
-          const rawP = sp.get("preset");
-          state.preset = rawP === "applied" ? "coding" : rawP;
+      function getCompletedSet() {
+        try {
+          return new Set(JSON.parse(localStorage.getItem("aitube-completed-v1") || "[]"));
+        } catch {
+          return new Set();
         }
-        if (sp.get("era")) state.era = sp.get("era");
-        if (sp.get("domains")) state.domains = sp.get("domains");
-        if (sp.get("tasks")) state.tasks = sp.get("tasks");
-        if (sp.get("stacks")) state.stacks = sp.get("stacks");
-        if (sp.get("q")) {
-          state.q = sp.get("q").toLowerCase();
-          if (qInput) qInput.value = sp.get("q");
-        }
-      } catch {}
-
-      function esc(s) {
-        return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
       }
 
-      function cardHTML(it) {
-        const img = it.ytId
-          ? `<img src="https://i.ytimg.com/vi/${esc(it.ytId)}/hqdefault.jpg" alt="${esc(it.title)}" loading="lazy" decoding="async" class="at-card-thumb" onerror="this.style.display='none'"/>`
+      function cardHTML(item, completedSet) {
+        const doneAttr = completedSet.has(item.slug) ? ' data-completed="1"' : "";
+        const thumb = item.ytId
+          ? `<img src="https://i.ytimg.com/vi/${esc(item.ytId)}/hqdefault.jpg" alt="${esc(item.title)}" loading="lazy" decoding="async" class="at-card-thumb" onerror="this.remove()" />`
           : "";
-        const wave = `<div class="at-card-wave" aria-hidden="true">${(it.bars || []).map((h) => `<span style="height:${h}px;"></span>`).join("")}</div>`;
-        const peek = `<div class="at-card-peek" aria-hidden="true">${(it.steps || [])
-          .map(
-            (st, idx) =>
-              `<div style="display:flex;gap:6px;align-items:baseline;"><span class="at-mono" style="color:#52adc0;font-size:0.72rem;">0${idx + 1}</span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(st)}</span></div>`
-          )
-          .join("")}</div>`;
+        const glyph =
+          item.kind === "article-digest"
+            ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" /></svg>`
+            : `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5" /></svg>`;
 
-        return `<article class="at-card" data-node-slug="${esc(it.slug)}"><a href="${basePrefix}/${lang}/nodes/${esc(it.slug)}/" style="display:flex;flex-direction:column;flex:1;">
-          <div class="at-card-poster">${img}<div class="at-card-badges"><div style="display:flex;align-items:center;gap:5px;"><span class="at-pill-dark">${esc(it.badgeLeft)}</span><span class="at-card-done-pill">✓ ${esc(doneBadgeText)}</span></div><span class="at-pill-dark">${esc(it.badgeRight)}</span></div>${wave}${peek}</div>
-          <div class="at-card-body">
-            <div class="at-card-concept-row"><span>${esc(it.lifeIcon)} ${esc(it.conceptName)}</span><span style="color:var(--ink-muted);">${esc(it.roleName)}</span></div>
-            <h3 class="at-card-title">${esc(it.title)}</h3>
-            <p class="at-card-why">${esc(it.why)}</p>
-            <div class="at-card-foot"><span style="max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(it.ch)}</span><span class="at-mono" style="color:var(--accent-signal);">${esc(it.saved)}</span></div>
-          </div></a></article>`;
+        return `
+          <article class="at-card" data-node-slug="${esc(item.slug)}"${doneAttr}>
+            <a href="${basePrefix}/${lang}/nodes/${esc(item.slug)}/" class="at-card-link">
+              <div class="at-card-poster">
+                ${thumb}
+                <span class="at-card-play-glyph" aria-hidden="true">${glyph}</span>
+                <span class="at-card-done-pill">✓ ${esc(doneBadgeText)}</span>
+                <span class="at-card-dur">${esc(item.durBadge)}</span>
+              </div>
+              <div class="at-card-body">
+                <h3 class="at-card-title">${esc(item.title)}</h3>
+                <div class="at-card-meta">${esc(item.ch)} · ${esc(item.conceptName)}</div>
+              </div>
+            </a>
+          </article>
+        `;
       }
 
-      function syncActivePills() {
+      function renderActivePills() {
         if (!activeBox) return;
         const pills = [];
-        const addPill = (key, val) => {
-          const selector = key === "era" ? `[data-f-era="${val}"]` : `[data-f-dim="${key}"][data-f-val="${val}"]`;
-          const label = document.querySelector(selector)?.getAttribute("data-f-label") || val;
-          pills.push(`<button type="button" class="at-active-pill" data-clear-key="${key}">${esc(label)} <span>×</span></button>`);
-        };
-        if (state.era) addPill("era", state.era);
-        if (state.domains) addPill("domains", state.domains);
-        if (state.tasks) addPill("tasks", state.tasks);
-        if (state.stacks) addPill("stacks", state.stacks);
-        activeBox.innerHTML = pills.join("");
-        activeBox.style.display = pills.length ? "flex" : "none";
-
-        activeBox.querySelectorAll("[data-clear-key]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const k = btn.getAttribute("data-clear-key");
-            state[k] = null;
-            state.page = 1;
-            syncButtons();
-            render();
-          });
-        });
+        if (state.era) {
+          pills.push({ key: "era", val: state.era, label: state.eraLabel });
+        }
+        for (const dim of ["domains", "tasks", "stacks"]) {
+          for (const [val, label] of state[dim].entries()) {
+            pills.push({ key: dim, val, label });
+          }
+        }
+        if (mobBadge) {
+          mobBadge.textContent = pills.length ? `(${pills.length}) ▾` : "▾";
+        }
+        activeBox.innerHTML = pills
+          .map(
+            (p) =>
+              `<button type="button" class="at-active-pill" data-rm-key="${esc(p.key)}" data-rm-val="${esc(p.val)}">${esc(p.label)} ×</button>`
+          )
+          .join("");
       }
 
-      function syncButtons() {
-        document.querySelectorAll("[data-d-preset]").forEach((b) =>
-          b.classList.toggle("is-active", b.getAttribute("data-d-preset") === state.preset)
-        );
-        document.querySelectorAll("[data-f-era]").forEach((b) =>
-          b.classList.toggle("is-active", b.getAttribute("data-f-era") === state.era)
-        );
-        ["domains", "tasks", "stacks"].forEach((dim) => {
-          document.querySelectorAll(`[data-f-dim="${dim}"]`).forEach((b) => {
-            const active = b.getAttribute("data-f-val") === state[dim];
-            b.classList.toggle("is-active", active);
-            if (active) {
-              const det = b.closest("details");
-              if (det) det.open = true;
-            }
-          });
-        });
-      }
-
-      function syncURL() {
-        try {
-          const sp = new URLSearchParams();
-          if (state.preset && state.preset !== "all") sp.set("preset", state.preset);
-          if (state.era) sp.set("era", state.era);
-          if (state.domains) sp.set("domains", state.domains);
-          if (state.tasks) sp.set("tasks", state.tasks);
-          if (state.stacks) sp.set("stacks", state.stacks);
-          if (state.q) sp.set("q", state.q);
-          const qs = sp.toString();
-          const nextUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
-          window.history.replaceState(null, "", nextUrl);
-        } catch {}
-      }
-
-      function render() {
+      function getFiltered() {
         const filtered = catalog.filter((it) => {
-          if (!matchesScenario(it, state.preset)) return false;
           if (state.era && it.era !== state.era) return false;
-          if (state.domains && !it.domains.includes(state.domains)) return false;
-          if (state.tasks && !it.tasks.includes(state.tasks)) return false;
-          if (state.stacks && !it.stacks.includes(state.stacks)) return false;
-          if (state.life !== "all" && it.life !== state.life) return false;
           if (state.plat !== "all" && it.plat !== state.plat) return false;
+          if (state.domains.size > 0 && ![...state.domains.keys()].some((k) => it.domains.includes(k))) return false;
+          if (state.tasks.size > 0 && ![...state.tasks.keys()].some((k) => it.tasks.includes(k))) return false;
+          if (state.stacks.size > 0 && ![...state.stacks.keys()].some((k) => it.stacks.includes(k))) return false;
           if (state.q && !it.q.includes(state.q)) return false;
           return true;
         });
@@ -450,43 +353,51 @@ const schema = {
         } else {
           filtered.sort((a, b) => b.isSpine - a.isSpine || a.order - b.order);
         }
-
-        const vis = filtered.slice(0, state.page * PAGE_SIZE);
-        if (grid) grid.innerHTML = vis.map(cardHTML).join("");
-        if (typeof window.__syncAITubeReadUI === "function") window.__syncAITubeReadUI();
-        if (countEl) countEl.textContent = `${showingLabel}: ${filtered.length}`;
-        syncActivePills();
-        syncURL();
-
-        if (moreBtn) {
-          if (vis.length < filtered.length) {
-            moreBtn.style.display = "inline-flex";
-            moreBtn.textContent = `${loadMoreLabel} (${vis.length} / ${filtered.length})`;
-          } else {
-            moreBtn.style.display = "none";
-          }
-        }
+        return filtered;
       }
 
-      mobileToggle?.addEventListener("click", () => {
-        sidebar?.classList.toggle("is-open");
-      });
-
-      document.querySelectorAll("[data-d-preset]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.preset = btn.getAttribute("data-d-preset") || "all";
-          state.page = 1;
-          syncButtons();
-          render();
+      function syncButtons() {
+        document.querySelectorAll("[data-f-era]").forEach((b) => {
+          b.classList.toggle("is-active", b.getAttribute("data-f-era") === state.era);
         });
+        document.querySelectorAll("[data-d-plat]").forEach((b) => {
+          b.classList.toggle("is-active", b.getAttribute("data-d-plat") === state.plat);
+        });
+        document.querySelectorAll("[data-f-dim]").forEach((b) => {
+          const dim = b.getAttribute("data-f-dim");
+          const val = b.getAttribute("data-f-val");
+          b.classList.toggle("is-active", Boolean(dim && val && state[dim]?.has(val)));
+        });
+      }
+
+      function render() {
+        const filtered = getFiltered();
+        const completedSet = getCompletedSet();
+        const slice = filtered.slice(0, limit);
+        grid.innerHTML = slice.length
+          ? slice.map((it) => cardHTML(it, completedSet)).join("")
+          : `<p style="grid-column:1/-1;padding:36px 0;text-align:center;color:var(--ink-muted);">${
+              lang === "zh" ? "未找到匹配视频，请尝试重置筛选条件。" : "No matching videos found. Try resetting filters."
+            }</p>`;
+        if (countEl) {
+          countEl.textContent = lang === "zh" ? `共 ${filtered.length} 支内容` : `${filtered.length} videos`;
+        }
+        loadBtn.style.display = filtered.length > limit ? "inline-flex" : "none";
+        renderActivePills();
+        syncButtons();
+      }
+
+      mobBtn?.addEventListener("click", () => {
+        sidebar?.classList.toggle("is-open");
       });
 
       document.querySelectorAll("[data-f-era]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const val = btn.getAttribute("data-f-era");
-          state.era = state.era === val ? null : val;
-          state.page = 1;
-          syncButtons();
+          const id = btn.getAttribute("data-f-era");
+          const lbl = btn.getAttribute("data-f-label") || id || "";
+          state.era = state.era === id ? null : id;
+          state.eraLabel = state.era ? lbl : "";
+          limit = PAGE_SIZE;
           render();
         });
       });
@@ -495,18 +406,11 @@ const schema = {
         btn.addEventListener("click", () => {
           const dim = btn.getAttribute("data-f-dim");
           const val = btn.getAttribute("data-f-val");
-          state[dim] = state[dim] === val ? null : val;
-          state.page = 1;
-          syncButtons();
-          render();
-        });
-      });
-
-      document.querySelectorAll("[data-d-life]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.life = btn.getAttribute("data-d-life") || "all";
-          state.page = 1;
-          document.querySelectorAll("[data-d-life]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          const lbl = btn.getAttribute("data-f-label") || val || "";
+          if (!dim || !val || !state[dim]) return;
+          if (state[dim].has(val)) state[dim].delete(val);
+          else state[dim].set(val, lbl);
+          limit = PAGE_SIZE;
           render();
         });
       });
@@ -514,46 +418,99 @@ const schema = {
       document.querySelectorAll("[data-d-plat]").forEach((btn) => {
         btn.addEventListener("click", () => {
           state.plat = btn.getAttribute("data-d-plat") || "all";
-          state.page = 1;
-          document.querySelectorAll("[data-d-plat]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          limit = PAGE_SIZE;
           render();
         });
       });
 
-      qInput?.addEventListener("input", () => {
-        state.q = qInput.value.trim().toLowerCase();
-        state.page = 1;
+      activeBox?.addEventListener("click", (e) => {
+        const pill = e.target.closest("[data-rm-key]");
+        if (!pill) return;
+        const k = pill.getAttribute("data-rm-key");
+        const v = pill.getAttribute("data-rm-val");
+        if (k === "era") {
+          state.era = null;
+          state.eraLabel = "";
+        } else if (k && v && state[k]) {
+          state[k].delete(v);
+        }
+        limit = PAGE_SIZE;
         render();
       });
 
-      sortSel?.addEventListener("change", () => {
-        state.sort = sortSel.value;
-        state.page = 1;
+      queryEl?.addEventListener("input", () => {
+        state.q = queryEl.value.trim().toLowerCase();
+        limit = PAGE_SIZE;
         render();
       });
 
-      moreBtn?.addEventListener("click", () => {
-        state.page += 1;
+      sortEl?.addEventListener("change", () => {
+        state.sort = sortEl.value || "editorial";
+        limit = PAGE_SIZE;
         render();
       });
 
-      resetBtn?.addEventListener("click", () => {
-        state.preset = "all";
-        state.era = state.domains = state.tasks = state.stacks = null;
-        state.life = state.plat = "all";
+      function clearAllState() {
+        state.era = null;
+        state.eraLabel = "";
+        state.plat = "all";
         state.q = "";
         state.sort = "editorial";
-        state.page = 1;
-        if (qInput) qInput.value = "";
-        if (sortSel) sortSel.value = "editorial";
-        syncButtons();
-        document.querySelectorAll("[data-d-life]").forEach((b, i) => b.classList.toggle("is-active", i === 0));
-        document.querySelectorAll("[data-d-plat]").forEach((b, i) => b.classList.toggle("is-active", i === 0));
+        state.domains.clear();
+        state.tasks.clear();
+        state.stacks.clear();
+        if (queryEl) queryEl.value = "";
+        if (sortEl) sortEl.value = "editorial";
+      }
+
+      function applyScenarioPreset(presetId) {
+        clearAllState();
+        document.querySelectorAll("[data-d-preset]").forEach((b) => {
+          b.classList.toggle("is-active", b.getAttribute("data-d-preset") === presetId);
+        });
+        const findLabel = (dim, val) => {
+          const btn = document.querySelector(`[data-f-dim="${dim}"][data-f-val="${val}"]`);
+          return btn?.getAttribute("data-f-label") || val;
+        };
+        if (presetId === "beginner") {
+          state.domains.set("foundations", findLabel("domains", "foundations"));
+        } else if (presetId === "coding") {
+          state.tasks.set("agentic-coding", findLabel("tasks", "agentic-coding"));
+        } else if (presetId === "rag-agent") {
+          state.tasks.set("rag-knowledge", findLabel("tasks", "rag-knowledge"));
+          state.tasks.set("tool-mcp-skills", findLabel("tasks", "tool-mcp-skills"));
+        } else if (presetId === "multimodal") {
+          state.tasks.set("multimodal-creation", findLabel("tasks", "multimodal-creation"));
+        } else if (presetId === "frontier") {
+          state.era = "era-2025h2-2026";
+          const eraBtn = document.querySelector('[data-f-era="era-2025h2-2026"]');
+          state.eraLabel = eraBtn?.getAttribute("data-f-label") || "2025 H2–2026";
+        }
+        limit = PAGE_SIZE;
+        render();
+      }
+
+      document.querySelectorAll("[data-d-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          applyScenarioPreset(btn.getAttribute("data-d-preset") || "all");
+        });
+      });
+
+      resetEl?.addEventListener("click", () => {
+        applyScenarioPreset("all");
+      });
+
+      loadBtn.addEventListener("click", () => {
+        limit += PAGE_SIZE;
         render();
       });
 
-      if (state.preset !== "all" || state.era || state.domains || state.tasks || state.stacks || state.q) {
-        syncButtons();
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const qPreset = sp.get("preset");
+        if (qPreset) applyScenarioPreset(qPreset);
+        else render();
+      } catch {
         render();
       }
     })();

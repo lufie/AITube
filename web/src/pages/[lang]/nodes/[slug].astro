@@ -2,15 +2,11 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import ScreeningStage from "../../../components/ScreeningStage.astro";
 import SliceTimeline from "../../../components/SliceTimeline.astro";
-import NodeMiniMap from "../../../components/NodeMiniMap.astro";
 import InlineOpsText from "../../../components/InlineOpsText.astro";
 import MediaCard from "../../../components/MediaCard.astro";
 import {
   DIFFICULTY_META,
   LANGS,
-  LIFECYCLE_META,
-  OPENNESS_META,
-  ROLE_META,
   UI,
   formatSliceMinutes,
   formatTime,
@@ -42,7 +38,6 @@ const s = node.source;
 const t = UI[lang];
 
 const concept = getConcept(node.primaryConcept);
-const life = concept ? LIFECYCLE_META[concept.lifecycle] : null;
 const related = getNodesForConcept(node.primaryConcept)
   .filter((n) => n.slug !== node.slug)
   .slice(0, 3);
@@ -54,10 +49,10 @@ const schema = buildNodeSchema(node, concept, lang, pathname);
 
 const windowSpec =
   s.kind === "video-cut"
-    ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} (${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)})`
+    ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} · ${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)}`
     : lang === "zh"
-      ? `约 ${s.readingMinutes || 10} 分钟读完`
-      : `${s.readingMinutes || 10}m Guide`;
+      ? `约 ${s.readingMinutes || 10} 分钟阅读`
+      : `${s.readingMinutes || 10} min read`;
 
 const start = s.startSec || 0;
 const end = s.endSec || 60;
@@ -76,183 +71,148 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
   ogImage={ogImg}
   schema={schema}
 >
-  <div class="at-container at-node-layout" id="at-node-shell">
-    <NodeMiniMap concept={concept} lang={lang} slug={node.slug} />
-
-    <article>
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
-        <nav class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);">
-          <a href={withBase(`/${lang}/`)}>AITube</a> /{" "}
-          {concept ? (
-            <a href={withBase(`/${lang}/concepts/${concept.slug}/`)}>{concept[lang].shortName}</a>
-          ) : (
-            <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
-          )}{" "}
-          / <span>#{String(node.order).padStart(3, "0")}</span>
-        </nav>
-
-        <button
-          type="button"
-          id="at-theater-btn"
-          class="at-chip at-mono"
-          data-label-enter={`⤢ ${t.theaterToggle}`}
-          data-label-exit={`⤡ ${t.exitTheater}`}
-          style="font-size:0.73rem;padding:3px 9px;"
-        >
-          ⤢ {t.theaterToggle}
-        </button>
-      </div>
-
-      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
-        {concept && life && (
-          <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class={`at-life at-life-${concept.lifecycle}`}>
-            {life.icon} {concept[lang].shortName} · {concept.inflectionQuarter}
+  <div class="at-container">
+    <article class="at-watch-shell">
+      <!-- Quiet Breadcrumb -->
+      <nav style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:16px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
+        <span>/</span>
+        {concept && (
+          <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} style="color:var(--accent-primary);">
+            {concept[lang].shortName}
           </a>
         )}
-        <span class="at-lineage-pill at-mono" style="font-size:0.73rem;">
-          {ROLE_META[node.conceptRole][lang]}
-        </span>
-        {node.isSpine && (
-          <span class="at-lineage-pill at-mono" style="font-size:0.73rem;color:var(--accent-signal);">
-            {lang === "zh" ? "★ 口碑必看精选" : "★ ESSENTIAL PICK"}
-          </span>
-        )}
-      </div>
+      </nav>
 
-      <h1 style="font-size:clamp(1.65rem,2.6vw,2.25rem);margin-bottom:10px;">{loc.title}</h1>
-      <p style="font-size:1rem;color:var(--ink-secondary);">{loc.subtitle}</p>
-
-      <div class="at-spec-strip">
-        <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "作者 / 来源频道" : "CREATOR / SOURCE"}</div>
-          <div style="font-weight:580;font-size:0.88rem;margin-top:2px;">{s.channelName}</div>
-        </div>
-        <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "推荐只看这一段" : "BEST PART TO WATCH"}</div>
-          <div class="at-mono" style="font-weight:580;font-size:0.84rem;margin-top:2px;color:var(--accent-primary);">
-            {windowSpec}
-          </div>
-        </div>
-        <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "上手难度" : "DIFFICULTY"}</div>
-          <div style="font-weight:580;font-size:0.88rem;margin-top:2px;">
-            {DIFFICULTY_META[node.facets.difficulty]?.[lang] || node.facets.difficulty}
-          </div>
-        </div>
-        <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "免费还是付费" : "COST / OPENNESS"}</div>
-          <div style="font-weight:580;font-size:0.86rem;margin-top:2px;">
-            {OPENNESS_META[node.facets.openness]?.[lang] || node.facets.openness}
-          </div>
-        </div>
-      </div>
-
-      <section id="stage" data-spy-sec="stage" style="margin-bottom:28px;scroll-margin-top:80px;">
+      <!-- Cinema-First Stage (WWDC Style) -->
+      <section id="stage">
         <ScreeningStage node={node} lang={lang} />
         <SliceTimeline node={node} lang={lang} />
       </section>
 
-      <section id="steps" data-spy-sec="steps" style="margin-bottom:24px;scroll-margin-top:80px;">
-        <div class="at-kicker" style="margin-bottom:10px;">
-          {lang === "zh" ? "三步抓准核心重点（点深色英文词可一键复制 · 点右侧时间直接跳过去看）" : "3 KEY TAKEAWAYS IN PLAIN ENGLISH (CLICK TIMESTAMPS TO JUMP)"}
+      <!-- Clean Title & One-Line Metadata Below Player -->
+      <header class="at-watch-header">
+        <div style="max-width:68ch;">
+          <h1 style="font-size:clamp(1.45rem,2.4vw,1.95rem);line-height:1.28;">{loc.title}</h1>
+          <p style="margin-top:8px;font-size:0.96rem;color:var(--ink-secondary);line-height:1.55;">
+            {loc.subtitle}
+          </p>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:0.83rem;color:var(--ink-muted);">
+            <span style="color:var(--ink-primary);font-weight:560;">{s.channelName}</span>
+            <span>·</span>
+            <span class="at-mono">{windowSpec}</span>
+            <span>·</span>
+            <span>{DIFFICULTY_META[node.facets.difficulty]?.[lang] || node.facets.difficulty}</span>
+          </div>
         </div>
-        {loc.steps.map((st, idx) => (
-          <div class="at-step-card">
-            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;">
-              <div style="display:flex;gap:10px;align-items:baseline;">
-                <span class="at-mono" style="color:var(--accent-primary);font-weight:650;font-size:0.86rem;">
-                  {lang === "zh" ? `第 ${idx + 1} 步` : `STEP 0${idx + 1}`}
-                </span>
-                <h2 style="font-size:1.12rem;"><InlineOpsText text={st.title} /></h2>
+
+        <button
+          type="button"
+          class="at-btn-ghost"
+          style="flex-shrink:0;"
+          data-toggle-read={node.slug}
+          data-label-unread={t.markRead}
+          data-label-read={t.markedRead}
+        >
+          {t.markRead}
+        </button>
+      </header>
+
+      <!-- Clean 2-Column Takeaways + Practical Side Card -->
+      <div class="at-watch-notes">
+        <section aria-label="Key takeaways">
+          <h2 style="font-size:1.12rem;margin-bottom:8px;">
+            {lang === "zh" ? "核心要点" : "Key Takeaways"}
+          </h2>
+
+          <div>
+            {loc.steps.map((st, idx) => (
+              <div class="at-takeaway-item">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px;">
+                  <h3 style="font-size:0.98rem;font-weight:620;">
+                    <span class="at-mono" style="color:var(--ink-muted);margin-right:8px;">0{idx + 1}</span>
+                    <InlineOpsText text={st.title} />
+                  </h3>
+                  {isYoutubeCut && (
+                    <button
+                      type="button"
+                      class="at-chip at-mono"
+                      data-seek-sec={stepTimes[idx]}
+                      style="font-size:0.74rem;padding:3px 10px;flex-shrink:0;"
+                    >
+                      ▶ {formatTime(stepTimes[idx])}
+                    </button>
+                  )}
+                </div>
+                <p style="color:var(--ink-secondary);font-size:0.92rem;line-height:1.6;">
+                  <InlineOpsText text={st.detail} />
+                </p>
               </div>
-              {isYoutubeCut && (
-                <button
-                  type="button"
-                  class="at-chip at-mono"
-                  data-seek-sec={stepTimes[idx]}
-                  style="font-size:0.72rem;padding:2px 8px;"
-                >
-                  ▶ {formatTime(stepTimes[idx])} {lang === "zh" ? "跳到这看" : "Jump here"}
-                </button>
-              )}
-            </div>
-            <p style="color:var(--ink-secondary);font-size:0.93rem;">
-              <InlineOpsText text={st.detail} />
-            </p>
-          </div>
-        ))}
-      </section>
-
-      <section id="patch" data-spy-sec="patch" class="at-patch-box" style="scroll-margin-top:80px;">
-        <div class="at-mono" style="font-size:0.75rem;color:var(--accent-signal);font-weight:650;margin-bottom:4px;">
-          ⚡ {t.versionPatchTitle}
-        </div>
-        <p style="font-size:0.93rem;">
-          <InlineOpsText text={loc.versionPatch} />
-        </p>
-      </section>
-
-      <section
-        id="checklist"
-        data-spy-sec="checklist"
-        data-chk-slug={node.slug}
-        style="margin:26px 0;padding:18px 20px;border:1px solid var(--border-subtle);border-radius:6px;background:var(--bg-elevated);scroll-margin-top:80px;"
-      >
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:baseline;gap:10px;">
-            <h2 style="font-size:1.15rem;">{t.checklistTitle}</h2>
-            <span class="at-mono" id="at-chk-progress" style="font-size:0.76rem;color:var(--accent-primary);">
-              0/{loc.checklist.length}
-            </span>
-          </div>
-          <button
-            type="button"
-            class="at-btn-primary"
-            style="padding:7px 14px;font-size:0.84rem;"
-            data-toggle-read={node.slug}
-            data-label-unread={t.markRead}
-            data-label-read={t.markedRead}
-          >
-            {t.markRead}
-          </button>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          {loc.checklist.map((item, idx) => (
-            <label style="display:flex;gap:10px;align-items:baseline;cursor:pointer;font-size:0.92rem;">
-              <input type="checkbox" data-chk-idx={idx} style="accent-color:var(--accent-primary);" />
-              <span><InlineOpsText text={item} /></span>
-            </label>
-          ))}
-        </div>
-
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-subtle);">
-          <div class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);margin-bottom:8px;">
-            {t.toolsTitle}
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:10px;">
-            {loc.tools.map((tl) => (
-              <a
-                href={tl.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style="padding:8px 12px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.84rem;"
-              >
-                <strong>{tl.name}</strong> <span class="at-mono" style="font-size:0.72rem;color:var(--accent-primary);">[{tl.tag}] ↗</span>
-                <div style="font-size:0.78rem;color:var(--ink-secondary);">{tl.desc}</div>
-              </a>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
+        <aside class="at-side-card" data-chk-slug={node.slug}>
+          <div>
+            <div style="font-size:0.78rem;font-weight:650;color:var(--accent-signal);margin-bottom:6px;">
+              {t.versionPatchTitle}
+            </div>
+            <p style="font-size:0.88rem;color:var(--ink-secondary);line-height:1.58;">
+              <InlineOpsText text={loc.versionPatch} />
+            </p>
+          </div>
+
+          <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border-subtle);">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;">
+              <span style="font-size:0.84rem;font-weight:620;">{t.checklistTitle}</span>
+              <span class="at-mono" id="at-chk-progress" style="font-size:0.76rem;color:var(--ink-muted);">
+                0/{loc.checklist.length}
+              </span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              {loc.checklist.map((item, idx) => (
+                <label style="display:flex;gap:9px;align-items:baseline;cursor:pointer;font-size:0.86rem;color:var(--ink-secondary);">
+                  <input type="checkbox" data-chk-idx={idx} style="accent-color:var(--accent-primary);" />
+                  <span><InlineOpsText text={item} /></span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {loc.tools.length > 0 && (
+            <div style="margin-top:20px;padding-top:18px;border-top:1px solid var(--border-subtle);">
+              <div style="font-size:0.78rem;font-weight:600;color:var(--ink-muted);margin-bottom:8px;">
+                {t.toolsTitle}
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                {loc.tools.map((tl) => (
+                  <a
+                    href={tl.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="display:block;padding:10px 12px;border-radius:10px;background:var(--bg-canvas);font-size:0.84rem;"
+                  >
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+                      <strong style="font-weight:600;">{tl.name}</strong>
+                      <span style="font-size:0.75rem;color:var(--accent-primary);">↗</span>
+                    </div>
+                    <div style="font-size:0.78rem;color:var(--ink-muted);margin-top:2px;">{tl.desc}</div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </aside>
+      </div>
+
+      <!-- Related Videos Shelf -->
       {related.length > 0 && (
-        <section id="related" data-spy-sec="related" style="margin-top:34px;padding-top:24px;border-top:1px solid var(--border-subtle);scroll-margin-top:80px;">
-          <div class="at-section-head">
-            <h2 style="font-size:1.3rem;">{t.sameConceptTitle}</h2>
+        <section style="padding-top:32px;border-top:1px solid var(--border-subtle);">
+          <div class="at-section-head" style="margin-bottom:20px;">
+            <h2 style="font-size:1.25rem;">{t.sameConceptTitle}</h2>
             {concept && (
-              <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class="at-mono" style="font-size:0.82rem;color:var(--accent-primary);">
-                {t.viewConceptHub} →
+              <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class="at-text-link" style="font-size:0.86rem;">
+                {lang === "zh" ? `查看「${concept[lang].shortName}」全部视频 ›` : `All in ${concept[lang].shortName} ›`}
               </a>
             )}
           </div>
@@ -264,15 +224,20 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
         </section>
       )}
 
-      <nav style="margin-top:32px;padding-top:18px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:0.86rem;">
+      <nav
+        aria-label="Adjacent videos"
+        style="margin-top:40px;padding-top:20px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:0.86rem;"
+      >
         {adj.prev ? (
-          <a href={withBase(`/${lang}/nodes/${adj.prev.slug}/`)} style="color:var(--ink-secondary);">
-            ← {adj.prev[lang].title}
+          <a href={withBase(`/${lang}/nodes/${adj.prev.slug}/`)} class="at-text-link">
+            ← {adj.prev[lang].title.slice(0, 32)}
           </a>
-        ) : <span />}
+        ) : (
+          <span />
+        )}
         {adj.next && (
-          <a href={withBase(`/${lang}/nodes/${adj.next.slug}/`)} style="color:var(--accent-primary);margin-left:auto;">
-            {adj.next[lang].title} →
+          <a href={withBase(`/${lang}/nodes/${adj.next.slug}/`)} class="at-text-link">
+            {adj.next[lang].title.slice(0, 32)} →
           </a>
         )}
       </nav>
@@ -281,61 +246,31 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
 
   <script is:inline>
     (() => {
-      // Theater Mode toggle
-      const shell = document.getElementById("at-node-shell");
-      const thBtn = document.getElementById("at-theater-btn");
-      if (shell && thBtn) {
-        thBtn.addEventListener("click", () => {
-          const active = shell.classList.toggle("is-theater");
-          thBtn.classList.toggle("is-active", active);
-          thBtn.textContent = active
-            ? thBtn.getAttribute("data-label-exit")
-            : thBtn.getAttribute("data-label-enter");
-        });
-      }
+      const chkBox = document.querySelector("[data-chk-slug]");
+      if (!chkBox) return;
+      const slug = chkBox.getAttribute("data-chk-slug");
+      const inputs = [...chkBox.querySelectorAll("[data-chk-idx]")];
+      const prog = document.getElementById("at-chk-progress");
+      const key = `aitube-chk-${slug}`;
+      let saved = [];
+      try {
+        saved = JSON.parse(localStorage.getItem(key) || "[]");
+      } catch {}
 
-      // Persist Action Checklist checkboxes per node
-      const chkSec = document.querySelector("[data-chk-slug]");
-      const progEl = document.getElementById("at-chk-progress");
-      if (chkSec) {
-        const key = `aitube-chk-${chkSec.getAttribute("data-chk-slug")}`;
-        const boxes = [...chkSec.querySelectorAll("[data-chk-idx]")];
-        let saved = [];
+      function syncChk() {
+        const checked = inputs.filter((i) => i.checked).map((i) => Number(i.getAttribute("data-chk-idx")));
+        if (prog) prog.textContent = `${checked.length}/${inputs.length}`;
         try {
-          saved = JSON.parse(localStorage.getItem(key) || "[]");
+          localStorage.setItem(key, JSON.stringify(checked));
         } catch {}
-        function updateProg() {
-          const checked = boxes.filter((b) => b.checked).map((b) => Number(b.getAttribute("data-chk-idx")));
-          if (progEl) progEl.textContent = `${checked.length}/${boxes.length}`;
-          try {
-            localStorage.setItem(key, JSON.stringify(checked));
-          } catch {}
-        }
-        boxes.forEach((b) => {
-          const idx = Number(b.getAttribute("data-chk-idx"));
-          if (saved.includes(idx)) b.checked = true;
-          b.addEventListener("change", updateProg);
-        });
-        updateProg();
       }
 
-      // Scroll-spy for NodeMiniMap
-      const spySecs = [...document.querySelectorAll("[data-spy-sec]")];
-      const spyLinks = [...document.querySelectorAll("[data-spy-link]")];
-      if ("IntersectionObserver" in window && spySecs.length && spyLinks.length) {
-        const obs = new IntersectionObserver(
-          (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                const id = entry.target.getAttribute("data-spy-sec");
-                spyLinks.forEach((lk) => lk.classList.toggle("is-active", lk.getAttribute("data-spy-link") === id));
-              }
-            }
-          },
-          { rootMargin: "-120px 0px -68% 0px" }
-        );
-        spySecs.forEach((s) => obs.observe(s));
-      }
+      inputs.forEach((inp) => {
+        const idx = Number(inp.getAttribute("data-chk-idx"));
+        if (saved.includes(idx)) inp.checked = true;
+        inp.addEventListener("change", syncChk);
+      });
+      syncChk();
     })();
   </script>
 </BaseLayout>

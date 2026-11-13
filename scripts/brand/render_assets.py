@@ -11,19 +11,17 @@ PUBLIC = ROOT / "web" / "public"
 OG_DIR = PUBLIC / "og"
 OG_CONCEPTS = OG_DIR / "concepts"
 
-BG_PAPER = (250, 248, 243)       # #FAF8F3
-BG_PANEL = (242, 239, 231)       # #F2EFE7
-INK = (21, 23, 26)               # #15171A
-MUTED = (82, 88, 96)             # #525860
-RULE = (216, 211, 199)           # #D8D3C7
-TEAL = (27, 94, 107)             # #1B5E6B Prussian Mineral Teal
-AMBER = (184, 93, 25)            # #B85D19 Signal Amber
+BG_PAPER = (255, 255, 255)       # #FFFFFF Pure Gallery White
+BG_PANEL = (245, 245, 247)       # #F5F5F7 Apple Soft Surface
+INK = (29, 29, 31)               # #1D1D1F Primary Ink
+MUTED = (110, 110, 115)          # #6E6E73 Secondary Muted Ink
+RULE = (232, 232, 237)           # #E8E8ED Subtle Hairline
+BLUE = (0, 102, 204)             # #0066CC Apple/Google Primary Blue
+SIGNAL = (217, 80, 0)            # #D95000 Warm Inflection Orange
 
 FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect x="2" y="2" width="60" height="60" rx="12" fill="#FAF8F3" stroke="#15171A" stroke-width="2.5"/>
-  <path d="M18 49L32 14L46 49" stroke="#15171A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M13 38C21 38 25 27 33 27C40 27 44 33 51 22" stroke="#1B5E6B" stroke-width="4" stroke-linecap="round"/>
-  <circle cx="46" cy="25" r="4.5" fill="#B85D19"/>
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="#1D1D1F"/>
+  <polygon points="25 19 46 32 25 45 25 19" fill="#FFFFFF"/>
 </svg>
 """
 
@@ -49,7 +47,7 @@ CJK_REG = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
 ]
 MONO_FONT = [
-    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
 ]
 
@@ -59,34 +57,16 @@ def draw_icon(size: int, out_path: Path) -> None:
     img = Image.new("RGBA", (scale, scale), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
     pad = int(scale * 0.04)
-    rad = int(scale * 0.19)
-    d.rounded_rectangle([pad, pad, scale - pad, scale - pad], radius=rad, fill=BG_PAPER, outline=INK, width=max(3, scale // 24))
-    # Architectural A legs with crisp flat apex
+    rad = int(scale * 0.25)
+    d.rounded_rectangle([pad, pad, scale - pad, scale - pad], radius=rad, fill=INK)
     d.polygon(
         [
-            (int(scale * 0.23), int(scale * 0.78)),
-            (int(scale * 0.46), int(scale * 0.19)),
-            (int(scale * 0.54), int(scale * 0.19)),
-            (int(scale * 0.77), int(scale * 0.78)),
-            (int(scale * 0.68), int(scale * 0.78)),
-            (int(scale * 0.50), int(scale * 0.30)),
-            (int(scale * 0.32), int(scale * 0.78)),
+            (int(scale * 0.39), int(scale * 0.30)),
+            (int(scale * 0.72), int(scale * 0.50)),
+            (int(scale * 0.39), int(scale * 0.70)),
         ],
-        fill=INK,
+        fill=BG_PAPER,
     )
-    # Trend wave crossbar
-    wave_pts = [
-        (int(scale * 0.20), int(scale * 0.60)),
-        (int(scale * 0.36), int(scale * 0.58)),
-        (int(scale * 0.48), int(scale * 0.43)),
-        (int(scale * 0.63), int(scale * 0.45)),
-        (int(scale * 0.80), int(scale * 0.34)),
-    ]
-    d.line(wave_pts, fill=TEAL, width=max(5, scale // 15), joint="curve")
-    # Signal Amber inflection dot
-    cx, cy = int(scale * 0.73), int(scale * 0.39)
-    r = max(5, scale // 14)
-    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=AMBER)
     final = img.resize((size, size), Image.Resampling.LANCZOS)
     final.save(out_path, format="PNG", optimize=True)
 
@@ -139,31 +119,26 @@ def render_og_card(
     img = Image.new("RGB", (W, H), BG_PAPER)
     d = ImageDraw.Draw(img)
 
-    # Outer editorial hairline frame
-    d.rectangle([28, 28, W - 28, H - 28], outline=RULE, width=2)
-    d.line([28, 102, W - 28, 102], fill=RULE, width=2)
-    d.line([28, H - 96, W - 28, H - 96], fill=RULE, width=2)
-
-    f_mono = load_font(MONO_FONT, 20)
-    f_kicker = load_font(MONO_FONT, 19)
-    f_title = load_font(CJK_BOLD, 44)
+    f_brand = load_font(CJK_BOLD, 24)
+    f_kicker = load_font(CJK_BOLD, 19)
+    f_title = load_font(CJK_BOLD, 46)
     f_sub = load_font(CJK_REG, 24)
     f_small = load_font(CJK_REG, 20)
 
-    # Masthead bar
-    d.ellipse([60, 56, 78, 74], fill=TEAL)
-    d.ellipse([84, 60, 96, 72], fill=AMBER)
-    d.text((112, 52), "AITUBE · CONCEPT TREND & VIDEO INDEX", fill=INK, font=f_mono)
-    d.text((W - 340, 52), badge_right, fill=TEAL, font=f_mono)
+    # Minimal clean top bar
+    d.rounded_rectangle([64, 52, 100, 88], radius=9, fill=INK)
+    d.polygon([(78, 62), (92, 70), (78, 78)], fill=BG_PAPER)
+    d.text((114, 55), "AITube", fill=INK, font=f_brand)
+    d.text((W - 280, 58), badge_right, fill=MUTED, font=f_small)
 
     # Left column text
-    d.text((64, 138), kicker, fill=AMBER, font=f_kicker)
+    d.text((64, 148), kicker, fill=BLUE, font=f_kicker)
 
     lines = wrap_smart(title, 14)[:3]
-    y = 182
+    y = 192
     for ln in lines:
         d.text((64, y), ln, fill=INK, font=f_title)
-        y += 60
+        y += 62
 
     sub_lines = wrap_smart(subtitle, 24)[:2]
     y += 14
@@ -171,12 +146,12 @@ def render_og_card(
         d.text((64, y), sl, fill=MUTED, font=f_sub)
         y += 36
 
-    # Right sparkline panel
-    px0, py0, px1, py1 = 760, 148, 1136, 488
-    d.rounded_rectangle([px0, py0, px1, py1], radius=10, fill=BG_PANEL, outline=RULE, width=2)
-    d.text((px0 + 24, py0 + 20), "CONCEPT MOMENTUM (22H2–26Q3)", fill=MUTED, font=load_font(MONO_FONT, 15))
+    # Right soft rounded sparkline card (frameless Apple #F5F5F7 surface)
+    px0, py0, px1, py1 = 756, 148, 1136, 488
+    d.rounded_rectangle([px0, py0, px1, py1], radius=24, fill=BG_PANEL)
+    d.text((px0 + 28, py0 + 26), "2022 – 2026 热度趋势", fill=MUTED, font=load_font(CJK_REG, 18))
 
-    gx0, gy0, gx1, gy1 = px0 + 28, py0 + 72, px1 - 28, py1 - 44
+    gx0, gy0, gx1, gy1 = px0 + 32, py0 + 82, px1 - 32, py1 - 52
     for gy in [gy0, (gy0 + gy1) // 2, gy1]:
         d.line([gx0, gy, gx1, gy], fill=RULE, width=1)
 
@@ -186,19 +161,18 @@ def render_og_card(
         y_pt = gy1 - int((gy1 - gy0) * max(5, min(100, val)) / 100)
         pts.append((x, y_pt))
 
-    d.line(pts, fill=TEAL, width=5)
+    d.line(pts, fill=BLUE, width=5)
     for idx, (x, y_pt) in enumerate(pts):
         if idx == inflect_idx:
-            d.ellipse([x - 8, y_pt - 8, x + 8, y_pt + 8], fill=AMBER, outline=BG_PAPER, width=2)
-        else:
-            d.ellipse([x - 4, y_pt - 4, x + 4, y_pt + 4], fill=TEAL)
+            d.ellipse([x - 8, y_pt - 8, x + 8, y_pt + 8], fill=SIGNAL, outline=BG_PANEL, width=2)
 
-    d.text((px0 + 28, py1 - 30), "2022", fill=MUTED, font=load_font(MONO_FONT, 15))
-    d.text((px1 - 74, py1 - 30), "2026", fill=TEAL, font=load_font(MONO_FONT, 15))
+    d.text((px0 + 32, py1 - 34), "2022", fill=MUTED, font=load_font(MONO_FONT, 15))
+    d.text((px1 - 74, py1 - 34), "2026", fill=BLUE, font=load_font(MONO_FONT, 15))
 
-    # Footer bar
-    d.text((64, H - 64), "280 Verified Cuts · 22 Concept Trajectories · Zero Hype", fill=MUTED, font=f_small)
-    d.text((W - 290, H - 64), "aitube.dev", fill=INK, font=f_mono)
+    # Clean bottom caption
+    d.line([64, H - 92, W - 64, H - 92], fill=RULE, width=1)
+    d.text((64, H - 62), "280 支精选精华片段 · 22 个核心概念演进 · 零废话", fill=MUTED, font=f_small)
+    d.text((W - 180, H - 62), "aitube.dev", fill=INK, font=f_small)
 
     img.save(out_path, format="PNG", optimize=True)
 
@@ -213,12 +187,12 @@ def main() -> None:
     draw_icon(180, PUBLIC / "apple-touch-icon.png")
 
     manifest = {
-        "name": "AITube — 用大白话讲透 AI 概念与精选视频片段",
+        "name": "AITube — 看懂 AI，只看最值得看的那几分钟",
         "short_name": "AITube",
         "start_url": "./zh/",
         "display": "standalone",
-        "background_color": "#FAF8F3",
-        "theme_color": "#1B5E6B",
+        "background_color": "#FFFFFF",
+        "theme_color": "#FFFFFF",
         "icons": [
             {"src": "./icon-192.png", "sizes": "192x192", "type": "image/png"},
             {"src": "./icon-512.png", "sizes": "512x512", "type": "image/png"},
