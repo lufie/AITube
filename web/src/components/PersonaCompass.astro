@@ -27,7 +27,7 @@ const startersByRole = Object.fromEntries(
 ---
 <div class="at-compass" id="persona-compass">
   <div class="at-compass-bar">
-    <div class="at-segmented" role="tablist" aria-label={lang === "zh" ? "选择学习方向" : "Choose your track"}>
+    <div class="at-segmented" data-liquid-seg role="tablist" aria-label={lang === "zh" ? "选择学习方向" : "Choose your track"}>
       {PERSONAS.map((p, idx) => {
         const isDefault = idx === 0;
         const tabText = shortTabLabel[p.id]?.[lang] || p[lang].shortLabel;
@@ -54,6 +54,7 @@ const startersByRole = Object.fromEntries(
     return (
       <div
         role="tabpanel"
+        class="at-track-panel"
         data-role-panel={p.id}
         style={isDefault ? "" : "display:none;"}
       >
@@ -67,8 +68,10 @@ const startersByRole = Object.fromEntries(
         </div>
 
         <div class="at-grid-cards">
-          {starterNodes.map((node) => (
-            <MediaCard node={node} lang={lang} />
+          {starterNodes.map((node, cIdx) => (
+            <div class="at-cascade-item" style={`--card-i:${cIdx};`}>
+              <MediaCard node={node} lang={lang} />
+            </div>
           ))}
         </div>
       </div>
@@ -84,7 +87,7 @@ const startersByRole = Object.fromEntries(
     const panels = [...root.querySelectorAll("[data-role-panel]")];
     const valid = new Set(tabs.map((t) => t.getAttribute("data-role-tab")));
 
-    function activateRole(roleId, pushUrl) {
+    function activateRole(roleId, pushUrl, animate) {
       if (!valid.has(roleId)) return;
       tabs.forEach((btn) => {
         const active = btn.getAttribute("data-role-tab") === roleId;
@@ -93,8 +96,19 @@ const startersByRole = Object.fromEntries(
       });
       panels.forEach((panel) => {
         const active = panel.getAttribute("data-role-panel") === roleId;
-        panel.style.display = active ? "" : "none";
+        if (active) {
+          panel.style.display = "";
+          if (animate) {
+            panel.classList.remove("is-entering");
+            void panel.offsetWidth;
+            panel.classList.add("is-entering");
+          }
+        } else {
+          panel.style.display = "none";
+          panel.classList.remove("is-entering");
+        }
       });
+      if (window.__syncLiquidSegs) window.__syncLiquidSegs();
       try {
         localStorage.setItem("aitube-role", roleId);
         if (pushUrl) {
@@ -109,14 +123,14 @@ const startersByRole = Object.fromEntries(
       const sp = new URLSearchParams(window.location.search);
       const qRole = sp.get("role");
       const saved = localStorage.getItem("aitube-role");
-      if (qRole && valid.has(qRole)) activateRole(qRole, false);
-      else if (saved && valid.has(saved)) activateRole(saved, false);
+      if (qRole && valid.has(qRole)) activateRole(qRole, false, false);
+      else if (saved && valid.has(saved)) activateRole(saved, false, false);
     } catch {}
 
     tabs.forEach((btn) => {
       btn.addEventListener("click", () => {
         const roleId = btn.getAttribute("data-role-tab");
-        if (roleId) activateRole(roleId, true);
+        if (roleId) activateRole(roleId, true, true);
       });
     });
   })();

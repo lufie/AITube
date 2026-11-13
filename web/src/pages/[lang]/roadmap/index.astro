@@ -86,7 +86,7 @@ const schema = {
       </div>
 
       <div style="margin-top:26px;display:flex;justify-content:center;">
-        <div class="at-segmented" role="group" aria-label="Starting stage">
+        <div class="at-segmented" data-liquid-seg role="group" aria-label="Starting stage">
           {roleTabs.map((g, idx) => (
             <a
               href={`#${g.stage}`}
@@ -103,7 +103,7 @@ const schema = {
   </section>
 
   <div class="at-container" style="padding-bottom:68px;">
-    {STAGES.map((st, sIdx) => {
+    {STAGES.map((st) => {
       const stageNodes = SPINE_NODES.filter((n) => n.stageId === st.id);
       const prefSlugs = stageStarterMap[st.id] || [];
       const coreNodes = prefSlugs
@@ -117,10 +117,10 @@ const schema = {
 
       return (
         <section
-          class="at-section"
+          class="at-section at-roadmap-stage"
           id={st.id}
           data-stage-section={st.id}
-          style={sIdx === 0 ? "scroll-margin-top:76px;" : "scroll-margin-top:76px;"}
+          style="scroll-margin-top:84px;"
         >
           <div class="at-section-head">
             <div style="max-width:66ch;">
@@ -167,7 +167,7 @@ const schema = {
                   : `Show ${extraNodes.length} more videos in this stage ▾`}
               </button>
 
-              <div class="at-grid-cards" data-stage-extra={st.id} style="display:none;margin-top:24px;">
+              <div class="at-grid-cards at-stage-extra-grid" data-stage-extra={st.id} style="display:none;margin-top:24px;">
                 {extraNodes.map((n) => (
                   <MediaCard node={n} lang={lang} />
                 ))}
@@ -194,6 +194,11 @@ const schema = {
           if (!box) return;
           const open = box.style.display === "none";
           box.style.display = open ? "" : "none";
+          if (open) {
+            box.classList.remove("is-entering");
+            void box.offsetWidth;
+            box.classList.add("is-entering");
+          }
           btn.textContent = open
             ? btn.getAttribute("data-label-open")
             : btn.getAttribute("data-label-closed");
@@ -216,6 +221,7 @@ const schema = {
         document.querySelectorAll("[data-rec-badge]").forEach((el) => {
           el.style.display = el.getAttribute("data-rec-badge") === stId ? "inline-flex" : "none";
         });
+        if (window.__syncLiquidSegs) window.__syncLiquidSegs();
       }
 
       try {

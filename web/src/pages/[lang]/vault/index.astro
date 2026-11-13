@@ -53,7 +53,7 @@ const schema = {
       return (
         <article
           id={v.id}
-          style="border-radius:var(--radius-lg);padding:28px;background:var(--bg-elevated);"
+          class="at-vault-card"
         >
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
             <span class="at-kicker">
@@ -71,12 +71,12 @@ const schema = {
             {loc.summary}
           </p>
 
-          <div style="position:relative;border-radius:var(--radius-md);background:var(--bg-canvas);padding:18px 20px;">
+          <div class="at-vault-code">
             <button
               type="button"
               class="at-btn-ghost"
               data-copy-op={loc.previewSnippet}
-              style="position:absolute;top:12px;right:12px;padding:5px 12px;font-size:0.76rem;background:var(--bg-elevated);"
+              style="position:absolute;top:12px;right:12px;padding:5px 12px;font-size:0.76rem;"
             >
               <span>{lang === "zh" ? "复制模板" : "Copy"}</span>
               <svg aria-hidden="true" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.75;flex-shrink:0;">

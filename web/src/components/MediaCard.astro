@@ -33,32 +33,34 @@ const topicName = concept ? concept[lang].shortName : node.primaryConcept;
   data-platform={s.isShort ? "shorts" : s.platform}
 >
   <a href={withBase(`/${lang}/nodes/${node.slug}/`)} class="at-card-link">
-    <div class="at-card-poster">
-      {ytThumb && (
-        <img
-          src={ytThumb}
-          alt={loc.title}
-          loading="lazy"
-          decoding="async"
-          class="at-card-thumb"
-          onerror="this.remove()"
-        />
-      )}
-
-      <span class="at-card-play-glyph" aria-hidden="true">
-        {s.kind === "article-digest" ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-          </svg>
-        ) : (
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-            <polygon points="8 5 19 12 8 19 8 5" />
-          </svg>
+    <div class="at-card-bezel">
+      <div class="at-card-poster">
+        {ytThumb && (
+          <img
+            src={ytThumb}
+            alt={loc.title}
+            loading="lazy"
+            decoding="async"
+            class="at-card-thumb"
+            onerror="this.remove()"
+          />
         )}
-      </span>
 
-      <span class="at-card-done-pill">✓ {lang === "zh" ? "已看" : "Watched"}</span>
-      <span class="at-card-dur">{durBadge}</span>
+        <span class="at-card-play-glyph" aria-hidden="true">
+          {s.kind === "article-digest" ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="8 5 19 12 8 19 8 5" />
+            </svg>
+          )}
+        </span>
+
+        <span class="at-card-done-pill">✓ {lang === "zh" ? "已看" : "Watched"}</span>
+        <span class="at-card-dur">{durBadge}</span>
+      </div>
     </div>
 
     <div class="at-card-body">

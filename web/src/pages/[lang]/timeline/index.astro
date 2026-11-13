@@ -111,10 +111,11 @@ const schema = {
         <input
           type="search"
           id="tl-search"
+          class="at-glass-input"
           placeholder={lang === "zh" ? "搜概念…" : "Filter topics..."}
-          style="padding:6px 14px;border:0;border-radius:999px;background:var(--bg-elevated);font-size:0.83rem;width:168px;outline:none;"
+          style="width:176px;padding:6px 14px;font-size:0.83rem;"
         />
-        <div class="at-segmented" role="group" aria-label="View mode" style="padding:3px;">
+        <div class="at-segmented" data-liquid-seg role="group" aria-label="View mode" style="padding:3px;">
           <button type="button" class="at-seg-btn is-active" data-tl-view="editorial" style="padding:4px 12px;font-size:0.8rem;">
             {t.editorialView}
           </button>
@@ -286,6 +287,7 @@ const schema = {
         document.querySelectorAll("[data-tl-view]").forEach((b) => {
           b.classList.toggle("is-active", b.getAttribute("data-tl-view") === viewMode);
         });
+        if (window.__syncLiquidSegs) window.__syncLiquidSegs();
         if (edView && mxView) {
           edView.style.display = viewMode === "editorial" ? "" : "none";
           mxView.style.display = viewMode === "matrix" ? "" : "none";

@@ -13,78 +13,78 @@ const t = UI[lang];
 const ytThumb = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/maxresdefault.jpg` : null;
 const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg` : null;
 ---
-<div
-  class="at-stage-frame"
-  id="at-screening-stage"
-  data-kind={s.kind}
-  data-platform={s.platform}
-  data-video-id={s.videoId || ""}
-  data-start={s.startSec || 0}
-  data-end={s.endSec || 0}
->
-  {s.kind === "video-cut" && s.platform === "youtube" && s.videoId ? (
-    <div
-      id="at-stage-poster"
-      style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;cursor:pointer;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);"
-      role="button"
-      tabindex="0"
-      aria-label={t.watchSlice}
-    >
-      <img
-        src={ytThumb || ""}
-        data-fallback={ytFallback || ""}
-        alt={loc.title}
-        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.58;"
-        onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}else{this.style.display='none';}"
-      />
-      <div style="position:absolute;inset:0;background:radial-gradient(circle, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.58) 100%);pointer-events:none;"></div>
+<div class="at-stage-bezel">
+  <div
+    class="at-stage-frame"
+    id="at-screening-stage"
+    data-kind={s.kind}
+    data-platform={s.platform}
+    data-video-id={s.videoId || ""}
+    data-start={s.startSec || 0}
+    data-end={s.endSec || 0}
+  >
+    {s.kind === "video-cut" && s.platform === "youtube" && s.videoId ? (
+      <div
+        id="at-stage-poster"
+        class="at-stage-poster-inner"
+        role="button"
+        tabindex="0"
+        aria-label={t.watchSlice}
+      >
+        <img
+          src={ytThumb || ""}
+          data-fallback={ytFallback || ""}
+          alt={loc.title}
+          class="at-stage-poster-img"
+          onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}else{this.remove();}"
+        />
+        <div class="at-stage-vignette" aria-hidden="true"></div>
 
-      <div style="position:relative;z-index:2;text-align:center;">
-        <div
-          style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:999px;background:rgba(255,255,255,0.94);color:#1d1d1f;font-weight:650;font-size:0.96rem;box-shadow:0 12px 32px rgba(0,0,0,0.38);"
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <polygon points="7 4 20 12 7 20 7 4" />
-          </svg>
-          <span>
-            {t.watchSlice} · {formatTime(s.startSec || 0)}–{formatTime(s.endSec || 0)}
-          </span>
+        <div style="position:relative;z-index:2;text-align:center;">
+          <div class="at-liquid-play-pill">
+            <span class="at-liquid-play-dot" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="8 5 19 12 8 19 8 5" />
+              </svg>
+            </span>
+            <span>
+              {t.watchSlice} · {formatTime(s.startSec || 0)}–{formatTime(s.endSec || 0)}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-  ) : s.kind === "video-cut" && s.platform === "bilibili" && s.videoId ? (
-    <div style="position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);">
-      <p style="font-size:0.84rem;color:rgba(245,245,247,0.68);margin-bottom:8px;">
-        Bilibili · {s.channelName}
-      </p>
-      <p style="font-size:1.25rem;font-weight:600;max-width:48ch;margin-bottom:20px;">{s.originalTitle}</p>
-      <a
-        href={`https://www.bilibili.com/video/${s.videoId}/?t=${s.startSec || 0}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="at-btn-primary"
-        style="background:#ffffff;color:#1d1d1f;"
-      >
-        ▶ {lang === "zh" ? `在 B 站从 ${formatTime(s.startSec || 0)} 播放 ↗` : `Watch on Bilibili at ${formatTime(s.startSec || 0)} ↗`}
-      </a>
-    </div>
-  ) : (
-    <div style="position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);">
-      <p style="font-size:0.84rem;color:rgba(245,245,247,0.68);margin-bottom:8px;">
-        {s.channelName} · {lang === "zh" ? `约 ${s.readingMinutes || 12} 分钟阅读` : `${s.readingMinutes || 12} min read`}
-      </p>
-      <p style="font-size:1.3rem;font-weight:600;max-width:48ch;margin-bottom:20px;">{s.originalTitle}</p>
-      <a
-        href={s.articleUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="at-btn-primary"
-        style="background:#ffffff;color:#1d1d1f;"
-      >
-        {t.readDigest} ↗
-      </a>
-    </div>
-  )}
+    ) : s.kind === "video-cut" && s.platform === "bilibili" && s.videoId ? (
+      <div style="position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);">
+        <p style="font-size:0.84rem;color:rgba(245,245,247,0.68);margin-bottom:8px;">
+          Bilibili · {s.channelName}
+        </p>
+        <p style="font-size:1.25rem;font-weight:600;max-width:48ch;margin-bottom:20px;">{s.originalTitle}</p>
+        <a
+          href={`https://www.bilibili.com/video/${s.videoId}/?t=${s.startSec || 0}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="at-liquid-play-pill"
+        >
+          <span>▶ {lang === "zh" ? `在 B 站从 ${formatTime(s.startSec || 0)} 播放 ↗` : `Watch on Bilibili at ${formatTime(s.startSec || 0)} ↗`}</span>
+        </a>
+      </div>
+    ) : (
+      <div style="position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(circle at 30% 20%, #243346 0%, #0d1117 80%);">
+        <p style="font-size:0.84rem;color:rgba(245,245,247,0.68);margin-bottom:8px;">
+          {s.channelName} · {lang === "zh" ? `约 ${s.readingMinutes || 12} 分钟阅读` : `${s.readingMinutes || 12} min read`}
+        </p>
+        <p style="font-size:1.3rem;font-weight:600;max-width:48ch;margin-bottom:20px;">{s.originalTitle}</p>
+        <a
+          href={s.articleUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="at-liquid-play-pill"
+        >
+          <span>{t.readDigest} ↗</span>
+        </a>
+      </div>
+    )}
+  </div>
 </div>
 
 <script is:inline>

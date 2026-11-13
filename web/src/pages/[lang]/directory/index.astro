@@ -99,8 +99,9 @@ const schema = {
         <input
           type="search"
           id="dir-query"
+          class="at-glass-input"
           placeholder={lang === "zh" ? "搜索视频标题、作者或概念…" : "Search videos, creators, or topics..."}
-          style="width:min(340px, 100%);padding:10px 16px;border:0;border-radius:999px;background:var(--bg-elevated);font-size:0.88rem;outline:none;"
+          style="width:min(340px, 100%);padding:10px 18px;font-size:0.88rem;"
         />
       </div>
 
@@ -214,8 +215,9 @@ const schema = {
 
         <select
           id="dir-sort"
+          class="at-glass-input"
           aria-label="Sort order"
-          style="padding:6px 12px;border:0;border-radius:999px;background:var(--bg-elevated);font-size:0.82rem;color:var(--ink-secondary);cursor:pointer;"
+          style="padding:6px 14px;font-size:0.82rem;color:var(--ink-secondary);cursor:pointer;"
         >
           <option value="editorial">{t.sortEditorial}</option>
           <option value="shortest">{t.sortShortest}</option>
@@ -298,11 +300,13 @@ const schema = {
         return `
           <article class="at-card" data-node-slug="${esc(item.slug)}"${doneAttr}>
             <a href="${basePrefix}/${lang}/nodes/${esc(item.slug)}/" class="at-card-link">
-              <div class="at-card-poster">
-                ${thumb}
-                <span class="at-card-play-glyph" aria-hidden="true">${glyph}</span>
-                <span class="at-card-done-pill">✓ ${esc(doneBadgeText)}</span>
-                <span class="at-card-dur">${esc(item.durBadge)}</span>
+              <div class="at-card-bezel">
+                <div class="at-card-poster">
+                  ${thumb}
+                  <span class="at-card-play-glyph" aria-hidden="true">${glyph}</span>
+                  <span class="at-card-done-pill">✓ ${esc(doneBadgeText)}</span>
+                  <span class="at-card-dur">${esc(item.durBadge)}</span>
+                </div>
               </div>
               <div class="at-card-body">
                 <h3 class="at-card-title">${esc(item.title)}</h3>

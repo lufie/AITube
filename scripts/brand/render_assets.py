@@ -11,17 +11,25 @@ PUBLIC = ROOT / "web" / "public"
 OG_DIR = PUBLIC / "og"
 OG_CONCEPTS = OG_DIR / "concepts"
 
-BG_PAPER = (255, 255, 255)       # #FFFFFF Pure Gallery White
-BG_PANEL = (245, 245, 247)       # #F5F5F7 Apple Soft Surface
-INK = (29, 29, 31)               # #1D1D1F Primary Ink
-MUTED = (110, 110, 115)          # #6E6E73 Secondary Muted Ink
-RULE = (232, 232, 237)           # #E8E8ED Subtle Hairline
-BLUE = (0, 102, 204)             # #0066CC Apple/Google Primary Blue
+BG_PAPER = (244, 247, 252)       # #F4F7FC Liquid Glass Pearl-Sky Canvas
+BG_PANEL = (255, 255, 255)       # #FFFFFF Luminous Glass Plate
+INK = (20, 24, 32)               # #141820 Primary Ink
+MUTED = (90, 99, 114)            # #5A6372 Secondary Muted Ink
+RULE = (224, 230, 240)           # #E0E6F0 Subtle Rim Hairline
+BLUE = (0, 102, 204)             # #0066CC Apple Liquid Glass Blue
 SIGNAL = (217, 80, 0)            # #D95000 Warm Inflection Orange
 
 FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="#1D1D1F"/>
-  <polygon points="25 19 46 32 25 45 25 19" fill="#FFFFFF"/>
+  <defs>
+    <linearGradient id="g" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#3a8dff"/>
+      <stop offset="52%" stop-color="#0066cc"/>
+      <stop offset="100%" stop-color="#004999"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="58" height="58" rx="17" fill="url(#g)"/>
+  <path d="M12 10C20 6 44 6 52 10C46 18 18 18 12 10Z" fill="#ffffff" fill-opacity="0.24"/>
+  <polygon points="25.5 19.5 46.5 32 25.5 44.5 25.5 19.5" fill="#FFFFFF"/>
 </svg>
 """
 
@@ -56,16 +64,22 @@ def draw_icon(size: int, out_path: Path) -> None:
     scale = size * 2
     img = Image.new("RGBA", (scale, scale), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    pad = int(scale * 0.04)
-    rad = int(scale * 0.25)
-    d.rounded_rectangle([pad, pad, scale - pad, scale - pad], radius=rad, fill=INK)
+    pad = int(scale * 0.045)
+    rad = int(scale * 0.265)
+    d.rounded_rectangle([pad, pad, scale - pad, scale - pad], radius=rad, fill=BLUE)
+    # Top glass specular crescent
+    d.rounded_rectangle(
+        [int(scale * 0.14), int(scale * 0.08), int(scale * 0.86), int(scale * 0.30)],
+        radius=int(scale * 0.12),
+        fill=(255, 255, 255, 52),
+    )
     d.polygon(
         [
             (int(scale * 0.39), int(scale * 0.30)),
             (int(scale * 0.72), int(scale * 0.50)),
             (int(scale * 0.39), int(scale * 0.70)),
         ],
-        fill=BG_PAPER,
+        fill=(255, 255, 255, 255),
     )
     final = img.resize((size, size), Image.Resampling.LANCZOS)
     final.save(out_path, format="PNG", optimize=True)
