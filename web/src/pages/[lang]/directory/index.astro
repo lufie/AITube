@@ -290,7 +290,7 @@ const schema = {
       function cardHTML(item, completedSet) {
         const doneAttr = completedSet.has(item.slug) ? ' data-completed="1"' : "";
         const thumb = item.ytId
-          ? `<img src="https://i.ytimg.com/vi/${esc(item.ytId)}/hqdefault.jpg" alt="${esc(item.title)}" loading="lazy" decoding="async" class="at-card-thumb" onerror="this.remove()" />`
+          ? `<img src="https://i.ytimg.com/vi/${esc(item.ytId)}/hqdefault.jpg" alt="${esc(item.title)}" width="480" height="360" loading="lazy" decoding="async" class="at-card-thumb" onload="this.classList.add('is-loaded')" onerror="this.remove()" />`
           : "";
         const glyph =
           item.kind === "article-digest"
@@ -298,7 +298,7 @@ const schema = {
             : `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19 8 5" /></svg>`;
 
         return `
-          <article class="at-card" data-node-slug="${esc(item.slug)}"${doneAttr}>
+          <article class="at-card" data-node-slug="${esc(item.slug)}" data-kind="${esc(item.kind)}"${doneAttr}>
             <a href="${basePrefix}/${lang}/nodes/${esc(item.slug)}/" class="at-card-link">
               <div class="at-card-bezel">
                 <div class="at-card-poster">
@@ -374,7 +374,7 @@ const schema = {
         });
       }
 
-      function render() {
+      function render(animate) {
         const filtered = getFiltered();
         const completedSet = getCompletedSet();
         const slice = filtered.slice(0, limit);
@@ -383,6 +383,12 @@ const schema = {
           : `<p style="grid-column:1/-1;padding:36px 0;text-align:center;color:var(--ink-muted);">${
               lang === "zh" ? "未找到匹配视频，请尝试重置筛选条件。" : "No matching videos found. Try resetting filters."
             }</p>`;
+        if (window.__syncLoadedThumbs) window.__syncLoadedThumbs(grid);
+        if (animate) {
+          grid.classList.remove("at-grid-refreshing");
+          void grid.offsetWidth;
+          grid.classList.add("at-grid-refreshing");
+        }
         if (countEl) {
           countEl.textContent = lang === "zh" ? `共 ${filtered.length} 支内容` : `${filtered.length} videos`;
         }
@@ -402,7 +408,7 @@ const schema = {
           state.era = state.era === id ? null : id;
           state.eraLabel = state.era ? lbl : "";
           limit = PAGE_SIZE;
-          render();
+          render(true);
         });
       });
 
@@ -415,7 +421,7 @@ const schema = {
           if (state[dim].has(val)) state[dim].delete(val);
           else state[dim].set(val, lbl);
           limit = PAGE_SIZE;
-          render();
+          render(true);
         });
       });
 
@@ -423,7 +429,7 @@ const schema = {
         btn.addEventListener("click", () => {
           state.plat = btn.getAttribute("data-d-plat") || "all";
           limit = PAGE_SIZE;
-          render();
+          render(true);
         });
       });
 
@@ -439,19 +445,23 @@ const schema = {
           state[k].delete(v);
         }
         limit = PAGE_SIZE;
-        render();
+        render(true);
       });
 
+      let qTimer = 0;
       queryEl?.addEventListener("input", () => {
-        state.q = queryEl.value.trim().toLowerCase();
-        limit = PAGE_SIZE;
-        render();
+        clearTimeout(qTimer);
+        qTimer = setTimeout(() => {
+          state.q = queryEl.value.trim().toLowerCase();
+          limit = PAGE_SIZE;
+          render(false);
+        }, 90);
       });
 
       sortEl?.addEventListener("change", () => {
         state.sort = sortEl.value || "editorial";
         limit = PAGE_SIZE;
-        render();
+        render(true);
       });
 
       function clearAllState() {
@@ -467,7 +477,7 @@ const schema = {
         if (sortEl) sortEl.value = "editorial";
       }
 
-      function applyScenarioPreset(presetId) {
+      function applyScenarioPreset(presetId, animate) {
         clearAllState();
         document.querySelectorAll("[data-d-preset]").forEach((b) => {
           b.classList.toggle("is-active", b.getAttribute("data-d-preset") === presetId);
@@ -491,32 +501,32 @@ const schema = {
           state.eraLabel = eraBtn?.getAttribute("data-f-label") || "2025 H2–2026";
         }
         limit = PAGE_SIZE;
-        render();
+        render(animate !== false);
       }
 
       document.querySelectorAll("[data-d-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          applyScenarioPreset(btn.getAttribute("data-d-preset") || "all");
+          applyScenarioPreset(btn.getAttribute("data-d-preset") || "all", true);
         });
       });
 
       resetEl?.addEventListener("click", () => {
-        applyScenarioPreset("all");
+        applyScenarioPreset("all", true);
       });
 
       loadBtn.addEventListener("click", () => {
         limit += PAGE_SIZE;
-        render();
+        render(false);
       });
 
       try {
         const sp = new URLSearchParams(window.location.search);
         const qPreset = sp.get("preset");
-        if (qPreset) applyScenarioPreset(qPreset);
-        else render();
-      } catch {
-        render();
-      }
+        if (qPreset) applyScenarioPreset(qPreset, false);
+        else {
+          loadBtn.style.display = catalog.length > limit ? "inline-flex" : "none";
+        }
+      } catch {}
     })();
   </script>
 </BaseLayout>

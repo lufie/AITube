@@ -141,7 +141,21 @@ const quickTerms =
         .join("");
     }
 
+    let closingTimer = 0;
+
+    function closeModal() {
+      if (!dialog.open || dialog.classList.contains("is-closing")) return;
+      dialog.classList.add("is-closing");
+      clearTimeout(closingTimer);
+      closingTimer = setTimeout(() => {
+        dialog.classList.remove("is-closing");
+        if (dialog.open) dialog.close();
+      }, 165);
+    }
+
     async function openModal(prefill) {
+      clearTimeout(closingTimer);
+      dialog.classList.remove("is-closing");
       if (!dialog.open) dialog.showModal();
       await ensureCorpus();
       if (typeof prefill === "string") {
@@ -166,10 +180,14 @@ const quickTerms =
       })
     );
     document.querySelectorAll("[data-close-search]").forEach((btn) =>
-      btn.addEventListener("click", () => dialog.close())
+      btn.addEventListener("click", closeModal)
     );
+    dialog.addEventListener("cancel", (e) => {
+      e.preventDefault();
+      closeModal();
+    });
     dialog.addEventListener("click", (e) => {
-      if (e.target === dialog) dialog.close();
+      if (e.target === dialog) closeModal();
     });
     input.addEventListener("input", () => renderHits(input.value));
     input.addEventListener("keydown", (e) => {
@@ -194,7 +212,7 @@ const quickTerms =
     window.addEventListener("keydown", (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        if (dialog.open) dialog.close();
+        if (dialog.open) closeModal();
         else openModal();
       }
     });

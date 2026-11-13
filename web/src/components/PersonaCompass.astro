@@ -70,7 +70,7 @@ const startersByRole = Object.fromEntries(
         <div class="at-grid-cards">
           {starterNodes.map((node, cIdx) => (
             <div class="at-cascade-item" style={`--card-i:${cIdx};`}>
-              <MediaCard node={node} lang={lang} />
+              <MediaCard node={node} lang={lang} eager={isDefault} />
             </div>
           ))}
         </div>

@@ -73,12 +73,8 @@ const toastMsg = UI[lang].copyToast;
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body data-toast-msg={toastMsg}>
-    <!-- Ambient Optical Light Field Behind All Liquid Glass Layers -->
-    <div class="at-ambient-canvas" aria-hidden="true">
-      <div class="at-ambient-orb at-orb-sky"></div>
-      <div class="at-ambient-orb at-orb-warm"></div>
-      <div class="at-ambient-orb at-orb-aqua"></div>
-    </div>
+    <!-- Zero-Blur-Cost Cosine-Eased Atmospheric Mesh Canvas -->
+    <div class="at-ambient-canvas" aria-hidden="true"></div>
 
     <Masthead lang={lang} pathname={pathname} />
     <main>
@@ -90,14 +86,29 @@ const toastMsg = UI[lang].copyToast;
 
     <script is:inline>
       (() => {
+        const isEn = document.documentElement.lang.startsWith("en");
         try {
-          const curLang = document.documentElement.lang.startsWith("en") ? "en" : "zh";
-          localStorage.setItem("aitube-lang", curLang);
+          localStorage.setItem("aitube-lang", isEn ? "en" : "zh");
         } catch {}
 
-        // 1. Scroll-Reactive Floating Liquid Glass Masthead Condensation
+        // 0. Hydrate already-cached images cleanly so lazy/eager thumbnails fade in without pop-in
+        function syncLoadedThumbs(root) {
+          (root || document).querySelectorAll("img.at-card-thumb, .at-mini-thumb img").forEach((img) => {
+            if (img.complete && img.naturalWidth > 0) {
+              img.classList.add("is-loaded");
+            }
+          });
+        }
+        window.__syncLoadedThumbs = syncLoadedThumbs;
+        syncLoadedThumbs(document);
+
+        // 1. Zero-Thrash Scroll-Reactive Floating Masthead Condensation
+        let wasScrolled = null;
         const syncScroll = () => {
-          if (window.scrollY > 14) {
+          const next = window.scrollY > 16;
+          if (next === wasScrolled) return;
+          wasScrolled = next;
+          if (next) {
             document.documentElement.setAttribute("data-scrolled", "1");
           } else {
             document.documentElement.removeAttribute("data-scrolled");
@@ -106,7 +117,7 @@ const toastMsg = UI[lang].copyToast;
         syncScroll();
         window.addEventListener("scroll", syncScroll, { passive: true });
 
-        // 2. Spring-Physics Sliding Liquid Glass Nav Droplet
+        // 2. Physical Liquid Spring Nav Droplet
         document.querySelectorAll("[data-liquid-nav]").forEach((nav) => {
           const glider = nav.querySelector(".at-nav-glider");
           const links = [...nav.querySelectorAll(".at-nav-link")];
@@ -139,7 +150,7 @@ const toastMsg = UI[lang].copyToast;
           window.addEventListener("resize", () => moveNavGlider(getActiveLink(), true), { passive: true });
         });
 
-        // 3. Spring-Physics Sliding Liquid Droplet for All Segmented Controls
+        // 3. Physical Liquid Spring Droplet for All Segmented Controls
         function syncLiquidSegs(instant) {
           document.querySelectorAll("[data-liquid-seg]").forEach((seg) => {
             let glider = seg.querySelector(".at-seg-glider");
@@ -158,11 +169,6 @@ const toastMsg = UI[lang].copyToast;
             seg.setAttribute("data-glider-ready", "1");
             const noAnim = instant === true || firstInit;
             if (noAnim) glider.style.transition = "none";
-            else {
-              glider.setAttribute("data-stretching", "1");
-              clearTimeout(glider.__stretchTimer);
-              glider.__stretchTimer = setTimeout(() => glider.removeAttribute("data-stretching"), 260);
-            }
             glider.style.opacity = "1";
             glider.style.width = `${active.offsetWidth}px`;
             glider.style.height = `${active.offsetHeight}px`;
@@ -177,30 +183,52 @@ const toastMsg = UI[lang].copyToast;
         syncLiquidSegs(true);
         window.addEventListener("resize", () => syncLiquidSegs(true), { passive: true });
 
-        // 4. Cursor-Tracked Specular Glass Refraction (--mx, --my)
-        const glassSelector =
-          ".at-era-card, .at-collection-card, .at-concept-card, .at-side-card, .at-vault-card, .at-horizon-shell, .at-card-bezel";
-        let rafPending = false;
-        let lastEvt = null;
-        document.addEventListener(
-          "pointermove",
-          (e) => {
-            if (e.pointerType === "touch") return;
-            lastEvt = e;
-            if (rafPending) return;
-            rafPending = true;
-            requestAnimationFrame(() => {
-              rafPending = false;
-              if (!lastEvt) return;
-              const target = lastEvt.target && lastEvt.target.closest ? lastEvt.target.closest(glassSelector) : null;
-              if (!target) return;
-              const r = target.getBoundingClientRect();
-              target.style.setProperty("--mx", `${Math.round(lastEvt.clientX - r.left)}px`);
-              target.style.setProperty("--my", `${Math.round(lastEvt.clientY - r.top)}px`);
-            });
-          },
-          { passive: true }
-        );
+        // 4. Zero-Reflow Pointer Specular Sheen (Caches rect on pointerenter; desktop fine pointer only)
+        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+          const glassSelector =
+            ".at-era-card, .at-collection-card, .at-concept-card, .at-side-card, .at-vault-card";
+          let hoveredCard = null;
+          let cachedRect = null;
+          let rafId = 0;
+          let lastX = 0;
+          let lastY = 0;
+
+          const clearRectCache = () => {
+            cachedRect = null;
+          };
+          window.addEventListener("scroll", clearRectCache, { passive: true });
+          window.addEventListener("resize", clearRectCache, { passive: true });
+
+          document.addEventListener(
+            "pointerover",
+            (e) => {
+              const next = e.target && e.target.closest ? e.target.closest(glassSelector) : null;
+              if (next !== hoveredCard) {
+                hoveredCard = next;
+                cachedRect = next ? next.getBoundingClientRect() : null;
+              }
+            },
+            { passive: true }
+          );
+
+          document.addEventListener(
+            "pointermove",
+            (e) => {
+              if (!hoveredCard) return;
+              lastX = e.clientX;
+              lastY = e.clientY;
+              if (rafId) return;
+              rafId = requestAnimationFrame(() => {
+                rafId = 0;
+                if (!hoveredCard) return;
+                if (!cachedRect) cachedRect = hoveredCard.getBoundingClientRect();
+                hoveredCard.style.setProperty("--mx", `${Math.round(lastX - cachedRect.left)}px`);
+                hoveredCard.style.setProperty("--my", `${Math.round(lastY - cachedRect.top)}px`);
+              });
+            },
+            { passive: true }
+          );
+        }
 
         // 5. Scroll-Triggered Spatial Reveal for Below-the-Fold Glass Surfaces
         const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -219,12 +247,12 @@ const toastMsg = UI[lang].copyToast;
                 }
               });
             },
-            { rootMargin: "0px 0px -6% 0px", threshold: 0.06 }
+            { rootMargin: "0px 0px -4% 0px", threshold: 0.04 }
           );
           revealTargets.forEach((el, i) => {
             const rect = el.getBoundingClientRect();
-            if (rect.top > vh * 1.06) {
-              el.style.setProperty("--reveal-delay", `${(i % 4) * 55}ms`);
+            if (rect.top > vh * 1.08) {
+              el.style.setProperty("--reveal-delay", `${(i % 3) * 42}ms`);
               el.classList.add("at-will-reveal");
               revealObs.observe(el);
             }
@@ -279,7 +307,7 @@ const toastMsg = UI[lang].copyToast;
           });
         });
 
-        // 7. Interactive 10-Quarter Sparkline Scrubbing
+        // 7. Interactive 10-Quarter Sparkline Scrubbing (rAF-throttled)
         document.querySelectorAll("[data-spark-box]").forEach((box) => {
           const svg = box.querySelector("[data-spark-svg]");
           const dot = box.querySelector("[data-sp-dot]");
@@ -295,6 +323,7 @@ const toastMsg = UI[lang].copyToast;
           if (!pts.length) return;
           const defMom = box.getAttribute("data-default-mom") || "";
           const infIdx = Number(box.getAttribute("data-inflect-idx") || pts.length - 1);
+          let svgRect = null;
 
           function showAt(idx) {
             const p = pts[idx];
@@ -310,48 +339,70 @@ const toastMsg = UI[lang].copyToast;
           }
 
           function reset() {
+            svgRect = null;
             const p = pts[infIdx] || pts[pts.length - 1];
             dot.setAttribute("cx", String(p.x));
             dot.setAttribute("cy", String(p.y));
             if (guide) {
               guide.setAttribute("x1", String(p.x));
               guide.setAttribute("x2", String(p.x));
-              guide.setAttribute("opacity", "0.45");
+              guide.setAttribute("opacity", "0.35");
             }
             mid.textContent = defMom;
           }
 
+          svg.addEventListener("mouseenter", () => {
+            svgRect = svg.getBoundingClientRect();
+          });
           svg.addEventListener("mousemove", (e) => {
-            const rect = svg.getBoundingClientRect();
-            const ratio = (e.clientX - rect.left) / Math.max(1, rect.width);
+            if (!svgRect) svgRect = svg.getBoundingClientRect();
+            const ratio = (e.clientX - svgRect.left) / Math.max(1, svgRect.width);
             const idx = Math.max(0, Math.min(pts.length - 1, Math.round(ratio * (pts.length - 1))));
             showAt(idx);
           });
           svg.addEventListener("mouseleave", reset);
         });
 
-        // 8. Smooth Theme Switch
+        // 8. GPU-Accelerated View Transition Theme Switch (Zero Universal * Style Recalc)
         document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
           btn.addEventListener("click", () => {
-            document.documentElement.classList.add("at-theme-switching");
             const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
             const next = cur === "dark" ? "light" : "dark";
-            document.documentElement.setAttribute("data-theme", next);
-            try {
-              localStorage.setItem("aitube-theme", next);
-            } catch {}
-            setTimeout(() => document.documentElement.classList.remove("at-theme-switching"), 380);
+            const applyTheme = () => {
+              document.documentElement.setAttribute("data-theme", next);
+              try {
+                localStorage.setItem("aitube-theme", next);
+              } catch {}
+            };
+            if (document.startViewTransition && !prefersReduced) {
+              document.startViewTransition(applyTheme);
+            } else {
+              applyTheme();
+            }
           });
         });
 
-        // 9. Liquid Glass Copy Toast
+        // 9. Liquid Glass Copy Toast + Inline Button Confirmation
         const toast = document.getElementById("at-toast");
         const msg = document.body.getAttribute("data-toast-msg") || "Copied";
         document.addEventListener("click", (e) => {
-          const chip = e.target.closest("[data-copy-op]");
+          const chip = e.target && e.target.closest ? e.target.closest("[data-copy-op]") : null;
           if (!chip) return;
           const val = chip.getAttribute("data-copy-op") || "";
           navigator.clipboard?.writeText(val).catch(() => {});
+
+          const labelSpan = chip.querySelector("span");
+          if (labelSpan && chip.classList.contains("at-btn-ghost")) {
+            if (!chip.dataset.origLabel) chip.dataset.origLabel = labelSpan.textContent || "";
+            labelSpan.textContent = isEn ? "✓ Copied" : "✓ 已复制";
+            chip.classList.add("is-copied");
+            clearTimeout(chip.__copyBtnTimer);
+            chip.__copyBtnTimer = setTimeout(() => {
+              labelSpan.textContent = chip.dataset.origLabel || "";
+              chip.classList.remove("is-copied");
+            }, 1500);
+          }
+
           if (toast) {
             const preview = val.replace(/\s+/g, " ").trim();
             toast.textContent = preview.length > 44 ? `${msg}: ${preview.slice(0, 44)}…` : `${msg}: ${preview}`;

@@ -103,7 +103,7 @@ const schema = {
   </section>
 
   <div class="at-container" style="padding-bottom:68px;">
-    {STAGES.map((st) => {
+    {STAGES.map((st, sIdx) => {
       const stageNodes = SPINE_NODES.filter((n) => n.stageId === st.id);
       const prefSlugs = stageStarterMap[st.id] || [];
       const coreNodes = prefSlugs
@@ -141,7 +141,7 @@ const schema = {
 
           <div class="at-grid-cards">
             {coreNodes.map((n) => (
-              <MediaCard node={n} lang={lang} />
+              <MediaCard node={n} lang={lang} eager={sIdx === 0} />
             ))}
           </div>
 
@@ -150,6 +150,7 @@ const schema = {
               <button
                 type="button"
                 class="at-btn-ghost"
+                aria-expanded="false"
                 data-toggle-stage={st.id}
                 data-label-closed={
                   lang === "zh"
@@ -167,10 +168,14 @@ const schema = {
                   : `Show ${extraNodes.length} more videos in this stage ▾`}
               </button>
 
-              <div class="at-grid-cards at-stage-extra-grid" data-stage-extra={st.id} style="display:none;margin-top:24px;">
-                {extraNodes.map((n) => (
-                  <MediaCard node={n} lang={lang} />
-                ))}
+              <div class="at-collapse-shell" data-stage-extra={st.id} inert>
+                <div class="at-collapse-inner">
+                  <div class="at-grid-cards">
+                    {extraNodes.map((n) => (
+                      <MediaCard node={n} lang={lang} />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -190,15 +195,13 @@ const schema = {
       document.querySelectorAll("[data-toggle-stage]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const id = btn.getAttribute("data-toggle-stage");
-          const box = document.querySelector(`[data-stage-extra="${id}"]`);
-          if (!box) return;
-          const open = box.style.display === "none";
-          box.style.display = open ? "" : "none";
-          if (open) {
-            box.classList.remove("is-entering");
-            void box.offsetWidth;
-            box.classList.add("is-entering");
-          }
+          const shell = document.querySelector(`[data-stage-extra="${id}"]`);
+          if (!shell) return;
+          const open = !shell.classList.contains("is-open");
+          shell.classList.toggle("is-open", open);
+          if (open) shell.removeAttribute("inert");
+          else shell.setAttribute("inert", "");
+          btn.setAttribute("aria-expanded", open ? "true" : "false");
           btn.textContent = open
             ? btn.getAttribute("data-label-open")
             : btn.getAttribute("data-label-closed");

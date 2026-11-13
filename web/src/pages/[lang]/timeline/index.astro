@@ -274,15 +274,23 @@ const schema = {
         });
       }
 
-      function activatePreset(pid) {
+      function pulseContainer(el) {
+        if (!el) return;
+        el.classList.remove("at-grid-refreshing");
+        void el.offsetWidth;
+        el.classList.add("at-grid-refreshing");
+      }
+
+      function activatePreset(pid, animate) {
         activePreset = pid;
         document.querySelectorAll("[data-tl-preset]").forEach((b) => {
           b.classList.toggle("is-active", b.getAttribute("data-tl-preset") === pid);
         });
         apply();
+        if (animate) pulseContainer(viewMode === "matrix" ? mxView : edView);
       }
 
-      function setView(mode) {
+      function setView(mode, animate) {
         viewMode = mode === "matrix" ? "matrix" : "editorial";
         document.querySelectorAll("[data-tl-view]").forEach((b) => {
           b.classList.toggle("is-active", b.getAttribute("data-tl-view") === viewMode);
@@ -291,24 +299,29 @@ const schema = {
         if (edView && mxView) {
           edView.style.display = viewMode === "editorial" ? "" : "none";
           mxView.style.display = viewMode === "matrix" ? "" : "none";
+          if (animate) pulseContainer(viewMode === "matrix" ? mxView : edView);
         }
       }
 
       document.querySelectorAll("[data-tl-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          activatePreset(btn.getAttribute("data-tl-preset") || "all");
+          activatePreset(btn.getAttribute("data-tl-preset") || "all", true);
         });
       });
 
       document.querySelectorAll("[data-tl-view]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          setView(btn.getAttribute("data-tl-view") || "editorial");
+          setView(btn.getAttribute("data-tl-view") || "editorial", true);
         });
       });
 
+      let tlSearchTimer = 0;
       searchInput?.addEventListener("input", () => {
-        query = searchInput.value.trim().toLowerCase();
-        apply();
+        clearTimeout(tlSearchTimer);
+        tlSearchTimer = setTimeout(() => {
+          query = searchInput.value.trim().toLowerCase();
+          apply();
+        }, 90);
       });
 
       cards.forEach((card) => {

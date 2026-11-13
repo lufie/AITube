@@ -5,8 +5,9 @@ import { formatDurationBadge, withBase, type Lang } from "../lib/i18n";
 interface Props {
   node: MediaNode;
   lang: Lang;
+  eager?: boolean;
 }
-const { node, lang } = Astro.props;
+const { node, lang, eager = false } = Astro.props;
 const loc = node[lang];
 const s = node.source;
 const concept = getConcept(node.primaryConcept);
@@ -24,6 +25,7 @@ const topicName = concept ? concept[lang].shortName : node.primaryConcept;
 <article
   class="at-card"
   data-node-slug={node.slug}
+  data-kind={s.kind}
   data-era={concept?.eraId || ""}
   data-concept={node.primaryConcept}
   data-lifecycle={concept?.lifecycle || "mainstream"}
@@ -39,9 +41,12 @@ const topicName = concept ? concept[lang].shortName : node.primaryConcept;
           <img
             src={ytThumb}
             alt={loc.title}
-            loading="lazy"
+            width="480"
+            height="360"
+            loading={eager ? "eager" : "lazy"}
             decoding="async"
             class="at-card-thumb"
+            onload="this.classList.add('is-loaded')"
             onerror="this.remove()"
           />
         )}

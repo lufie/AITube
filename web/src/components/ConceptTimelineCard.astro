@@ -129,7 +129,16 @@ const repCuts = getRepresentativeConceptCuts(concept.slug, 3);
         <a href={withBase(`/${lang}/nodes/${cut.slug}/`)} class="at-mini-cut">
           <div class="at-mini-thumb" aria-hidden="true">
             {ytThumb && (
-              <img src={ytThumb} alt="" loading="lazy" decoding="async" onerror="this.remove()" />
+              <img
+                src={ytThumb}
+                alt=""
+                width="480"
+                height="360"
+                loading="lazy"
+                decoding="async"
+                onload="this.classList.add('is-loaded')"
+                onerror="this.remove()"
+              />
             )}
             <span class="at-card-play-glyph" style="width:32px;height:32px;">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
