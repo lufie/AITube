@@ -1,6 +1,6 @@
 ---
 import type { MediaNode } from "../lib/content";
-import { formatTime, type Lang } from "../lib/i18n";
+import { formatSliceMinutes, formatTime, type Lang } from "../lib/i18n";
 
 interface Props {
   node: MediaNode;
@@ -12,8 +12,8 @@ const isVideo = s.kind === "video-cut" && (s.totalDurationSec || 0) > 0;
 const total = Math.max(1, s.totalDurationSec || 100);
 const start = s.startSec || 0;
 const end = s.endSec || total;
-const leftPct = Math.min(95, Math.max(0, (start / total) * 100));
-const widthPct = Math.min(100 - leftPct, Math.max(4, ((end - start) / total) * 100));
+const leftPct = Math.min(92, Math.max(0, (start / total) * 100));
+const widthPct = Math.min(100 - leftPct, Math.max(7, ((end - start) / total) * 100));
 
 const stepTimes = [
   start,
@@ -23,17 +23,28 @@ const stepTimes = [
 ---
 {isVideo && (
   <div class="at-scrubber">
-    <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--ink-secondary);">
+    <div class="at-mono" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:0.75rem;color:var(--ink-secondary);">
       <span>
-        {lang === "zh" ? "精选核心切片窗口" : "Verified High-Signal Window"}: <strong>{formatTime(start)}–{formatTime(end)}</strong>
+        {lang === "zh" ? "精选核心切片胶片轨" : "Precision Filmstrip Slice"}:{" "}
+        <strong style="color:var(--ink-primary);">{formatTime(start)}–{formatTime(end)}</strong>{" "}
+        <span style="color:var(--accent-primary);">({formatSliceMinutes(start, end, lang)})</span>
       </span>
       <span>
-        {lang === "zh" ? "原片总长" : "Full Video"}: {formatTime(total)}
+        {lang === "zh" ? "原片全长" : "Full Source"}: {formatTime(total)}
       </span>
     </div>
 
-    <div class="at-scrubber-track" aria-hidden="true">
-      <div class="at-scrubber-slice" style={`left:${leftPct.toFixed(1)}%;width:${widthPct.toFixed(1)}%;`} />
+    <div class="at-film-row">
+      <span class="at-mono" style="font-size:0.68rem;color:var(--ink-muted);">0:00</span>
+      <div class="at-scrubber-track" aria-hidden="true">
+        <div class="at-scrubber-slice" style={`left:${leftPct.toFixed(1)}%;width:${widthPct.toFixed(1)}%;`}>
+          {widthPct >= 14 ? `${formatTime(start)}–${formatTime(end)}` : ""}
+        </div>
+      </div>
+      <span class="at-mono" style="font-size:0.68rem;color:var(--ink-muted);">{formatTime(total)}</span>
+      <span class="at-saved-callout">
+        ⚡ {lang === "zh" ? `省 ${s.hoursSaved}h` : `Saved ${s.hoursSaved}h`}
+      </span>
     </div>
 
     {s.platform === "youtube" && (
@@ -41,9 +52,9 @@ const stepTimes = [
         {node[lang].steps.map((st, idx) => (
           <button
             type="button"
-            class="at-chip at-mono"
+            class={`at-chip at-mono ${idx === 0 ? "is-active" : ""}`}
             data-seek-sec={stepTimes[idx]}
-            style="font-size:0.74rem;padding:4px 9px;"
+            style="font-size:0.74rem;padding:4px 10px;"
           >
             ▶ {formatTime(stepTimes[idx])} · 0{idx + 1} {st.title.slice(0, 22)}
           </button>
@@ -54,12 +65,26 @@ const stepTimes = [
 )}
 
 <script is:inline>
-  document.querySelectorAll("[data-seek-sec]").forEach((btn) => {
-    btn.addEventListener("click", () => {
+  (() => {
+    if (window.__aitubeSeekDelegated) return;
+    window.__aitubeSeekDelegated = true;
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-seek-sec]");
+      if (!btn) return;
       const sec = Number(btn.getAttribute("data-seek-sec") || 0);
+      document.querySelectorAll("[data-seek-sec]").forEach((b) => {
+        b.classList.toggle("is-active", Number(b.getAttribute("data-seek-sec")) === sec);
+      });
+      const stageEl = document.getElementById("stage");
+      if (stageEl) {
+        const rect = stageEl.getBoundingClientRect();
+        if (rect.top < -40 || rect.top > window.innerHeight * 0.55) {
+          stageEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
       if (typeof window.__seekAITubeStage === "function") {
         window.__seekAITubeStage(sec);
       }
     });
-  });
+  })();
 </script>

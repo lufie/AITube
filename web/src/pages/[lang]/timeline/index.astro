@@ -1,8 +1,17 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ConceptHorizonMap from "../../../components/ConceptHorizonMap.astro";
 import ConceptTimelineCard from "../../../components/ConceptTimelineCard.astro";
-import { LANGS, LIFECYCLE_META, UI, type Lang, type Lifecycle } from "../../../lib/i18n";
-import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS } from "../../../lib/content";
+import { LANGS, LIFECYCLE_META, UI, withBase, type Lang, type Lifecycle } from "../../../lib/i18n";
+import {
+  CONCEPTS,
+  ERAS,
+  NODES,
+  TAXONOMY_DIMS,
+  buildSparklineGeometry,
+  getNodesForConcept,
+  splitParadigmShift,
+} from "../../../lib/content";
 import { absUrl, buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
 
 export function getStaticPaths() {
@@ -13,6 +22,7 @@ const lang = Astro.params.lang as Lang;
 const t = UI[lang];
 const domainDim = TAXONOMY_DIMS.find((d) => d.key === "domain")!;
 const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
+const romanEras = ["I", "II", "III", "IV", "V"];
 
 const title =
   lang === "zh"
@@ -54,27 +64,29 @@ const schema = {
   ogImage={`/og/timeline-${lang}.png`}
   schema={schema}
 >
-  <section style="padding:36px 0 24px;border-bottom:1px solid var(--border-subtle);">
+  <section style="padding:32px 0 26px;border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
       <div class="at-kicker">CHRONOLOGICAL CONCEPT INDEX · 2017 Q2 → 2026 Q3</div>
-      <h1 style="font-size:clamp(1.85rem,3vw,2.6rem);margin:8px 0 12px;">
+      <h1 style="font-size:clamp(1.85rem,3vw,2.6rem);margin:8px 0 10px;">
         {lang === "zh" ? "AI 概念趋势时间线索引视角" : "AI Concept Trend Timeline Index"}
       </h1>
-      <p style="max-width:72ch;color:var(--ink-secondary);font-size:0.98rem;">
+      <p style="max-width:74ch;color:var(--ink-secondary);font-size:0.97rem;margin-bottom:22px;">
         {lang === "zh"
-          ? `为什么刚学会 Prompt Engineering，行业已经在谈 Context Engineering、MCP 与 SKILL.md？我们把 2017–2026 年 ${CONCEPTS.length} 个关键概念放回真实时间轴：看清每个概念「何时诞生 → 何时破圈爆发 → 替代了什么旧范式 → 关联哪几支核验切片（共 ${NODES.length} 支）」。`
-          : `Why did Prompt Engineering evolve into Context Engineering, MCP, and SKILL.md? Trace all ${CONCEPTS.length} canonical concepts chronologically from origin quarter to breakout inflection, paradigm shift, lineage, and ${NODES.length} verified cuts.`}
+          ? `为什么刚学会 Prompt Engineering，行业已经在谈 Context Engineering、MCP 与 SKILL.md？上方全景泳道图按四层架构串联 ${CONCEPTS.length} 个核心概念的「起源 → 拐点 → 血缘弧线」，下方提供精读详卡与全景对比矩阵两种检阅密度（关联 ${NODES.length} 支核验切片）。`
+          : `Why did Prompt Engineering evolve into Context Engineering, MCP, and SKILL.md? Explore all ${CONCEPTS.length} concepts across the interactive 2017–2026 swimlane & causal lineage map above, then inspect detailed cards or compact matrix below (${NODES.length} verified cuts).`}
       </p>
+
+      <ConceptHorizonMap lang={lang} mode="timeline" />
     </div>
   </section>
 
   <div class="at-timeline-toolbar">
-    <div class="at-container" style="display:flex;flex-direction:column;gap:10px;">
+    <div class="at-container" style="display:flex;flex-direction:column;gap:8px;">
       <div class="at-filter-row" role="group" aria-label="Era filter">
         <button type="button" class="at-chip is-active" data-tl-era="all">{t.allEras} ({CONCEPTS.length})</button>
         {ERAS.map((era) => (
           <button type="button" class="at-chip" data-tl-era={era.id}>
-            <span class="at-mono" style="font-size:0.74rem;">{era.period}</span> · {era[lang].title}
+            <span class="at-mono" style="font-size:0.73rem;">{era.period}</span> · {era[lang].title}
           </button>
         ))}
       </div>
@@ -91,7 +103,7 @@ const schema = {
           <select
             id="tl-domain-select"
             aria-label={t.allDomains}
-            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.81rem;"
+            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.8rem;"
           >
             <option value="all">{t.allDomains}</option>
             {domainDim.items.map((it) => (
@@ -100,44 +112,154 @@ const schema = {
           </select>
         </div>
 
-        <div style="display:flex;align-items:center;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <input
             type="search"
             id="tl-search"
             placeholder={lang === "zh" ? "过滤概念词条…" : "Filter concepts..."}
-            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.82rem;width:180px;"
+            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.81rem;width:168px;"
           />
           <span class="at-mono" id="tl-count" style="font-size:0.78rem;color:var(--ink-muted);">
             {CONCEPTS.length}/{CONCEPTS.length}
           </span>
+          <!-- View Density Switcher -->
+          <div class="at-view-switch" role="group" aria-label="View mode">
+            <button type="button" class="at-view-btn is-active" data-tl-view="editorial">
+              ☷ {t.editorialView}
+            </button>
+            <button type="button" class="at-view-btn" data-tl-view="matrix">
+              ▤ {t.matrixView}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="at-container" style="padding-bottom:56px;">
-    {ERAS.map((era) => {
-      const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
-      return (
-        <section class="at-era-block" id={era.id} data-era-section={era.id}>
-          <div class="at-era-header">
-            <div>
-              <span class="at-mono" style="font-size:0.8rem;color:var(--accent-signal);font-weight:600;">
-                {era.period}
-              </span>
-              <h2 style="font-size:1.55rem;margin-top:2px;">{era[lang].title}</h2>
-            </div>
-            <p style="max-width:54ch;font-size:0.88rem;color:var(--ink-secondary);">{era[lang].subtitle}</p>
-          </div>
+  <div class="at-container" style="padding-bottom:58px;">
+    <!-- View 1: Dual-Column Editorial Cards Workspace -->
+    <div class="at-tl-workspace" id="tl-editorial-view">
+      <aside class="at-era-rail" aria-label="Era scrubber">
+        <div class="at-kicker" style="font-size:0.66rem;margin-bottom:4px;padding-left:8px;">
+          {lang === "zh" ? "纪元标尺" : "ERA SCRUBBER"}
+        </div>
+        {ERAS.map((era, idx) => {
+          const cnt = CONCEPTS.filter((c) => c.eraId === era.id).length;
+          return (
+            <a href={`#${era.id}`} class={`at-era-rail-link ${idx === 0 ? "is-current" : ""}`} data-era-spy={era.id}>
+              <div class="at-mono" style="font-size:0.68rem;color:var(--accent-signal);">
+                ERA {romanEras[idx]} · {era.period}
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:6px;">
+                <span>{era[lang].title}</span>
+                <span class="at-mono" style="font-size:0.68rem;color:var(--ink-muted);">{cnt}</span>
+              </div>
+            </a>
+          );
+        })}
+      </aside>
 
-          <div class="at-concept-list">
-            {eraConcepts.map((c) => (
-              <ConceptTimelineCard concept={c} lang={lang} />
-            ))}
-          </div>
-        </section>
-      );
-    })}
+      <div>
+        {ERAS.map((era, idx) => {
+          const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
+          return (
+            <section class="at-era-block" id={era.id} data-era-section={era.id}>
+              <div class="at-era-header">
+                <div>
+                  <span class="at-mono" style="font-size:0.78rem;color:var(--accent-signal);font-weight:650;">
+                    ERA {romanEras[idx]} · {era.period}
+                  </span>
+                  <h2 style="font-size:1.55rem;margin-top:2px;">{era[lang].title}</h2>
+                </div>
+                <p style="max-width:54ch;font-size:0.88rem;color:var(--ink-secondary);">{era[lang].subtitle}</p>
+              </div>
+
+              <div class="at-concept-list">
+                {eraConcepts.map((c) => (
+                  <ConceptTimelineCard concept={c} lang={lang} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- View 2: Compact 22-Concept Comparative Matrix -->
+    <div class="at-matrix-wrap" id="tl-matrix-view" style="display:none;">
+      <table class="at-matrix-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>{lang === "zh" ? "概念与生命周期" : "Concept & Lifecycle"}</th>
+            <th>{lang === "zh" ? "起源 → ★ 拐点" : "Origin → ★ Inflection"}</th>
+            <th>{lang === "zh" ? "范式跃迁（Before → After）" : "Paradigm Shift (Before → After)"}</th>
+            <th>{lang === "zh" ? "趋势曲线 (22H2–26Q3)" : "Momentum (22H2–26Q3)"}</th>
+            <th>{lang === "zh" ? "切片" : "Cuts"}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {CONCEPTS.map((c) => {
+            const loc = c[lang];
+            const lf = LIFECYCLE_META[c.lifecycle];
+            const sh = splitParadigmShift(loc.paradigmShift);
+            const sp = buildSparklineGeometry(c.trendSeries, 118, 30, 3);
+            const infPt = sp.points[c.inflectionIndex] || sp.points[sp.points.length - 1];
+            const cutsCnt = getNodesForConcept(c.slug).length;
+            return (
+              <tr
+                data-matrix-row
+                data-era={c.eraId}
+                data-lifecycle={c.lifecycle}
+                data-domain={c.domain}
+                data-search={`${c.en.name} ${c.zh.name} ${loc.oneLiner} ${loc.paradigmShift}`.toLowerCase()}
+              >
+                <td class="at-mono" style="color:var(--ink-muted);font-size:0.76rem;">
+                  #{String(c.order).padStart(2, "0")}
+                </td>
+                <td>
+                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} style="font-weight:600;color:var(--ink-primary);display:block;margin-bottom:3px;">
+                    {loc.shortName}
+                  </a>
+                  <span class={`at-life at-life-${c.lifecycle}`} style="font-size:0.66rem;padding:1px 6px;">
+                    {lf.icon} {lf[lang]}
+                  </span>
+                </td>
+                <td class="at-mono" style="font-size:0.75rem;white-space:nowrap;">
+                  {c.originQuarter} → <strong style="color:var(--accent-signal);">{c.inflectionQuarter}</strong>
+                </td>
+                <td style="max-width:340px;font-size:0.8rem;">
+                  {sh.before && (
+                    <span style="color:var(--ink-muted);text-decoration:line-through;margin-right:5px;">
+                      {sh.before}
+                    </span>
+                  )}
+                  <span class="at-mono" style="color:var(--accent-primary);margin-right:5px;">→</span>
+                  <span>{sh.after}</span>
+                </td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <svg width="118" height="30" viewBox="0 0 118 30" aria-hidden="true">
+                      <path d={sp.areaPath} fill="var(--accent-primary-soft)" />
+                      <path d={sp.path} fill="none" stroke="var(--accent-primary)" stroke-width="1.8" />
+                      <circle cx={infPt.x} cy={infPt.y} r="3" fill="var(--accent-signal)" />
+                    </svg>
+                    <span class="at-mono" style="font-size:0.72rem;color:var(--accent-primary);white-space:nowrap;">
+                      {c.momentum}
+                    </span>
+                  </div>
+                </td>
+                <td class="at-mono" style="white-space:nowrap;">
+                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} style="color:var(--accent-primary);font-weight:600;">
+                    {cutsCnt} →
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script is:inline>
@@ -148,21 +270,41 @@ const schema = {
       let query = "";
 
       const cards = [...document.querySelectorAll("[data-concept-card]")];
+      const matrixRows = [...document.querySelectorAll("[data-matrix-row]")];
+      const hzNodes = [...document.querySelectorAll("[data-hz-slug]")];
       const sections = [...document.querySelectorAll("[data-era-section]")];
       const countEl = document.getElementById("tl-count");
       const domainSel = document.getElementById("tl-domain-select");
       const searchIn = document.getElementById("tl-search");
+      const edView = document.getElementById("tl-editorial-view");
+      const mxView = document.getElementById("tl-matrix-view");
+
+      function matches(el) {
+        const okEra = activeEra === "all" || el.getAttribute("data-era") === activeEra;
+        const okLife = activeLife === "all" || el.getAttribute("data-lifecycle") === activeLife;
+        const okDom = activeDomain === "all" || el.getAttribute("data-domain") === activeDomain;
+        const okQ = !query || (el.getAttribute("data-search") || "").includes(query);
+        return okEra && okLife && okDom && okQ;
+      }
 
       function apply() {
         let shown = 0;
+        const visSlugs = new Set();
         for (const card of cards) {
-          const okEra = activeEra === "all" || card.getAttribute("data-era") === activeEra;
-          const okLife = activeLife === "all" || card.getAttribute("data-lifecycle") === activeLife;
-          const okDom = activeDomain === "all" || card.getAttribute("data-domain") === activeDomain;
-          const okQ = !query || (card.getAttribute("data-search") || "").includes(query);
-          const vis = okEra && okLife && okDom && okQ;
+          const vis = matches(card);
           card.style.display = vis ? "" : "none";
-          if (vis) shown++;
+          if (vis) {
+            shown++;
+            const s = card.getAttribute("data-concept-slug");
+            if (s) visSlugs.add(s);
+          }
+        }
+        for (const row of matrixRows) {
+          row.style.display = matches(row) ? "" : "none";
+        }
+        for (const hn of hzNodes) {
+          const s = hn.getAttribute("data-hz-slug");
+          hn.classList.toggle("is-filtered-out", shown < cards.length && !visSlugs.has(s));
         }
         for (const sec of sections) {
           const hasVis = [...sec.querySelectorAll("[data-concept-card]")].some((c) => c.style.display !== "none");
@@ -192,6 +334,46 @@ const schema = {
       searchIn?.addEventListener("input", () => {
         query = searchIn.value.trim().toLowerCase();
         apply();
+      });
+
+      // View Mode Switcher (Editorial Cards vs Compact Matrix)
+      document.querySelectorAll("[data-tl-view]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const mode = btn.getAttribute("data-tl-view");
+          document.querySelectorAll("[data-tl-view]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          if (edView && mxView) {
+            edView.style.display = mode === "matrix" ? "none" : "";
+            mxView.style.display = mode === "matrix" ? "block" : "none";
+          }
+        });
+      });
+
+      // Scroll-spy for Left Era Scrubber Rail
+      const spyLinks = [...document.querySelectorAll("[data-era-spy]")];
+      if ("IntersectionObserver" in window && spyLinks.length) {
+        const obs = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                const id = entry.target.getAttribute("data-era-section");
+                spyLinks.forEach((lk) => lk.classList.toggle("is-current", lk.getAttribute("data-era-spy") === id));
+              }
+            }
+          },
+          { rootMargin: "-180px 0px -65% 0px" }
+        );
+        sections.forEach((s) => obs.observe(s));
+      }
+
+      // Sync card hover to Horizon Map
+      cards.forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          const s = card.getAttribute("data-concept-slug");
+          const sync = window["__syncHorizon_hz-timeline"];
+          if (s && sync && typeof sync.focusConcept === "function") {
+            sync.focusConcept(s);
+          }
+        });
       });
     })();
   </script>

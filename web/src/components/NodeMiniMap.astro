@@ -12,20 +12,20 @@ const t = UI[lang];
 ---
 <aside class="at-minimap" aria-label="Section map">
   {concept && (
-    <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class="at-kicker" style="margin-bottom:4px;">
+    <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class="at-kicker" style="margin-bottom:6px;padding-left:8px;">
       ← {concept[lang].shortName}
     </a>
   )}
-  <a href="#stage" style="color:var(--ink-secondary);">01 · {lang === "zh" ? "核心切片放映" : "Screening Stage"}</a>
-  <a href="#steps" style="color:var(--ink-secondary);">02 · {lang === "zh" ? "三步实操拆解" : "3-Step SOP"}</a>
-  <a href="#patch" style="color:var(--ink-secondary);">03 · {lang === "zh" ? "2026 演进补丁" : "2026 Patch"}</a>
-  <a href="#checklist" style="color:var(--ink-secondary);">04 · {lang === "zh" ? "动手验收清单" : "Checklist"}</a>
-  <a href="#related" style="color:var(--ink-secondary);">05 · {lang === "zh" ? "同概念上下游" : "Related Cuts"}</a>
+  <a href="#stage" class="at-minimap-link is-active" data-spy-link="stage">01 · {lang === "zh" ? "核心切片放映" : "Screening Stage"}</a>
+  <a href="#steps" class="at-minimap-link" data-spy-link="steps">02 · {lang === "zh" ? "三步实操拆解" : "3-Step SOP"}</a>
+  <a href="#patch" class="at-minimap-link" data-spy-link="patch">03 · {lang === "zh" ? "2026 演进补丁" : "2026 Patch"}</a>
+  <a href="#checklist" class="at-minimap-link" data-spy-link="checklist">04 · {lang === "zh" ? "动手验收清单" : "Checklist"}</a>
+  <a href="#related" class="at-minimap-link" data-spy-link="related">05 · {lang === "zh" ? "同概念上下游" : "Related Cuts"}</a>
 
   <button
     type="button"
     class="at-btn-ghost"
-    style="margin-top:12px;font-size:0.8rem;padding:7px 10px;justify-content:center;"
+    style="margin-top:10px;font-size:0.78rem;padding:7px 10px;justify-content:center;"
     data-toggle-read={slug}
     data-label-unread={t.markRead}
     data-label-read={t.markedRead}

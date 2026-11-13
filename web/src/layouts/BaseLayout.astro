@@ -113,7 +113,13 @@ const toastMsg = UI[lang].copyToast;
               ? btn.getAttribute("data-label-read")
               : btn.getAttribute("data-label-unread");
           });
+          document.querySelectorAll("[data-node-slug]").forEach((card) => {
+            const slug = card.getAttribute("data-node-slug");
+            if (slug && set.has(slug)) card.setAttribute("data-completed", "1");
+            else card.removeAttribute("data-completed");
+          });
         }
+        window.__syncAITubeReadUI = syncReadUI;
         syncReadUI();
 
         document.querySelectorAll("[data-toggle-read]").forEach((btn) => {
@@ -126,6 +132,57 @@ const toastMsg = UI[lang].copyToast;
             saveReadSet(set);
             syncReadUI();
           });
+        });
+
+        // Interactive 10-Quarter Sparkline Scrubbing
+        document.querySelectorAll("[data-spark-box]").forEach((box) => {
+          const svg = box.querySelector("[data-spark-svg]");
+          const dot = box.querySelector("[data-sp-dot]");
+          const guide = box.querySelector("[data-sp-guide]");
+          const mid = box.querySelector("[data-sp-mid]");
+          if (!svg || !dot || !mid) return;
+          let pts = [];
+          let labels = [];
+          try {
+            pts = JSON.parse(box.getAttribute("data-pts") || "[]");
+            labels = JSON.parse(box.getAttribute("data-labels") || "[]");
+          } catch {}
+          if (!pts.length) return;
+          const defMom = box.getAttribute("data-default-mom") || "";
+          const infIdx = Number(box.getAttribute("data-inflect-idx") || pts.length - 1);
+
+          function showAt(idx) {
+            const p = pts[idx];
+            if (!p) return;
+            dot.setAttribute("cx", String(p.x));
+            dot.setAttribute("cy", String(p.y));
+            if (guide) {
+              guide.setAttribute("x1", String(p.x));
+              guide.setAttribute("x2", String(p.x));
+              guide.setAttribute("opacity", "0.85");
+            }
+            mid.textContent = `${labels[idx] || ""}${idx === infIdx ? " ★" : ""} · ${p.val}`;
+          }
+
+          function reset() {
+            const p = pts[infIdx] || pts[pts.length - 1];
+            dot.setAttribute("cx", String(p.x));
+            dot.setAttribute("cy", String(p.y));
+            if (guide) {
+              guide.setAttribute("x1", String(p.x));
+              guide.setAttribute("x2", String(p.x));
+              guide.setAttribute("opacity", "0.45");
+            }
+            mid.textContent = defMom;
+          }
+
+          svg.addEventListener("mousemove", (e) => {
+            const rect = svg.getBoundingClientRect();
+            const ratio = (e.clientX - rect.left) / Math.max(1, rect.width);
+            const idx = Math.max(0, Math.min(pts.length - 1, Math.round(ratio * (pts.length - 1))));
+            showAt(idx);
+          });
+          svg.addEventListener("mouseleave", reset);
         });
 
         document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {

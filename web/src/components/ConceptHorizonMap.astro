@@ -1,0 +1,469 @@
+---
+import {
+  CONCEPTS,
+  buildHorizonLayout,
+  getConcept,
+  getNodesForConcept,
+  splitParadigmShift,
+} from "../lib/content";
+import { BASE_PREFIX, LIFECYCLE_META, UI, withBase, type Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+  mode?: "timeline" | "home";
+}
+
+const { lang, mode = "timeline" } = Astro.props;
+const t = UI[lang];
+const basePrefix = BASE_PREFIX;
+const layout = buildHorizonLayout(lang);
+
+const defaultConcept = getConcept("context-engineering") || CONCEPTS[CONCEPTS.length - 2];
+const defaultShift = splitParadigmShift(defaultConcept[lang].paradigmShift);
+const defaultNodeCount = getNodesForConcept(defaultConcept.slug).length;
+
+const clientMeta = Object.fromEntries(
+  CONCEPTS.map((c) => {
+    const sh = splitParadigmShift(c[lang].paradigmShift);
+    return [
+      c.slug,
+      {
+        order: String(c.order).padStart(2, "0"),
+        name: c[lang].name,
+        short: c[lang].shortName,
+        origin: c.originQuarter,
+        inflect: c.inflectionQuarter,
+        momentum: c.momentum,
+        lifeIcon: LIFECYCLE_META[c.lifecycle].icon,
+        lifeLabel: LIFECYCLE_META[c.lifecycle][lang],
+        life: c.lifecycle,
+        before: sh.before,
+        after: sh.after,
+        from: c.lineage.from,
+        into: c.lineage.into,
+        cuts: getNodesForConcept(c.slug).length,
+      },
+    ];
+  })
+);
+
+const uid = `hz-${mode}`;
+---
+<div class="at-horizon-shell" id={uid} data-horizon-root data-mode={mode}>
+  <div class="at-horizon-head">
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+      <span class="at-kicker">CONCEPT HORIZON MAP</span>
+      <strong style="font-family:var(--font-serif);font-size:1.08rem;">{t.horizonTitle}</strong>
+      <span style="font-size:0.78rem;color:var(--ink-muted);">{t.horizonHint}</span>
+    </div>
+
+    <div class="at-mono" style="display:flex;align-items:center;gap:12px;font-size:0.71rem;color:var(--ink-secondary);flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;gap:4px;">
+        <span style="width:8px;height:8px;border-radius:50%;border:2px solid var(--accent-primary);display:inline-block;"></span>
+        {lang === "zh" ? "起源季度" : "Origin"}
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:4px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-signal);display:inline-block;"></span>
+        {lang === "zh" ? "破圈拐点" : "Breakout"}
+      </span>
+      <span style="color:var(--accent-primary);">┄▸ {t.lineageFrom}</span>
+      <span style="color:var(--accent-signal);">━▸ {t.lineageInto}</span>
+      <button
+        type="button"
+        data-hz-clear
+        class="at-chip at-mono"
+        style="padding:2px 8px;font-size:0.69rem;"
+      >
+        {lang === "zh" ? "显示全览" : "Show All"}
+      </button>
+    </div>
+  </div>
+
+  <div class="at-horizon-scroll">
+    <svg
+      viewBox={`0 0 ${layout.width} ${layout.height}`}
+      class="at-horizon-svg"
+      role="img"
+      aria-label={t.horizonTitle}
+      data-hz-svg
+    >
+      <defs>
+        <linearGradient id={`${uid}-span`} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="var(--accent-primary)" stop-opacity="0.55" />
+          <stop offset="100%" stop-color="var(--accent-signal)" stop-opacity="0.95" />
+        </linearGradient>
+      </defs>
+
+      <!-- Swimlane alternating bands & left labels -->
+      {layout.lanes.map((ln, idx) => (
+        <g>
+          <rect
+            x="0"
+            y={ln.yTop}
+            width={layout.width}
+            height={ln.height}
+            fill={idx % 2 === 1 ? "var(--bg-elevated)" : "transparent"}
+            opacity="0.65"
+          />
+          <line
+            x1="0"
+            y1={ln.yTop}
+            x2={layout.width}
+            y2={ln.yTop}
+            stroke="var(--border-subtle)"
+            stroke-width="1"
+          />
+          <text
+            x="16"
+            y={ln.yTop + 23}
+            fill="var(--ink-primary)"
+            font-size="12.5"
+            font-weight="600"
+            font-family="var(--font-sans)"
+          >
+            {ln.title}
+          </text>
+          <text
+            x="16"
+            y={ln.yTop + 38}
+            fill="var(--ink-muted)"
+            font-size="9.8"
+            font-family="var(--font-mono)"
+          >
+            {ln.sub}
+          </text>
+        </g>
+      ))}
+
+      <!-- Left gutter vertical separator -->
+      <line
+        x1={layout.leftGutter}
+        y1="12"
+        x2={layout.leftGutter}
+        y2={layout.height - 6}
+        stroke="var(--border-strong)"
+        stroke-width="1"
+      />
+
+      <!-- Chronological X-axis ticks & vertical guide rules -->
+      {layout.axisTicks.map((tk) => (
+        <g>
+          <line
+            x1={tk.x}
+            y1="34"
+            x2={tk.x}
+            y2={layout.height - 6}
+            stroke="var(--border-subtle)"
+            stroke-width="1"
+            stroke-dasharray="3 3"
+          />
+          <text
+            x={tk.x}
+            y="25"
+            text-anchor="middle"
+            fill={tk.label === "2026" ? "var(--accent-signal)" : "var(--ink-secondary)"}
+            font-size="11"
+            font-weight={tk.label === "2026" ? "700" : "600"}
+            font-family="var(--font-mono)"
+          >
+            {tk.label}
+          </text>
+        </g>
+      ))}
+
+      <!-- Scale compression indicator between 2017 and 2020 -->
+      <text
+        x={(layout.axisTicks[0].x + layout.axisTicks[1].x) / 2}
+        y="25"
+        text-anchor="middle"
+        fill="var(--ink-muted)"
+        font-size="9.5"
+        font-family="var(--font-mono)"
+      >
+        //
+      </text>
+
+      <!-- Causal Lineage Bezier Arcs -->
+      <g>
+        {layout.edges.map((ed) => (
+          <path
+            d={ed.d}
+            class="at-hz-edge"
+            data-edge-from={ed.from}
+            data-edge-to={ed.to}
+          />
+        ))}
+      </g>
+
+      <!-- 22 Chronological Concept Span Nodes -->
+      <g>
+        {layout.nodes.map((nd) => {
+          const c = nd.concept;
+          const label = `#${String(c.order).padStart(2, "0")} ${c[lang].shortName}`;
+          const pillW = Math.min(168, Math.max(78, label.length * (lang === "zh" ? 8.8 : 6.1) + 16));
+          const pillX = nd.labelLeft ? nd.xOrigin - pillW - 7 : nd.xInflect + 8;
+          const textX = pillX + pillW / 2;
+          const isSurging = c.lifecycle === "surging";
+          return (
+            <g
+              class="at-hz-node"
+              tabindex="0"
+              role="button"
+              aria-label={`${c[lang].name} (${c.originQuarter} → ${c.inflectionQuarter})`}
+              data-hz-slug={c.slug}
+              data-era={c.eraId}
+              data-lifecycle={c.lifecycle}
+              data-domain={c.domain}
+            >
+              <!-- Span line from originQuarter to inflectionQuarter -->
+              <line
+                x1={nd.xOrigin}
+                y1={nd.y}
+                x2={nd.xInflect}
+                y2={nd.y}
+                stroke={`url(#${uid}-span)`}
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+              <!-- Origin hollow circle -->
+              <circle
+                cx={nd.xOrigin}
+                cy={nd.y}
+                r="3.6"
+                fill="var(--bg-canvas)"
+                stroke="var(--accent-primary)"
+                stroke-width="2"
+              />
+              <!-- Breakout inflection halo & beacon -->
+              {isSurging && (
+                <circle
+                  cx={nd.xInflect}
+                  cy={nd.y}
+                  r="8.5"
+                  fill="var(--accent-signal-soft)"
+                />
+              )}
+              <circle
+                cx={nd.xInflect}
+                cy={nd.y}
+                r="4.8"
+                fill={isSurging ? "var(--accent-signal)" : "var(--accent-primary)"}
+                stroke="var(--bg-canvas)"
+                stroke-width="1.4"
+              />
+              <!-- Label Pill -->
+              <rect
+                class="at-hz-pill"
+                x={pillX}
+                y={nd.y - 10}
+                width={pillW}
+                height="20"
+                rx="4"
+              />
+              <text
+                x={textX}
+                y={nd.y + 3.8}
+                text-anchor="middle"
+                fill="var(--ink-primary)"
+                font-size="10.4"
+                font-weight="560"
+                font-family="var(--font-sans)"
+              >
+                {label}
+              </text>
+            </g>
+          );
+        })}
+      </g>
+    </svg>
+  </div>
+
+  <!-- Live Inspector Readout HUD -->
+  <div class="at-horizon-hud" data-hz-hud>
+    <div style="min-width:0;flex:1;">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:4px;">
+        <span class="at-mono" data-hud-code style="font-size:0.75rem;color:var(--accent-primary);font-weight:650;">
+          #{String(defaultConcept.order).padStart(2, "0")}
+        </span>
+        <strong data-hud-name style="font-family:var(--font-serif);font-size:1.08rem;">
+          {defaultConcept[lang].name}
+        </strong>
+        <span class="at-mono" data-hud-span style="font-size:0.74rem;padding:1px 7px;border-radius:3px;background:var(--bg-canvas);border:1px solid var(--border-subtle);">
+          {defaultConcept.originQuarter} → ★ {defaultConcept.inflectionQuarter}
+        </span>
+        <span class="at-mono" data-hud-mom style="font-size:0.74rem;color:var(--accent-signal);font-weight:600;">
+          {defaultConcept.momentum}
+        </span>
+      </div>
+      <div style="font-size:0.83rem;color:var(--ink-secondary);display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
+        <span class="at-mono" style="font-size:0.71rem;color:var(--ink-muted);">{t.paradigmShiftLabel}:</span>
+        <span data-hud-before style="color:var(--ink-muted);text-decoration:line-through;">{defaultShift.before}</span>
+        <span class="at-mono" style="color:var(--accent-primary);">→</span>
+        <span data-hud-after style="color:var(--ink-primary);font-weight:550;">{defaultShift.after}</span>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;">
+      {mode === "timeline" ? (
+        <a
+          href={`#concept-${defaultConcept.slug}`}
+          data-hud-jump
+          class="at-btn-ghost at-mono"
+          style="padding:7px 12px;font-size:0.78rem;"
+        >
+          {t.scrollToCard}
+        </a>
+      ) : (
+        <a
+          href={withBase(`/${lang}/timeline/#concept-${defaultConcept.slug}`)}
+          data-hud-jump
+          class="at-btn-ghost at-mono"
+          style="padding:7px 12px;font-size:0.78rem;"
+        >
+          {lang === "zh" ? "在时间线定位 →" : "Locate on Timeline →"}
+        </a>
+      )}
+      <a
+        href={withBase(`/${lang}/concepts/${defaultConcept.slug}/`)}
+        data-hud-hub
+        class="at-btn-primary at-mono"
+        style="padding:7px 13px;font-size:0.78rem;"
+      >
+        {t.viewConceptHub} (<span data-hud-cuts>{defaultNodeCount}</span>) →
+      </a>
+    </div>
+  </div>
+
+  <script type="application/json" data-hz-meta set:html={JSON.stringify(clientMeta)} />
+  <script is:inline define:vars={{ uid, lang, basePrefix, mode }}>
+    (() => {
+      const root = document.getElementById(uid);
+      if (!root) return;
+      const svg = root.querySelector("[data-hz-svg]");
+      const metaEl = root.querySelector("[data-hz-meta]");
+      if (!svg || !metaEl) return;
+      const meta = JSON.parse(metaEl.textContent || "{}");
+
+      const nodeEls = [...root.querySelectorAll("[data-hz-slug]")];
+      const edgeEls = [...root.querySelectorAll("[data-edge-from]")];
+      const clearBtn = root.querySelector("[data-hz-clear]");
+
+      const hudCode = root.querySelector("[data-hud-code]");
+      const hudName = root.querySelector("[data-hud-name]");
+      const hudSpan = root.querySelector("[data-hud-span]");
+      const hudMom = root.querySelector("[data-hud-mom]");
+      const hudBefore = root.querySelector("[data-hud-before]");
+      const hudAfter = root.querySelector("[data-hud-after]");
+      const hudJump = root.querySelector("[data-hud-jump]");
+      const hudHub = root.querySelector("[data-hud-hub]");
+      const hudCuts = root.querySelector("[data-hud-cuts]");
+
+      let lockedSlug = null;
+
+      function focusConcept(slug) {
+        if (!slug || !meta[slug]) {
+          svg.classList.remove("has-focus");
+          nodeEls.forEach((el) => {
+            el.classList.remove("is-selected", "is-related", "is-upstream-node", "is-downstream-node");
+          });
+          edgeEls.forEach((ed) => ed.classList.remove("is-upstream", "is-downstream"));
+          return;
+        }
+
+        const m = meta[slug];
+        const upSet = new Set(m.from || []);
+        const downSet = new Set(m.into || []);
+        svg.classList.add("has-focus");
+
+        nodeEls.forEach((el) => {
+          const s = el.getAttribute("data-hz-slug");
+          const isSelf = s === slug;
+          const isUp = upSet.has(s);
+          const isDown = downSet.has(s);
+          el.classList.toggle("is-selected", isSelf);
+          el.classList.toggle("is-upstream-node", isUp);
+          el.classList.toggle("is-downstream-node", isDown);
+          el.classList.toggle("is-related", isSelf || isUp || isDown);
+        });
+
+        edgeEls.forEach((ed) => {
+          const f = ed.getAttribute("data-edge-from");
+          const t = ed.getAttribute("data-edge-to");
+          ed.classList.toggle("is-upstream", t === slug && upSet.has(f));
+          ed.classList.toggle("is-downstream", f === slug && downSet.has(t));
+        });
+
+        if (hudCode) hudCode.textContent = `#${m.order}`;
+        if (hudName) hudName.textContent = m.name;
+        if (hudSpan) hudSpan.textContent = `${m.origin} → ★ ${m.inflect}`;
+        if (hudMom) hudMom.textContent = m.momentum;
+        if (hudBefore) hudBefore.textContent = m.before || "";
+        if (hudAfter) hudAfter.textContent = m.after || "";
+        if (hudCuts) hudCuts.textContent = String(m.cuts);
+        if (hudHub) hudHub.setAttribute("href", `${basePrefix}/${lang}/concepts/${slug}/`);
+        if (hudJump) {
+          hudJump.setAttribute(
+            "href",
+            mode === "timeline" ? `#concept-${slug}` : `${basePrefix}/${lang}/timeline/#concept-${slug}`
+          );
+        }
+      }
+
+      // Highlight Context Engineering causal web on initial paint so users immediately see the magic
+      focusConcept("context-engineering");
+
+      nodeEls.forEach((el) => {
+        const slug = el.getAttribute("data-hz-slug");
+        el.addEventListener("mouseenter", () => {
+          if (!lockedSlug) focusConcept(slug);
+        });
+        el.addEventListener("focus", () => focusConcept(slug));
+        el.addEventListener("click", () => {
+          if (lockedSlug === slug) {
+            lockedSlug = null;
+          } else {
+            lockedSlug = slug;
+            focusConcept(slug);
+          }
+        });
+        el.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            lockedSlug = slug;
+            focusConcept(slug);
+            if (mode === "timeline") {
+              const card = document.getElementById(`concept-${slug}`);
+              if (card) {
+                card.scrollIntoView({ behavior: "smooth", block: "center" });
+                card.classList.add("is-spotlight");
+                setTimeout(() => card.classList.remove("is-spotlight"), 1800);
+              }
+            }
+          }
+        });
+      });
+
+      hudJump?.addEventListener("click", (e) => {
+        if (mode !== "timeline") return;
+        const href = hudJump.getAttribute("href") || "";
+        if (href.startsWith("#")) {
+          const target = document.getElementById(href.slice(1));
+          if (target && target.style.display !== "none") {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+            target.classList.add("is-spotlight");
+            setTimeout(() => target.classList.remove("is-spotlight"), 2000);
+          }
+        }
+      });
+
+      clearBtn?.addEventListener("click", () => {
+        lockedSlug = null;
+        focusConcept(null);
+      });
+
+      // Expose filter & hover hooks so Timeline page cards & toolbar sync seamlessly with Horizon Map
+      window[`__syncHorizon_${uid}`] = { focusConcept };
+    })();
+  </script>
+</div>

@@ -1,8 +1,18 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import MediaCard from "../../../components/MediaCard.astro";
-import { BASE_PREFIX, LANGS, LIFECYCLE_META, ROLE_META, UI, formatSliceMinutes, formatTime, type Lang, type Lifecycle } from "../../../lib/i18n";
-import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS, getConcept } from "../../../lib/content";
+import {
+  BASE_PREFIX,
+  LANGS,
+  LIFECYCLE_META,
+  ROLE_META,
+  UI,
+  formatSliceMinutes,
+  formatTime,
+  type Lang,
+  type Lifecycle,
+} from "../../../lib/i18n";
+import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS, getConcept, getWaveformBars } from "../../../lib/content";
 import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
 
 export function getStaticPaths() {
@@ -14,11 +24,12 @@ const basePrefix = BASE_PREFIX;
 const t = UI[lang];
 const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
 const initialNodes = NODES.slice(0, 24);
+const doneBadgeText = lang === "zh" ? "已学" : "DONE";
 
 const clientCatalog = NODES.map((n) => {
   const c = getConcept(n.primaryConcept);
   const s = n.source;
-  const badgeLeft =
+  const rawLeft =
     s.kind === "article-digest"
       ? lang === "zh"
         ? "原典精读"
@@ -26,13 +37,21 @@ const clientCatalog = NODES.map((n) => {
       : s.isShort
         ? "SHORT"
         : s.platform.toUpperCase();
+  const badgeLeft = n.isSpine ? `★ ${rawLeft}` : rawLeft;
   const badgeRight =
     s.kind === "video-cut"
       ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} · ${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)}`
       : `${s.readingMinutes || 10}m ${lang === "zh" ? "精读" : "read"}`;
 
+  const sliceSec =
+    s.kind === "video-cut"
+      ? Math.max(30, (s.endSec || 60) - (s.startSec || 0))
+      : (s.readingMinutes || 10) * 60;
+
   return {
     slug: n.slug,
+    order: n.order,
+    isSpine: n.isSpine ? 1 : 0,
     era: c?.eraId || "",
     life: c?.lifecycle || "mainstream",
     lifeIcon: c ? LIFECYCLE_META[c.lifecycle].icon : "●",
@@ -47,7 +66,11 @@ const clientCatalog = NODES.map((n) => {
     badgeRight,
     title: n[lang].title,
     why: n[lang].whyWatch,
+    steps: n[lang].steps.map((st) => st.title),
+    bars: getWaveformBars(n.slug, 22).map((h) => Math.round((h / 100) * 22)),
     ch: s.channelName,
+    hours: s.hoursSaved || 0.5,
+    dur: sliceSec,
     saved: lang === "zh" ? `省 ${s.hoursSaved}h` : `Saves ${s.hoursSaved}h`,
     q: `${n[lang].title} ${n[lang].whyWatch} ${s.channelName} ${c ? c[lang].shortName : ""} ${n[lang].searchQuestions.join(" ")}`.toLowerCase(),
   };
@@ -89,60 +112,87 @@ const schema = {
       </h1>
       <p style="color:var(--ink-secondary);max-width:70ch;font-size:0.95rem;">
         {lang === "zh"
-          ? "左侧按「概念纪元 × 技术层 × 核心任务 × 工具栈」交叉过滤，或直接输入真实工程问题（如“怎么避免 MCP 撑爆上下文”“DeepSeek GRPO 原理”）即时定位核心切片。"
+          ? "按「概念纪元 × 技术层 × 核心任务 × 工具栈」正交交叉过滤，或直接输入真实工程问题（如“怎么避免 MCP 撑爆上下文”“DeepSeek GRPO 原理”）即时定位核心切片。"
           : "Cross-filter 280 verified slices by Concept Era, AI Layer, Core Task, and Stack — or type a natural-language engineering question below."}
       </p>
     </div>
   </section>
 
   <div class="at-container at-dir-layout">
-    <aside class="at-dir-sidebar" aria-label="Faceted filters">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <span class="at-mono" style="font-size:0.76rem;font-weight:600;">FILTERS</span>
-        <button type="button" id="dir-reset" class="at-mono" style="border:0;background:transparent;color:var(--accent-primary);font-size:0.75rem;cursor:pointer;">
-          {t.clearFilters}
-        </button>
-      </div>
+    <div>
+      <button
+        type="button"
+        id="dir-mobile-toggle"
+        class="at-btn-ghost at-mobile-filter-btn at-mono"
+        style="width:100%;justify-content:space-between;margin-bottom:12px;font-size:0.82rem;"
+      >
+        <span>⚲ {t.mobileFiltersBtn}</span>
+        <span id="dir-mobile-badge">▾</span>
+      </button>
 
-      <div class="at-facet-group">
-        <div class="at-facet-title">{lang === "zh" ? "概念演进纪元" : "Concept Era"}</div>
-        {ERAS.map((era) => {
-          const eraSlugs = new Set(CONCEPTS.filter((c) => c.eraId === era.id).map((c) => c.slug));
-          const cnt = NODES.filter((n) => eraSlugs.has(n.primaryConcept)).length;
-          return (
-            <button type="button" class="at-facet-btn" data-f-era={era.id}>
-              <span>{era.period} · {era[lang].title}</span>
-              <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
-            </button>
-          );
-        })}
-      </div>
+      <aside class="at-dir-sidebar" id="dir-sidebar" aria-label="Faceted filters">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span class="at-mono" style="font-size:0.76rem;font-weight:600;">FILTERS</span>
+          <button type="button" id="dir-reset" class="at-mono" style="border:0;background:transparent;color:var(--accent-primary);font-size:0.75rem;cursor:pointer;">
+            {t.clearFilters}
+          </button>
+        </div>
 
-      {TAXONOMY_DIMS.map((dim) => (
         <div class="at-facet-group">
-          <div class="at-facet-title">{dim[lang].label}</div>
-          {dim.items.map((item) => {
-            const cnt = NODES.filter((n) => n.facets[dim.prop].includes(item.slug)).length;
+          <div class="at-facet-title">{lang === "zh" ? "概念演进纪元" : "Concept Era"}</div>
+          {ERAS.map((era) => {
+            const eraSlugs = new Set(CONCEPTS.filter((c) => c.eraId === era.id).map((c) => c.slug));
+            const cnt = NODES.filter((n) => eraSlugs.has(n.primaryConcept)).length;
             return (
-              <button type="button" class="at-facet-btn" data-f-dim={dim.prop} data-f-val={item.slug}>
-                <span>{item[lang].name}</span>
+              <button type="button" class="at-facet-btn" data-f-era={era.id} data-f-label={`${era.period} · ${era[lang].title}`}>
+                <span>{era.period} · {era[lang].title}</span>
                 <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
               </button>
             );
           })}
         </div>
-      ))}
-    </aside>
+
+        {TAXONOMY_DIMS.map((dim) => (
+          <div class="at-facet-group">
+            <div class="at-facet-title">{dim[lang].label}</div>
+            {dim.items.map((item) => {
+              const cnt = NODES.filter((n) => n.facets[dim.prop].includes(item.slug)).length;
+              return (
+                <button
+                  type="button"
+                  class="at-facet-btn"
+                  data-f-dim={dim.prop}
+                  data-f-val={item.slug}
+                  data-f-label={item[lang].name}
+                >
+                  <span>{item[lang].name}</span>
+                  <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
+                </button>
+              );
+            })}
+          </div>
+        ))}
+      </aside>
+    </div>
 
     <div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border-subtle);">
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border-subtle);">
         <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
           <input
             type="search"
             id="dir-query"
             placeholder={t.searchPlaceholder}
-            style="flex:1;min-width:240px;padding:9px 12px;border:1px solid var(--border-strong);border-radius:4px;background:var(--bg-canvas);font-size:0.9rem;"
+            style="flex:1;min-width:220px;padding:9px 12px;border:1px solid var(--border-strong);border-radius:4px;background:var(--bg-canvas);font-size:0.9rem;"
           />
+          <select
+            id="dir-sort"
+            aria-label="Sort order"
+            style="padding:9px 11px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-elevated);font-size:0.82rem;"
+          >
+            <option value="editorial">{t.sortEditorial}</option>
+            <option value="saved">{t.sortSaved}</option>
+            <option value="shortest">{t.sortShortest}</option>
+          </select>
           <span class="at-mono" id="dir-count" style="font-size:0.82rem;color:var(--ink-secondary);">
             {t.showingCount}: {NODES.length}
           </span>
@@ -166,6 +216,9 @@ const schema = {
             <button type="button" class="at-chip" data-d-plat="web">{lang === "zh" ? "原典" : "Monographs"}</button>
           </div>
         </div>
+
+        <!-- Active Filter Chips Strip -->
+        <div id="dir-active-pills" class="at-filter-row" style="display:none;"></div>
       </div>
 
       <div class="at-grid-cards" id="dir-grid">
@@ -183,17 +236,34 @@ const schema = {
   </div>
 
   <script type="application/json" id="dir-catalog-json" set:html={JSON.stringify(clientCatalog)} />
-  <script is:inline define:vars={{ lang, basePrefix, loadMoreLabel: t.loadMore, showingLabel: t.showingCount }}>
+  <script is:inline define:vars={{ lang, basePrefix, loadMoreLabel: t.loadMore, showingLabel: t.showingCount, doneBadgeText }}>
     (() => {
       const catalog = JSON.parse(document.getElementById("dir-catalog-json")?.textContent || "[]");
       const grid = document.getElementById("dir-grid");
       const countEl = document.getElementById("dir-count");
       const moreBtn = document.getElementById("dir-load-more");
       const qInput = document.getElementById("dir-query");
+      const sortSel = document.getElementById("dir-sort");
       const resetBtn = document.getElementById("dir-reset");
+      const activeBox = document.getElementById("dir-active-pills");
+      const mobileToggle = document.getElementById("dir-mobile-toggle");
+      const sidebar = document.getElementById("dir-sidebar");
 
-      const state = { era: null, domains: null, tasks: null, stacks: null, life: "all", plat: "all", q: "", page: 1 };
+      const state = { era: null, domains: null, tasks: null, stacks: null, life: "all", plat: "all", q: "", sort: "editorial", page: 1 };
       const PAGE_SIZE = 24;
+
+      // Hydrate initial filters from URL query string if present
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        if (sp.get("era")) state.era = sp.get("era");
+        if (sp.get("domains")) state.domains = sp.get("domains");
+        if (sp.get("tasks")) state.tasks = sp.get("tasks");
+        if (sp.get("stacks")) state.stacks = sp.get("stacks");
+        if (sp.get("q")) {
+          state.q = sp.get("q").toLowerCase();
+          if (qInput) qInput.value = sp.get("q");
+        }
+      } catch {}
 
       function esc(s) {
         return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -201,16 +271,75 @@ const schema = {
 
       function cardHTML(it) {
         const img = it.ytId
-          ? `<img src="https://i.ytimg.com/vi/${esc(it.ytId)}/hqdefault.jpg" alt="${esc(it.title)}" loading="lazy" class="at-card-thumb" onerror="this.style.display='none'"/>`
+          ? `<img src="https://i.ytimg.com/vi/${esc(it.ytId)}/hqdefault.jpg" alt="${esc(it.title)}" loading="lazy" decoding="async" class="at-card-thumb" onerror="this.style.display='none'"/>`
           : "";
-        return `<article class="at-card"><a href="${basePrefix}/${lang}/nodes/${esc(it.slug)}/" style="display:flex;flex-direction:column;flex:1;">
-          <div class="at-card-poster">${img}<div class="at-card-badges"><span class="at-pill-dark">${esc(it.badgeLeft)}</span><span class="at-pill-dark">${esc(it.badgeRight)}</span></div></div>
+        const wave = `<div class="at-card-wave" aria-hidden="true">${(it.bars || []).map((h) => `<span style="height:${h}px;"></span>`).join("")}</div>`;
+        const peek = `<div class="at-card-peek" aria-hidden="true">${(it.steps || [])
+          .map(
+            (st, idx) =>
+              `<div style="display:flex;gap:6px;align-items:baseline;"><span class="at-mono" style="color:#52adc0;font-size:0.72rem;">0${idx + 1}</span><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(st)}</span></div>`
+          )
+          .join("")}</div>`;
+
+        return `<article class="at-card" data-node-slug="${esc(it.slug)}"><a href="${basePrefix}/${lang}/nodes/${esc(it.slug)}/" style="display:flex;flex-direction:column;flex:1;">
+          <div class="at-card-poster">${img}<div class="at-card-badges"><div style="display:flex;align-items:center;gap:5px;"><span class="at-pill-dark">${esc(it.badgeLeft)}</span><span class="at-card-done-pill">✓ ${esc(doneBadgeText)}</span></div><span class="at-pill-dark">${esc(it.badgeRight)}</span></div>${wave}${peek}</div>
           <div class="at-card-body">
             <div class="at-card-concept-row"><span>${esc(it.lifeIcon)} ${esc(it.conceptName)}</span><span style="color:var(--ink-muted);">${esc(it.roleName)}</span></div>
             <h3 class="at-card-title">${esc(it.title)}</h3>
             <p class="at-card-why">${esc(it.why)}</p>
-            <div class="at-card-foot"><span style="max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(it.ch)}</span><span class="at-mono">${esc(it.saved)}</span></div>
+            <div class="at-card-foot"><span style="max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(it.ch)}</span><span class="at-mono" style="color:var(--accent-signal);">${esc(it.saved)}</span></div>
           </div></a></article>`;
+      }
+
+      function syncActivePills() {
+        if (!activeBox) return;
+        const pills = [];
+        const addPill = (key, val) => {
+          const selector = key === "era" ? `[data-f-era="${val}"]` : `[data-f-dim="${key}"][data-f-val="${val}"]`;
+          const label = document.querySelector(selector)?.getAttribute("data-f-label") || val;
+          pills.push(`<button type="button" class="at-active-pill" data-clear-key="${key}">${esc(label)} <span>×</span></button>`);
+        };
+        if (state.era) addPill("era", state.era);
+        if (state.domains) addPill("domains", state.domains);
+        if (state.tasks) addPill("tasks", state.tasks);
+        if (state.stacks) addPill("stacks", state.stacks);
+        activeBox.innerHTML = pills.join("");
+        activeBox.style.display = pills.length ? "flex" : "none";
+
+        activeBox.querySelectorAll("[data-clear-key]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const k = btn.getAttribute("data-clear-key");
+            state[k] = null;
+            state.page = 1;
+            syncButtons();
+            render();
+          });
+        });
+      }
+
+      function syncButtons() {
+        document.querySelectorAll("[data-f-era]").forEach((b) =>
+          b.classList.toggle("is-active", b.getAttribute("data-f-era") === state.era)
+        );
+        ["domains", "tasks", "stacks"].forEach((dim) => {
+          document.querySelectorAll(`[data-f-dim="${dim}"]`).forEach((b) =>
+            b.classList.toggle("is-active", b.getAttribute("data-f-val") === state[dim])
+          );
+        });
+      }
+
+      function syncURL() {
+        try {
+          const sp = new URLSearchParams();
+          if (state.era) sp.set("era", state.era);
+          if (state.domains) sp.set("domains", state.domains);
+          if (state.tasks) sp.set("tasks", state.tasks);
+          if (state.stacks) sp.set("stacks", state.stacks);
+          if (state.q) sp.set("q", state.q);
+          const qs = sp.toString();
+          const nextUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+          window.history.replaceState(null, "", nextUrl);
+        } catch {}
       }
 
       function render() {
@@ -225,9 +354,21 @@ const schema = {
           return true;
         });
 
+        if (state.sort === "saved") {
+          filtered.sort((a, b) => b.hours - a.hours || a.order - b.order);
+        } else if (state.sort === "shortest") {
+          filtered.sort((a, b) => a.dur - b.dur || a.order - b.order);
+        } else {
+          filtered.sort((a, b) => b.isSpine - a.isSpine || a.order - b.order);
+        }
+
         const vis = filtered.slice(0, state.page * PAGE_SIZE);
         if (grid) grid.innerHTML = vis.map(cardHTML).join("");
+        if (typeof window.__syncAITubeReadUI === "function") window.__syncAITubeReadUI();
         if (countEl) countEl.textContent = `${showingLabel}: ${filtered.length}`;
+        syncActivePills();
+        syncURL();
+
         if (moreBtn) {
           if (vis.length < filtered.length) {
             moreBtn.style.display = "inline-flex";
@@ -238,12 +379,16 @@ const schema = {
         }
       }
 
+      mobileToggle?.addEventListener("click", () => {
+        sidebar?.classList.toggle("is-open");
+      });
+
       document.querySelectorAll("[data-f-era]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const val = btn.getAttribute("data-f-era");
           state.era = state.era === val ? null : val;
           state.page = 1;
-          document.querySelectorAll("[data-f-era]").forEach((b) => b.classList.toggle("is-active", b.getAttribute("data-f-era") === state.era));
+          syncButtons();
           render();
         });
       });
@@ -254,9 +399,7 @@ const schema = {
           const val = btn.getAttribute("data-f-val");
           state[dim] = state[dim] === val ? null : val;
           state.page = 1;
-          document.querySelectorAll(`[data-f-dim="${dim}"]`).forEach((b) =>
-            b.classList.toggle("is-active", b.getAttribute("data-f-val") === state[dim])
-          );
+          syncButtons();
           render();
         });
       });
@@ -285,6 +428,12 @@ const schema = {
         render();
       });
 
+      sortSel?.addEventListener("change", () => {
+        state.sort = sortSel.value;
+        state.page = 1;
+        render();
+      });
+
       moreBtn?.addEventListener("click", () => {
         state.page += 1;
         render();
@@ -294,13 +443,20 @@ const schema = {
         state.era = state.domains = state.tasks = state.stacks = null;
         state.life = state.plat = "all";
         state.q = "";
+        state.sort = "editorial";
         state.page = 1;
         if (qInput) qInput.value = "";
-        document.querySelectorAll(".at-facet-btn").forEach((b) => b.classList.remove("is-active"));
+        if (sortSel) sortSel.value = "editorial";
+        syncButtons();
         document.querySelectorAll("[data-d-life]").forEach((b, i) => b.classList.toggle("is-active", i === 0));
         document.querySelectorAll("[data-d-plat]").forEach((b, i) => b.classList.toggle("is-active", i === 0));
         render();
       });
+
+      if (state.era || state.domains || state.tasks || state.stacks || state.q) {
+        syncButtons();
+        render();
+      }
     })();
   </script>
 </BaseLayout>

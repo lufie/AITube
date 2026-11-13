@@ -53,13 +53,16 @@ const lifeMeta = concept ? LIFECYCLE_META[concept.lifecycle] : null;
         />
       )}
       <div class="at-card-badges">
-        <span class="at-pill-dark">{badgeLeft}</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <span class="at-pill-dark">{node.isSpine ? `★ ${badgeLeft}` : badgeLeft}</span>
+          <span class="at-card-done-pill">✓ {lang === "zh" ? "已学" : "DONE"}</span>
+        </div>
         <span class="at-pill-dark">{badgeRight}</span>
       </div>
 
       <div class="at-card-wave" aria-hidden="true">
         {bars.map((h) => (
-          <span style={`height:${Math.round((h / 100) * 24)}px;`} />
+          <span style={`height:${Math.round((h / 100) * 22)}px;`} />
         ))}
       </div>
 
@@ -87,7 +90,7 @@ const lifeMeta = concept ? LIFECYCLE_META[concept.lifecycle] : null;
 
       <div class="at-card-foot">
         <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:65%;">{s.channelName}</span>
-        <span class="at-mono">
+        <span class="at-mono" style="color:var(--accent-signal);">
           {lang === "zh" ? `省 ${s.hoursSaved}h` : `Saves ${s.hoursSaved}h`}
         </span>
       </div>

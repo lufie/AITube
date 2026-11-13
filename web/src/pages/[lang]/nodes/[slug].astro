@@ -56,6 +56,15 @@ const windowSpec =
   s.kind === "video-cut"
     ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} (${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)})`
     : `${s.readingMinutes || 10}m ${lang === "zh" ? "原典精读" : "Monograph"}`;
+
+const start = s.startSec || 0;
+const end = s.endSec || 60;
+const stepTimes = [
+  start,
+  Math.round(start + (end - start) * 0.36),
+  Math.round(start + (end - start) * 0.72),
+];
+const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boolean(s.videoId);
 ---
 <BaseLayout
   title={`${loc.title} — AITube`}
@@ -65,19 +74,32 @@ const windowSpec =
   ogImage={ogImg}
   schema={schema}
 >
-  <div class="at-container at-node-layout">
+  <div class="at-container at-node-layout" id="at-node-shell">
     <NodeMiniMap concept={concept} lang={lang} slug={node.slug} />
 
     <article>
-      <nav class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);margin-bottom:10px;">
-        <a href={withBase(`/${lang}/`)}>AITube</a> /{" "}
-        {concept ? (
-          <a href={withBase(`/${lang}/concepts/${concept.slug}/`)}>{concept[lang].shortName}</a>
-        ) : (
-          <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
-        )}{" "}
-        / <span>#{String(node.order).padStart(3, "0")}</span>
-      </nav>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap;">
+        <nav class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);">
+          <a href={withBase(`/${lang}/`)}>AITube</a> /{" "}
+          {concept ? (
+            <a href={withBase(`/${lang}/concepts/${concept.slug}/`)}>{concept[lang].shortName}</a>
+          ) : (
+            <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
+          )}{" "}
+          / <span>#{String(node.order).padStart(3, "0")}</span>
+        </nav>
+
+        <button
+          type="button"
+          id="at-theater-btn"
+          class="at-chip at-mono"
+          data-label-enter={`⤢ ${t.theaterToggle}`}
+          data-label-exit={`⤡ ${t.exitTheater}`}
+          style="font-size:0.73rem;padding:3px 9px;"
+        >
+          ⤢ {t.theaterToggle}
+        </button>
+      </div>
 
       <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
         {concept && life && (
@@ -123,22 +145,34 @@ const windowSpec =
         </div>
       </div>
 
-      <section id="stage" style="margin-bottom:28px;">
+      <section id="stage" data-spy-sec="stage" style="margin-bottom:28px;scroll-margin-top:80px;">
         <ScreeningStage node={node} lang={lang} />
         <SliceTimeline node={node} lang={lang} />
       </section>
 
-      <section id="steps" style="margin-bottom:24px;">
+      <section id="steps" data-spy-sec="steps" style="margin-bottom:24px;scroll-margin-top:80px;">
         <div class="at-kicker" style="margin-bottom:10px;">
-          {lang === "zh" ? "核心执行拆解（点击行内代码标签一键复制）" : "3-STEP IMPLEMENTATION BREAKDOWN"}
+          {lang === "zh" ? "核心执行拆解（点击行内代码标签一键复制 · 点击时间戳即时跳播）" : "3-STEP IMPLEMENTATION BREAKDOWN"}
         </div>
         {loc.steps.map((st, idx) => (
           <div class="at-step-card">
-            <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px;">
-              <span class="at-mono" style="color:var(--accent-primary);font-weight:650;font-size:0.86rem;">
-                STEP 0{idx + 1}
-              </span>
-              <h2 style="font-size:1.12rem;"><InlineOpsText text={st.title} /></h2>
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;">
+              <div style="display:flex;gap:10px;align-items:baseline;">
+                <span class="at-mono" style="color:var(--accent-primary);font-weight:650;font-size:0.86rem;">
+                  STEP 0{idx + 1}
+                </span>
+                <h2 style="font-size:1.12rem;"><InlineOpsText text={st.title} /></h2>
+              </div>
+              {isYoutubeCut && (
+                <button
+                  type="button"
+                  class="at-chip at-mono"
+                  data-seek-sec={stepTimes[idx]}
+                  style="font-size:0.72rem;padding:2px 8px;"
+                >
+                  ▶ {formatTime(stepTimes[idx])} {lang === "zh" ? "起播" : "Jump"}
+                </button>
+              )}
             </div>
             <p style="color:var(--ink-secondary);font-size:0.93rem;">
               <InlineOpsText text={st.detail} />
@@ -147,7 +181,7 @@ const windowSpec =
         ))}
       </section>
 
-      <section id="patch" class="at-patch-box">
+      <section id="patch" data-spy-sec="patch" class="at-patch-box" style="scroll-margin-top:80px;">
         <div class="at-mono" style="font-size:0.75rem;color:var(--accent-signal);font-weight:650;margin-bottom:4px;">
           ⚡ {t.versionPatchTitle}
         </div>
@@ -156,9 +190,19 @@ const windowSpec =
         </p>
       </section>
 
-      <section id="checklist" style="margin:26px 0;padding:18px 20px;border:1px solid var(--border-subtle);border-radius:6px;background:var(--bg-elevated);">
+      <section
+        id="checklist"
+        data-spy-sec="checklist"
+        data-chk-slug={node.slug}
+        style="margin:26px 0;padding:18px 20px;border:1px solid var(--border-subtle);border-radius:6px;background:var(--bg-elevated);scroll-margin-top:80px;"
+      >
         <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;">
-          <h2 style="font-size:1.15rem;">{t.checklistTitle}</h2>
+          <div style="display:flex;align-items:baseline;gap:10px;">
+            <h2 style="font-size:1.15rem;">{t.checklistTitle}</h2>
+            <span class="at-mono" id="at-chk-progress" style="font-size:0.76rem;color:var(--accent-primary);">
+              0/{loc.checklist.length}
+            </span>
+          </div>
           <button
             type="button"
             class="at-btn-primary"
@@ -172,9 +216,9 @@ const windowSpec =
         </div>
 
         <div style="display:flex;flex-direction:column;gap:8px;">
-          {loc.checklist.map((item) => (
+          {loc.checklist.map((item, idx) => (
             <label style="display:flex;gap:10px;align-items:baseline;cursor:pointer;font-size:0.92rem;">
-              <input type="checkbox" style="accent-color:var(--accent-primary);" />
+              <input type="checkbox" data-chk-idx={idx} style="accent-color:var(--accent-primary);" />
               <span><InlineOpsText text={item} /></span>
             </label>
           ))}
@@ -201,7 +245,7 @@ const windowSpec =
       </section>
 
       {related.length > 0 && (
-        <section id="related" style="margin-top:34px;padding-top:24px;border-top:1px solid var(--border-subtle);">
+        <section id="related" data-spy-sec="related" style="margin-top:34px;padding-top:24px;border-top:1px solid var(--border-subtle);scroll-margin-top:80px;">
           <div class="at-section-head">
             <h2 style="font-size:1.3rem;">{t.sameConceptTitle}</h2>
             {concept && (
@@ -232,4 +276,64 @@ const windowSpec =
       </nav>
     </article>
   </div>
+
+  <script is:inline>
+    (() => {
+      // Theater Mode toggle
+      const shell = document.getElementById("at-node-shell");
+      const thBtn = document.getElementById("at-theater-btn");
+      if (shell && thBtn) {
+        thBtn.addEventListener("click", () => {
+          const active = shell.classList.toggle("is-theater");
+          thBtn.classList.toggle("is-active", active);
+          thBtn.textContent = active
+            ? thBtn.getAttribute("data-label-exit")
+            : thBtn.getAttribute("data-label-enter");
+        });
+      }
+
+      // Persist Action Checklist checkboxes per node
+      const chkSec = document.querySelector("[data-chk-slug]");
+      const progEl = document.getElementById("at-chk-progress");
+      if (chkSec) {
+        const key = `aitube-chk-${chkSec.getAttribute("data-chk-slug")}`;
+        const boxes = [...chkSec.querySelectorAll("[data-chk-idx]")];
+        let saved = [];
+        try {
+          saved = JSON.parse(localStorage.getItem(key) || "[]");
+        } catch {}
+        function updateProg() {
+          const checked = boxes.filter((b) => b.checked).map((b) => Number(b.getAttribute("data-chk-idx")));
+          if (progEl) progEl.textContent = `${checked.length}/${boxes.length}`;
+          try {
+            localStorage.setItem(key, JSON.stringify(checked));
+          } catch {}
+        }
+        boxes.forEach((b) => {
+          const idx = Number(b.getAttribute("data-chk-idx"));
+          if (saved.includes(idx)) b.checked = true;
+          b.addEventListener("change", updateProg);
+        });
+        updateProg();
+      }
+
+      // Scroll-spy for NodeMiniMap
+      const spySecs = [...document.querySelectorAll("[data-spy-sec]")];
+      const spyLinks = [...document.querySelectorAll("[data-spy-link]")];
+      if ("IntersectionObserver" in window && spySecs.length && spyLinks.length) {
+        const obs = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                const id = entry.target.getAttribute("data-spy-sec");
+                spyLinks.forEach((lk) => lk.classList.toggle("is-active", lk.getAttribute("data-spy-link") === id));
+              }
+            }
+          },
+          { rootMargin: "-120px 0px -68% 0px" }
+        );
+        spySecs.forEach((s) => obs.observe(s));
+      }
+    })();
+  </script>
 </BaseLayout>

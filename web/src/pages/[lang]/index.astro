@@ -1,7 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import MediaCard from "../../components/MediaCard.astro";
+import ConceptHorizonMap from "../../components/ConceptHorizonMap.astro";
 import ConceptTimelineCard from "../../components/ConceptTimelineCard.astro";
+import HeroWaveRadar from "../../components/HeroWaveRadar.astro";
 import { LANGS, UI, withBase, type Lang } from "../../lib/i18n";
 import {
   CONCEPTS,
@@ -10,7 +12,6 @@ import {
   SPINE_NODES,
   STAGES,
   TAXONOMY_DIMS,
-  getTotalHoursSaved,
 } from "../../lib/content";
 import { orgAndSiteGraph } from "../../lib/seo";
 
@@ -20,7 +21,22 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const t = UI[lang];
-const totalHours = getTotalHoursSaved();
+const romanEras = ["I", "II", "III", "IV", "V"];
+
+const heroPrompts =
+  lang === "zh"
+    ? [
+        { label: "MCP 撑爆上下文怎么办？", q: "Context Engineering MCP" },
+        { label: "Prompt vs Context 区别", q: "Context Engineering" },
+        { label: "DeepSeek R1 RLVR 原理", q: "RLVR DeepSeek" },
+        { label: "SKILL.md 渐进加载规范", q: "SKILL.md" },
+      ]
+    : [
+        { label: "MCP bloating context?", q: "Context Engineering MCP" },
+        { label: "Prompt vs Context Eng", q: "Context Engineering" },
+        { label: "How RLVR works (o1 / R1)", q: "RLVR DeepSeek" },
+        { label: "SKILL.md progressive loading", q: "SKILL.md" },
+      ];
 
 const surgingConcepts = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 4);
 const featuredSlugs = [
@@ -60,14 +76,22 @@ const schema = {
         <h1>{t.heroTitle}</h1>
         <p class="at-hero-lead">{t.heroSubtitle}</p>
 
-        <div style="display:flex;gap:8px;max-width:540px;margin-bottom:18px;">
-          <button
-            type="button"
-            data-open-search
-            style="flex:1;text-align:left;padding:11px 14px;border:1px solid var(--border-strong);border-radius:4px;background:var(--bg-elevated);color:var(--ink-secondary);cursor:pointer;font-size:0.9rem;"
-          >
+        <button type="button" class="at-hero-search-btn" data-open-search>
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
             ⌕ {t.searchPlaceholder}
-          </button>
+          </span>
+          <span class="at-kbd">⌘K</span>
+        </button>
+
+        <div class="at-prompt-row" aria-label="Suggested engineering queries">
+          <span class="at-mono" style="font-size:0.7rem;color:var(--ink-muted);">
+            {lang === "zh" ? "试搜:" : "TRY:"}
+          </span>
+          {heroPrompts.map((hp) => (
+            <button type="button" class="at-prompt-chip" data-open-search data-search-q={hp.q}>
+              {hp.label}
+            </button>
+          ))}
         </div>
 
         <div class="at-hero-ctas">
@@ -76,61 +100,40 @@ const schema = {
         </div>
       </div>
 
-      <div class="at-stat-ledger">
-        <div class="at-stat-cell">
-          <div class="at-stat-num">{ERAS.length} → {CONCEPTS.length}</div>
-          <div class="at-stat-label">
-            {lang === "zh" ? "五大纪元 · 22 个核心概念趋势坐标" : "5 Chronological Eras · 22 Concept Trajectories"}
-          </div>
-        </div>
-        <div class="at-stat-cell" style="border-left-color:var(--accent-signal);">
-          <div class="at-stat-num">{NODES.length}</div>
-          <div class="at-stat-label">
-            {lang === "zh" ? "100% 核验可播实战切片与技术原典" : "oEmbed-Verified Cuts & Primary Monographs"}
-          </div>
-        </div>
-        <div class="at-stat-cell">
-          <div class="at-stat-num">{SPINE_NODES.length}</div>
-          <div class="at-stat-label">
-            {lang === "zh" ? "编辑部精编四阶主干必修切片" : "Flagship Curriculum Spine Cuts"}
-          </div>
-        </div>
-        <div class="at-stat-cell" style="border-left-color:var(--accent-evergreen);">
-          <div class="at-stat-num">~{totalHours}h</div>
-          <div class="at-stat-label">
-            {lang === "zh" ? "跳过寒暄水词累计节省研读时长" : "Cumulative Research Hours Saved"}
-          </div>
-        </div>
-      </div>
+      <HeroWaveRadar lang={lang} />
     </div>
   </section>
 
-  <!-- 5-Era Concept Evolution Strip -->
+  <!-- Signature Interactive Horizon Map + 5-Era Stepper -->
   <section class="at-section">
     <div class="at-container">
       <div class="at-section-head">
         <div>
-          <div class="at-kicker">SIGNATURE PERSPECTIVE</div>
+          <div class="at-kicker">SIGNATURE PERSPECTIVE · INTERACTIVE LINEAGE</div>
           <h2>{t.eraStripHeading}</h2>
         </div>
-        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
           {t.ctaTimeline}
         </a>
       </div>
 
+      <div style="margin-bottom:18px;">
+        <ConceptHorizonMap lang={lang} mode="home" />
+      </div>
+
       <div class="at-era-strip">
-        {ERAS.map((era) => {
+        {ERAS.map((era, idx) => {
           const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
           return (
             <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-era-card">
-              <span class="at-mono" style="font-size:0.74rem;color:var(--accent-signal);font-weight:600;">
-                {era.period}
+              <span class="at-mono" style="font-size:0.72rem;color:var(--accent-signal);font-weight:650;">
+                ERA {romanEras[idx]} · {era.period}
               </span>
-              <strong style="font-family:var(--font-serif);font-size:1.1rem;">{era[lang].title}</strong>
-              <p style="font-size:0.81rem;color:var(--ink-secondary);line-height:1.45;">{era[lang].subtitle}</p>
+              <strong style="font-family:var(--font-serif);font-size:1.08rem;">{era[lang].title}</strong>
+              <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.46;">{era[lang].subtitle}</p>
               <div style="margin-top:auto;padding-top:8px;display:flex;flex-wrap:wrap;gap:4px;">
                 {eraConcepts.slice(0, 3).map((c) => (
-                  <span class="at-mono" style="font-size:0.68rem;padding:1px 5px;background:var(--bg-canvas);border:1px solid var(--border-subtle);border-radius:3px;">
+                  <span class="at-mono" style="font-size:0.67rem;padding:1px 5px;background:var(--bg-canvas);border:1px solid var(--border-subtle);border-radius:3px;">
                     {c[lang].shortName}
                   </span>
                 ))}
@@ -150,7 +153,7 @@ const schema = {
           <div class="at-kicker" style="color:var(--accent-signal);">▲ SURGING MOMENTUM</div>
           <h2>{t.surgingHeading}</h2>
         </div>
-        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
           {lang === "zh" ? "查看全部 22 个概念演进脉络 →" : "View all 22 concepts →"}
         </a>
       </div>
@@ -171,7 +174,7 @@ const schema = {
           <div class="at-kicker">SCREENING GALLERY</div>
           <h2>{t.flagshipHeading}</h2>
         </div>
-        <a href={withBase(`/${lang}/directory/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/directory/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
           {t.ctaDirectory} →
         </a>
       </div>
@@ -190,7 +193,7 @@ const schema = {
           <div class="at-kicker">STRUCTURED PROGRESSION</div>
           <h2>{t.roadmapHeading}</h2>
         </div>
-        <a href={withBase(`/${lang}/roadmap/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/roadmap/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
           {lang === "zh" ? "打开完整四阶路线 →" : "Open full 4-stage roadmap →"}
         </a>
       </div>
