@@ -1,0 +1,123 @@
+---
+import { UI, type Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = UI[lang];
+---
+<dialog class="at-dialog" id="at-search-dialog" data-lang={lang}>
+  <div style="padding:14px 16px;border-bottom:1px solid var(--border-subtle);display:flex;gap:10px;align-items:center;">
+    <span class="at-mono" style="color:var(--accent-primary);">⌕</span>
+    <input
+      type="search"
+      id="at-search-input"
+      placeholder={t.searchPlaceholder}
+      autocomplete="off"
+      style="flex:1;border:0;background:transparent;outline:none;font-size:0.96rem;"
+    />
+    <button type="button" class="at-icon-btn at-mono" data-close-search style="height:28px;padding:0 8px;">ESC</button>
+  </div>
+  <div
+    id="at-search-results"
+    style="max-height:62vh;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px;"
+  >
+    <p style="font-size:0.84rem;color:var(--ink-muted);">
+      {lang === "zh"
+        ? "输入任意概念（如 Context Engineering、MCP、SKILL.md、RLVR）或实战问题即时直达。"
+        : "Type any concept (Context Engineering, MCP, SKILL.md, RLVR) or engineering question."}
+    </p>
+  </div>
+</dialog>
+
+<script is:inline>
+  (() => {
+    const dialog = document.getElementById("at-search-dialog");
+    const input = document.getElementById("at-search-input");
+    const box = document.getElementById("at-search-results");
+    if (!dialog || !input || !box) return;
+    const lang = dialog.getAttribute("data-lang") || "zh";
+    let corpus = null;
+
+    async function ensureCorpus() {
+      if (corpus) return corpus;
+      try {
+        const res = await fetch(`/search-corpus-${lang}.json`);
+        corpus = await res.json();
+      } catch {
+        corpus = [];
+      }
+      return corpus;
+    }
+
+    function renderHits(q) {
+      if (!corpus) return;
+      const term = q.trim().toLowerCase();
+      const hits = !term
+        ? corpus.slice(0, 10)
+        : corpus
+            .map((it) => {
+              const hay = `${it.title} ${it.sub} ${it.tags}`.toLowerCase();
+              let score = 0;
+              if (it.title.toLowerCase().includes(term)) score += 6;
+              if (hay.includes(term)) score += 3;
+              for (const tok of term.split(/\s+/)) {
+                if (tok && hay.includes(tok)) score += 1;
+              }
+              return { it, score };
+            })
+            .filter((x) => x.score > 0)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 14)
+            .map((x) => x.it);
+
+      if (!hits.length) {
+        box.innerHTML = `<p style="font-size:0.85rem;color:var(--ink-muted);">${
+          lang === "zh" ? "未找到匹配条目，试试搜 MCP、RAG、Agent Skills 或 Transformer。" : "No matches found. Try MCP, RAG, Agent Skills, or Transformer."
+        }</p>`;
+        return;
+      }
+
+      box.innerHTML = hits
+        .map(
+          (h) => `
+          <a href="${h.href}" style="padding:10px 12px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-elevated);display:flex;justify-content:space-between;gap:12px;align-items:center;">
+            <div style="min-width:0;">
+              <div style="font-size:0.72rem;font-family:var(--font-mono);color:var(--accent-primary);">${h.badge}</div>
+              <div style="font-weight:580;font-size:0.93rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.title}</div>
+              <div style="font-size:0.8rem;color:var(--ink-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${h.sub}</div>
+            </div>
+            <span class="at-mono" style="font-size:0.78rem;color:var(--ink-muted);">→</span>
+          </a>`
+        )
+        .join("");
+    }
+
+    async function openModal(prefill = "") {
+      dialog.showModal();
+      await ensureCorpus();
+      if (prefill) input.value = prefill;
+      renderHits(input.value);
+      input.focus();
+    }
+
+    document.querySelectorAll("[data-open-search]").forEach((btn) => {
+      btn.addEventListener("click", () => openModal());
+    });
+    document.querySelectorAll("[data-close-search]").forEach((btn) => {
+      btn.addEventListener("click", () => dialog.close());
+    });
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    window.addEventListener("keydown", (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        openModal();
+      }
+    });
+    input.addEventListener("input", () => renderHits(input.value));
+    window.__openAITubeSearch = openModal;
+  })();
+</script>

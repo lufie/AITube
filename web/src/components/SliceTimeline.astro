@@ -1,0 +1,65 @@
+---
+import type { MediaNode } from "../lib/content";
+import { formatTime, type Lang } from "../lib/i18n";
+
+interface Props {
+  node: MediaNode;
+  lang: Lang;
+}
+const { node, lang } = Astro.props;
+const s = node.source;
+const isVideo = s.kind === "video-cut" && (s.totalDurationSec || 0) > 0;
+const total = Math.max(1, s.totalDurationSec || 100);
+const start = s.startSec || 0;
+const end = s.endSec || total;
+const leftPct = Math.min(95, Math.max(0, (start / total) * 100));
+const widthPct = Math.min(100 - leftPct, Math.max(4, ((end - start) / total) * 100));
+
+const stepTimes = [
+  start,
+  Math.round(start + (end - start) * 0.36),
+  Math.round(start + (end - start) * 0.72),
+];
+---
+{isVideo && (
+  <div class="at-scrubber">
+    <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--ink-secondary);">
+      <span>
+        {lang === "zh" ? "精选核心切片窗口" : "Verified High-Signal Window"}: <strong>{formatTime(start)}–{formatTime(end)}</strong>
+      </span>
+      <span>
+        {lang === "zh" ? "原片总长" : "Full Video"}: {formatTime(total)}
+      </span>
+    </div>
+
+    <div class="at-scrubber-track" aria-hidden="true">
+      <div class="at-scrubber-slice" style={`left:${leftPct.toFixed(1)}%;width:${widthPct.toFixed(1)}%;`} />
+    </div>
+
+    {s.platform === "youtube" && (
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+        {node[lang].steps.map((st, idx) => (
+          <button
+            type="button"
+            class="at-chip at-mono"
+            data-seek-sec={stepTimes[idx]}
+            style="font-size:0.74rem;padding:4px 9px;"
+          >
+            ▶ {formatTime(stepTimes[idx])} · 0{idx + 1} {st.title.slice(0, 22)}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+<script is:inline>
+  document.querySelectorAll("[data-seek-sec]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const sec = Number(btn.getAttribute("data-seek-sec") || 0);
+      if (typeof window.__seekAITubeStage === "function") {
+        window.__seekAITubeStage(sec);
+      }
+    });
+  });
+</script>

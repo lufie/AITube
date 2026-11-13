@@ -1,0 +1,230 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MediaCard from "../../components/MediaCard.astro";
+import ConceptTimelineCard from "../../components/ConceptTimelineCard.astro";
+import { LANGS, UI, type Lang } from "../../lib/i18n";
+import {
+  CONCEPTS,
+  ERAS,
+  NODES,
+  SPINE_NODES,
+  STAGES,
+  TAXONOMY_DIMS,
+  getTotalHoursSaved,
+} from "../../lib/content";
+import { orgAndSiteGraph } from "../../lib/seo";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = UI[lang];
+const totalHours = getTotalHoursSaved();
+
+const surgingConcepts = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 4);
+const featuredSlugs = [
+  "3b1b-transformer-overview",
+  "karpathy-deep-dive-llms",
+  "deepseek-r1-rlvr-paper",
+  "anthropic-context-engineering-digest",
+  "anthropic-mcp-workshop-mahesh",
+  "anthropic-effective-agents-digest",
+  "agent-skills-open-spec-digest",
+  "comfyui-flux-consistent-pipeline",
+];
+const featuredNodes = featuredSlugs
+  .map((s) => NODES.find((n) => n.slug === s))
+  .filter(Boolean)
+  .concat(SPINE_NODES.slice(0, 8))
+  .filter((v, idx, arr) => v && arr.findIndex((x) => x?.slug === v.slug) === idx)
+  .slice(0, 9);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": orgAndSiteGraph(lang),
+};
+---
+<BaseLayout
+  title={`${t.siteName} — ${t.tagline}`}
+  description={t.heroSubtitle}
+  lang={lang}
+  pathname={`/${lang}/`}
+  ogImage={`/og/home-${lang}.png`}
+  schema={schema}
+>
+  <section class="at-hero">
+    <div class="at-container at-hero-grid">
+      <div>
+        <div class="at-kicker">{t.heroKicker}</div>
+        <h1>{t.heroTitle}</h1>
+        <p class="at-hero-lead">{t.heroSubtitle}</p>
+
+        <div style="display:flex;gap:8px;max-width:540px;margin-bottom:18px;">
+          <button
+            type="button"
+            data-open-search
+            style="flex:1;text-align:left;padding:11px 14px;border:1px solid var(--border-strong);border-radius:4px;background:var(--bg-elevated);color:var(--ink-secondary);cursor:pointer;font-size:0.9rem;"
+          >
+            ⌕ {t.searchPlaceholder}
+          </button>
+        </div>
+
+        <div class="at-hero-ctas">
+          <a href={`/${lang}/timeline/`} class="at-btn-primary">{t.ctaTimeline}</a>
+          <a href={`/${lang}/directory/`} class="at-btn-ghost">{t.ctaDirectory}</a>
+        </div>
+      </div>
+
+      <div class="at-stat-ledger">
+        <div class="at-stat-cell">
+          <div class="at-stat-num">{ERAS.length} → {CONCEPTS.length}</div>
+          <div class="at-stat-label">
+            {lang === "zh" ? "五大纪元 · 22 个核心概念趋势坐标" : "5 Chronological Eras · 22 Concept Trajectories"}
+          </div>
+        </div>
+        <div class="at-stat-cell" style="border-left-color:var(--accent-signal);">
+          <div class="at-stat-num">{NODES.length}</div>
+          <div class="at-stat-label">
+            {lang === "zh" ? "100% 核验可播实战切片与技术原典" : "oEmbed-Verified Cuts & Primary Monographs"}
+          </div>
+        </div>
+        <div class="at-stat-cell">
+          <div class="at-stat-num">{SPINE_NODES.length}</div>
+          <div class="at-stat-label">
+            {lang === "zh" ? "编辑部精编四阶主干必修切片" : "Flagship Curriculum Spine Cuts"}
+          </div>
+        </div>
+        <div class="at-stat-cell" style="border-left-color:var(--accent-evergreen);">
+          <div class="at-stat-num">~{totalHours}h</div>
+          <div class="at-stat-label">
+            {lang === "zh" ? "跳过寒暄水词累计节省研读时长" : "Cumulative Research Hours Saved"}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5-Era Concept Evolution Strip -->
+  <section class="at-section">
+    <div class="at-container">
+      <div class="at-section-head">
+        <div>
+          <div class="at-kicker">SIGNATURE PERSPECTIVE</div>
+          <h2>{t.eraStripHeading}</h2>
+        </div>
+        <a href={`/${lang}/timeline/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+          {t.ctaTimeline}
+        </a>
+      </div>
+
+      <div class="at-era-strip">
+        {ERAS.map((era) => {
+          const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
+          return (
+            <a href={`/${lang}/timeline/#${era.id}`} class="at-era-card">
+              <span class="at-mono" style="font-size:0.74rem;color:var(--accent-signal);font-weight:600;">
+                {era.period}
+              </span>
+              <strong style="font-family:var(--font-serif);font-size:1.1rem;">{era[lang].title}</strong>
+              <p style="font-size:0.81rem;color:var(--ink-secondary);line-height:1.45;">{era[lang].subtitle}</p>
+              <div style="margin-top:auto;padding-top:8px;display:flex;flex-wrap:wrap;gap:4px;">
+                {eraConcepts.slice(0, 3).map((c) => (
+                  <span class="at-mono" style="font-size:0.68rem;padding:1px 5px;background:var(--bg-canvas);border:1px solid var(--border-subtle);border-radius:3px;">
+                    {c[lang].shortName}
+                  </span>
+                ))}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Surging 2026 Concepts -->
+  <section class="at-section">
+    <div class="at-container">
+      <div class="at-section-head">
+        <div>
+          <div class="at-kicker" style="color:var(--accent-signal);">▲ SURGING MOMENTUM</div>
+          <h2>{t.surgingHeading}</h2>
+        </div>
+        <a href={`/${lang}/timeline/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+          {lang === "zh" ? "查看全部 22 个概念演进脉络 →" : "View all 22 concepts →"}
+        </a>
+      </div>
+
+      <div class="at-concept-list">
+        {surgingConcepts.map((c) => (
+          <ConceptTimelineCard concept={c} lang={lang} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Flagship Cuts -->
+  <section class="at-section">
+    <div class="at-container">
+      <div class="at-section-head">
+        <div>
+          <div class="at-kicker">SCREENING GALLERY</div>
+          <h2>{t.flagshipHeading}</h2>
+        </div>
+        <a href={`/${lang}/directory/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+          {t.ctaDirectory} →
+        </a>
+      </div>
+
+      <div class="at-grid-cards">
+        {featuredNodes.map((n) => n && <MediaCard node={n} lang={lang} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 4-Stage Learning Roadmap & Topic Hubs -->
+  <section class="at-section" style="border-bottom:0;">
+    <div class="at-container">
+      <div class="at-section-head">
+        <div>
+          <div class="at-kicker">STRUCTURED PROGRESSION</div>
+          <h2>{t.roadmapHeading}</h2>
+        </div>
+        <a href={`/${lang}/roadmap/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+          {lang === "zh" ? "打开完整四阶路线 →" : "Open full 4-stage roadmap →"}
+        </a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:34px;">
+        {STAGES.map((st) => {
+          const cnt = SPINE_NODES.filter((n) => n.stageId === st.id).length;
+          return (
+            <a href={`/${lang}/roadmap/#${st.id}`} class="at-era-card">
+              <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.74rem;color:var(--accent-primary);">
+                <span>{st[lang].code}</span>
+                <span>{cnt} {lang === "zh" ? "必修精切" : "spine cuts"}</span>
+              </div>
+              <h3 style="font-size:1.14rem;">{st[lang].title}</h3>
+              <p style="font-size:0.84rem;color:var(--ink-secondary);">{st[lang].summary}</p>
+            </a>
+          );
+        })}
+      </div>
+
+      <div style="padding-top:22px;border-top:1px solid var(--border-subtle);">
+        <div class="at-kicker" style="margin-bottom:10px;">
+          {lang === "zh" ? "按专题分面直达（20 个细分专题页）" : "Browse by Topic Hubs (20 Curated Facets)"}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          {TAXONOMY_DIMS.flatMap((dim) =>
+            dim.items.map((item) => (
+              <a href={`/${lang}/topics/${dim.key}/${item.slug}/`} class="at-lineage-pill">
+                {item[lang].name}
+              </a>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

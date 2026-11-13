@@ -1,0 +1,738 @@
+{
+  "eras": [
+    {
+      "id": "era-2017-2022",
+      "period": "2017–2022",
+      "en": {
+        "title": "Foundational Era",
+        "subtitle": "Attention, BPE tokenization, scaling laws, and early RLHF alignment set the substrate for modern LLMs."
+      },
+      "zh": {
+        "title": "奠基纪元",
+        "subtitle": "自注意力机制、分词向量空间、Scaling Laws 与早期 RLHF 对齐奠定了现代大模型底座。"
+      }
+    },
+    {
+      "id": "era-2023",
+      "period": "2023",
+      "en": {
+        "title": "Generative Breakout",
+        "subtitle": "Prompting, Chain-of-Thought, vector RAG, LoRA quantization, and controllable diffusion go mainstream."
+      },
+      "zh": {
+        "title": "生成式爆发",
+        "subtitle": "提示词与思维链、经典向量 RAG、LoRA 量化本地运行与可控扩散图像生成走向普及。"
+      }
+    },
+    {
+      "id": "era-2024",
+      "period": "2024",
+      "en": {
+        "title": "Structured Tools & Multimodal",
+        "subtitle": "JSON schema tool calling, deterministic graphs, 1M+ context omni models, LLM evals, and ComfyUI pipelines."
+      },
+      "zh": {
+        "title": "结构化工具与原生多模态",
+        "subtitle": "结构化输出与工具调用、图编排工作流、百万上下文多模态、系统化评测与 ComfyUI 节点流成型。"
+      }
+    },
+    {
+      "id": "era-2025",
+      "period": "2025 H1",
+      "en": {
+        "title": "Reasoning, Protocols & Vibe Coding",
+        "subtitle": "RLVR test-time compute (o1/o3/R1), MCP universal tool protocol, vibe coding, browser agents, and hybrid search."
+      },
+      "zh": {
+        "title": "推理强化学习、开放协议与氛围编程",
+        "subtitle": "RLVR 测试时推理（o1/o3/R1）、MCP 开放协议、Vibe Coding、浏览器操作智能体与混合检索爆发。"
+      }
+    },
+    {
+      "id": "era-2026",
+      "period": "2025 H2–2026",
+      "en": {
+        "title": "Context, Skills & Agentic Engineering",
+        "subtitle": "Context engineering, CLI coding harnesses, progressive Agent Skills (SKILL.md), subagents, and world models."
+      },
+      "zh": {
+        "title": "上下文工程、技能包与智能体工程化",
+        "subtitle": "上下文工程、终端自主编程 Harness、渐进式 Agent Skills（SKILL.md）、并行子智能体与世界模型主导前沿。"
+      }
+    }
+  ],
+  "seriesLabels": [
+    "22H2",
+    "23H1",
+    "23H2",
+    "24H1",
+    "24H2",
+    "25H1",
+    "25H2",
+    "26Q1",
+    "26Q2",
+    "26Q3"
+  ],
+  "concepts": [
+    {
+      "slug": "transformer-attention",
+      "order": 1,
+      "eraId": "era-2017-2022",
+      "originQuarter": "2017 Q2",
+      "inflectionQuarter": "2022 Q4",
+      "domain": "foundations",
+      "lifecycle": "foundational",
+      "momentum": "Evergreen Core",
+      "trendSeries": [45, 78, 82, 85, 88, 90, 92, 94, 95, 96],
+      "inflectionIndex": 1,
+      "lineage": {
+        "from": [],
+        "into": ["scaling-pretraining", "long-context-multimodal"]
+      },
+      "en": {
+        "name": "Transformer & Self-Attention",
+        "shortName": "Transformer & Attention",
+        "oneLiner": "Parallel Query-Key-Value routing that replaced recurrence and unlocked massive sequence scaling.",
+        "paradigmShift": "Sequential RNN bottlenecks → parallel QKV attention heads + residual MLP streams.",
+        "whyNow": "Understanding QKV projections and KV caching remains prerequisite to debugging long-context latency and cost."
+      },
+      "zh": {
+        "name": "Transformer 与自注意力机制",
+        "shortName": "Transformer 注意力",
+        "oneLiner": "用并行 QKV 注意力路由取代循环序列瓶颈，奠定所有现代大语言与多模态模型的计算骨架。",
+        "paradigmShift": "RNN 串行遗忘瓶颈 → 并行多头注意力 QKV 寻址 + 残差前馈流。",
+        "whyNow": "吃透 QKV 矩阵与残差流，仍是今天排查长上下文延迟、KV Cache 显存与注意力退化的必修内功。"
+      }
+    },
+    {
+      "slug": "tokenization-embeddings",
+      "order": 2,
+      "eraId": "era-2017-2022",
+      "originQuarter": "2018 Q4",
+      "inflectionQuarter": "2023 Q1",
+      "domain": "foundations",
+      "lifecycle": "foundational",
+      "momentum": "Evergreen Core",
+      "trendSeries": [38, 72, 78, 84, 83, 82, 85, 86, 86, 87],
+      "inflectionIndex": 1,
+      "lineage": {
+        "from": [],
+        "into": ["rag-grounding"]
+      },
+      "en": {
+        "name": "Tokenization & Vector Embeddings",
+        "shortName": "Tokens & Embeddings",
+        "oneLiner": "Byte-Pair Encoding subword vocabulary and dense geometric representations of semantic meaning.",
+        "paradigmShift": "Brittle character/word dictionaries → BPE token streams + high-dimensional cosine geometry.",
+        "whyNow": "Many LLM arithmetic bugs, multilingual token inflation, and retrieval misses trace straight back to tokenization."
+      },
+      "zh": {
+        "name": "分词器与向量嵌入空间",
+        "shortName": "分词与向量嵌入",
+        "oneLiner": "通过 BPE 子词切分与高维稠密向量空间，将离散文本与多模态信号映射为可计算的语义几何。",
+        "paradigmShift": "脆弱词表与稀疏词袋 → BPE 字节对分词 + 高维余弦语义几何空间。",
+        "whyNow": "大模型拼写/算术翻车、中文 Token 计费膨胀与向量召回漂移，根源几乎都在分词器与嵌入分布。"
+      }
+    },
+    {
+      "slug": "scaling-pretraining",
+      "order": 3,
+      "eraId": "era-2017-2022",
+      "originQuarter": "2020 Q1",
+      "inflectionQuarter": "2023 Q2",
+      "domain": "foundations",
+      "lifecycle": "foundational",
+      "momentum": "Shifting to Post-Train",
+      "trendSeries": [30, 68, 76, 82, 86, 80, 76, 75, 74, 74],
+      "inflectionIndex": 2,
+      "lineage": {
+        "from": ["transformer-attention"],
+        "into": ["rlhf-post-training", "rlvr-reasoning-models"]
+      },
+      "en": {
+        "name": "Scaling Laws & Pre-Training",
+        "shortName": "Scaling & Pre-Training",
+        "oneLiner": "Predictable power-law loss curves across compute, tokens, and parameters during next-token pre-training.",
+        "paradigmShift": "Task-specific supervised models → compute-optimal web-scale next-token world compression.",
+        "whyNow": "Pure pre-training hit high-quality data ceilings, shifting frontier ROI toward synthetic data, MoE, and RLVR."
+      },
+      "zh": {
+        "name": "Scaling Laws 与预训练基座",
+        "shortName": "Scaling 与预训练",
+        "oneLiner": "算力、数据 Token 量与参数规模之间的幂律收敛法则，将海量人类知识压缩进下一词预测基座。",
+        "paradigmShift": "单任务监督小模型 → Chinchilla 最优配比的大规模自回归预训练基座。",
+        "whyNow": "随天然高质量语料逼近上限，单纯堆预训练转向合成课程数据、MoE 稀疏激活与后训练推理扩展。"
+      }
+    },
+    {
+      "slug": "rlhf-post-training",
+      "order": 4,
+      "eraId": "era-2017-2022",
+      "originQuarter": "2022 Q1",
+      "inflectionQuarter": "2023 Q1",
+      "domain": "frontier-models",
+      "lifecycle": "evolved",
+      "momentum": "Evolved → DPO / RLVR",
+      "trendSeries": [42, 88, 92, 84, 72, 58, 49, 44, 42, 40],
+      "inflectionIndex": 2,
+      "lineage": {
+        "from": ["scaling-pretraining"],
+        "into": ["rlvr-reasoning-models", "lora-local-open-weights"]
+      },
+      "en": {
+        "name": "Instruction Tuning & RLHF Alignment",
+        "shortName": "SFT & RLHF",
+        "oneLiner": "Turning raw autocomplete base models into helpful assistants via SFT and human preference reward models.",
+        "paradigmShift": "Unsteerable base completion → SFT + PPO/DPO preference alignment.",
+        "whyNow": "Human-preference RLHF caused sycophancy and reward hacking; verifiable tasks now favor RLVR/GRPO."
+      },
+      "zh": {
+        "name": "指令微调与 RLHF 偏好对齐",
+        "shortName": "SFT 与 RLHF",
+        "oneLiner": "通过监督指令微调（SFT）与人类反馈强化学习，把只会续写的基座模型塑造成遵循指令的对话助手。",
+        "paradigmShift": "不可控续写基座 → SFT 指令微调 + PPO/DPO 人类偏好对齐。",
+        "whyNow": "纯人类偏好打分易诱发讨好型幻觉（Sycophancy），数学与代码等可验证任务已全面演进至 RLVR/GRPO。"
+      }
+    },
+    {
+      "slug": "prompt-cot",
+      "order": 5,
+      "eraId": "era-2023",
+      "originQuarter": "2022 Q2",
+      "inflectionQuarter": "2023 Q2",
+      "domain": "ai-engineering",
+      "lifecycle": "evolved",
+      "momentum": "Evolved → Context Eng.",
+      "trendSeries": [50, 96, 100, 88, 76, 64, 52, 46, 43, 41],
+      "inflectionIndex": 2,
+      "lineage": {
+        "from": ["rlhf-post-training"],
+        "into": ["context-engineering", "structured-tool-calling"]
+      },
+      "en": {
+        "name": "Prompt Engineering & Chain-of-Thought",
+        "shortName": "Prompting & CoT",
+        "oneLiner": "Few-shot exemplars, role framing, and explicit step-by-step reasoning instructions inside a single prompt.",
+        "paradigmShift": "Zero-shot vague asks → structured delimiters, few-shot pairs, and explicit CoT scratchpads.",
+        "whyNow": "Magic prompt incantations deprecated; reasoning models internalize CoT while multi-turn apps require Context Engineering."
+      },
+      "zh": {
+        "name": "提示词工程与思维链 CoT",
+        "shortName": "提示词与 CoT",
+        "oneLiner": "利用少样本示例、XML 结构分隔符与显式分步推理引导，在不改权重的前提下激发模型任务表现。",
+        "paradigmShift": "模糊零样本提问 → XML 边界框定 + Few-shot 示例 + 显式思维链推理。",
+        "whyNow": "死背“咒语模板”已过时：推理模型已内化思维链，工程重心全面转向多轮动态装配的「上下文工程」。"
+      }
+    },
+    {
+      "slug": "rag-grounding",
+      "order": 6,
+      "eraId": "era-2023",
+      "originQuarter": "2020 Q2",
+      "inflectionQuarter": "2023 Q3",
+      "domain": "ai-engineering",
+      "lifecycle": "mainstream",
+      "momentum": "Upgraded → Hybrid RAG",
+      "trendSeries": [18, 56, 90, 96, 92, 85, 80, 78, 76, 75],
+      "inflectionIndex": 3,
+      "lineage": {
+        "from": ["tokenization-embeddings"],
+        "into": ["hybrid-agentic-rag", "context-engineering"]
+      },
+      "en": {
+        "name": "Classic RAG & Vector Retrieval",
+        "shortName": "Vector RAG",
+        "oneLiner": "Grounding LLM answers in private documents via chunking, dense vector indexing, and top-k injection.",
+        "paradigmShift": "Retraining weights for new facts → external chunk indexing + retrieval-augmented generation.",
+        "whyNow": "Naive fixed-size vector chunking fails on exact IDs and multi-hop queries; pair with BM25, rerankers, and agentic search."
+      },
+      "zh": {
+        "name": "经典 RAG 与向量检索增强",
+        "shortName": "经典向量 RAG",
+        "oneLiner": "通过文档切块、向量索引与 Top-K 注入，让大模型基于私有实时知识生成有据可查的回答。",
+        "paradigmShift": "靠微调硬塞私有事实 → 外部向量索引 + 检索增强生成。",
+        "whyNow": "纯固定长度切片在精确编号与跨段落推理上失召率高，生产环境需升级为 BM25 混合检索 + 重排与 Agentic Search。"
+      }
+    },
+    {
+      "slug": "lora-local-open-weights",
+      "order": 7,
+      "eraId": "era-2023",
+      "originQuarter": "2023 Q1",
+      "inflectionQuarter": "2023 Q4",
+      "domain": "frontier-models",
+      "lifecycle": "mainstream",
+      "momentum": "Steady Open Ecosystem",
+      "trendSeries": [15, 62, 84, 88, 86, 89, 88, 90, 91, 92],
+      "inflectionIndex": 2,
+      "lineage": {
+        "from": ["rlhf-post-training"],
+        "into": ["rlvr-reasoning-models"]
+      },
+      "en": {
+        "name": "LoRA Fine-Tuning, Quantization & Local LLMs",
+        "shortName": "LoRA & Local LLMs",
+        "oneLiner": "Low-rank adapters (LoRA/QLoRA), 4-bit quantization, and local/self-hosted inference with Ollama and vLLM.",
+        "paradigmShift": "Multi-node H100 full fine-tunes → single-GPU QLoRA + GGUF/vLLM open-weight deployment.",
+        "whyNow": "Distilling frontier trajectories into 4B–32B Qwen/Llama open models via LoRA slashes latency and cost 20x."
+      },
+      "zh": {
+        "name": "LoRA 微调、量化与本地开源模型",
+        "shortName": "LoRA 与本地部署",
+        "oneLiner": "借助低秩适应（LoRA/QLoRA）、4-bit 量化与 Ollama/vLLM 推理引擎，在单卡或本地高效微调与部署开源权重。",
+        "paradigmShift": "昂贵全量参数训练 → 单卡 Unsloth/QLoRA 微调 + GGUF/vLLM 私有化高吞吐部署。",
+        "whyNow": "用前沿大模型轨迹蒸馏 7B–32B 垂直小模型，是 2026 年压降 90% 线上推理成本与满足数据不出域的王牌路径。"
+      }
+    },
+    {
+      "slug": "diffusion-controllable-image",
+      "order": 8,
+      "eraId": "era-2023",
+      "originQuarter": "2022 Q3",
+      "inflectionQuarter": "2023 Q3",
+      "domain": "coding-multimodal",
+      "lifecycle": "mainstream",
+      "momentum": "Merged into DiT / Flux",
+      "trendSeries": [65, 86, 92, 85, 84, 82, 80, 79, 78, 78],
+      "inflectionIndex": 2,
+      "lineage": {
+        "from": [],
+        "into": ["comfyui-video-audio", "world-models-embodied-multimodal"]
+      },
+      "en": {
+        "name": "Latent Diffusion & Controllable Image Gen",
+        "shortName": "Diffusion & ControlNet",
+        "oneLiner": "Iterative latent denoising plus spatial conditioning (ControlNet, IP-Adapter, Flux DiT) for art direction.",
+        "paradigmShift": "Random text-to-image slot machines → spatially locked pose, depth, reference, and typography control.",
+        "whyNow": "UNet diffusion evolved into Diffusion Transformers (Flux) and native multimodal image editing with exact text rendering."
+      },
+      "zh": {
+        "name": "潜空间扩散与可控图像生成",
+        "shortName": "扩散模型与可控生图",
+        "oneLiner": "从潜空间逐步去噪生成高保真视觉画面，并结合 ControlNet 姿态/景深与参考图实现商业级精确控图。",
+        "paradigmShift": "随机抽卡式文生图 → 骨骼姿态、景深边缘、风格参考与文字排版精准锁定。",
+        "whyNow": "底层架构已从 UNet 迭代至扩散 Transformer（Flux）与原生多模态改图，商业落地关键在于一致性控制。"
+      }
+    },
+    {
+      "slug": "structured-tool-calling",
+      "order": 9,
+      "eraId": "era-2024",
+      "originQuarter": "2023 Q2",
+      "inflectionQuarter": "2024 Q1",
+      "domain": "ai-engineering",
+      "lifecycle": "mainstream",
+      "momentum": "Production Standard",
+      "trendSeries": [12, 34, 62, 86, 92, 94, 95, 95, 96, 96],
+      "inflectionIndex": 3,
+      "lineage": {
+        "from": ["prompt-cot"],
+        "into": ["mcp-protocol", "agent-workflows-graphs"]
+      },
+      "en": {
+        "name": "Structured Outputs & Function Calling",
+        "shortName": "Structured Tool Calling",
+        "oneLiner": "Constrained decoding against strict JSON/Pydantic schemas and deterministic API tool invocation.",
+        "paradigmShift": "Fragile regex parsing of markdown replies → grammar-constrained 100% schema-valid JSON & tool calls.",
+        "whyNow": "Every reliable pipeline and agent loop relies on typed tool schemas with concise, unambiguous parameter descriptions."
+      },
+      "zh": {
+        "name": "结构化输出与 Function Calling",
+        "shortName": "结构化输出与工具调用",
+        "oneLiner": "利用语法约束解码严格输出符合 Pydantic / JSON Schema 的数据，并安全触发外部 API 与数据库调用。",
+        "paradigmShift": "正则硬抠 Markdown 文本 → 解码层语法约束 100% 合法 Schema 与类型安全工具调用。",
+        "whyNow": "无论上层用不用框架，精心设计工具参数边界与错误返回格式，始终是 Agent 稳定率最高杠杆的一步。"
+      }
+    },
+    {
+      "slug": "agent-workflows-graphs",
+      "order": 10,
+      "eraId": "era-2024",
+      "originQuarter": "2023 Q4",
+      "inflectionQuarter": "2024 Q2",
+      "domain": "ai-engineering",
+      "lifecycle": "evolved",
+      "momentum": "Simplified → Loops + Skills",
+      "trendSeries": [10, 28, 52, 85, 94, 88, 76, 68, 63, 60],
+      "inflectionIndex": 4,
+      "lineage": {
+        "from": ["structured-tool-calling"],
+        "into": ["agent-skills-subagents", "context-engineering"]
+      },
+      "en": {
+        "name": "Deterministic Workflows vs Graph Agents",
+        "shortName": "Workflows & Graph Agents",
+        "oneLiner": "Chaining, routing, evaluator-optimizer patterns, and stateful graph orchestration for bounded business tasks.",
+        "paradigmShift": "Unbounded 2023 AutoGPT loops → explicit prompt chains, routers, and checkpointed state graphs.",
+        "whyNow": "Over-engineered 30-node DAGs break easily; stronger 2026 models favor simple tool-use while-loops + modular Skills."
+      },
+      "zh": {
+        "name": "确定性工作流与状态图编排",
+        "shortName": "工作流与图编排",
+        "oneLiner": "区分确定性链式路由（Workflows）与自主智能体，用状态图检查点与评估-优化循环控制生产风险。",
+        "paradigmShift": "2023 失控死循环 AutoGPT → 显式路由链、并行扇出与带断点恢复的状态图。",
+        "whyNow": "过度复杂的几十节点死板连线正在退潮；随着模型能力跃升，主流工程收敛为「极简工具循环 + 按需加载 Skills」。"
+      }
+    },
+    {
+      "slug": "long-context-multimodal",
+      "order": 11,
+      "eraId": "era-2024",
+      "originQuarter": "2024 Q1",
+      "inflectionQuarter": "2024 Q3",
+      "domain": "frontier-models",
+      "lifecycle": "mainstream",
+      "momentum": "1M+ Context Standard",
+      "trendSeries": [8, 20, 42, 74, 90, 92, 94, 95, 95, 96],
+      "inflectionIndex": 4,
+      "lineage": {
+        "from": ["transformer-attention"],
+        "into": ["context-engineering", "world-models-embodied-multimodal"]
+      },
+      "en": {
+        "name": "1M+ Long Context & Native Omni Multimodal",
+        "shortName": "Long Context & Omni",
+        "oneLiner": "FlashAttention, Ring Attention, prompt caching, and unified vision-audio-document reasoning in one model.",
+        "paradigmShift": "4K token blindfolds + separate OCR/ASR glue → cached million-token context & native PDF/video/voice intake.",
+        "whyNow": "Having a 1M window does not prevent 'context rot'; combine prompt caching with active context pruning."
+      },
+      "zh": {
+        "name": "百万长上下文与原生多模态",
+        "shortName": "长上下文与多模态",
+        "oneLiner": "依托 FlashAttention、上下文缓存与原生视觉/音频编码，让单模型直接吞吐整本代码库、PDF 图表与长视频。",
+        "paradigmShift": "4K 窗口截断 + 拼凑 OCR/语音转写 → 百万级 Prompt Caching + 原生图文音视频端到端理解。",
+        "whyNow": "窗口变大不等于“塞得越满越聪明”：超过有效阈值会出现注意力腐化（Context Rot），必须配合上下文裁剪。"
+      }
+    },
+    {
+      "slug": "llm-evals-observability",
+      "order": 12,
+      "eraId": "era-2024",
+      "originQuarter": "2023 Q4",
+      "inflectionQuarter": "2024 Q3",
+      "domain": "ai-engineering",
+      "lifecycle": "mainstream",
+      "momentum": "+145% Builder Adoption",
+      "trendSeries": [6, 16, 35, 64, 82, 88, 92, 95, 97, 98],
+      "inflectionIndex": 4,
+      "lineage": {
+        "from": ["prompt-cot"],
+        "into": ["agent-skills-subagents"]
+      },
+      "en": {
+        "name": "LLM Evals, Trace Analysis & Judge Pipelines",
+        "shortName": "LLM Evals & Traces",
+        "oneLiner": "Systematic error analysis on real production traces, binary pass/fail criteria, and aligned LLM-as-a-Judge.",
+        "paradigmShift": "Eyeballing 3 cherry-picked examples ('vibe checks') → axial trace coding + automated regression eval suites.",
+        "whyNow": "Evals are the #1 moat separating toy demos from compounding production AI teams whenever models or prompts change."
+      },
+      "zh": {
+        "name": "大模型评测体系与链路可观测性",
+        "shortName": "Eval 评测与链路分析",
+        "oneLiner": "从真实线上 Trace 做开放式错误归因，建立二元通过/失败准则与对齐人类专家的 LLM-as-a-Judge 回归集。",
+        "paradigmShift": "拍脑袋肉眼试 3 条（Vibe Check）→ 真实坏例分类统计 + 自动化 CI 评测飞轮。",
+        "whyNow": "模型每季度升级、Prompt 一改就牵一发动全身，只有先搭好专属业务 Eval 集，团队才敢高频迭代。"
+      }
+    },
+    {
+      "slug": "comfyui-video-audio",
+      "order": 13,
+      "eraId": "era-2024",
+      "originQuarter": "2024 Q1",
+      "inflectionQuarter": "2024 Q4",
+      "domain": "coding-multimodal",
+      "lifecycle": "mainstream",
+      "momentum": "+160% Creative Pipelines",
+      "trendSeries": [5, 18, 40, 66, 86, 91, 93, 94, 95, 96],
+      "inflectionIndex": 4,
+      "lineage": {
+        "from": ["diffusion-controllable-image"],
+        "into": ["world-models-embodied-multimodal"]
+      },
+      "en": {
+        "name": "ComfyUI Node Graphs & Multimodal Video/Audio",
+        "shortName": "ComfyUI & Video/Voice",
+        "oneLiner": "Reproducible node-graph pipelines chaining Flux keyframes, camera-controlled DiT video, and expressive voice.",
+        "paradigmShift": "One-off web UI prompts → versioned JSON node workflows locking character identity, lighting, and lip-sync.",
+        "whyNow": "Production studios lock first/last keyframes in Flux/ComfyUI before driving DiT video generation to eliminate drift."
+      },
+      "zh": {
+        "name": "ComfyUI 节点流与可控音视频创作",
+        "shortName": "ComfyUI 与音视频流",
+        "oneLiner": "用可复用的节点图串联 Flux 首尾帧锁脸、运镜可控视频生成与高表现力语音克隆，打造工业化多模态管线。",
+        "paradigmShift": "单次网页盲盒抽卡 → 首尾关键帧锁定 + 镜头运动控制 + 可版本化复用的 ComfyUI 工作流。",
+        "whyNow": "“先用生图锁死角色与构图，再首尾帧驱动视频与配音对口型”已成为 2026 短片、电商视觉与动画团队的标准 SOP。"
+      }
+    },
+    {
+      "slug": "mcp-protocol",
+      "order": 14,
+      "eraId": "era-2025",
+      "originQuarter": "2024 Q4",
+      "inflectionQuarter": "2025 Q1",
+      "domain": "ai-engineering",
+      "lifecycle": "surging",
+      "momentum": "+290% Ecosystem Std",
+      "trendSeries": [0, 0, 0, 0, 24, 82, 95, 96, 94, 93],
+      "inflectionIndex": 5,
+      "lineage": {
+        "from": ["structured-tool-calling"],
+        "into": ["agent-skills-subagents"]
+      },
+      "en": {
+        "name": "MCP: Model Context Protocol",
+        "shortName": "MCP Protocol",
+        "oneLiner": "The USB-C open standard connecting AI clients and coding agents to external tools, databases, and OAuth APIs.",
+        "paradigmShift": "N×M custom API connectors per host app → one reusable MCP server across Claude, Cursor, Codex, and IDEs.",
+        "whyNow": "Avoid mounting 50 noisy MCP tools at once; expose lean domain actions and pair MCP connectivity with progressive Skills."
+      },
+      "zh": {
+        "name": "MCP 模型上下文开放协议",
+        "shortName": "MCP 协议",
+        "oneLiner": "连接大模型客户端与外部数据库、SaaS 及本地工具的「USB-C 开放标准」，一次实现跨宿主通用挂载。",
+        "paradigmShift": "每个应用重复造 N×M 套插件胶水 → 标准 MCP Server 跨 Claude、Cursor、Codex 即插即用。",
+        "whyNow": "2026 关键避坑：切忌一次性挂载几十个高啰嗦度 MCP 塞满上下文，应精简原子接口并配合 Skills 按需唤醒。"
+      }
+    },
+    {
+      "slug": "rlvr-reasoning-models",
+      "order": 15,
+      "eraId": "era-2025",
+      "originQuarter": "2024 Q3",
+      "inflectionQuarter": "2025 Q1",
+      "domain": "frontier-models",
+      "lifecycle": "surging",
+      "momentum": "+320% Frontier Shift",
+      "trendSeries": [0, 0, 4, 14, 48, 96, 98, 99, 100, 100],
+      "inflectionIndex": 5,
+      "lineage": {
+        "from": ["scaling-pretraining", "rlhf-post-training"],
+        "into": ["agentic-coding-cli", "agent-skills-subagents"]
+      },
+      "en": {
+        "name": "Test-Time Compute & RLVR Reasoning (o1/o3/R1)",
+        "shortName": "RLVR & Reasoning",
+        "oneLiner": "Reinforcement Learning with Verifiable Rewards (GRPO) scaling inference-time thinking, backtracking, and tool use.",
+        "paradigmShift": "Fixed single-pass token budget → RL on verifiable unit tests/math + dynamic test-time thinking budgets.",
+        "whyNow": "Interleaved thinking + tool calls (search/bash mid-chain) made multi-step coding and research agents finally reliable."
+      },
+      "zh": {
+        "name": "测试时计算与 RLVR 推理模型",
+        "shortName": "RLVR 推理强化学习",
+        "oneLiner": "基于可验证奖励的强化学习（RLVR / GRPO）与测试时计算扩展，让模型自主涌现长链推演、自我纠错与工具交错思考。",
+        "paradigmShift": "固定算力直觉秒回 → 代码单测/数学真值强化学习 + 推理期动态思考预算（o1/o3/DeepSeek-R1）。",
+        "whyNow": "「边思考边调工具（Interleaved Thinking）」直接解锁了复杂代码库排障与深度多跳研究能力的质变。"
+      }
+    },
+    {
+      "slug": "vibe-coding",
+      "order": 16,
+      "eraId": "era-2025",
+      "originQuarter": "2025 Q1",
+      "inflectionQuarter": "2025 Q2",
+      "domain": "coding-multimodal",
+      "lifecycle": "evolved",
+      "momentum": "Matured → Agentic Eng.",
+      "trendSeries": [0, 0, 0, 5, 18, 92, 96, 82, 72, 66],
+      "inflectionIndex": 5,
+      "lineage": {
+        "from": ["prompt-cot"],
+        "into": ["agentic-coding-cli"]
+      },
+      "en": {
+        "name": "Vibe Coding & Zero-to-One Prototyping",
+        "shortName": "Vibe Coding",
+        "oneLiner": "Coined by Karpathy in early 2025: steering LLMs in natural language to spin up throwaway apps and interactive UIs fast.",
+        "paradigmShift": "Manual boilerplate scaffolding → conversational accept-all rapid UI & weekend prototype generation.",
+        "whyNow": "Pure unreviewed vibe coding hits a wall on security and >5k LOC debt; production teams graduated to Agentic Engineering."
+      },
+      "zh": {
+        "name": "Vibe Coding 氛围编程与极速原型",
+        "shortName": "Vibe Coding",
+        "oneLiner": "Karpathy 于 2025 初提出的自然语言直觉造物方式：把语法细节交给模型，一天跑通可交互原型与个人小工具。",
+        "paradigmShift": "手敲样板脚手架 → 自然语言口述需求、快速试错跑通 0→1 可交互产品原型。",
+        "whyNow": "不看代码的纯 Vibe Coding 在鉴权安全与上万行维护上极易崩盘；生产研发已进阶为有测试闭环的「智能体工程化」。"
+      }
+    },
+    {
+      "slug": "computer-use-browser-agents",
+      "order": 17,
+      "eraId": "era-2025",
+      "originQuarter": "2024 Q4",
+      "inflectionQuarter": "2025 Q2",
+      "domain": "ai-engineering",
+      "lifecycle": "mainstream",
+      "momentum": "+175% QA & Ops",
+      "trendSeries": [0, 0, 6, 15, 46, 78, 84, 86, 88, 89],
+      "inflectionIndex": 5,
+      "lineage": {
+        "from": ["long-context-multimodal", "structured-tool-calling"],
+        "into": ["agent-skills-subagents"]
+      },
+      "en": {
+        "name": "Computer Use & Browser Action Agents",
+        "shortName": "Computer & Browser Use",
+        "oneLiner": "Agents combining accessibility trees, Playwright DOM snapshots, and pixel grounding to operate real web UIs.",
+        "paradigmShift": "Brittle CSS-selector RPA scripts → semantic DOM + visual verification loops inside isolated sandboxes.",
+        "whyNow": "Essential for end-to-end visual QA and legacy portals without APIs, always gated behind human approval for writes."
+      },
+      "zh": {
+        "name": "Computer Use 与浏览器操作智能体",
+        "shortName": "浏览器与桌面智能体",
+        "oneLiner": "结合无障碍树（AXTree）、Playwright 快照与视觉坐标定位，让智能体在隔离沙盒中真实点击、填表与视觉巡检。",
+        "paradigmShift": "页面一改版就挂的死板 RPA 脚本 → 语义快照 + 视觉自校验闭环浏览器智能体。",
+        "whyNow": "已成为前端自动化视觉验收与无 API 老旧后台集成的标配能力，但高危写操作与登录边界必须保留人工确认。"
+      }
+    },
+    {
+      "slug": "hybrid-agentic-rag",
+      "order": 18,
+      "eraId": "era-2025",
+      "originQuarter": "2024 Q4",
+      "inflectionQuarter": "2025 Q2",
+      "domain": "ai-engineering",
+      "lifecycle": "mainstream",
+      "momentum": "+210% Enterprise Arch",
+      "trendSeries": [0, 5, 14, 32, 58, 80, 88, 92, 94, 95],
+      "inflectionIndex": 5,
+      "lineage": {
+        "from": ["rag-grounding"],
+        "into": ["context-engineering"]
+      },
+      "en": {
+        "name": "Hybrid Retrieval, GraphRAG & Agentic Search",
+        "shortName": "Hybrid & Agentic RAG",
+        "oneLiner": "Combining lexical grep/BM25, dense vectors, cross-encoder rerankers, and iterative query rewriting by the model.",
+        "paradigmShift": "Single-shot top-5 cosine lookup → multi-step agentic search (`grep` + BM25 + vector + ColPali visual pages).",
+        "whyNow": "Claude Code proved that fast lexical `ripgrep` + agentic file navigation often beats complex vector pipelines on code/docs."
+      },
+      "zh": {
+        "name": "混合检索、GraphRAG 与 Agentic Search",
+        "shortName": "混合与自主检索",
+        "oneLiner": "融合精确词法检索（BM25/ripgrep）、向量召回、Cross-Encoder 重排与智能体多轮改写追问的高精度知识架构。",
+        "paradigmShift": "单次 Top-5 向量盲搜 → 词法+语义混合召回 + 智能体自主改写查询多跳深挖。",
+        "whyNow": "2025–2026 最重要实战认知：在代码与结构化文档上，极速 `grep` + 目录树导航往往比盲目上重型向量库更准更稳。"
+      }
+    },
+    {
+      "slug": "context-engineering",
+      "order": 19,
+      "eraId": "era-2026",
+      "originQuarter": "2025 Q2",
+      "inflectionQuarter": "2025 Q3",
+      "domain": "ai-engineering",
+      "lifecycle": "surging",
+      "momentum": "+460% YoY Breakout",
+      "trendSeries": [0, 0, 0, 3, 10, 36, 84, 94, 98, 100],
+      "inflectionIndex": 6,
+      "lineage": {
+        "from": ["prompt-cot", "long-context-multimodal", "hybrid-agentic-rag"],
+        "into": ["agent-skills-subagents", "agentic-coding-cli"]
+      },
+      "en": {
+        "name": "Context Engineering & Memory Compaction",
+        "shortName": "Context Engineering",
+        "oneLiner": "The art and systems engineering of filling the context window with just the right state, tools, and compacted history.",
+        "paradigmShift": "Tweaking static system-prompt adjectives → dynamic context assembly, observation masking, compaction & subagent isolation.",
+        "whyNow": "Endorsed by Karpathy, Lutke, and Anthropic as the true successor to Prompt Engineering for long-horizon agents."
+      },
+      "zh": {
+        "name": "上下文工程与记忆压缩架构",
+        "shortName": "上下文工程",
+        "oneLiner": "在每一步推理前精准组装状态、按需检索、裁剪冗长工具日志并做轨迹压缩（Compaction）的系统工程学科。",
+        "paradigmShift": "抠静态提示词措辞 → 动态上下文装配、工具输出截断、轨迹摘要压缩与子智能体上下文隔离。",
+        "whyNow": "获 Karpathy、Tobi Lütke 与 Anthropic 共同定调为「提示词工程的真正继任者」，决定长程 Agent 成败的第一分水岭。"
+      }
+    },
+    {
+      "slug": "agentic-coding-cli",
+      "order": 20,
+      "eraId": "era-2026",
+      "originQuarter": "2025 Q1",
+      "inflectionQuarter": "2025 Q4",
+      "domain": "coding-multimodal",
+      "lifecycle": "surging",
+      "momentum": "+490% Dev Paradigm",
+      "trendSeries": [0, 0, 0, 4, 16, 52, 86, 95, 99, 100],
+      "inflectionIndex": 6,
+      "lineage": {
+        "from": ["vibe-coding", "rlvr-reasoning-models"],
+        "into": ["agent-skills-subagents"]
+      },
+      "en": {
+        "name": "Agentic Coding CLI & Repository Harnesses",
+        "shortName": "Agentic Coding CLI",
+        "oneLiner": "Terminal-native coding agents (Claude Code, Codex, Cursor Agents) anchored by `AGENTS.md`/`CLAUDE.md`, tests, and git worktrees.",
+        "paradigmShift": "Tab-autocomplete inside one file → plan-edit-test-fix loops across full repos in isolated git worktrees.",
+        "whyNow": "Giving the agent fast deterministic verification (`typecheck`, unit tests, Playwright) turns LLMs into self-correcting engineers."
+      },
+      "zh": {
+        "name": "自主编程终端与仓库 Harness 工程",
+        "shortName": "自主编程与 Harness",
+        "oneLiner": "以 Claude Code、Codex 与 Cursor Agent 为代表，靠 `AGENTS.md`/`CLAUDE.md` 规范、自动化测试与 Git Worktree 闭环交付工程变更。",
+        "paradigmShift": "单文件 Tab 补全 → 「先规划 → 多文件修改 → 跑单测/类型检查自愈 → 提 PR」的仓库级闭环工程。",
+        "whyNow": "决定研发提效上限的不再是换哪个编辑器，而是给 Agent 配齐极速确定性校验脚本与清晰的仓库架构约束文件。"
+      }
+    },
+    {
+      "slug": "agent-skills-subagents",
+      "order": 21,
+      "eraId": "era-2026",
+      "originQuarter": "2025 Q4",
+      "inflectionQuarter": "2026 Q1",
+      "domain": "ai-engineering",
+      "lifecycle": "surging",
+      "momentum": "+540% 2026 Frontier",
+      "trendSeries": [0, 0, 0, 0, 4, 18, 56, 88, 97, 100],
+      "inflectionIndex": 7,
+      "lineage": {
+        "from": ["mcp-protocol", "agent-workflows-graphs", "context-engineering"],
+        "into": []
+      },
+      "en": {
+        "name": "Agent Skills (`SKILL.md`) & Subagent Harnesses",
+        "shortName": "Agent Skills & Subagents",
+        "oneLiner": "Filesystem-based progressive capability folders (`SKILL.md` + scripts) paired with isolated subagent contexts and bash sandboxes.",
+        "paradigmShift": "Dumping 40k tokens of MCP schemas upfront → 50-token skill metadata index + on-demand `SKILL.md` & script execution.",
+        "whyNow": "The hottest 2026 agent architecture pattern: portable `SKILL.md` playbooks + sandboxed bash + scoped subagents."
+      },
+      "zh": {
+        "name": "Agent Skills 技能体系与子智能体隔离",
+        "shortName": "Agent Skills 与子智能体",
+        "oneLiner": "以文件系统 `SKILL.md` + 脚本资源包实现「三级渐进式按需加载」，配合独立上下文子智能体与安全沙盒执行复杂长任务。",
+        "paradigmShift": "开局硬塞几万 Token 工具定义 → 首屏仅读轻量目录摘要，命中任务再按需挂载 `SKILL.md` 与执行脚本。",
+        "whyNow": "2026 最核心的智能体架构收敛方向：跨工具可移植的 `SKILL.md` 标准 + 沙盒 Bash + 子智能体上下文分治。"
+      }
+    },
+    {
+      "slug": "world-models-embodied-multimodal",
+      "order": 22,
+      "eraId": "era-2026",
+      "originQuarter": "2025 Q3",
+      "inflectionQuarter": "2026 Q2",
+      "domain": "frontier-models",
+      "lifecycle": "surging",
+      "momentum": "+310% Next Horizon",
+      "trendSeries": [0, 0, 2, 8, 18, 38, 62, 78, 90, 96],
+      "inflectionIndex": 8,
+      "lineage": {
+        "from": ["long-context-multimodal", "comfyui-video-audio"],
+        "into": []
+      },
+      "en": {
+        "name": "World Models, Spatial Intelligence & VLA",
+        "shortName": "World Models & Spatial AI",
+        "oneLiner": "Interactive 3D physics-consistent world simulators and Vision-Language-Action (VLA) models bridging pixels to physical control.",
+        "paradigmShift": "1D token prediction without 3D physics → navigable world state simulation & embodied action policies.",
+        "whyNow": "The frontier beyond text LLMs: interactive video worlds, persistent 3D scenes, and general-purpose robotics policies."
+      },
+      "zh": {
+        "name": "世界模型、空间智能与具身 VLA",
+        "shortName": "世界模型与空间智能",
+        "oneLiner": "具备三维物理一致性与因果状态推演的交互式世界模拟器，以及连接视觉感知与物理控制的具身 VLA 模型。",
+        "paradigmShift": "缺乏三维物理常识的一维文本预测 → 可交互 3D 空间状态模拟与视觉-语言-动作（VLA）具身控制。",
+        "whyNow": "文本大模型之后的下一座主峰：正在重塑游戏可交互世界生成、影视虚拟制片与通用机器人策略训练。"
+      }
+    }
+  ]
+}

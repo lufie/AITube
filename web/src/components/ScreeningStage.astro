@@ -1,0 +1,149 @@
+---
+import { getWaveformBars, type MediaNode } from "../lib/content";
+import { UI, formatTime, type Lang } from "../lib/i18n";
+
+interface Props {
+  node: MediaNode;
+  lang: Lang;
+}
+const { node, lang } = Astro.props;
+const loc = node[lang];
+const s = node.source;
+const t = UI[lang];
+const bars = getWaveformBars(node.slug, 38);
+const ytThumb = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/maxresdefault.jpg` : null;
+const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg` : null;
+---
+<div
+  class="at-stage-frame"
+  id="at-screening-stage"
+  data-kind={s.kind}
+  data-platform={s.platform}
+  data-video-id={s.videoId || ""}
+  data-start={s.startSec || 0}
+  data-end={s.endSec || 0}
+>
+  {s.kind === "video-cut" && s.platform === "youtube" && s.videoId ? (
+    <div
+      id="at-stage-poster"
+      style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:22px;cursor:pointer;"
+      role="button"
+      tabindex="0"
+      aria-label={t.watchSlice}
+    >
+      <img
+        src={ytThumb || ""}
+        data-fallback={ytFallback || ""}
+        alt={loc.title}
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.42;"
+        onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}else{this.style.display='none';}"
+      />
+      <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <span class="at-pill-dark">YOUTUBE VERIFIED SLICE · {s.channelName}</span>
+        <span class="at-pill-dark">
+          {formatTime(s.startSec || 0)} – {formatTime(s.endSec || 0)} / {formatTime(s.totalDurationSec || 0)}
+        </span>
+      </div>
+
+      <div style="position:relative;z-index:2;margin:auto;text-align:center;">
+        <div
+          style="display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:6px;background:var(--accent-primary);color:#fff;font-weight:600;font-size:0.98rem;box-shadow:0 10px 30px rgba(0,0,0,0.45);"
+        >
+          <span>▶</span>
+          <span>
+            {t.watchSlice} ({formatTime(s.startSec || 0)}–{formatTime(s.endSec || 0)})
+          </span>
+        </div>
+        <div style="margin-top:8px;font-size:0.78rem;color:rgba(243,241,235,0.78);" class="at-mono">
+          youtube-nocookie.com · {lang === "zh" ? "点击即刻挂载原生无遮挡播放器" : "Click to mount unobstructed native player"}
+        </div>
+      </div>
+
+      <div style="position:relative;z-index:2;display:flex;align-items:flex-end;gap:4px;height:32px;opacity:0.65;">
+        {bars.map((h) => (
+          <span style={`flex:1;background:#52adc0;border-radius:1px;height:${Math.round((h / 100) * 30)}px;`} />
+        ))}
+      </div>
+    </div>
+  ) : s.kind === "video-cut" && s.platform === "bilibili" && s.videoId ? (
+    <div style="position:absolute;inset:0;padding:28px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="display:flex;justify-content:space-between;">
+        <span class="at-pill-dark">BILIBILI VERIFIED · {s.videoId}</span>
+        <span class="at-pill-dark">
+          {formatTime(s.startSec || 0)} – {formatTime(s.endSec || 0)}
+        </span>
+      </div>
+      <div style="margin:auto;text-align:center;max-width:520px;">
+        <p style="font-family:var(--font-serif);font-size:1.3rem;margin-bottom:14px;">{s.originalTitle}</p>
+        <a
+          href={`https://www.bilibili.com/video/${s.videoId}/?t=${s.startSec || 0}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="at-btn-primary"
+        >
+          ▶ {lang === "zh" ? `在 Bilibili 从 ${formatTime(s.startSec || 0)} 处精准起播 ↗` : `Open Bilibili at ${formatTime(s.startSec || 0)} ↗`}
+        </a>
+      </div>
+      <div class="at-mono" style="font-size:0.76rem;color:rgba(243,241,235,0.68);">
+        UP: {s.channelName} · {formatTime(s.totalDurationSec || 0)}
+      </div>
+    </div>
+  ) : (
+    <div style="position:absolute;inset:0;padding:30px;display:flex;flex-direction:column;justify-content:space-between;">
+      <div style="display:flex;justify-content:space-between;">
+        <span class="at-pill-dark">PRIMARY TECHNICAL MONOGRAPH</span>
+        <span class="at-pill-dark">{s.readingMinutes || 12} MIN DIGEST</span>
+      </div>
+      <div style="margin:auto;text-align:center;max-width:560px;">
+        <p class="at-mono" style="font-size:0.78rem;color:#52adc0;margin-bottom:8px;">{s.channelName}</p>
+        <p style="font-family:var(--font-serif);font-size:1.38rem;margin-bottom:16px;">{s.originalTitle}</p>
+        <a href={s.articleUrl} target="_blank" rel="noopener noreferrer" class="at-btn-primary">
+          {t.readDigest} ↗
+        </a>
+      </div>
+      <div class="at-mono" style="font-size:0.75rem;color:rgba(243,241,235,0.65);text-align:center;">
+        {s.articleUrl}
+      </div>
+    </div>
+  )}
+</div>
+
+<script is:inline>
+  (() => {
+    const stage = document.getElementById("at-screening-stage");
+    const poster = document.getElementById("at-stage-poster");
+    if (!stage) return;
+
+    function mountYoutube(seekSec) {
+      const vid = stage.getAttribute("data-video-id");
+      if (!vid) return;
+      const start = typeof seekSec === "number" ? seekSec : Number(stage.getAttribute("data-start") || 0);
+      const end = Number(stage.getAttribute("data-end") || 0);
+      const params = new URLSearchParams({
+        autoplay: "1",
+        rel: "0",
+        modestbranding: "1",
+        start: String(Math.max(0, Math.floor(start))),
+      });
+      if (end > start) params.set("end", String(Math.floor(end)));
+      stage.innerHTML = "";
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${vid}?${params.toString()}`;
+      iframe.title = "YouTube video player";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+      stage.appendChild(iframe);
+    }
+
+    if (poster) {
+      poster.addEventListener("click", () => mountYoutube());
+      poster.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          mountYoutube();
+        }
+      });
+    }
+    window.__seekAITubeStage = mountYoutube;
+  })();
+</script>

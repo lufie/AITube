@@ -1,0 +1,956 @@
+{
+  "collectedAt": "2026-11-13T03:46:04Z",
+  "totalQueries": 104,
+  "nonEmptyQueries": 100,
+  "suggestions": {
+    "web_en::transformer neural network": [
+      "transformer neural network",
+      "transformer neural network architecture",
+      "transformer neural network explained",
+      "transformer neural network visualization",
+      "transformer neural network architecture diagram",
+      "transformer neural network diagram",
+      "transformer neural network vs cnn",
+      "transformer neural network paper",
+      "transformer neural network example",
+      "transformer neural network tutorial"
+    ],
+    "yt_en::transformer neural network": [
+      "transformer neural network",
+      "transformer neural network explained",
+      "transformer neural networks chatgpt's foundation clearly explained",
+      "transformer neural network 3blue1brown",
+      "transformer neural network architecture",
+      "transformer graph neural network",
+      "transformer vs neural networks",
+      "visual guide to transformer neural networks"
+    ],
+    "web_en::attention mechanism explained": [
+      "attention mechanism explained",
+      "attention mechanism explained simply",
+      "attention mechanism explained visually",
+      "attention mechanism explained blog",
+      "attention mechanism explained with example",
+      "attention mechanism explained in detail",
+      "attention mechanism meaning",
+      "attention mechanism explanation",
+      "self attention mechanism explained",
+      "llm attention mechanism explained"
+    ],
+    "yt_en::attention mechanism explained": [
+      "attention mechanism explained",
+      "attention mechanism explained easily",
+      "attention mechanism explained visually"
+    ],
+    "web_en::llm tokenization": [
+      "llm tokenization",
+      "llm tokenization visualization",
+      "llm tokenization example",
+      "llm tokenization explained",
+      "llm tokenization online",
+      "llm tokenization and embedding",
+      "llm tokenization algorithm",
+      "llm tokenization methods",
+      "llm tokenization process",
+      "llm tokenization vs embedding"
+    ],
+    "yt_en::llm tokenization": [
+      "llm tokenization",
+      "llm tokenization explained",
+      "llm tokenization tamil",
+      "llm tokenization stanford",
+      "andrej karpathy llm tokenization",
+      "nlp tokenization"
+    ],
+    "web_en::scaling laws ai": [
+      "scaling laws ai",
+      "scaling laws ai paper",
+      "scaling laws ai podcast",
+      "scaling laws ai meaning",
+      "scaling law ai models",
+      "scaling laws open ai",
+      "3 scaling laws ai",
+      "neural scaling laws ai",
+      "scaling laws epoch ai",
+      "scale ai law firm"
+    ],
+    "yt_en::scaling laws ai": [
+      "scaling laws ai",
+      "scaling laws",
+      "scaling law firm",
+      "scaling llm",
+      "scaling laws in mems"
+    ],
+    "web_en::rlhf vs dpo": [
+      "rlhf vs dpo",
+      "rlhf vs dpo vs ppo vs grpo",
+      "rlhf vs dpo vs ppo",
+      "rlhf and dpo",
+      "rlhf and dpo difference",
+      "rlhf vs dpo vs grpo",
+      "rlhf vs dpo vs sft",
+      "rlhf dpo and ppo",
+      "dpo review",
+      "medcaps dpo benefits"
+    ],
+    "yt_en::rlhf vs dpo": [
+      "rlhf vs dpo",
+      "rlhf and dpo",
+      "rlhf implementation"
+    ],
+    "web_en::deepseek r1 rl": [
+      "deepseek-r1 rl",
+      "deepseek r1 rlvr",
+      "deepseek r1 rlhf",
+      "deepseek r1 rl paper",
+      "deepseek r1 rls",
+      "deepseek r1 incentivizing reasoning via rl",
+      "rl examples"
+    ],
+    "yt_en::deepseek r1 rl": [
+      "r1 rl"
+    ],
+    "web_en::reasoning models ai": [
+      "reasoning models ai",
+      "reasoning models ai list",
+      "reasoning ai models explained",
+      "reasoning ai models examples",
+      "reasoning ai models free",
+      "reasoning ai models comparison",
+      "reasoning ai model meaning",
+      "best reasoning models ai",
+      "reasoning models open ai",
+      "large reasoning models ai"
+    ],
+    "yt_en::reasoning models ai": [
+      "reasoning models ai",
+      "reasoning models",
+      "reasoning in ai",
+      "reasoning in artificial intelligence"
+    ],
+    "web_en::prompt engineering vs": [
+      "prompt engineering vs context engineering",
+      "prompt engineering vs context engineering vs harness engineering",
+      "prompt engineering vs fine tuning vs rag",
+      "prompt engineering vs context engineering vs loop engineering",
+      "prompt engineering vs loop engineering",
+      "prompt engineering vs context engineering vs harness engineering vs loop engineering",
+      "prompt engineering vs loop engineering vs graph engineering",
+      "prompt engineering vs vibe coding",
+      "prompt engineering vs fine tuning",
+      "prompt engineering vs harness engineering"
+    ],
+    "yt_en::prompt engineering vs": [
+      "prompt engineering vs context engineering",
+      "prompt engineering vs fine tuning vs rag",
+      "prompt engineering vs loop engineering",
+      "prompt engineering vs fine tuning",
+      "prompt engineering vs context engineering vs harness engineering",
+      "prompt engineering vs vibe coding",
+      "prompt engineering vs code",
+      "prompt engineering vs context engineering vs loop engineering",
+      "prompt engineering vs generative ai",
+      "prompt engineering vs context engineering in hindi"
+    ],
+    "web_en::context engineering": [
+      "context engineering",
+      "context engineering skill",
+      "context engineering vs prompt engineering",
+      "context engineering skill claude",
+      "context engineering ai",
+      "context engineering anthropic",
+      "context engineering course",
+      "context engineering vs harness engineering",
+      "context engineering claude",
+      "context engineering jobs"
+    ],
+    "yt_en::context engineering": [
+      "context engineering",
+      "context engineering ai",
+      "context engineering vs prompt engineering",
+      "context engineering claude code",
+      "context engineering for agents",
+      "context engineering course",
+      "context engineering tutorial",
+      "context engineering claude",
+      "context engineering full course",
+      "context engineering anthropic"
+    ],
+    "web_en::context engineering ai": [
+      "context engineering ai",
+      "context engineering ai agents",
+      "context engineering ai tutorial",
+      "context engineering ai development",
+      "context engineering ai course",
+      "context engineering ai pdf",
+      "context engineering ai github",
+      "context engineering ai certification",
+      "context engineering ai reddit",
+      "context engineering ai jobs"
+    ],
+    "yt_en::context engineering ai": [
+      "context engineering ai",
+      "context engineering ai course",
+      "context engineering aishwarya srinivasan",
+      "context engineering aishwarya",
+      "context engineering ai agents",
+      "context engineering ai tutorial",
+      "context engineering ai hindi",
+      "context engineering ai tamil",
+      "context engineering ai in telugu",
+      "context engineering ai full course"
+    ],
+    "web_en::rag vs fine tuning": [
+      "rag vs fine tuning",
+      "rag vs fine tuning vs prompt engineering",
+      "rag vs fine tuning llm",
+      "rag vs fine tuning vs lora",
+      "rag vs fine tuning examples",
+      "rag vs fine tuning when to use",
+      "rag vs fine tuning which is better",
+      "rag vs fine tuning ai",
+      "rag vs fine tuning reddit",
+      "rag vs fine tuning paper"
+    ],
+    "yt_en::rag vs fine tuning": [
+      "rag vs fine tuning",
+      "rag vs fine tuning vs prompt engineering",
+      "rag vs fine tuning ibm",
+      "rag vs fine tuning hindi",
+      "rag vs fine tuning شرح",
+      "fine tuning vs rag in tamil"
+    ],
+    "web_en::agentic rag": [
+      "agentic rag",
+      "agentic rag vs rag",
+      "agentic rag architecture",
+      "agentic rag meaning",
+      "agentic rag github",
+      "agentic rag system",
+      "agentic rag vs agentic ai",
+      "agentic rag survey",
+      "agentic rag langgraph",
+      "agentic rag pipeline"
+    ],
+    "yt_en::agentic rag": [
+      "agentic rag",
+      "agentic rag tutorial",
+      "agentic rag explained",
+      "agentic rag project",
+      "agentic rag system",
+      "agentic rag architecture",
+      "agentic rag vs rag",
+      "agentic rag example",
+      "agentic rag n8n",
+      "agentic rag vs traditional rag"
+    ],
+    "web_en::hybrid search rag": [
+      "hybrid search rag",
+      "hybrid search rag over internal docs",
+      "hybrid search rag langchain",
+      "hybrid search rag github",
+      "hybrid search rag implementation",
+      "hybrid search rag paper",
+      "hybrid search rag bm25",
+      "hybrid search rag qdrant",
+      "hybrid search rag python",
+      "hybrid search rag system"
+    ],
+    "yt_en::hybrid search rag": [
+      "hybrid search rag",
+      "hybrid search rag explained",
+      "hybrid search rag tamil",
+      "hybrid search rag with langchain",
+      "rag hybrid search n8n",
+      "hybrid search",
+      "hybrid search engine"
+    ],
+    "web_en::structured outputs llm": [
+      "structured outputs llm",
+      "structured output llm langchain",
+      "structured output llm openai",
+      "structured output llm github",
+      "structured output llm library",
+      "structured output llm python",
+      "structured output llm pydantic",
+      "structured output llm benchmark",
+      "structured output llm paper",
+      "structured output llm example"
+    ],
+    "yt_en::structured outputs llm": [
+      "structured outputs llm",
+      "structuring big data",
+      "structured database",
+      "structures des données"
+    ],
+    "web_en::function calling llm": [
+      "function calling llm",
+      "function calling llm leaderboard",
+      "function calling llm llamaindex",
+      "function calling llm example",
+      "function calling llm benchmark",
+      "function calling llm crewai",
+      "function calling llm huggingface",
+      "function calling llm python",
+      "function calling llm models",
+      "function calling llm ollama"
+    ],
+    "yt_en::function calling llm": [
+      "function calling llm",
+      "function calling llm tutorial",
+      "function calling llm tamil",
+      "function calling in llms",
+      "function/tool calling in llm",
+      "function calling langchain",
+      "function calling openai"
+    ],
+    "web_en::model context protocol": [
+      "model context protocol",
+      "model context protocol (mcp)",
+      "model context protocol servers",
+      "model context protocol (mcp) servers",
+      "model context protocol explained",
+      "model context protocol definition",
+      "model context protocol examples",
+      "model context protocol specification",
+      "model context protocol github",
+      "model context protocol io"
+    ],
+    "yt_en::model context protocol": [
+      "model context protocol",
+      "model context protocol claude",
+      "model context protocol campusx",
+      "model context protocol tamil",
+      "model context protocol hindi",
+      "model context protocol explained",
+      "model context protocol anthropic",
+      "model context protocol (mcp)",
+      "model context protocol clearly explained",
+      "model context protocol explained for beginners"
+    ],
+    "web_en::mcp server tutorial": [
+      "mcp server tutorial",
+      "mcp server tutorial for beginners",
+      "mcp server tutorial python",
+      "mcp server tutorial pdf",
+      "mcp server tutorial c#",
+      "mcp server tutorial nodejs",
+      "mcp server tutorial github",
+      "mcp server tutorial typescript",
+      "mcp server tutorial java",
+      "mcp server tutorial javascript"
+    ],
+    "yt_en::mcp server tutorial": [
+      "mcp server tutorial",
+      "mcp server tutorial for beginners",
+      "mcp server tutorial python",
+      "mcp server tutorial typescript",
+      "mcp server tutorial in hindi",
+      "mcp server tutorial telugu",
+      "mcp server tutorial tamil",
+      "mcp server tutorial claude",
+      "mcp server tutorial node js",
+      "mcp server tutorial javascript"
+    ],
+    "web_en::claude code workflow": [
+      "claude code workflows",
+      "claude code workflow tool",
+      "claude code workflow reddit",
+      "claude code workflow example",
+      "claude code workflows feature",
+      "claude code workflow studio",
+      "claude code workflow vs skill",
+      "claude code workflow idle",
+      "claude code workflow cheatsheet",
+      "claude code workflow github"
+    ],
+    "yt_en::claude code workflow": [
+      "claude code workflow",
+      "claude code workflow agents",
+      "claude code workflow automation",
+      "claude code workflow tutorial",
+      "claude code workflow setup",
+      "claude code workflow 2026",
+      "claude code workflow tips",
+      "claude code workflow boris",
+      "claude code workflow for developers",
+      "claude code workflow studio"
+    ],
+    "web_en::claude agent skills": [
+      "claude agent skills",
+      "claude agent skills github",
+      "claude agent skills plugin",
+      "claude agent skills marketplace",
+      "claude agent skills best practices",
+      "claude agent skills addy osmani",
+      "claude agent skills youtube",
+      "claude agent skills repo",
+      "claude agent skills download",
+      "claude agent skills course"
+    ],
+    "yt_en::claude agent skills": [
+      "claude agent skills",
+      "claude skills agents mcp",
+      "claude code agent skills",
+      "claude agent vs skills",
+      "claude agent sdk skills",
+      "claude youtube agent skills",
+      "claude instagram agent skills",
+      "claude linkedin agent skills",
+      "claude subagents and skills",
+      "claude introduction to agent skills"
+    ],
+    "web_en::vibe coding": [
+      "vibe coding",
+      "vibe coding meaning",
+      "vibe coding definition",
+      "vibe coding tools",
+      "vibe coding jobs",
+      "vibe coding meme",
+      "vibe coding reddit",
+      "vibe coding apps",
+      "vibe coding with claude",
+      "vibe coding ai"
+    ],
+    "yt_en::vibe coding": [
+      "vibe coding",
+      "vibe coding with claude",
+      "vibe coding tutorial",
+      "vibe coding a game",
+      "vibe coding for beginners",
+      "vibe coding an app",
+      "vibe coding music",
+      "vibe coding website",
+      "vibe coding in prod",
+      "vibe coding codex"
+    ],
+    "web_en::agentic coding": [
+      "agentic coding",
+      "agentic coding benchmarks",
+      "agentic coding vs vibe coding",
+      "agentic coding tools",
+      "agentic coding with claude code",
+      "agentic coding meaning",
+      "agentic coding workflow",
+      "agentic coding harness",
+      "agentic coding reddit",
+      "agentic coding course"
+    ],
+    "yt_en::agentic coding": [
+      "agentic coding",
+      "agentic coding claude",
+      "agentic coding workflow",
+      "agentic coding tutorial",
+      "agentic coding at airbnb",
+      "agentic coding best practices",
+      "agentic coding setup",
+      "agentic coding interview",
+      "agentic coding codex",
+      "agentic coding xcode"
+    ],
+    "web_en::cursor rules workflow": [
+      "cursor rules workflow",
+      "cursor rules workflow diagram",
+      "cursor rules workflow example",
+      "cursor rules workflow servicenow",
+      "cursor auto rules agile workflow github",
+      "cursor auto rules agile workflow"
+    ],
+    "yt_en::cursor rules workflow": [
+      "cursor教程",
+      "cursor implementation",
+      "cursor 使用"
+    ],
+    "web_en::ai agent workflow vs": [
+      "ai agent workflow vs skill",
+      "ai agent vs workflow",
+      "ai agent vs workflow automation",
+      "ai agent vs workflow reddit",
+      "ai agent vs workflow anthropic",
+      "ai agent and workflow",
+      "ai agent and workflow automation",
+      "ai agent and workflow automation course",
+      "ai agents and workflow integration",
+      "ai agents and workflow automation no code"
+    ],
+    "yt_en::ai agent workflow vs": [
+      "ai agent vs workflow",
+      "ai agent and workflow",
+      "ai agent workflow vs process builder",
+      "ai agent workflow vs process",
+      "ai agent workflow vs shortcuts"
+    ],
+    "web_en::multi agent orchestration": [
+      "multi agent orchestration",
+      "multi agent orchestration framework",
+      "multi agent orchestration claude code",
+      "multi agent orchestration github",
+      "multi agent orchestration patterns",
+      "multi agent orchestration architecture design",
+      "multi agent orchestration in copilot studio",
+      "multi agent orchestration tools",
+      "multi agent orchestration langgraph",
+      "multi agent orchestration claude"
+    ],
+    "yt_en::multi agent orchestration": [
+      "multi agent orchestration",
+      "multi agent orchestration claude code",
+      "multi agent orchestration copilot studio",
+      "multi agent orchestration claude",
+      "multi agent orchestration project",
+      "multi agent orchestration langgraph",
+      "multi agent orchestration patterns",
+      "multi agent orchestration codex",
+      "multi agent orchestration langchain",
+      "multi agent orchestration hermes"
+    ],
+    "web_en::computer use agent": [
+      "computer use agents",
+      "computer use agents github",
+      "computer use agent benchmark",
+      "computer use agents open source",
+      "computer use agents claude",
+      "computer use agents copilot",
+      "computer use agent harness",
+      "computer use agent in copilot studio",
+      "computer use agents microsoft",
+      "computer use agent openai"
+    ],
+    "yt_en::computer use agent": [
+      "computer use agent",
+      "computer use agent copilot studio",
+      "computer use agent demo",
+      "computer use agent claude",
+      "computer use agent chatgpt",
+      "computer use agent free",
+      "computer use agent hermes",
+      "computer use agent local",
+      "computer use agent openai",
+      "computer use agent cua"
+    ],
+    "web_en::llm evals": [
+      "llm evals",
+      "llm evals framework",
+      "llm evals anthropic",
+      "llm evals course",
+      "llm evals meaning",
+      "llm evals book",
+      "llm evals github",
+      "llm evals tools",
+      "llm evals campusx",
+      "llm evals explained"
+    ],
+    "yt_en::llm evals": [
+      "llm evals",
+      "llm evals explained",
+      "llm evals langfuse",
+      "llm evals crash course",
+      "llm evals langsmith",
+      "llm evals stanford",
+      "llm evals and llm as a judge",
+      "llm evals full course",
+      "llm evals course",
+      "llm evals one shot"
+    ],
+    "web_en::lora fine tuning": [
+      "lora fine tuning",
+      "lora fine tuning vs full fine tuning",
+      "lora fine tuning llm",
+      "lora fine tuning explained",
+      "lora fine tuning paper",
+      "lora fine tuning meaning",
+      "lora fine tuning pytorch",
+      "lora fine tuning tutorial",
+      "lora fine tuning full form",
+      "lora fine tuning vs qlora"
+    ],
+    "yt_en::lora fine tuning": [
+      "lora fine tuning",
+      "lora fine tuning example",
+      "lora fine tuning project",
+      "lora fine tuning llm",
+      "lora fine tuning implementation",
+      "lora fine tuning tamil",
+      "lora fine tuning stable diffusion",
+      "lora fine tuning شرح",
+      "lora fine tuning hindi",
+      "lora fine tuning paper"
+    ],
+    "web_en::run local llm ollama": [
+      "run local llm ollama",
+      "run local llm ollama locally",
+      "run local llm ollama on linux",
+      "run local llm ollama on mac",
+      "run local llm ollama on windows",
+      "run local llm without ollama",
+      "run local llm using ollama",
+      "run claude code with local llm ollama"
+    ],
+    "yt_en::run local llm ollama": [
+      "run llm locally ollama",
+      "run a llm locally"
+    ],
+    "web_en::comfyui workflow": [
+      "comfyui workflows",
+      "comfyui workflow folder",
+      "comfyui workflows download",
+      "comfyui workflows location",
+      "comfyui workflow templates",
+      "comfyui workflow encrypt",
+      "comfyui workflows civitai",
+      "comfyui workflow examples",
+      "comfyui workflow viewer",
+      "comfyui workflow for text to image"
+    ],
+    "yt_en::comfyui workflow": [
+      "comfyui workflow",
+      "comfyui workflow tutorial",
+      "comfyui workflow blog",
+      "comfyui workflow download",
+      "comfyui workflow image to video",
+      "comfyui workflow image to image",
+      "comfyui workflow ai influencer",
+      "comfyui workflow ai model",
+      "comfyui workflow text to image",
+      "comfyui workflow upscale"
+    ],
+    "web_en::flux image generation": [
+      "flux image generation",
+      "flux image generation model",
+      "flux image generation api",
+      "flux image generation free",
+      "flux image generation huggingface",
+      "flux image generation ai",
+      "flux image generation local",
+      "flux image generation github",
+      "flux image generation paper",
+      "flux image generation examples"
+    ],
+    "yt_en::flux image generation": [
+      "flux image generation",
+      "flux image generator local",
+      "flux.2 image generation",
+      "flux 3 image generation",
+      "flux ai image generation",
+      "flux.1 dev image generation",
+      "flux ai"
+    ],
+    "web_en::ai video generation workflow": [
+      "ai video generation workflow",
+      "ai video generation workflow reddit",
+      "ai video generation workflow example",
+      "ai video generation workflow diagram",
+      "ai video gen workflow",
+      "ai video generation process",
+      "best ai video generation workflow",
+      "free ai video generator workflow",
+      "n8n ai video generator workflow",
+      "what are the 4 stages of an ai workflow"
+    ],
+    "yt_en::ai video generation workflow": [
+      "ai video generation workflow",
+      "ai video generation process",
+      "best ai video generation workflow",
+      "ai video generator demo",
+      "ai video generation tool",
+      "ai video ai video",
+      "generate video using ai"
+    ],
+    "web_en::world models ai": [
+      "world models ai",
+      "world models ai company",
+      "world models ai lecun",
+      "world models ai meaning",
+      "world models ai vs llm",
+      "world models ai fei fei",
+      "world models ai yann lecun",
+      "world models ai paper",
+      "world models ai pdf",
+      "world models ai reddit"
+    ],
+    "yt_en::world models ai": [
+      "world models ai",
+      "world model ai demo",
+      "world models physical ai",
+      "world's biggest model airport",
+      "atlas world model ai",
+      "world model vizuara ai",
+      "world models enabling the next ai revolution",
+      "world models airplanes",
+      "world models airplanes kits"
+    ],
+    "web_zh::transformer 原理": [
+      "transformer原理",
+      "transformer原理详解",
+      "transformer 原理 图",
+      "transformer 原理 解析 及 中文 项目 实践",
+      "transformer 原理 介绍",
+      "transformer 原理 解析",
+      "transformer 原理 解析 及 中文 项目 实践 pdf",
+      "transformer 原理 知 乎",
+      "transformer 原理 解释",
+      "transformer 原理 动画"
+    ],
+    "yt_zh::transformer 原理": [
+      "transformer原理"
+    ],
+    "web_zh::大模型 预训练 微调": [],
+    "yt_zh::大模型 预训练 微调": [
+      "大模型微调"
+    ],
+    "web_zh::提示词工程": [
+      "提示词工程",
+      "提示词工程师",
+      "提示词工程github",
+      "提示词工程指南",
+      "提示词工程(prompt engineering)",
+      "提示词工程教学",
+      "提示词工程师薪水",
+      "提示词工程网站",
+      "提示词工程 上下文工程 harness工程",
+      "提示词工程 上下文工程"
+    ],
+    "yt_zh::提示词工程": [
+      "提示词工程",
+      "提示词工程师",
+      "提示词工程课程"
+    ],
+    "web_zh::上下文工程": [
+      "上下文工程",
+      "上下文工程最佳实践",
+      "上下文工程是什么",
+      "上下文工程context engineering",
+      "上下文工程github",
+      "上下文工程指南",
+      "上下文工程实践",
+      "上下文工程 工具",
+      "提示词工程 上下文工程",
+      "提示詞工程 上下文工程"
+    ],
+    "yt_zh::上下文工程": [
+      "上下文工程"
+    ],
+    "web_zh::RAG 知识库": [
+      "rag知识库",
+      "rag知识库搭建",
+      "rag 知识 库 最 佳 实践",
+      "rag知识库是什么",
+      "rag 知识 库 github",
+      "rag 知识 库 开源",
+      "rag知识库项目",
+      "rag知识库构建",
+      "rag 知识库问答"
+    ],
+    "yt_zh::RAG 知识库": [
+      "rag 知识库",
+      "rag知识库搭建",
+      "知识库"
+    ],
+    "web_zh::GraphRAG": [
+      "graphrag",
+      "graphrag github",
+      "graphrag是什么",
+      "graphrag 教程",
+      "graphrag 中文",
+      "graphrag under fire",
+      "graphrag-bench",
+      "graphrag 知乎",
+      "graphrag-induced dual knowledge structure graphs for personalized learning path recommendation",
+      "graphrag 详解"
+    ],
+    "yt_zh::GraphRAG": [
+      "graphrag",
+      "graphrag教程",
+      "graphrag tutorial",
+      "graphrag with neo4j",
+      "graphrag 原理",
+      "graphrag langgraph",
+      "graphrag neo4j",
+      "graphrag google",
+      "graphrag legal",
+      "graphrag building a smarter ai system"
+    ],
+    "web_zh::MCP 协议": [
+      "mcp协议",
+      "mcp协议更新",
+      "mcp协议是什么",
+      "mcp协议详解",
+      "mcp 协议 规范",
+      "mcp协议格式",
+      "mcp协议升级",
+      "mcp 协议 官网",
+      "mcp 协议版本",
+      "mcp协议最新"
+    ],
+    "yt_zh::MCP 协议": [
+      "mcp协议"
+    ],
+    "web_zh::Claude Code 教程": [
+      "claude code 教程",
+      "claude code 教程 github",
+      "claude code 教程 pdf"
+    ],
+    "yt_zh::Claude Code 教程": [
+      "claude code 教程 mac",
+      "claude code 教程",
+      "claude code 教程windows",
+      "claude code 教程 吴恩达",
+      "claude code 教程 vscode",
+      "claude code 教程 mac国内",
+      "claude code 教程 广东话",
+      "claude 教程",
+      "claude安装"
+    ],
+    "web_zh::Agent Skills": [
+      "agent skills",
+      "agent skills 市场",
+      "agent skills 网站",
+      "agent skills github",
+      "agent skills 是什么",
+      "agent skills 推荐",
+      "agent skills 规范",
+      "agent skills hub",
+      "agent skills with anthropic",
+      "agent skills market"
+    ],
+    "yt_zh::Agent Skills": [
+      "agent skills",
+      "agent skills with anthropic",
+      "agent skills 教程",
+      "agent skills codex",
+      "agent skills 推荐",
+      "agent skills claude",
+      "agent skills 是什么",
+      "agent skills mcp",
+      "agent skills workflow",
+      "agent skills tutorial"
+    ],
+    "web_zh::Vibe Coding": [
+      "vibe coding",
+      "vibe coding是什么",
+      "vibe coding什么意思",
+      "vibe coding 官网",
+      "vibe coding 中文",
+      "vibe coding 教程",
+      "vibe coding 下载",
+      "vibe coding 工具",
+      "vibe coding 雷达",
+      "vibe coding 最 佳 实践"
+    ],
+    "yt_zh::Vibe Coding": [
+      "vibe coding",
+      "vibe coding 教學",
+      "vibe coding tutorial",
+      "vibe coding 是什么",
+      "vibe coding codex",
+      "vibe coding in prod",
+      "vibe coding game",
+      "vibe coding claude",
+      "vibe coding an app",
+      "vibe coding website"
+    ],
+    "web_zh::Cursor 编程技巧": [
+      "cursor 编程技巧 pdf"
+    ],
+    "yt_zh::Cursor 编程技巧": [
+      "cursor 使用教程",
+      "cursor使用",
+      "cursor怎么用"
+    ],
+    "web_zh::AI Agent 工作流": [
+      "ai agent 工作流",
+      "ai agent 工作流程",
+      "ai 工作流与 agent 实战养成班",
+      "ai 工作流與 agent 實戰養成班",
+      "ai agent 工作流引擎"
+    ],
+    "yt_zh::AI Agent 工作流": [
+      "ai agent 工作流",
+      "aigc工作流",
+      "ai 工作流"
+    ],
+    "web_zh::多智能体 协作": [
+      "多智能体协作",
+      "多智能体协作框架",
+      "多智能体协作平台",
+      "多智能体协作模式",
+      "多智能体 协作机器人"
+    ],
+    "yt_zh::多智能体 协作": [
+      "多智能体协作",
+      "多智能体",
+      "协作机器人"
+    ],
+    "web_zh::DeepSeek R1 原理": [
+      "deepseek r1 原理",
+      "deepseek r1 原理解析"
+    ],
+    "yt_zh::DeepSeek R1 原理": [
+      "路由器原理",
+      "真空管原理",
+      "整流器原理"
+    ],
+    "web_zh::大模型 强化学习": [
+      "大模型强化学习",
+      "大模型强化学习八股",
+      "大模型强化学习框架"
+    ],
+    "yt_zh::大模型 强化学习": [
+      "大模型强化学习",
+      "大模型入门",
+      "大模型部署"
+    ],
+    "web_zh::大模型 评测 eval": [],
+    "yt_zh::大模型 评测 eval": [
+      "大模型",
+      "大模型应用",
+      "大模型部署"
+    ],
+    "web_zh::LoRA 微调 教程": [],
+    "yt_zh::LoRA 微调 教程": [],
+    "web_zh::Ollama 本地部署": [
+      "ollama 本地部署",
+      "ollama 本地 部署 api 调用",
+      "ollama本地部署大模型",
+      "ollama 本地部署模型",
+      "ollama本地部署deepseek v4 flash"
+    ],
+    "yt_zh::Ollama 本地部署": [
+      "ollama 本地部署",
+      "ollama 本地部署 codex",
+      "ollama 本地部署 mac",
+      "ollama deepseek 本地部署",
+      "openclash + ollama 本地部署"
+    ],
+    "web_zh::ComfyUI 工作流": [
+      "comfyui工作流",
+      "comfyui 工作 流 网站",
+      "comfyui工作流分享网站",
+      "comfyui 工作 流 分享",
+      "comfyui工作流放在哪个文件夹",
+      "comfyui 工作 流 github",
+      "comfyui 工作 流 教程",
+      "comfyui 工作 流 导入",
+      "comfyui 工作流 下載",
+      "comfyui 工作 流 保存 路径"
+    ],
+    "yt_zh::ComfyUI 工作流": [
+      "comfyui工作流",
+      "comfyui工作流分享",
+      "comfyui工作流导入",
+      "comfyui 工作流教学",
+      "comfyui img2img",
+      "#comfyui"
+    ],
+    "web_zh::AI 视频生成 工作流": [
+      "ai视频生成工作流",
+      "ai 视频生成 工作流程",
+      "ai 视频生成 工作流程图"
+    ],
+    "yt_zh::AI 视频生成 工作流": [
+      "ai视频生成工作流",
+      "ai 视频生成",
+      "ai视频生成视频"
+    ]
+  }
+}

@@ -1,0 +1,305 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import MediaCard from "../../../components/MediaCard.astro";
+import { LANGS, LIFECYCLE_META, ROLE_META, UI, formatSliceMinutes, formatTime, type Lang, type Lifecycle } from "../../../lib/i18n";
+import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS, getConcept } from "../../../lib/content";
+import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = UI[lang];
+const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
+const initialNodes = NODES.slice(0, 24);
+
+const clientCatalog = NODES.map((n) => {
+  const c = getConcept(n.primaryConcept);
+  const s = n.source;
+  const badgeLeft =
+    s.kind === "article-digest"
+      ? lang === "zh"
+        ? "原典精读"
+        : "MONOGRAPH"
+      : s.isShort
+        ? "SHORT"
+        : s.platform.toUpperCase();
+  const badgeRight =
+    s.kind === "video-cut"
+      ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} · ${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)}`
+      : `${s.readingMinutes || 10}m ${lang === "zh" ? "精读" : "read"}`;
+
+  return {
+    slug: n.slug,
+    era: c?.eraId || "",
+    life: c?.lifecycle || "mainstream",
+    lifeIcon: c ? LIFECYCLE_META[c.lifecycle].icon : "●",
+    conceptName: c ? c[lang].shortName : n.primaryConcept,
+    roleName: ROLE_META[n.conceptRole][lang],
+    domains: n.facets.domains,
+    tasks: n.facets.tasks,
+    stacks: n.facets.stacks,
+    plat: s.isShort ? "shorts" : s.platform,
+    ytId: s.platform === "youtube" ? s.videoId || "" : "",
+    badgeLeft,
+    badgeRight,
+    title: n[lang].title,
+    why: n[lang].whyWatch,
+    ch: s.channelName,
+    saved: lang === "zh" ? `省 ${s.hoursSaved}h` : `Saves ${s.hoursSaved}h`,
+    q: `${n[lang].title} ${n[lang].whyWatch} ${s.channelName} ${c ? c[lang].shortName : ""} ${n[lang].searchQuestions.join(" ")}`.toLowerCase(),
+  };
+});
+
+const title =
+  lang === "zh"
+    ? `AI 实战视频切片多维检索库（${NODES.length} 支核验切片）— AITube`
+    : `Multi-Faceted AI Video Slice Directory (${NODES.length} Cuts) — AITube`;
+const desc =
+  lang === "zh"
+    ? `按概念演进纪元、技术层、核心任务与工具栈交叉检索 ${NODES.length} 支核验 AI 视频切片与技术原典。`
+    : `Filter ${NODES.length} verified AI implementation video slices across concept eras, layers, tasks, and stacks.`;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ...orgAndSiteGraph(lang),
+    buildBreadcrumbSchema([
+      { name: "AITube", path: `/${lang}/` },
+      { name: t.navDirectory, path: `/${lang}/directory/` },
+    ]),
+  ],
+};
+---
+<BaseLayout
+  title={title}
+  description={desc}
+  lang={lang}
+  pathname={`/${lang}/directory/`}
+  ogImage={`/og/directory-${lang}.png`}
+  schema={schema}
+>
+  <section style="padding:30px 0 20px;border-bottom:1px solid var(--border-subtle);">
+    <div class="at-container">
+      <div class="at-kicker">MULTI-FACETED SCREENING DIRECTORY · {NODES.length} VERIFIED CUTS</div>
+      <h1 style="font-size:clamp(1.75rem,2.8vw,2.4rem);margin:6px 0 10px;">
+        {lang === "zh" ? "AI 实战视频切片多维检索库" : "Multi-Faceted AI Video Slice Directory"}
+      </h1>
+      <p style="color:var(--ink-secondary);max-width:70ch;font-size:0.95rem;">
+        {lang === "zh"
+          ? "左侧按「概念纪元 × 技术层 × 核心任务 × 工具栈」交叉过滤，或直接输入真实工程问题（如“怎么避免 MCP 撑爆上下文”“DeepSeek GRPO 原理”）即时定位核心切片。"
+          : "Cross-filter 280 verified slices by Concept Era, AI Layer, Core Task, and Stack — or type a natural-language engineering question below."}
+      </p>
+    </div>
+  </section>
+
+  <div class="at-container at-dir-layout">
+    <aside class="at-dir-sidebar" aria-label="Faceted filters">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span class="at-mono" style="font-size:0.76rem;font-weight:600;">FILTERS</span>
+        <button type="button" id="dir-reset" class="at-mono" style="border:0;background:transparent;color:var(--accent-primary);font-size:0.75rem;cursor:pointer;">
+          {t.clearFilters}
+        </button>
+      </div>
+
+      <div class="at-facet-group">
+        <div class="at-facet-title">{lang === "zh" ? "概念演进纪元" : "Concept Era"}</div>
+        {ERAS.map((era) => {
+          const eraSlugs = new Set(CONCEPTS.filter((c) => c.eraId === era.id).map((c) => c.slug));
+          const cnt = NODES.filter((n) => eraSlugs.has(n.primaryConcept)).length;
+          return (
+            <button type="button" class="at-facet-btn" data-f-era={era.id}>
+              <span>{era.period} · {era[lang].title}</span>
+              <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {TAXONOMY_DIMS.map((dim) => (
+        <div class="at-facet-group">
+          <div class="at-facet-title">{dim[lang].label}</div>
+          {dim.items.map((item) => {
+            const cnt = NODES.filter((n) => n.facets[dim.prop].includes(item.slug)).length;
+            return (
+              <button type="button" class="at-facet-btn" data-f-dim={dim.prop} data-f-val={item.slug}>
+                <span>{item[lang].name}</span>
+                <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
+              </button>
+            );
+          })}
+        </div>
+      ))}
+    </aside>
+
+    <div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border-subtle);">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+          <input
+            type="search"
+            id="dir-query"
+            placeholder={t.searchPlaceholder}
+            style="flex:1;min-width:240px;padding:9px 12px;border:1px solid var(--border-strong);border-radius:4px;background:var(--bg-canvas);font-size:0.9rem;"
+          />
+          <span class="at-mono" id="dir-count" style="font-size:0.82rem;color:var(--ink-secondary);">
+            {t.showingCount}: {NODES.length}
+          </span>
+        </div>
+
+        <div class="at-filter-row" style="justify-content:space-between;">
+          <div class="at-filter-row">
+            <button type="button" class="at-chip is-active" data-d-life="all">{t.allLifecycles}</button>
+            {lifecycles.map((lf) => (
+              <button type="button" class="at-chip" data-d-life={lf}>
+                {LIFECYCLE_META[lf].icon} {LIFECYCLE_META[lf][lang]}
+              </button>
+            ))}
+          </div>
+
+          <div class="at-filter-row">
+            <button type="button" class="at-chip is-active" data-d-plat="all">{t.allSources}</button>
+            <button type="button" class="at-chip" data-d-plat="youtube">YouTube</button>
+            <button type="button" class="at-chip" data-d-plat="shorts">Shorts</button>
+            <button type="button" class="at-chip" data-d-plat="bilibili">Bilibili</button>
+            <button type="button" class="at-chip" data-d-plat="web">{lang === "zh" ? "原典" : "Monographs"}</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="at-grid-cards" id="dir-grid">
+        {initialNodes.map((n) => (
+          <MediaCard node={n} lang={lang} />
+        ))}
+      </div>
+
+      <div style="margin-top:28px;text-align:center;">
+        <button type="button" id="dir-load-more" class="at-btn-ghost">
+          {t.loadMore} (24 / {NODES.length})
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="dir-catalog-json" set:html={JSON.stringify(clientCatalog)} />
+  <script is:inline define:vars={{ lang, loadMoreLabel: t.loadMore, showingLabel: t.showingCount }}>
+    (() => {
+      const catalog = JSON.parse(document.getElementById("dir-catalog-json")?.textContent || "[]");
+      const grid = document.getElementById("dir-grid");
+      const countEl = document.getElementById("dir-count");
+      const moreBtn = document.getElementById("dir-load-more");
+      const qInput = document.getElementById("dir-query");
+      const resetBtn = document.getElementById("dir-reset");
+
+      const state = { era: null, domains: null, tasks: null, stacks: null, life: "all", plat: "all", q: "", page: 1 };
+      const PAGE_SIZE = 24;
+
+      function esc(s) {
+        return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      function cardHTML(it) {
+        const img = it.ytId
+          ? `<img src="https://i.ytimg.com/vi/${esc(it.ytId)}/hqdefault.jpg" alt="${esc(it.title)}" loading="lazy" class="at-card-thumb" onerror="this.style.display='none'"/>`
+          : "";
+        return `<article class="at-card"><a href="/${lang}/nodes/${esc(it.slug)}/" style="display:flex;flex-direction:column;flex:1;">
+          <div class="at-card-poster">${img}<div class="at-card-badges"><span class="at-pill-dark">${esc(it.badgeLeft)}</span><span class="at-pill-dark">${esc(it.badgeRight)}</span></div></div>
+          <div class="at-card-body">
+            <div class="at-card-concept-row"><span>${esc(it.lifeIcon)} ${esc(it.conceptName)}</span><span style="color:var(--ink-muted);">${esc(it.roleName)}</span></div>
+            <h3 class="at-card-title">${esc(it.title)}</h3>
+            <p class="at-card-why">${esc(it.why)}</p>
+            <div class="at-card-foot"><span style="max-width:65%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(it.ch)}</span><span class="at-mono">${esc(it.saved)}</span></div>
+          </div></a></article>`;
+      }
+
+      function render() {
+        const filtered = catalog.filter((it) => {
+          if (state.era && it.era !== state.era) return false;
+          if (state.domains && !it.domains.includes(state.domains)) return false;
+          if (state.tasks && !it.tasks.includes(state.tasks)) return false;
+          if (state.stacks && !it.stacks.includes(state.stacks)) return false;
+          if (state.life !== "all" && it.life !== state.life) return false;
+          if (state.plat !== "all" && it.plat !== state.plat) return false;
+          if (state.q && !it.q.includes(state.q)) return false;
+          return true;
+        });
+
+        const vis = filtered.slice(0, state.page * PAGE_SIZE);
+        if (grid) grid.innerHTML = vis.map(cardHTML).join("");
+        if (countEl) countEl.textContent = `${showingLabel}: ${filtered.length}`;
+        if (moreBtn) {
+          if (vis.length < filtered.length) {
+            moreBtn.style.display = "inline-flex";
+            moreBtn.textContent = `${loadMoreLabel} (${vis.length} / ${filtered.length})`;
+          } else {
+            moreBtn.style.display = "none";
+          }
+        }
+      }
+
+      document.querySelectorAll("[data-f-era]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.getAttribute("data-f-era");
+          state.era = state.era === val ? null : val;
+          state.page = 1;
+          document.querySelectorAll("[data-f-era]").forEach((b) => b.classList.toggle("is-active", b.getAttribute("data-f-era") === state.era));
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-f-dim]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const dim = btn.getAttribute("data-f-dim");
+          const val = btn.getAttribute("data-f-val");
+          state[dim] = state[dim] === val ? null : val;
+          state.page = 1;
+          document.querySelectorAll(`[data-f-dim="${dim}"]`).forEach((b) =>
+            b.classList.toggle("is-active", b.getAttribute("data-f-val") === state[dim])
+          );
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-d-life]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.life = btn.getAttribute("data-d-life") || "all";
+          state.page = 1;
+          document.querySelectorAll("[data-d-life]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          render();
+        });
+      });
+
+      document.querySelectorAll("[data-d-plat]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.plat = btn.getAttribute("data-d-plat") || "all";
+          state.page = 1;
+          document.querySelectorAll("[data-d-plat]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          render();
+        });
+      });
+
+      qInput?.addEventListener("input", () => {
+        state.q = qInput.value.trim().toLowerCase();
+        state.page = 1;
+        render();
+      });
+
+      moreBtn?.addEventListener("click", () => {
+        state.page += 1;
+        render();
+      });
+
+      resetBtn?.addEventListener("click", () => {
+        state.era = state.domains = state.tasks = state.stacks = null;
+        state.life = state.plat = "all";
+        state.q = "";
+        state.page = 1;
+        if (qInput) qInput.value = "";
+        document.querySelectorAll(".at-facet-btn").forEach((b) => b.classList.remove("is-active"));
+        document.querySelectorAll("[data-d-life]").forEach((b, i) => b.classList.toggle("is-active", i === 0));
+        document.querySelectorAll("[data-d-plat]").forEach((b, i) => b.classList.toggle("is-active", i === 0));
+        render();
+      });
+    })();
+  </script>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import type { Concept } from "../lib/content";
+import { UI, type Lang } from "../lib/i18n";
+
+interface Props {
+  concept?: Concept;
+  lang: Lang;
+  slug: string;
+}
+const { concept, lang, slug } = Astro.props;
+const t = UI[lang];
+---
+<aside class="at-minimap" aria-label="Section map">
+  {concept && (
+    <a href={`/${lang}/concepts/${concept.slug}/`} class="at-kicker" style="margin-bottom:4px;">
+      ← {concept[lang].shortName}
+    </a>
+  )}
+  <a href="#stage" style="color:var(--ink-secondary);">01 · {lang === "zh" ? "核心切片放映" : "Screening Stage"}</a>
+  <a href="#steps" style="color:var(--ink-secondary);">02 · {lang === "zh" ? "三步实操拆解" : "3-Step SOP"}</a>
+  <a href="#patch" style="color:var(--ink-secondary);">03 · {lang === "zh" ? "2026 演进补丁" : "2026 Patch"}</a>
+  <a href="#checklist" style="color:var(--ink-secondary);">04 · {lang === "zh" ? "动手验收清单" : "Checklist"}</a>
+  <a href="#related" style="color:var(--ink-secondary);">05 · {lang === "zh" ? "同概念上下游" : "Related Cuts"}</a>
+
+  <button
+    type="button"
+    class="at-btn-ghost"
+    style="margin-top:12px;font-size:0.8rem;padding:7px 10px;justify-content:center;"
+    data-toggle-read={slug}
+    data-label-unread={t.markRead}
+    data-label-read={t.markedRead}
+  >
+    {t.markRead}
+  </button>
+</aside>

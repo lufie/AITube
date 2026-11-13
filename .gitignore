@@ -1,0 +1,19 @@
+# Dependencies & build output
+node_modules/
+web/node_modules/
+web/dist/
+web/.astro/
+.wrangler/
+web/.wrangler/
+
+# Python caches & virtualenvs
+__pycache__/
+*.py[cod]
+.venv/
+
+# OS & editor artifacts
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example

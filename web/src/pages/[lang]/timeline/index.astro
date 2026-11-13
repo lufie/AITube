@@ -1,0 +1,198 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ConceptTimelineCard from "../../../components/ConceptTimelineCard.astro";
+import { LANGS, LIFECYCLE_META, UI, type Lang, type Lifecycle } from "../../../lib/i18n";
+import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS } from "../../../lib/content";
+import { absUrl, buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = UI[lang];
+const domainDim = TAXONOMY_DIMS.find((d) => d.key === "domain")!;
+const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
+
+const title =
+  lang === "zh"
+    ? "AI 概念趋势时间线索引（2017–2026）— AITube"
+    : "AI Concept Trend Timeline Index (2017–2026) — AITube";
+const desc =
+  lang === "zh"
+    ? "按时间演进轴系统梳理 2017–2026 年 22 个 AI 核心概念的起源季度、爆发拐点、搜索热度曲线、范式跃迁与上下游血缘。"
+    : "Chronological index of 22 foundational and frontier AI concepts (2017–2026) with inflection quarters, momentum sparklines, paradigm shifts, and verified cuts.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ...orgAndSiteGraph(lang),
+    buildBreadcrumbSchema([
+      { name: "AITube", path: `/${lang}/` },
+      { name: t.navTimeline, path: `/${lang}/timeline/` },
+    ]),
+    {
+      "@type": "DefinedTermSet",
+      "@id": absUrl(`/${lang}/timeline/`),
+      name: title,
+      description: desc,
+      hasDefinedTerm: CONCEPTS.map((c) => ({
+        "@type": "DefinedTerm",
+        name: c[lang].name,
+        termCode: c.slug,
+        url: absUrl(`/${lang}/concepts/${c.slug}/`),
+      })),
+    },
+  ],
+};
+---
+<BaseLayout
+  title={title}
+  description={desc}
+  lang={lang}
+  pathname={`/${lang}/timeline/`}
+  ogImage={`/og/timeline-${lang}.png`}
+  schema={schema}
+>
+  <section style="padding:36px 0 24px;border-bottom:1px solid var(--border-subtle);">
+    <div class="at-container">
+      <div class="at-kicker">CHRONOLOGICAL CONCEPT INDEX · 2017 Q2 → 2026 Q3</div>
+      <h1 style="font-size:clamp(1.85rem,3vw,2.6rem);margin:8px 0 12px;">
+        {lang === "zh" ? "AI 概念趋势时间线索引视角" : "AI Concept Trend Timeline Index"}
+      </h1>
+      <p style="max-width:72ch;color:var(--ink-secondary);font-size:0.98rem;">
+        {lang === "zh"
+          ? `为什么刚学会 Prompt Engineering，行业已经在谈 Context Engineering、MCP 与 SKILL.md？我们把 2017–2026 年 ${CONCEPTS.length} 个关键概念放回真实时间轴：看清每个概念「何时诞生 → 何时破圈爆发 → 替代了什么旧范式 → 关联哪几支核验切片（共 ${NODES.length} 支）」。`
+          : `Why did Prompt Engineering evolve into Context Engineering, MCP, and SKILL.md? Trace all ${CONCEPTS.length} canonical concepts chronologically from origin quarter to breakout inflection, paradigm shift, lineage, and ${NODES.length} verified cuts.`}
+      </p>
+    </div>
+  </section>
+
+  <div class="at-timeline-toolbar">
+    <div class="at-container" style="display:flex;flex-direction:column;gap:10px;">
+      <div class="at-filter-row" role="group" aria-label="Era filter">
+        <button type="button" class="at-chip is-active" data-tl-era="all">{t.allEras} ({CONCEPTS.length})</button>
+        {ERAS.map((era) => (
+          <button type="button" class="at-chip" data-tl-era={era.id}>
+            <span class="at-mono" style="font-size:0.74rem;">{era.period}</span> · {era[lang].title}
+          </button>
+        ))}
+      </div>
+
+      <div class="at-filter-row" style="justify-content:space-between;">
+        <div class="at-filter-row">
+          <button type="button" class="at-chip is-active" data-tl-life="all">{t.allLifecycles}</button>
+          {lifecycles.map((lf) => (
+            <button type="button" class="at-chip" data-tl-life={lf}>
+              {LIFECYCLE_META[lf].icon} {LIFECYCLE_META[lf][lang]}
+            </button>
+          ))}
+          <span style="color:var(--border-strong);">|</span>
+          <select
+            id="tl-domain-select"
+            aria-label={t.allDomains}
+            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.81rem;"
+          >
+            <option value="all">{t.allDomains}</option>
+            {domainDim.items.map((it) => (
+              <option value={it.slug}>{it[lang].name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <input
+            type="search"
+            id="tl-search"
+            placeholder={lang === "zh" ? "过滤概念词条…" : "Filter concepts..."}
+            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.82rem;width:180px;"
+          />
+          <span class="at-mono" id="tl-count" style="font-size:0.78rem;color:var(--ink-muted);">
+            {CONCEPTS.length}/{CONCEPTS.length}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="at-container" style="padding-bottom:56px;">
+    {ERAS.map((era) => {
+      const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
+      return (
+        <section class="at-era-block" id={era.id} data-era-section={era.id}>
+          <div class="at-era-header">
+            <div>
+              <span class="at-mono" style="font-size:0.8rem;color:var(--accent-signal);font-weight:600;">
+                {era.period}
+              </span>
+              <h2 style="font-size:1.55rem;margin-top:2px;">{era[lang].title}</h2>
+            </div>
+            <p style="max-width:54ch;font-size:0.88rem;color:var(--ink-secondary);">{era[lang].subtitle}</p>
+          </div>
+
+          <div class="at-concept-list">
+            {eraConcepts.map((c) => (
+              <ConceptTimelineCard concept={c} lang={lang} />
+            ))}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+
+  <script is:inline>
+    (() => {
+      let activeEra = "all";
+      let activeLife = "all";
+      let activeDomain = "all";
+      let query = "";
+
+      const cards = [...document.querySelectorAll("[data-concept-card]")];
+      const sections = [...document.querySelectorAll("[data-era-section]")];
+      const countEl = document.getElementById("tl-count");
+      const domainSel = document.getElementById("tl-domain-select");
+      const searchIn = document.getElementById("tl-search");
+
+      function apply() {
+        let shown = 0;
+        for (const card of cards) {
+          const okEra = activeEra === "all" || card.getAttribute("data-era") === activeEra;
+          const okLife = activeLife === "all" || card.getAttribute("data-lifecycle") === activeLife;
+          const okDom = activeDomain === "all" || card.getAttribute("data-domain") === activeDomain;
+          const okQ = !query || (card.getAttribute("data-search") || "").includes(query);
+          const vis = okEra && okLife && okDom && okQ;
+          card.style.display = vis ? "" : "none";
+          if (vis) shown++;
+        }
+        for (const sec of sections) {
+          const hasVis = [...sec.querySelectorAll("[data-concept-card]")].some((c) => c.style.display !== "none");
+          sec.style.display = hasVis ? "" : "none";
+        }
+        if (countEl) countEl.textContent = `${shown}/${cards.length}`;
+      }
+
+      document.querySelectorAll("[data-tl-era]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeEra = btn.getAttribute("data-tl-era") || "all";
+          document.querySelectorAll("[data-tl-era]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          apply();
+        });
+      });
+      document.querySelectorAll("[data-tl-life]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeLife = btn.getAttribute("data-tl-life") || "all";
+          document.querySelectorAll("[data-tl-life]").forEach((b) => b.classList.toggle("is-active", b === btn));
+          apply();
+        });
+      });
+      domainSel?.addEventListener("change", () => {
+        activeDomain = domainSel.value;
+        apply();
+      });
+      searchIn?.addEventListener("input", () => {
+        query = searchIn.value.trim().toLowerCase();
+        apply();
+      });
+    })();
+  </script>
+</BaseLayout>

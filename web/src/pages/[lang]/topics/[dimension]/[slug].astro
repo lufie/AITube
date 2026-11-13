@@ -1,0 +1,103 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import MediaCard from "../../../../components/MediaCard.astro";
+import { LANGS, UI, formatTime, type Lang } from "../../../../lib/i18n";
+import { TAXONOMY_DIMS, getFacetItem, getNodesByFacet } from "../../../../lib/content";
+import { absUrl, buildBreadcrumbSchema, orgAndSiteGraph } from "../../../../lib/seo";
+
+export function getStaticPaths() {
+  return LANGS.flatMap((lang) =>
+    TAXONOMY_DIMS.flatMap((dim) =>
+      dim.items
+        .filter((item) => getNodesByFacet(dim.key, item.slug).length >= 3)
+        .map((item) => ({
+          params: { lang, dimension: dim.key, slug: item.slug },
+        }))
+    )
+  );
+}
+
+const lang = Astro.params.lang as Lang;
+const dimension = Astro.params.dimension as "domain" | "task" | "stack";
+const slug = Astro.params.slug as string;
+const t = UI[lang];
+
+const found = getFacetItem(dimension, slug)!;
+const allNodes = getNodesByFacet(dimension, slug);
+const galleryNodes = allNodes.slice(0, 24);
+const pathname = `/${lang}/topics/${dimension}/${slug}/`;
+
+const title = `${found.item[lang].name} (${found.dim[lang].label}) — AITube`;
+const desc = found.item[lang].desc;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ...orgAndSiteGraph(lang),
+    buildBreadcrumbSchema([
+      { name: "AITube", path: `/${lang}/` },
+      { name: t.navDirectory, path: `/${lang}/directory/` },
+      { name: found.item[lang].name, path: pathname },
+    ]),
+    {
+      "@type": "CollectionPage",
+      name: title,
+      url: absUrl(pathname),
+      description: desc,
+    },
+  ],
+};
+---
+<BaseLayout
+  title={title}
+  description={desc}
+  lang={lang}
+  pathname={pathname}
+  ogImage={`/og/directory-${lang}.png`}
+  schema={schema}
+>
+  <section style="padding:32px 0 24px;border-bottom:1px solid var(--border-subtle);">
+    <div class="at-container">
+      <nav class="at-mono" style="font-size:0.76rem;color:var(--ink-muted);margin-bottom:10px;">
+        <a href={`/${lang}/`}>AITube</a> / <a href={`/${lang}/directory/`}>{t.navDirectory}</a> / <span>{found.item[lang].name}</span>
+      </nav>
+      <div class="at-kicker">{found.dim[lang].label} · {allNodes.length} VERIFIED CUTS</div>
+      <h1 style="font-size:clamp(1.8rem,2.8vw,2.45rem);margin:6px 0 10px;">{found.item[lang].name}</h1>
+      <p style="color:var(--ink-secondary);max-width:68ch;">{desc}</p>
+    </div>
+  </section>
+
+  <section class="at-container" style="padding:28px 24px 56px;">
+    <div class="at-grid-cards">
+      {galleryNodes.map((n) => (
+        <MediaCard node={n} lang={lang} />
+      ))}
+    </div>
+
+    {allNodes.length > 24 && (
+      <details style="margin-top:28px;border:1px solid var(--border-subtle);border-radius:6px;padding:14px 18px;background:var(--bg-elevated);">
+        <summary style="cursor:pointer;font-weight:580;">
+          {t.fullArchiveSummary} ({allNodes.length})
+        </summary>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+          {allNodes.map((n, idx) => (
+            <a
+              href={`/${lang}/nodes/${n.slug}/`}
+              style="display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--border-subtle);font-size:0.86rem;"
+            >
+              <span>
+                <span class="at-mono" style="color:var(--ink-muted);margin-right:8px;">{String(idx + 1).padStart(2, "0")}</span>
+                {n[lang].title}
+              </span>
+              <span class="at-mono" style="color:var(--ink-muted);">
+                {n.source.kind === "video-cut"
+                  ? `${formatTime(n.source.startSec || 0)}–${formatTime(n.source.endSec || 0)}`
+                  : `${n.source.readingMinutes}m`}
+              </span>
+            </a>
+          ))}
+        </div>
+      </details>
+    )}
+  </section>
+</BaseLayout>

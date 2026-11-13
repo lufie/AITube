@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { LANGS, UI, type Lang } from "../../../lib/i18n";
+import { VAULT_ITEMS, getConcept } from "../../../lib/content";
+import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = UI[lang];
+
+const title =
+  lang === "zh"
+    ? "开源智能体工程与评测蓝图箱（Open Vault）— AITube"
+    : "Open Agent Harness & Eval Blueprint Vault — AITube";
+const desc =
+  lang === "zh"
+    ? "免注册直接复制：AGENTS.md 仓库规范、渐进式 SKILL.md 模板、二元 LLM 裁判套件、上下文混合检索与多模态分镜标准规格。"
+    : "Zero-gate open blueprints: AGENTS.md repository charter, progressive SKILL.md bundle, binary LLM judge rubric, hybrid RAG, and multimodal storyboard specs.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ...orgAndSiteGraph(lang),
+    buildBreadcrumbSchema([
+      { name: "AITube", path: `/${lang}/` },
+      { name: t.navVault, path: `/${lang}/vault/` },
+    ]),
+  ],
+};
+---
+<BaseLayout
+  title={title}
+  description={desc}
+  lang={lang}
+  pathname={`/${lang}/vault/`}
+  ogImage={`/og/vault-${lang}.png`}
+  schema={schema}
+>
+  <section style="padding:36px 0 24px;border-bottom:1px solid var(--border-subtle);">
+    <div class="at-container">
+      <div class="at-kicker">ZERO-EMAIL OPEN BLUEPRINTS · {VAULT_ITEMS.length} PRODUCTION SPECS</div>
+      <h1 style="font-size:clamp(1.85rem,3vw,2.5rem);margin:8px 0 12px;">
+        {lang === "zh" ? "开源智能体规范与评测蓝图箱" : "Open Agent Harness & Eval Vault"}
+      </h1>
+      <p style="max-width:68ch;color:var(--ink-secondary);">
+        {desc}
+      </p>
+    </div>
+  </section>
+
+  <section class="at-container" style="padding:32px 24px 56px;display:flex;flex-direction:column;gap:22px;">
+    {VAULT_ITEMS.map((v) => {
+      const loc = v[lang];
+      const concept = getConcept(v.conceptSlug);
+      return (
+        <article
+          id={v.id}
+          style="border:1px solid var(--border-subtle);border-radius:6px;padding:22px 24px;background:var(--bg-canvas);"
+        >
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
+            <span class="at-mono" style="font-size:0.76rem;color:var(--accent-primary);font-weight:600;">
+              {v.code} · {loc.tag}
+            </span>
+            {concept && (
+              <a href={`/${lang}/concepts/${concept.slug}/`} class="at-lineage-pill at-mono" style="font-size:0.74rem;">
+                {concept[lang].shortName} →
+              </a>
+            )}
+          </div>
+
+          <h2 style="font-size:1.38rem;margin-bottom:8px;">{loc.title}</h2>
+          <p style="color:var(--ink-secondary);margin-bottom:14px;">{loc.summary}</p>
+
+          <ul style="margin:0 0 16px;padding-left:18px;color:var(--ink-secondary);font-size:0.9rem;">
+            {loc.items.map((it) => (
+              <li style="margin-bottom:4px;">{it}</li>
+            ))}
+          </ul>
+
+          <div style="position:relative;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-elevated);padding:14px 16px;">
+            <button
+              type="button"
+              class="at-chip at-mono"
+              data-copy-op={loc.previewSnippet}
+              style="position:absolute;top:10px;right:10px;font-size:0.72rem;"
+            >
+              {lang === "zh" ? "复制模板" : "Copy Blueprint"} ⧉
+            </button>
+            <pre class="at-mono" style="margin:0;font-size:0.79rem;line-height:1.55;overflow-x:auto;white-space:pre-wrap;padding-right:92px;">{loc.previewSnippet}</pre>
+          </div>
+        </article>
+      );
+    })}
+  </section>
+</BaseLayout>

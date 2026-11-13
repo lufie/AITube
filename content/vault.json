@@ -1,0 +1,137 @@
+[
+  {
+    "id": "vault-repo-harness",
+    "code": "BLUEPRINT 01",
+    "conceptSlug": "agentic-coding-cli",
+    "en": {
+      "title": "AGENTS.md / CLAUDE.md Repository Harness Spec",
+      "tag": "Open Markdown Template",
+      "summary": "Drop-in <120-line repository charter giving Claude Code, Codex, and Cursor exact build/test gates, architecture boundaries, and zero-fluff rules.",
+      "items": [
+        "1-command deterministic verification gate (typecheck + unit tests + dist audit)",
+        "Explicit architectural invariants & forbidden anti-patterns",
+        "Git worktree & PR hygiene rules for parallel subagents"
+      ],
+      "previewSnippet": "# AGENTS.md — Repository Harness\n\n## 1. Fast Verification Gate (Run Before Every Commit)\n- Typecheck & lint: `npm run check`\n- Targeted unit test: `npx vitest run src/path/to/file.test.ts`\n- Full build & link gate: `npm run build`\n\n## 2. Architecture Boundaries\n- Single source of truth lives in `content/*.json`; never hardcode copy in UI components.\n- Keep context lean: prefer `rg` over dumping full files; delegate broad exploration to read-only subagents.\n\n## 3. Non-Negotiable Constraints\n- Preserve public route parity (`/en/*` and `/zh/*`).\n- Never commit secrets, `.env` files, or unverified third-party URLs."
+    },
+    "zh": {
+      "title": "AGENTS.md / CLAUDE.md 仓库级 Harness 规范模板",
+      "tag": "开源即用模板",
+      "summary": "控制在 120 行以内的项目根规范文件，让 Claude Code、Codex 与 Cursor 开箱即获确定性构建测试命令与架构红线。",
+      "items": [
+        "一行命令跑通的确定性自检门禁（类型检查 + 单测 + 产物校验）",
+        "单一事实源目录边界与反模式禁令（防模型乱改全局样式或硬编码）",
+        "多 Git Worktree 并行子智能体协作与分支提交纪律"
+      ],
+      "previewSnippet": "# AGENTS.md — 仓库智能体工程约束\n\n## 1. 确定性自检门禁（每次提交前必跑）\n- 类型与语法检查：`npm run check`\n- 单文件极速测试：`npx vitest run src/xxx.test.ts`\n- 全量静态构建守门：`npm run build`\n\n## 2. 架构事实源与上下文纪律\n- 所有结构化数据唯一存放在 `content/*.json`，严禁在视图组件内硬编码业务文案。\n- 保持上下文干净：优先用 `rg` 精准定位行号，宽泛调研交由只读子智能体隔离执行。\n\n## 3. 合规红线\n- 严格保持 `/zh/*` 与 `/en/*` 双语路由 100% 对称。\n- 严禁写入任何密钥或未经校验的外部死链。"
+    }
+  },
+  {
+    "id": "vault-agent-skill",
+    "code": "BLUEPRINT 02",
+    "conceptSlug": "agent-skills-subagents",
+    "en": {
+      "title": "Progressive SKILL.md Capability Bundle",
+      "tag": "Agent Skill Standard",
+      "summary": "Three-tier progressive disclosure layout (frontmatter router → step playbook → deterministic helper scripts) saving 90%+ idle context tokens.",
+      "items": [
+        "Trigger-sharp YAML `description` so the agent activates only when relevant",
+        "Self-contained `scripts/` CLI helpers returning compact JSON instead of raw dumps",
+        "On-demand `references/` schemas loaded only for edge cases"
+      ],
+      "previewSnippet": "---\nname: release-audit\ndescription: Verify static build output, broken links, JSON-LD schemas, and bilingual route symmetry before opening a PR. Use whenever shipping UI or content changes.\n---\n# Release Audit Skill\n\n## Workflow\n1. Run `node scripts/validate-content.mjs` and fix any schema or timestamp errors.\n2. Execute `npm --prefix web run build`.\n3. Inspect only failing routes reported by `scripts/verify-dist.mjs`; never dump full HTML into context.\n4. Capture light/dark + mobile 390px screenshots before summarizing results."
+    },
+    "zh": {
+      "title": "渐进式 SKILL.md 智能体技能包骨架",
+      "tag": "2026 技能标准",
+      "summary": "采用「YAML 摘要路由 → 主流程手册 → 确定性脚本资源」三级按需披露结构，在挂载数十项能力时节省 90% 以上闲置上下文。",
+      "items": [
+        "高区分度触发条件描述（`description` 写清何时激活、何时不激活）",
+        "把易错计算与校验下沉到 `scripts/` 确定性脚本，只向上下文返回精简结论",
+        "长篇边缘规范拆分至 `references/`，仅在命中特定分支时按需读取"
+      ],
+      "previewSnippet": "---\nname: release-audit\ndescription: 在提 PR 或交付前端/内容变更前，自动执行数据校验、静态构建、死链扫描与 JSON-LD 合规检查。\n---\n# 发布前全链路验收技能（Release Audit）\n\n## 标准执行步骤\n1. 运行 `node scripts/validate-content.mjs` 确认零越界时间戳与分类错误。\n2. 运行 `npm --prefix web run build` 完成类型检查与死链门禁。\n3. 仅读取报错摘要定位问题文件，禁止把整份构建 HTML 塞入上下文窗口。\n4. 对桌面端深浅色与手机 `390px` 视口做实机渲染巡检后输出简报。"
+    }
+  },
+  {
+    "id": "vault-eval-rubric",
+    "code": "BLUEPRINT 03",
+    "conceptSlug": "llm-evals-observability",
+    "en": {
+      "title": "Trace Error-Analysis & Binary LLM Judge Kit",
+      "tag": "Eval & QA Rubric",
+      "summary": "Hamel Husain & Shreya Shankar style eval loop: 100 real traces, axial failure taxonomy, and binary PASS/FAIL judge prompt with critique-first JSON.",
+      "items": [
+        "Spreadsheet schema for open coding -> axial failure mode clustering",
+        "Binary `PASS` / `FAIL` judge prompt (never vague 1–5 Likert scales)",
+        "Train/dev human-judge agreement check (>90% TPR/TNR target)"
+      ],
+      "previewSnippet": "{\n  \"judge_system_prompt\": \"You are evaluating whether the assistant response contains any unsupported factual claim relative to <retrieved_context>. First list exact claims and check each against <retrieved_context> in `reasoning`. Then output `verdict`: PASS only if 100% of claims are grounded; otherwise FAIL.\",\n  \"output_schema\": {\n    \"reasoning\": \"string (cite exact span or missing fact)\",\n    \"verdict\": \"PASS | FAIL\"\n  }\n}"
+    },
+    "zh": {
+      "title": "真实链路坏例归因与二元 LLM 裁判套件",
+      "tag": "评测工程模板",
+      "summary": "告别无效的 1–5 分主观打分：用 100 条真实业务 Trace 归纳失败模式，并为每个高频坏例配备高一致性的 PASS/FAIL 专用裁判。",
+      "items": [
+        "开放式坏例标注表结构（从原始报错归纳 4–6 类高频根因）",
+        "强制先写证据推理再给 `PASS / FAIL` 二元结论的裁判 JSON Schema",
+        "人工金标集与裁判模型的一致率校准清单（对齐率 >90%）"
+      ],
+      "previewSnippet": "{\n  \"judge_system_prompt\": \"请严格核查助手回答中是否存在任何超出 <retrieved_context> 依据的事实断言。先在 `reasoning` 中逐条列出断言并核对原文出处；仅当全部断言均有明确依据时 `verdict` 输出 PASS，否则一律输出 FAIL。\",\n  \"output_schema\": {\n    \"reasoning\": \"string（指出具体原文片段或缺失依据的断言）\",\n    \"verdict\": \"PASS | FAIL\"\n  }\n}"
+    }
+  },
+  {
+    "id": "vault-hybrid-rag",
+    "code": "BLUEPRINT 04",
+    "conceptSlug": "hybrid-agentic-rag",
+    "en": {
+      "title": "Contextual Hybrid RAG + Agentic Search Blueprint",
+      "tag": "Retrieval Architecture",
+      "summary": "Contextualized chunk headers + Reciprocal Rank Fusion (BM25 + dense embeddings) + cross-encoder rerank + iterative query rewrite.",
+      "items": [
+        "Prepend 50-token document/section context header before indexing chunks",
+        "Fuse exact BM25 lexical hits with dense cosine recall via RRF (`k=60`)",
+        "Expose `search_docs` + `read_section` tools so the agent can refine queries"
+      ],
+      "previewSnippet": "def reciprocal_rank_fusion(bm25_ids: list[str], vec_ids: list[str], k: int = 60) -> list[str]:\n    scores: dict[str, float] = {}\n    for rank, doc_id in enumerate(bm25_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    for rank, doc_id in enumerate(vec_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    return sorted(scores, key=lambda d: scores[d], reverse=True)[:20]"
+    },
+    "zh": {
+      "title": "上下文增强混合检索（Hybrid & Agentic RAG）蓝图",
+      "tag": "检索架构清单",
+      "summary": "结合 Anthropic Contextual Retrieval 切块前缀、BM25+向量倒数秩融合（RRF）、重排精筛与智能体多轮改写追问。",
+      "items": [
+        "切块入库前自动注入 50 字文档全局背景头，消除指代不明丢召回",
+        "用 RRF（`k=60`）融合 BM25 精确专有名词匹配与稠密向量语义召回",
+        "将检索封装为可多轮调用的工具，允许模型在首轮证据不足时改写词条深挖"
+      ],
+      "previewSnippet": "def reciprocal_rank_fusion(bm25_ids: list[str], vec_ids: list[str], k: int = 60) -> list[str]:\n    scores: dict[str, float] = {}\n    for rank, doc_id in enumerate(bm25_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    for rank, doc_id in enumerate(vec_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    return sorted(scores, key=lambda d: scores[d], reverse=True)[:20]"
+    }
+  },
+  {
+    "id": "vault-multimodal-storyboard",
+    "code": "BLUEPRINT 05",
+    "conceptSlug": "comfyui-video-audio",
+    "en": {
+      "title": "Keyframe-Locked Multimodal Video Storyboard Spec",
+      "tag": "Creative Pipeline",
+      "summary": "Eliminate character drift in AI video: lock character sheet + first/last Flux frames in ComfyUI before driving DiT camera motion and voice sync.",
+      "items": [
+        "3-angle character turnaround sheet + fixed seed/IP-Adapter anchor",
+        "First-frame & last-frame Flux composition lock before video generation",
+        "Explicit camera-motion verb vocabulary (dolly-in, truck-left, rack-focus)"
+      ],
+      "previewSnippet": "{\n  \"shot_id\": \"SC02_SH04\",\n  \"anchor_character_ref\": \"char_lin_v3_turnaround.png\",\n  \"first_frame_flux\": \"35mm medium close-up, warm tungsten desk lamp, subject inspecting brass lens, f/2.0 shallow depth of field\",\n  \"camera_motion_dit\": \"Slow 4-second dolly-in, subtle handheld breathing, subject glances up toward monitor glow, zero morphing\",\n  \"audio_layer\": \"Soft mechanical shutter click at 01.4s + room tone\"\n}"
+    },
+    "zh": {
+      "title": "首尾帧锁定多模态视频分镜（ComfyUI + DiT）标准规格",
+      "tag": "多模态创作流",
+      "summary": "彻底解决 AI 视频角色变脸与镜头乱飘：先用 Flux + 参考图锁死三视图与首尾关键帧，再注入结构化运镜指令驱动视频与音效。",
+      "items": [
+        "角色三视图设定卡与固定光影色温锚点（杜绝跨镜头换脸）",
+        "首帧/尾帧构图先行锁定，把视频模型从“瞎编画面”收敛为“受控中间帧演绎”",
+        "标准影视运镜词表（推轨 Dolly-in、横移 Truck、焦点切换 Rack Focus）"
+      ],
+      "previewSnippet": "{\n  \"shot_id\": \"SC02_SH04\",\n  \"anchor_character_ref\": \"char_lin_v3_turnaround.png\",\n  \"first_frame_flux\": \"35mm 中近景，暖色台灯侧逆光，主角低头检视黄铜镜头结构，f/2.0 浅景深胶片颗粒\",\n  \"camera_motion_dit\": \"4 秒缓慢向前推轨（Dolly-in），微弱手持呼吸感，主角在 1.5 秒处抬头望向屏幕冷光，严禁背景形变\",\n  \"audio_layer\": \"01.4s 清脆机械快门声 + 安静暗房环境底噪\"\n}"
+    }
+  }
+]

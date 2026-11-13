@@ -1,0 +1,61 @@
+---
+import { UI, type Lang } from "../lib/i18n";
+import { CONCEPTS, NODES, getTotalHoursSaved } from "../lib/content";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = UI[lang];
+const hrs = getTotalHoursSaved();
+const surging = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 6);
+---
+<footer class="at-footer">
+  <div class="at-container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-bottom:24px;">
+      <div>
+        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">AITube · 2017–2026</div>
+        <p style="line-height:1.55;">{t.footerNote}</p>
+        <p class="at-mono" style="margin-top:8px;font-size:0.76rem;">
+          {CONCEPTS.length} Concepts · {NODES.length} Cuts · ~{hrs}h Saved
+        </p>
+      </div>
+
+      <div>
+        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
+          {lang === "zh" ? "核心视角导航" : "Perspectives"}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <a href={`/${lang}/timeline/`}>{t.navTimeline}</a>
+          <a href={`/${lang}/directory/`}>{t.navDirectory}</a>
+          <a href={`/${lang}/roadmap/`}>{t.navRoadmap}</a>
+          <a href={`/${lang}/vault/`}>{t.navVault}</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
+          {lang === "zh" ? "2026 前沿爆发概念" : "Surging 2026 Concepts"}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          {surging.map((c) => (
+            <a href={`/${lang}/concepts/${c.slug}/`} class="at-lineage-pill">
+              {c[lang].shortName}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
+          {lang === "zh" ? "机器可读开放索引" : "Machine & Open Index"}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;" class="at-mono">
+          <a href="/llms.txt">/llms.txt</a>
+          <a href="/llms-full.txt">/llms-full.txt</a>
+          <a href="/sitemap.xml">/sitemap.xml</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

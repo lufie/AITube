@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import MediaCard from "../../../components/MediaCard.astro";
+import { LANGS, UI, type Lang } from "../../../lib/i18n";
+import { SPINE_NODES, STAGES } from "../../../lib/content";
+import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = UI[lang];
+
+const title =
+  lang === "zh"
+    ? `从底层直觉到生产级智能体：四阶学习路线（${SPINE_NODES.length} 支主干精切）— AITube`
+    : `4-Stage AI Learning Roadmap (${SPINE_NODES.length} Spine Cuts) — AITube`;
+const desc =
+  lang === "zh"
+    ? "按 Stage 00 模型直觉 → Stage 01 上下文与多模态 → Stage 02 混合检索与自主编程 → Stage 03 智能体、Skills 与评测护栏循序进阶。"
+    : "Structured 4-stage curriculum sequencing 52 flagship AI cuts from Transformer intuition to MCP, Context Engineering, SKILL.md, and Evals.";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    ...orgAndSiteGraph(lang),
+    buildBreadcrumbSchema([
+      { name: "AITube", path: `/${lang}/` },
+      { name: t.navRoadmap, path: `/${lang}/roadmap/` },
+    ]),
+  ],
+};
+---
+<BaseLayout
+  title={title}
+  description={desc}
+  lang={lang}
+  pathname={`/${lang}/roadmap/`}
+  ogImage={`/og/roadmap-${lang}.png`}
+  schema={schema}
+>
+  <section style="padding:36px 0 24px;border-bottom:1px solid var(--border-subtle);">
+    <div class="at-container">
+      <div class="at-kicker">CURATED CURRICULUM · {SPINE_NODES.length} FLAGSHIP SPINE CUTS</div>
+      <h1 style="font-size:clamp(1.85rem,3vw,2.55rem);margin:8px 0 12px;">
+        {t.roadmapHeading}
+      </h1>
+      <p style="max-width:68ch;color:var(--ink-secondary);margin-bottom:18px;">
+        {lang === "zh"
+          ? `不想在 280 支切片里迷路？编辑部从全库中精选出 ${SPINE_NODES.length} 支不可跳过的里程碑主干课，按四个工程能力台阶严格编排。`
+          : `New to the full 280-cut library? Follow these ${SPINE_NODES.length} editorial spine cuts ordered into four progressive capability stages.`}
+      </p>
+
+      <div class="at-filter-row">
+        {STAGES.map((st) => (
+          <a href={`#${st.id}`} class="at-chip at-mono">
+            {st[lang].code} · {st[lang].title}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="at-container" style="padding-bottom:56px;">
+    {STAGES.map((st) => {
+      const stageNodes = SPINE_NODES.filter((n) => n.stageId === st.id);
+      return (
+        <section class="at-section" id={st.id}>
+          <div class="at-section-head">
+            <div>
+              <div class="at-kicker">{st[lang].code} · {stageNodes.length} SPINE CUTS</div>
+              <h2>{st[lang].title}</h2>
+              <p style="color:var(--ink-secondary);margin-top:6px;max-width:66ch;">{st[lang].summary}</p>
+            </div>
+          </div>
+
+          <div class="at-grid-cards">
+            {stageNodes.map((n) => (
+              <MediaCard node={n} lang={lang} />
+            ))}
+          </div>
+        </section>
+      );
+    })}
+  </div>
+</BaseLayout>

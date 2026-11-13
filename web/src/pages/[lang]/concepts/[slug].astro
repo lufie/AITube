@@ -1,0 +1,225 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import MediaCard from "../../../components/MediaCard.astro";
+import { LANGS, LIFECYCLE_META, ROLE_META, UI, formatTime, type Lang } from "../../../lib/i18n";
+import {
+  CONCEPTS,
+  SERIES_LABELS,
+  buildSparklineGeometry,
+  getConcept,
+  getEra,
+  getNodesForConcept,
+  splitParadigmShift,
+} from "../../../lib/content";
+import { buildConceptSchema } from "../../../lib/seo";
+
+export function getStaticPaths() {
+  return LANGS.flatMap((lang) =>
+    CONCEPTS.map((c) => ({
+      params: { lang, slug: c.slug },
+    }))
+  );
+}
+
+const lang = Astro.params.lang as Lang;
+const slug = Astro.params.slug as string;
+const concept = getConcept(slug)!;
+const loc = concept[lang];
+const t = UI[lang];
+const era = getEra(concept.eraId);
+const life = LIFECYCLE_META[concept.lifecycle];
+const shift = splitParadigmShift(loc.paradigmShift);
+const allNodes = getNodesForConcept(concept.slug);
+const galleryNodes = allNodes.slice(0, 24);
+
+const chart = buildSparklineGeometry(concept.trendSeries, 380, 96, 10);
+const inflectPt = chart.points[concept.inflectionIndex] || chart.points[chart.points.length - 1];
+const pathname = `/${lang}/concepts/${concept.slug}/`;
+const schema = buildConceptSchema(concept, allNodes, lang, pathname);
+---
+<BaseLayout
+  title={`${loc.name} (${concept.originQuarter} → ${concept.inflectionQuarter}) — AITube`}
+  description={`${loc.oneLiner} ${loc.whyNow}`}
+  lang={lang}
+  pathname={pathname}
+  ogImage={`/og/concepts/${concept.slug}.png`}
+  schema={schema}
+>
+  <section style="padding:32px 0 28px;border-bottom:1px solid var(--border-subtle);">
+    <div class="at-container">
+      <nav class="at-mono" style="font-size:0.76rem;color:var(--ink-muted);margin-bottom:12px;">
+        <a href={`/${lang}/`}>AITube</a> / <a href={`/${lang}/timeline/`}>{t.navTimeline}</a> / <span>{loc.shortName}</span>
+      </nav>
+
+      <div style="display:grid;grid-template-columns:1.25fr 0.85fr;gap:28px;align-items:start;" class="at-hero-grid">
+        <div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
+            <span class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);">CONCEPT #{String(concept.order).padStart(2, "0")}</span>
+            {era && (
+              <a href={`/${lang}/timeline/#${era.id}`} class="at-lineage-pill at-mono" style="font-size:0.73rem;">
+                {era.period} · {era[lang].title}
+              </a>
+            )}
+            <span class={`at-life at-life-${concept.lifecycle}`}>
+              {life.icon} {life[lang]}
+            </span>
+          </div>
+
+          <h1 style="font-size:clamp(1.85rem,3vw,2.55rem);margin-bottom:10px;">{loc.name}</h1>
+          <p style="font-size:1rem;color:var(--ink-secondary);margin-bottom:14px;">{loc.oneLiner}</p>
+
+          <div class="at-shift-bar">
+            <span class="at-mono" style="font-size:0.74rem;color:var(--accent-signal);font-weight:600;">
+              {t.paradigmShiftLabel}:
+            </span>
+            {shift.before ? (
+              <>
+                <span style="color:var(--ink-muted);text-decoration:line-through;">{shift.before}</span>
+                <span class="at-mono" style="color:var(--accent-primary);">→</span>
+                <span style="font-weight:560;">{shift.after}</span>
+              </>
+            ) : (
+              <span>{shift.after}</span>
+            )}
+          </div>
+
+          <p style="margin-top:12px;font-size:0.9rem;color:var(--ink-secondary);">
+            <strong style="color:var(--ink-primary);">2026 {lang === "zh" ? "现实意义" : "Relevance"}:</strong> {loc.whyNow}
+          </p>
+
+          {(concept.lineage.from.length > 0 || concept.lineage.into.length > 0) && (
+            <div class="at-lineage-row" style="margin-top:14px;">
+              {concept.lineage.from.map((s) => {
+                const up = getConcept(s);
+                return up ? (
+                  <a href={`/${lang}/concepts/${up.slug}/`} class="at-lineage-pill">
+                    ↖ {t.lineageFrom}: {up[lang].shortName}
+                  </a>
+                ) : null;
+              })}
+              {concept.lineage.into.map((s) => {
+                const dn = getConcept(s);
+                return dn ? (
+                  <a href={`/${lang}/concepts/${dn.slug}/`} class="at-lineage-pill">
+                    ↘ {t.lineageInto}: {dn[lang].shortName}
+                  </a>
+                ) : null;
+              })}
+            </div>
+          )}
+        </div>
+
+        <div class="at-spark-box" style="padding:16px 18px;">
+          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.74rem;margin-bottom:8px;">
+            <span>{concept.originQuarter}</span>
+            <span style="color:var(--accent-signal);">★ {concept.inflectionQuarter}</span>
+            <span style="color:var(--accent-primary);">{concept.momentum}</span>
+          </div>
+          <svg width="100%" viewBox="0 0 380 96" role="img" aria-label="Concept trend curve">
+            <polygon points={chart.area} fill="var(--accent-primary-soft)" />
+            <polyline
+              points={chart.polyline}
+              fill="none"
+              stroke="var(--accent-primary)"
+              stroke-width="2.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            {chart.points.map((pt, idx) => (
+              <circle
+                cx={pt.x}
+                cy={pt.y}
+                r={idx === concept.inflectionIndex ? 5.5 : 2.6}
+                fill={idx === concept.inflectionIndex ? "var(--accent-signal)" : "var(--accent-primary)"}
+              />
+            ))}
+          </svg>
+          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.66rem;color:var(--ink-muted);margin-top:4px;">
+            {SERIES_LABELS.filter((_, idx) => idx % 2 === 0 || idx === 9).map((lb) => (
+              <span>{lb}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="at-container" style="padding:32px 24px 56px;">
+    <div class="at-section-head">
+      <h2>
+        {lang === "zh"
+          ? `精选实战切片库（共 ${allNodes.length} 支核验切片）`
+          : `Verified Implementation Cuts (${allNodes.length} Total)`}
+      </h2>
+      <div class="at-filter-row">
+        <button type="button" class="at-chip is-active" data-role-filter="all">
+          {lang === "zh" ? "全部角色" : "All Roles"} ({galleryNodes.length})
+        </button>
+        {(["origin", "practice", "frontier"] as const).map((r) => (
+          <button type="button" class="at-chip" data-role-filter={r}>
+            {ROLE_META[r][lang]}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="at-grid-cards" id="concept-cards-grid">
+      {galleryNodes.map((n) => (
+        <div data-card-role={n.conceptRole} style="display:flex;">
+          <MediaCard node={n} lang={lang} />
+        </div>
+      ))}
+    </div>
+
+    <details style="margin-top:32px;border:1px solid var(--border-subtle);border-radius:6px;padding:14px 18px;background:var(--bg-elevated);">
+      <summary style="cursor:pointer;font-weight:580;">
+        {t.fullArchiveSummary} ({allNodes.length})
+      </summary>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+        {allNodes.map((n, idx) => (
+          <a
+            href={`/${lang}/nodes/${n.slug}/`}
+            style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--border-subtle);font-size:0.86rem;"
+          >
+            <span>
+              <span class="at-mono" style="color:var(--ink-muted);margin-right:8px;">{String(idx + 1).padStart(2, "0")}</span>
+              {n[lang].title}
+            </span>
+            <span class="at-mono" style="color:var(--ink-muted);white-space:nowrap;">
+              {n.source.channelName} ·{" "}
+              {n.source.kind === "video-cut"
+                ? `${formatTime(n.source.startSec || 0)}–${formatTime(n.source.endSec || 0)}`
+                : `${n.source.readingMinutes}m`}
+            </span>
+          </a>
+        ))}
+      </div>
+    </details>
+
+    <details style="margin-top:16px;border:1px solid var(--border-subtle);border-radius:6px;padding:14px 18px;">
+      <summary style="cursor:pointer;font-weight:580;">{t.faqHeading}</summary>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:12px;font-size:0.9rem;">
+        <div>
+          <strong>{lang === "zh" ? `1. ${loc.shortName} 带来了什么核心范式跃迁？` : `1. What paradigm shift defines ${loc.shortName}?`}</strong>
+          <p style="color:var(--ink-secondary);margin-top:4px;">{loc.paradigmShift}</p>
+        </div>
+        <div>
+          <strong>{lang === "zh" ? `2. 为什么在 2026 年仍需深入 ${loc.shortName}？` : `2. Why does ${loc.shortName} matter in 2026?`}</strong>
+          <p style="color:var(--ink-secondary);margin-top:4px;">{loc.whyNow}</p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <script is:inline>
+    document.querySelectorAll("[data-role-filter]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const r = btn.getAttribute("data-role-filter") || "all";
+        document.querySelectorAll("[data-role-filter]").forEach((b) => b.classList.toggle("is-active", b === btn));
+        document.querySelectorAll("[data-card-role]").forEach((el) => {
+          el.style.display = r === "all" || el.getAttribute("data-card-role") === r ? "flex" : "none";
+        });
+      });
+    });
+  </script>
+</BaseLayout>

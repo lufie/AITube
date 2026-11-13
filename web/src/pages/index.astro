@@ -1,0 +1,59 @@
+---
+import "../styles/global.css";
+import LogoMark from "../components/LogoMark.astro";
+import { absUrl } from "../lib/seo";
+import { CONCEPTS, NODES, ERAS } from "../lib/content";
+
+const canonical = absUrl("/");
+const ogImage = absUrl("/og/home-zh.png");
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AITube — AI 概念趋势时间线 × 高信噪比视频切片索引</title>
+    <meta
+      name="description"
+      content="用 2017–2026 概念演进时间线与多维检索视角，串联 22 个 AI 核心概念与 280 支经核验的一手视频切片。"
+    />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="zh-CN" href={absUrl("/zh/")} />
+    <link rel="alternate" hreflang="en" href={absUrl("/en/")} />
+    <link rel="alternate" hreflang="x-default" href={absUrl("/zh/")} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AITube — AI Concept Trend & Video Slice Index" />
+    <meta property="og:description" content="5 Chronological Eras · 22 AI Concept Trajectories · 280 Verified Video Cuts." />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "AITube",
+      url: canonical,
+    })} />
+  </head>
+  <body>
+    <main style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:32px;">
+      <div style="max-width:640px;width:100%;border:1px solid var(--border-subtle);background:var(--bg-elevated);border-radius:6px;padding:36px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+          <LogoMark size={36} />
+          <span class="at-mono" style="font-size:0.8rem;color:var(--accent-primary);">
+            AITUBE · {ERAS.length} ERAS · {CONCEPTS.length} CONCEPTS · {NODES.length} CUTS
+          </span>
+        </div>
+        <h1 style="font-size:2rem;margin-bottom:12px;">
+          AITube · AI 概念趋势时间线与实战切片库
+        </h1>
+        <p style="color:var(--ink-secondary);margin-bottom:24px;">
+          顺着 2017–2026 概念演进脉络读懂现代 AI，直达每支长视频最值得看的核心几分钟。Choose your reading edition:
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <a href="/zh/" class="at-btn-primary">进入中文版（简体中文） →</a>
+          <a href="/en/" class="at-btn-ghost">Enter English Edition →</a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

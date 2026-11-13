@@ -1,0 +1,276 @@
+{
+  "dimensions": [
+    {
+      "key": "domain",
+      "prop": "domains",
+      "en": {
+        "label": "AI Layer",
+        "pluralLabel": "AI Layers"
+      },
+      "zh": {
+        "label": "技术领域层",
+        "pluralLabel": "技术领域层"
+      },
+      "items": [
+        {
+          "slug": "foundations",
+          "en": {
+            "name": "Foundations & Intuition",
+            "desc": "Visual math, Transformer mechanics, tokenization, embeddings, and pre-training scaling laws."
+          },
+          "zh": {
+            "name": "底层原理与直觉",
+            "desc": "用可视化几何拆解 Transformer 注意力、分词向量空间与预训练 Scaling 法则。"
+          }
+        },
+        {
+          "slug": "frontier-models",
+          "en": {
+            "name": "Frontier Models & RL",
+            "desc": "RLHF, DPO, RLVR reasoning models (o1/o3/R1), MoE, long context, LoRA, and world models."
+          },
+          "zh": {
+            "name": "前沿模型与后训练",
+            "desc": "深入 RLHF、DPO、RLVR 推理强化学习（o1/o3/R1）、MoE、长上下文与开源微调部署。"
+          }
+        },
+        {
+          "slug": "ai-engineering",
+          "en": {
+            "name": "AI Engineering & Agents",
+            "desc": "Context engineering, hybrid RAG, MCP, Agent Skills, subagent harnesses, and production evals."
+          },
+          "zh": {
+            "name": "Agent 与应用工程",
+            "desc": "聚焦上下文工程、混合检索、MCP 协议、Agent Skills 技能包、子智能体编排与线上评测。"
+          }
+        },
+        {
+          "slug": "coding-multimodal",
+          "en": {
+            "name": "Agentic Coding & Multimodal",
+            "desc": "Claude Code, Cursor, Codex workflows plus controllable ComfyUI, Flux, video, and voice pipelines."
+          },
+          "zh": {
+            "name": "AI 编程与多模态工作流",
+            "desc": "涵盖 Claude Code / Cursor / Codex 自主编程，以及 ComfyUI、Flux、可控视频与语音创作管线。"
+          }
+        }
+      ]
+    },
+    {
+      "key": "task",
+      "prop": "tasks",
+      "en": {
+        "label": "Core Task",
+        "pluralLabel": "Core Tasks"
+      },
+      "zh": {
+        "label": "核心任务场景",
+        "pluralLabel": "核心任务场景"
+      },
+      "items": [
+        {
+          "slug": "architecture-intuition",
+          "en": {
+            "name": "Architecture Intuition",
+            "desc": "Understand how attention, KV cache, MoE routing, and RLVR reasoning actually compute under the hood."
+          },
+          "zh": {
+            "name": "透彻理解底层机制",
+            "desc": "搞懂自注意力、KV Cache、MoE 路由与强化学习推理在矩阵层面的真实运行机制。"
+          }
+        },
+        {
+          "slug": "context-prompting",
+          "en": {
+            "name": "Prompt & Context Design",
+            "desc": "Structure system prompts, dynamic context assembly, memory compaction, and repository rules."
+          },
+          "zh": {
+            "name": "提示词与上下文设计",
+            "desc": "系统化设计指令边界、动态上下文装配、长对话记忆压缩与项目级规则文件。"
+          }
+        },
+        {
+          "slug": "rag-knowledge",
+          "en": {
+            "name": "RAG & Knowledge Search",
+            "desc": "Build chunking, hybrid BM25 + vector search, reranking, GraphRAG, and agentic retrieval pipelines."
+          },
+          "zh": {
+            "name": "知识库与混合检索",
+            "desc": "搭建高质量切块、BM25+向量混合检索、重排器、GraphRAG 与多跳自主检索系统。"
+          }
+        },
+        {
+          "slug": "tool-mcp-skills",
+          "en": {
+            "name": "Tool Use, MCP & Skills",
+            "desc": "Design schema-safe tool calls, custom MCP servers, and progressive SKILL.md capability bundles."
+          },
+          "zh": {
+            "name": "工具调用、MCP 与 Skills",
+            "desc": "设计类型安全的工具接口、开发标准 MCP Server，以及封装按需加载的 SKILL.md 技能包。"
+          }
+        },
+        {
+          "slug": "agent-orchestration",
+          "en": {
+            "name": "Agent Loops & Subagents",
+            "desc": "Architect reliable agent loops, state graphs, browser/computer use, and isolated multi-agent harnesses."
+          },
+          "zh": {
+            "name": "智能体循环与多智能体",
+            "desc": "构建稳健工具循环、状态图检查点、浏览器操作智能体与上下文隔离的并行子智能体。"
+          }
+        },
+        {
+          "slug": "agentic-coding",
+          "en": {
+            "name": "Vibe & Agentic Coding",
+            "desc": "Ship software faster with Claude Code, Cursor, Codex, CLAUDE.md/AGENTS.md, and test-driven agent loops."
+          },
+          "zh": {
+            "name": "AI 辅助与自主编程",
+            "desc": "用 Claude Code、Cursor、Codex 配合 AGENTS.md 与自动化测试闭环高效交付生产级代码。"
+          }
+        },
+        {
+          "slug": "evals-finetuning",
+          "en": {
+            "name": "Evals, Fine-Tuning & Local",
+            "desc": "Run trace error analysis, LLM-as-a-Judge evals, LoRA/QLoRA distillation, and local Ollama/vLLM serving."
+          },
+          "zh": {
+            "name": "评测、微调与本地部署",
+            "desc": "落地真实坏例归因、LLM 裁判回归集、LoRA 蒸馏微调与 Ollama/vLLM 私有化推理。"
+          }
+        },
+        {
+          "slug": "multimodal-creation",
+          "en": {
+            "name": "Image, Video & Audio Flows",
+            "desc": "Build consistent-character Flux/ComfyUI graphs, keyframe-locked AI video, voice synthesis, and research flows."
+          },
+          "zh": {
+            "name": "图像、音视频与研究流",
+            "desc": "搭建角色一致的 ComfyUI/Flux 节点流、首尾帧可控视频、语音合成与深度研究工作流。"
+          }
+        }
+      ]
+    },
+    {
+      "key": "stack",
+      "prop": "stacks",
+      "en": {
+        "label": "Ecosystem & Stack",
+        "pluralLabel": "Ecosystems & Stacks"
+      },
+      "zh": {
+        "label": "生态与工具栈",
+        "pluralLabel": "生态与工具栈"
+      },
+      "items": [
+        {
+          "slug": "claude-anthropic",
+          "en": {
+            "name": "Claude, MCP & Skills",
+            "desc": "Anthropic Claude models, Claude Code CLI, Model Context Protocol, and SKILL.md harnesses."
+          },
+          "zh": {
+            "name": "Claude / MCP / Skills",
+            "desc": "Anthropic Claude 系列、Claude Code 终端、MCP 协议与 Agent Skills 实战体系。"
+          }
+        },
+        {
+          "slug": "openai-codex",
+          "en": {
+            "name": "OpenAI, o3 & Codex",
+            "desc": "OpenAI reasoning models, Structured Outputs, Agents SDK, and Codex software engineering workflows."
+          },
+          "zh": {
+            "name": "OpenAI / o3 / Codex",
+            "desc": "OpenAI 推理模型系列、结构化输出 API、Agents SDK 与 Codex 自主软件工程工作流。"
+          }
+        },
+        {
+          "slug": "open-weights-local",
+          "en": {
+            "name": "DeepSeek, Qwen & Ollama",
+            "desc": "Open-weight reasoning and coding models, Unsloth QLoRA, GGUF quantization, Ollama, and vLLM."
+          },
+          "zh": {
+            "name": "DeepSeek / Qwen / 本地栈",
+            "desc": "DeepSeek、Qwen、Llama 等开源权重，以及 Unsloth 微调、Ollama 与 vLLM 本地推理栈。"
+          }
+        },
+        {
+          "slug": "cursor-ai-ide",
+          "en": {
+            "name": "Cursor & AI IDEs",
+            "desc": "AI-native IDEs, .cursor/rules, multi-file composer workflows, and git worktree agent parallelism."
+          },
+          "zh": {
+            "name": "Cursor 与 AI 编程器",
+            "desc": "AI 原生 IDE、规则文件配置、多文件上下文重构与多 Worktree 并行开发流。"
+          }
+        },
+        {
+          "slug": "agent-frameworks",
+          "en": {
+            "name": "LangGraph & Agent SDKs",
+            "desc": "Stateful agent orchestration, PydanticAI, Vercel AI SDK, Playwright browser-use, and sandbox runtimes."
+          },
+          "zh": {
+            "name": "LangGraph 与智能体框架",
+            "desc": "状态图编排、PydanticAI、Vercel AI SDK、Browser-Use 浏览器自动化与代码沙盒运行时。"
+          }
+        },
+        {
+          "slug": "rag-eval-infra",
+          "en": {
+            "name": "RAG, Search & Eval Infra",
+            "desc": "Hybrid search indexes, rerankers, ColPali, NotebookLM, Braintrust, Arize Phoenix, and eval pipelines."
+          },
+          "zh": {
+            "name": "检索与评测基础设施",
+            "desc": "混合检索引擎、重排模型、文档多模态解析、NotebookLM 与评测可观测平台。"
+          }
+        },
+        {
+          "slug": "comfy-visual-gen",
+          "en": {
+            "name": "ComfyUI, Flux & Video AI",
+            "desc": "Node-based visual generation, ControlNet, Flux, DiT camera motion video, and ElevenLabs audio pipelines."
+          },
+          "zh": {
+            "name": "ComfyUI / Flux / 视频生成",
+            "desc": "节点式生图工作流、ControlNet 控图、Flux、可控视频生成与专业配音工具链。"
+          }
+        },
+        {
+          "slug": "research-fundamentals",
+          "en": {
+            "name": "PyTorch, Papers & Lectures",
+            "desc": "From-scratch PyTorch implementations, Stanford lectures, 3Blue1Brown visual math, and landmark papers."
+          },
+          "zh": {
+            "name": "PyTorch / 论文与公开课",
+            "desc": "从零手写 PyTorch 模型、斯坦福公开课、3Blue1Brown 数学可视化与里程碑论文精读。"
+          }
+        }
+      ]
+    }
+  ],
+  "synonyms": {
+    "context-engineering": ["context engineering", "上下文工程", "compaction", "context rot", "memory", "harness"],
+    "agent-skills-subagents": ["skill.md", "agent skills", "claude skills", "subagent", "子智能体", "技能包"],
+    "mcp-protocol": ["mcp", "model context protocol", "mcp server", "mcp协议"],
+    "rlvr-reasoning-models": ["rlvr", "grpo", "deepseek r1", "o1", "o3", "reasoning", "推理模型", "强化学习"],
+    "agentic-coding": ["claude code", "cursor", "codex", "vibe coding", "agents.md", "claude.md", "ai编程"],
+    "rag-knowledge": ["rag", "hybrid search", "bm25", "graphrag", "rerank", "知识库", "向量检索"],
+    "evals-finetuning": ["eval", "evals", "llm judge", "lora", "qlora", "ollama", "vllm", "微调", "评测", "本地部署"],
+    "multimodal-creation": ["comfyui", "flux", "controlnet", "stable diffusion", "sora", "kling", "生图", "视频生成"]
+  }
+}

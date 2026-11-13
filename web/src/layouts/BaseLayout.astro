@@ -1,0 +1,161 @@
+---
+import "../styles/global.css";
+import Masthead from "../components/Masthead.astro";
+import Footer from "../components/Footer.astro";
+import SearchPalette from "../components/SearchPalette.astro";
+import { UI, type Lang } from "../lib/i18n";
+import { absUrl, buildAlternates } from "../lib/seo";
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Lang;
+  pathname: string;
+  ogImage?: string;
+  schema?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description,
+  lang,
+  pathname,
+  ogImage = `/og/home-${lang}.png`,
+  schema,
+} = Astro.props;
+
+const canonical = absUrl(pathname.endsWith("/") ? pathname : `${pathname}/`);
+const alts = buildAlternates(pathname);
+const ogAbs = absUrl(ogImage);
+const htmlLang = lang === "zh" ? "zh-CN" : "en";
+const toastMsg = UI[lang].copyToast;
+---
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="zh-CN" href={alts.zh} />
+    <link rel="alternate" hreflang="en" href={alts.en} />
+    <link rel="alternate" hreflang="x-default" href={alts.xDefault} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AITube" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogAbs} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogAbs} />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("aitube-theme");
+          if (saved === "dark" || saved === "light") {
+            document.documentElement.setAttribute("data-theme", saved);
+          } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.documentElement.setAttribute("data-theme", "dark");
+          }
+        } catch {}
+      })();
+    </script>
+
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body data-toast-msg={toastMsg}>
+    <Masthead lang={lang} pathname={pathname} />
+    <main>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <SearchPalette lang={lang} />
+    <div
+      id="at-toast"
+      class="at-mono"
+      style="position:fixed;bottom:20px;right:20px;padding:8px 14px;background:var(--ink-primary);color:var(--bg-canvas);border-radius:4px;font-size:0.8rem;opacity:0;pointer-events:none;transition:opacity 0.18s ease;z-index:90;"
+    ></div>
+
+    <script is:inline>
+      (() => {
+        const STORAGE_KEY = "aitube-completed-v1";
+        function getReadSet() {
+          try {
+            return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+          } catch {
+            return new Set();
+          }
+        }
+        function saveReadSet(set) {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
+          } catch {}
+        }
+        function syncReadUI() {
+          const set = getReadSet();
+          document.querySelectorAll("[data-read-counter]").forEach((el) => {
+            const total = el.getAttribute("data-total") || "280";
+            el.textContent = `${set.size}/${total}`;
+          });
+          document.querySelectorAll("[data-toggle-read]").forEach((btn) => {
+            const slug = btn.getAttribute("data-toggle-read");
+            const done = slug && set.has(slug);
+            btn.textContent = done
+              ? btn.getAttribute("data-label-read")
+              : btn.getAttribute("data-label-unread");
+          });
+        }
+        syncReadUI();
+
+        document.querySelectorAll("[data-toggle-read]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const slug = btn.getAttribute("data-toggle-read");
+            if (!slug) return;
+            const set = getReadSet();
+            if (set.has(slug)) set.delete(slug);
+            else set.add(slug);
+            saveReadSet(set);
+            syncReadUI();
+          });
+        });
+
+        document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+            const next = cur === "dark" ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            try {
+              localStorage.setItem("aitube-theme", next);
+            } catch {}
+          });
+        });
+
+        const toast = document.getElementById("at-toast");
+        const msg = document.body.getAttribute("data-toast-msg") || "Copied";
+        document.addEventListener("click", (e) => {
+          const chip = e.target.closest("[data-copy-op]");
+          if (!chip) return;
+          const val = chip.getAttribute("data-copy-op") || "";
+          navigator.clipboard?.writeText(val).catch(() => {});
+          if (toast) {
+            toast.textContent = `${msg}: ${val}`;
+            toast.style.opacity = "1";
+            clearTimeout(window.__atToastTimer);
+            window.__atToastTimer = setTimeout(() => {
+              toast.style.opacity = "0";
+            }, 1600);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

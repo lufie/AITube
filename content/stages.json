@@ -1,0 +1,62 @@
+[
+  {
+    "id": "stage-0",
+    "order": 0,
+    "badge": "Foundations",
+    "en": {
+      "code": "STAGE 00",
+      "title": "Model Intuition & Core Mechanics",
+      "summary": "Build unshakeable mental models of tokens, QKV attention, pre-training scaling, RLHF, and RLVR test-time reasoning."
+    },
+    "zh": {
+      "code": "STAGE 00",
+      "title": "底层直觉与模型核心机制",
+      "summary": "不靠死记术语：用几何与代码直觉吃透分词、自注意力、预训练 Scaling、RLHF 与 RLVR 推理涌现。"
+    }
+  },
+  {
+    "id": "stage-1",
+    "order": 1,
+    "badge": "Context & Multimodal",
+    "en": {
+      "code": "STAGE 01",
+      "title": "Context Engineering & Multimodal Workflows",
+      "summary": "Move beyond prompt folklore into structured context assembly, deep research synthesis, and controllable ComfyUI/video creation."
+    },
+    "zh": {
+      "code": "STAGE 01",
+      "title": "上下文工程与多模态创作流",
+      "summary": "告别碎片化提示词玄学，掌握动态上下文装配、深度文献研究流与角色可控的生图/音视频节点管线。"
+    }
+  },
+  {
+    "id": "stage-2",
+    "order": 2,
+    "badge": "RAG, MCP & Coding",
+    "en": {
+      "code": "STAGE 02",
+      "title": "Hybrid RAG, MCP Protocols & Agentic Coding",
+      "summary": "Connect models to real codebases and knowledge via schema-safe tools, hybrid search, MCP servers, and CLI coding agents."
+    },
+    "zh": {
+      "code": "STAGE 02",
+      "title": "混合检索、MCP 协议与自主编程",
+      "summary": "打通模型与真实业务系统：落地结构化输出、混合 Agentic RAG、标准 MCP 服务与仓库级自主编程工作流。"
+    }
+  },
+  {
+    "id": "stage-3",
+    "order": 3,
+    "badge": "Agents, Skills & Evals",
+    "en": {
+      "code": "STAGE 03",
+      "title": "Production Agents, Skills & Eval Flywheels",
+      "summary": "Ship resilient long-horizon systems with progressive SKILL.md bundles, subagent sandboxes, trace evals, and distilled open models."
+    },
+    "zh": {
+      "code": "STAGE 03",
+      "title": "生产级智能体、Skills 与评测护栏",
+      "summary": "跨越 Demo 到生产的鸿沟：用渐进式 SKILL.md、子智能体沙盒、真实坏例 Eval 飞轮与小模型蒸馏压降成本并锁死可靠性。"
+    }
+  }
+]

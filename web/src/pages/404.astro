@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout
+  title="404 — Page Not Found | AITube"
+  description="The requested page could not be found on AITube."
+  lang="zh"
+  pathname="/zh/"
+  ogImage="/og/home-zh.png"
+  schema={{ "@context": "https://schema.org", "@type": "WebPage", name: "404 Not Found" }}
+>
+  <section class="at-container" style="padding:72px 24px;text-align:center;">
+    <div class="at-kicker">404 · NOT FOUND</div>
+    <h1 style="font-size:2.2rem;margin:10px 0 14px;">未找到该切片或概念坐标 / Page Not Found</h1>
+    <p style="color:var(--ink-secondary);margin-bottom:24px;">
+      请从概念趋势时间线或多维检索库重新定位。
+    </p>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <a href="/zh/timeline/" class="at-btn-primary">概念趋势时间线 →</a>
+      <a href="/zh/directory/" class="at-btn-ghost">全部 280 支切片</a>
+    </div>
+  </section>
+</BaseLayout>

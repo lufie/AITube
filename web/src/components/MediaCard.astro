@@ -1,0 +1,96 @@
+---
+import { getConcept, getWaveformBars, type MediaNode } from "../lib/content";
+import { LIFECYCLE_META, ROLE_META, formatSliceMinutes, formatTime, type Lang } from "../lib/i18n";
+
+interface Props {
+  node: MediaNode;
+  lang: Lang;
+}
+const { node, lang } = Astro.props;
+const loc = node[lang];
+const s = node.source;
+const concept = getConcept(node.primaryConcept);
+const bars = getWaveformBars(node.slug, 26);
+
+const badgeLeft =
+  s.kind === "article-digest"
+    ? lang === "zh"
+      ? "原典精读"
+      : "MONOGRAPH"
+    : s.isShort
+      ? "SHORT"
+      : s.platform.toUpperCase();
+
+const badgeRight =
+  s.kind === "video-cut"
+    ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} · ${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)}`
+    : `${s.readingMinutes || 10}m ${lang === "zh" ? "精读" : "read"}`;
+
+const ytThumb = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg` : null;
+const lifeMeta = concept ? LIFECYCLE_META[concept.lifecycle] : null;
+---
+<article
+  class="at-card"
+  data-node-slug={node.slug}
+  data-era={concept?.eraId || ""}
+  data-concept={node.primaryConcept}
+  data-lifecycle={concept?.lifecycle || "mainstream"}
+  data-domains={node.facets.domains.join(",")}
+  data-tasks={node.facets.tasks.join(",")}
+  data-stacks={node.facets.stacks.join(",")}
+  data-platform={s.isShort ? "shorts" : s.platform}
+>
+  <a href={`/${lang}/nodes/${node.slug}/`} style="display:flex;flex-direction:column;flex:1;">
+    <div class="at-card-poster">
+      {ytThumb && (
+        <img
+          src={ytThumb}
+          alt={loc.title}
+          loading="lazy"
+          decoding="async"
+          class="at-card-thumb"
+          onerror="this.style.display='none'"
+        />
+      )}
+      <div class="at-card-badges">
+        <span class="at-pill-dark">{badgeLeft}</span>
+        <span class="at-pill-dark">{badgeRight}</span>
+      </div>
+
+      <div class="at-card-wave" aria-hidden="true">
+        {bars.map((h) => (
+          <span style={`height:${Math.round((h / 100) * 24)}px;`} />
+        ))}
+      </div>
+
+      <div class="at-card-peek" aria-hidden="true">
+        {loc.steps.map((st, idx) => (
+          <div style="display:flex;gap:6px;align-items:baseline;">
+            <span class="at-mono" style="color:#52adc0;font-size:0.72rem;">0{idx + 1}</span>
+            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{st.title}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="at-card-body">
+      <div class="at-card-concept-row">
+        <span>
+          {lifeMeta ? `${lifeMeta.icon} ` : ""}
+          {concept ? concept[lang].shortName : node.primaryConcept}
+        </span>
+        <span style="color:var(--ink-muted);">{ROLE_META[node.conceptRole][lang]}</span>
+      </div>
+
+      <h3 class="at-card-title">{loc.title}</h3>
+      <p class="at-card-why">{loc.whyWatch}</p>
+
+      <div class="at-card-foot">
+        <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:65%;">{s.channelName}</span>
+        <span class="at-mono">
+          {lang === "zh" ? `省 ${s.hoursSaved}h` : `Saves ${s.hoursSaved}h`}
+        </span>
+      </div>
+    </div>
+  </a>
+</article>
