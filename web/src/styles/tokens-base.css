@@ -47,7 +47,9 @@
     inset 0 -0.5px 0 rgba(255, 255, 255, 0.68);
   --glass-sheen: rgba(255, 255, 255, 0.52);
 
-  /* Focused backdrop blur reserved ONLY for floating/sticky overlays (2-3 layers max for 120fps scrolling) */
+  /* Focused backdrop blur reserved ONLY for floating/sticky overlays (1-2 layers max for 120fps scrolling) */
+  --canopy-fill: rgba(246, 248, 252, 0.86);
+  --blur-canopy: saturate(185%) blur(30px);
   --blur-float: saturate(185%) blur(22px);
   --blur-modal: saturate(195%) blur(28px);
 
@@ -106,6 +108,7 @@ html[data-theme="dark"] {
   --bg-pill-active: rgba(54, 63, 82, 0.82);
 
   /* Smoothly-Interpolatable Apple Liquid Glass Tokens (Dark Tahoe) */
+  --canopy-fill: rgba(7, 11, 19, 0.85);
   --glass-fill: rgba(22, 27, 38, 0.54);
   --glass-fill-hover: rgba(31, 38, 53, 0.68);
   --glass-fill-strong: rgba(24, 30, 43, 0.78);
@@ -300,28 +303,57 @@ select {
 }
 
 /* ==========================================================================
-   Floating Apple Liquid Glass Capsule Masthead
+   Scroll-Condensing Apple Liquid Glass Masthead
+   - At top of page (scrollY === 0): Floats as an airy suspended Liquid Glass capsule
+   - While scrolling (data-scrolled="1"): Seamlessly seals top: 0 edge-to-edge with
+     zero peek-through cracks above or beside the header
    ========================================================================== */
 .at-masthead {
   position: sticky;
-  top: 12px;
+  top: 0;
   z-index: 50;
-  padding: 0 20px;
+  padding: 8px 20px;
   pointer-events: none;
 }
 
+.at-masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--canopy-fill);
+  backdrop-filter: var(--blur-canopy);
+  -webkit-backdrop-filter: var(--blur-canopy);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 10px 30px -14px rgba(15, 26, 46, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+html[data-theme="dark"] .at-masthead::before {
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.55);
+}
+
+html[data-scrolled="1"] .at-masthead {
+  pointer-events: auto;
+}
+
+html[data-scrolled="1"] .at-masthead::before {
+  opacity: 1;
+}
+
 .at-masthead-bar {
+  position: relative;
+  z-index: 1;
   pointer-events: auto;
   width: 100%;
   max-width: var(--max-w);
   margin: 0 auto;
-  min-height: 54px;
-  padding: 6px 10px 6px 16px;
+  min-height: 52px;
+  padding: 5px 10px 5px 16px;
   border-radius: var(--radius-pill);
   background-color: var(--glass-fill);
   background-image: var(--glass-luster);
-  backdrop-filter: var(--blur-float);
-  -webkit-backdrop-filter: var(--blur-float);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-rim), var(--shadow-card);
   display: flex;
@@ -329,17 +361,16 @@ select {
   justify-content: space-between;
   gap: 16px;
   transition:
-    background-color 0.36s var(--ease-out),
-    border-color 0.36s var(--ease-out),
-    box-shadow 0.36s var(--ease-out),
-    transform 0.42s var(--ease-spring);
+    background-color 0.28s var(--ease-out),
+    border-color 0.28s var(--ease-out),
+    box-shadow 0.28s var(--ease-out);
 }
 
 html[data-scrolled="1"] .at-masthead-bar {
-  background-color: var(--glass-fill-strong);
-  border-color: var(--glass-border-strong);
-  box-shadow: var(--glass-rim), var(--shadow-float);
-  transform: translate3d(0, -1px, 0) scale(0.996);
+  background-color: transparent;
+  background-image: none;
+  border-color: transparent;
+  box-shadow: none;
 }
 
 .at-brand {

@@ -92,36 +92,39 @@ const schema = {
     </div>
   </section>
 
-  <!-- Single Clean Sticky Filter & View Bar (Replaces 20+ Duplicate Controls) -->
-  <div class="at-timeline-toolbar">
-    <div class="at-container" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-      <div class="at-filter-row" role="group" aria-label="Focus lens">
-        {focusPresets.map((pr, idx) => (
-          <button
-            type="button"
-            class={`at-chip ${idx === 0 ? "is-active" : ""}`}
-            data-tl-preset={pr.id}
-          >
-            {pr.label}
-          </button>
-        ))}
-      </div>
+  <!-- Clean In-Flow Filter & View Bar (Zero Stacked Sticky Slits on Scroll) -->
+  <div class="at-timeline-toolbar" id="tl-controls">
+    <div class="at-container">
+      <div class="at-tl-bar-surface">
+        <div class="at-filter-row" role="group" aria-label="Focus lens">
+          {focusPresets.map((pr, idx) => (
+            <button
+              type="button"
+              class={`at-chip ${idx === 0 ? "is-active" : ""}`}
+              data-tl-preset={pr.id}
+              data-tl-preset-label={pr.label}
+            >
+              {pr.label}
+            </button>
+          ))}
+        </div>
 
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <input
-          type="search"
-          id="tl-search"
-          class="at-glass-input"
-          placeholder={lang === "zh" ? "搜概念…" : "Filter topics..."}
-          style="width:176px;padding:6px 14px;font-size:0.83rem;"
-        />
-        <div class="at-segmented" data-liquid-seg role="group" aria-label="View mode" style="padding:3px;">
-          <button type="button" class="at-seg-btn is-active" data-tl-view="editorial" style="padding:4px 12px;font-size:0.8rem;">
-            {t.editorialView}
-          </button>
-          <button type="button" class="at-seg-btn" data-tl-view="matrix" style="padding:4px 12px;font-size:0.8rem;">
-            {t.matrixView}
-          </button>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <input
+            type="search"
+            id="tl-search"
+            class="at-glass-input"
+            placeholder={lang === "zh" ? "搜概念…" : "Filter topics..."}
+            style="width:176px;padding:6px 14px;font-size:0.83rem;"
+          />
+          <div class="at-segmented" data-liquid-seg role="group" aria-label="View mode" style="padding:3px;">
+            <button type="button" class="at-seg-btn is-active" data-tl-view="editorial" style="padding:4px 12px;font-size:0.8rem;">
+              {t.editorialView}
+            </button>
+            <button type="button" class="at-seg-btn" data-tl-view="matrix" style="padding:4px 12px;font-size:0.8rem;">
+              {t.matrixView}
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -130,12 +133,30 @@ const schema = {
   <div class="at-container" style="padding-bottom:68px;">
     <div class="at-tl-workspace" id="tl-editorial-view">
       <aside class="at-era-rail" aria-label="Era navigation">
-        {ERAS.map((era, idx) => (
-          <a href={`#${era.id}`} class={`at-era-rail-link ${idx === 0 ? "is-current" : ""}`} data-era-spy={era.id}>
-            <div class="at-mono" style="font-size:0.72rem;color:var(--ink-muted);">{era.period}</div>
-            <div>{era[lang].title}</div>
+        <div class="at-era-rail-heading">
+          {lang === "zh" ? "时间坐标" : "Timeline Eras"}
+        </div>
+        <div class="at-era-spine" data-era-spine>
+          <span class="at-era-rail-glider" data-rail-glider aria-hidden="true"></span>
+          {ERAS.map((era, idx) => (
+            <a href={`#${era.id}`} class={`at-era-rail-link ${idx === 0 ? "is-current" : ""}`} data-era-spy={era.id}>
+              <span class="at-era-rail-period at-mono">{era.period}</span>
+              <span class="at-era-rail-title">{era[lang].title}</span>
+            </a>
+          ))}
+        </div>
+        <div class="at-rail-tools">
+          <button
+            type="button"
+            class="at-active-pill"
+            id="tl-rail-filter-pill"
+            style="display:none;"
+            title={lang === "zh" ? "点击清除当前筛选" : "Click to clear filter"}
+          ></button>
+          <a href="#tl-controls" class="at-rail-top-link">
+            {lang === "zh" ? "↑ 筛选与切换视图" : "↑ Filters & View"}
           </a>
-        ))}
+        </div>
       </aside>
 
       <div>
@@ -236,9 +257,53 @@ const schema = {
       const hzNodes = [...document.querySelectorAll("#hz-timeline [data-hz-slug]")];
       const sections = [...document.querySelectorAll("[data-era-section]")];
       const railLinks = [...document.querySelectorAll("[data-era-spy]")];
+      const railGlider = document.querySelector("[data-rail-glider]");
+      const railFilterPill = document.getElementById("tl-rail-filter-pill");
       const searchInput = document.getElementById("tl-search");
       const edView = document.getElementById("tl-editorial-view");
       const mxView = document.getElementById("tl-matrix-view");
+
+      function syncRailGlider(instant) {
+        if (!railGlider) return;
+        const current = railLinks.find((lk) => lk.classList.contains("is-current") && !lk.classList.contains("is-muted-era"))
+          || railLinks.find((lk) => !lk.classList.contains("is-muted-era"));
+        if (!current || current.offsetParent === null) {
+          railGlider.style.opacity = "0";
+          return;
+        }
+        if (instant) railGlider.style.transition = "none";
+        const padY = 6;
+        const h = Math.max(18, current.offsetHeight - padY * 2);
+        railGlider.style.opacity = "1";
+        railGlider.style.height = `${h}px`;
+        railGlider.style.transform = `translate3d(0, ${current.offsetTop + padY}px, 0)`;
+        if (instant) {
+          void railGlider.offsetWidth;
+          railGlider.style.transition = "";
+        }
+      }
+
+      function setActiveEra(id, instant) {
+        railLinks.forEach((lk) => {
+          lk.classList.toggle("is-current", lk.getAttribute("data-era-spy") === id);
+        });
+        syncRailGlider(instant);
+      }
+
+      function syncRailFilterBadge() {
+        if (!railFilterPill) return;
+        if (activePreset === "all" && !query) {
+          railFilterPill.style.display = "none";
+          return;
+        }
+        const activeBtn = document.querySelector(`[data-tl-preset="${activePreset}"]`);
+        const presetText = activePreset !== "all" && activeBtn
+          ? (activeBtn.getAttribute("data-tl-preset-label") || activeBtn.textContent || "").trim()
+          : "";
+        const label = [presetText, query ? `“${query}”` : ""].filter(Boolean).join(" · ");
+        railFilterPill.textContent = `${label} ×`;
+        railFilterPill.style.display = "inline-flex";
+      }
 
       function matchesItem(el) {
         const elLife = el.getAttribute("data-lifecycle");
@@ -268,10 +333,24 @@ const schema = {
           const slug = nd.getAttribute("data-hz-slug");
           nd.classList.toggle("is-filtered-out", !visibleSlugs.has(slug));
         });
+        const visibleEraIds = new Set();
         sections.forEach((sec) => {
           const anyVisible = [...sec.querySelectorAll("[data-concept-card]")].some((c) => c.style.display !== "none");
           sec.style.display = anyVisible ? "" : "none";
+          if (anyVisible) visibleEraIds.add(sec.getAttribute("id"));
         });
+        railLinks.forEach((lk) => {
+          const eid = lk.getAttribute("data-era-spy");
+          lk.classList.toggle("is-muted-era", !visibleEraIds.has(eid));
+        });
+        const currentLink = railLinks.find((lk) => lk.classList.contains("is-current"));
+        if (!currentLink || currentLink.classList.contains("is-muted-era")) {
+          const firstVisible = railLinks.find((lk) => !lk.classList.contains("is-muted-era"));
+          if (firstVisible) setActiveEra(firstVisible.getAttribute("data-era-spy"), false);
+        } else {
+          syncRailGlider(false);
+        }
+        syncRailFilterBadge();
       }
 
       function pulseContainer(el) {
@@ -299,6 +378,7 @@ const schema = {
         if (edView && mxView) {
           edView.style.display = viewMode === "editorial" ? "" : "none";
           mxView.style.display = viewMode === "matrix" ? "" : "none";
+          if (viewMode === "editorial") requestAnimationFrame(() => syncRailGlider(true));
           if (animate) pulseContainer(viewMode === "matrix" ? mxView : edView);
         }
       }
@@ -306,6 +386,19 @@ const schema = {
       document.querySelectorAll("[data-tl-preset]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activatePreset(btn.getAttribute("data-tl-preset") || "all", true);
+        });
+      });
+
+      railFilterPill?.addEventListener("click", () => {
+        if (searchInput) searchInput.value = "";
+        query = "";
+        activatePreset("all", true);
+      });
+
+      railLinks.forEach((lk) => {
+        lk.addEventListener("click", () => {
+          const id = lk.getAttribute("data-era-spy");
+          if (id) setActiveEra(id, false);
         });
       });
 
@@ -332,17 +425,20 @@ const schema = {
         });
       });
 
+      syncRailGlider(true);
+      window.addEventListener("resize", () => syncRailGlider(true), { passive: true });
+
       if ("IntersectionObserver" in window && sections.length && railLinks.length) {
         const obs = new IntersectionObserver(
           (entries) => {
-            const visible = entries.filter((e) => e.isIntersecting);
+            const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
             if (!visible.length) return;
             const id = visible[0].target.getAttribute("id");
-            railLinks.forEach((lk) => {
-              lk.classList.toggle("is-current", lk.getAttribute("data-era-spy") === id);
-            });
+            if (id) setActiveEra(id, false);
           },
-          { rootMargin: "-18% 0px -65% 0px", threshold: 0.05 }
+          { rootMargin: "-14% 0px -66% 0px", threshold: 0.04 }
         );
         sections.forEach((s) => obs.observe(s));
       }
