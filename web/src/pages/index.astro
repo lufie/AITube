@@ -7,13 +7,27 @@ import { CONCEPTS, NODES, ERAS } from "../lib/content";
 
 const canonical = absUrl("/");
 const ogImage = absUrl("/og/home-zh.png");
+const zhHome = withBase("/zh/");
+const enHome = withBase("/en/");
 ---
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-zh-home={zhHome} data-en-home={enHome}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AITube — AI 概念趋势时间线 × 高信噪比视频切片索引</title>
+    <script is:inline>
+      (() => {
+        try {
+          const root = document.documentElement;
+          const zh = root.getAttribute("data-zh-home") || "/zh/";
+          const en = root.getAttribute("data-en-home") || "/en/";
+          const saved = localStorage.getItem("aitube-lang");
+          const target = saved === "en" ? en : zh;
+          window.location.replace(target);
+        } catch {}
+      })();
+    </script>
     <meta
       name="description"
       content="用 2017–2026 概念演进时间线与多维检索视角，串联 22 个 AI 核心概念与 280 支经核验的一手视频切片。"

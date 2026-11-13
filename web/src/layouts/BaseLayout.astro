@@ -87,6 +87,10 @@ const toastMsg = UI[lang].copyToast;
 
     <script is:inline>
       (() => {
+        try {
+          const curLang = document.documentElement.lang.startsWith("en") ? "en" : "zh";
+          localStorage.setItem("aitube-lang", curLang);
+        } catch {}
         const STORAGE_KEY = "aitube-completed-v1";
         function getReadSet() {
           try {

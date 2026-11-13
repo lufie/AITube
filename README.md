@@ -1,14 +1,20 @@
 # AITube — AI Concept Trend Timeline × High-Signal Video Slice Index
 
-**AITube** is a bilingual (`简体中文` & `English`) static editorial screening gallery and concept evolution index for modern AI (`2017–2026`). Built as a sister publication to **Growthtube**, AITube pairs an archival editorial aesthetic with a signature **Concept Trend Timeline Index (`概念趋势时间线索引视角`)**.
+> **Live Production Site (GitHub Pages)**:
+> - **简体中文首页**: [https://lufie.github.io/AITube/zh/](https://lufie.github.io/AITube/zh/)
+> - **AI 概念趋势时间线与血缘泳道图谱 (`2017–2026`)**: [https://lufie.github.io/AITube/zh/timeline/](https://lufie.github.io/AITube/zh/timeline/)
+> - **多维实战视频切片检索库 (`280` 支)**: [https://lufie.github.io/AITube/zh/directory/](https://lufie.github.io/AITube/zh/directory/)
+> - **English Edition**: [https://lufie.github.io/AITube/en/](https://lufie.github.io/AITube/en/)
+
+**AITube** is a bilingual (`简体中文` & `English`) static editorial screening gallery and concept evolution index for modern AI (`2017–2026`). Built as a sister publication to **Growthtube**, AITube pairs an archival editorial aesthetic with a signature **Concept Trend Timeline & Causal Lineage Horizon Map (`概念趋势时间线与血缘泳道图谱`)**.
 
 ---
 
 ## Core Architecture & Perspectives
 
-1. **Concept Trend Timeline Index (`/[lang]/timeline/`)**
-   - Chronological 5-Era progression (`2017–2022` Foundational Era → `2025 H2–2026` Context, Skills & Agentic Engineering).
-   - **22 Canonical AI Concepts** with `originQuarter → inflectionQuarter`, 10-point empirical momentum sparklines (`22H2–26Q3`), lifecycle status (`▲ Surging`, `● Mainstream`, `◆ Foundational`, `↻ Evolved`), `Before → After` paradigm shifts, upstream/downstream lineage DAG links, and 3 representative cuts (`Origin`, `Practice`, `Frontier`).
+1. **Concept Trend Timeline & Horizon Map (`/[lang]/timeline/`)**
+   - Panoramic 4-Layer **Concept Horizon Swimlane** (`Foundations`, `Frontier & Post-Training`, `Agentic Engineering`, `Coding & Multimodal`) with interactive Bezier causal lineage arcs (`Origin ○ ──▸ ★ Inflection`) and live Inspector HUD.
+   - Dual-density workspace (`☷ Editorial Cards` with sticky Era Scrubber Rail ⇄ `▤ Full Comparison Matrix`) across **5 Chronological Eras** and **22 Canonical AI Concepts** with scrubbable 10-quarter momentum curves (`22H2–26Q3`), `Before → After` paradigm split panels, and 3 darkroom filmstrip cuts (`Origin`, `Practice`, `Frontier`).
 2. **Concept Hubs (`/[lang]/concepts/[slug]/`)**
    - Dedicated bilingual hubs for all 22 concepts (`DefinedTerm` + `CollectionPage` + `FAQPage` JSON-LD).
 3. **Multi-Faceted Video Directory (`/[lang]/directory/`)**
