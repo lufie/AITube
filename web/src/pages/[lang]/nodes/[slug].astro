@@ -14,6 +14,7 @@ import {
   UI,
   formatSliceMinutes,
   formatTime,
+  withBase,
   type Lang,
 } from "../../../lib/i18n";
 import {
@@ -69,18 +70,18 @@ const windowSpec =
 
     <article>
       <nav class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);margin-bottom:10px;">
-        <a href={`/${lang}/`}>AITube</a> /{" "}
+        <a href={withBase(`/${lang}/`)}>AITube</a> /{" "}
         {concept ? (
-          <a href={`/${lang}/concepts/${concept.slug}/`}>{concept[lang].shortName}</a>
+          <a href={withBase(`/${lang}/concepts/${concept.slug}/`)}>{concept[lang].shortName}</a>
         ) : (
-          <a href={`/${lang}/directory/`}>{t.navDirectory}</a>
+          <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
         )}{" "}
         / <span>#{String(node.order).padStart(3, "0")}</span>
       </nav>
 
       <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
         {concept && life && (
-          <a href={`/${lang}/concepts/${concept.slug}/`} class={`at-life at-life-${concept.lifecycle}`}>
+          <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class={`at-life at-life-${concept.lifecycle}`}>
             {life.icon} {concept[lang].shortName} · {concept.inflectionQuarter}
           </a>
         )}
@@ -204,7 +205,7 @@ const windowSpec =
           <div class="at-section-head">
             <h2 style="font-size:1.3rem;">{t.sameConceptTitle}</h2>
             {concept && (
-              <a href={`/${lang}/concepts/${concept.slug}/`} class="at-mono" style="font-size:0.82rem;color:var(--accent-primary);">
+              <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class="at-mono" style="font-size:0.82rem;color:var(--accent-primary);">
                 {t.viewConceptHub} →
               </a>
             )}
@@ -219,12 +220,12 @@ const windowSpec =
 
       <nav style="margin-top:32px;padding-top:18px;border-top:1px solid var(--border-subtle);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:0.86rem;">
         {adj.prev ? (
-          <a href={`/${lang}/nodes/${adj.prev.slug}/`} style="color:var(--ink-secondary);">
+          <a href={withBase(`/${lang}/nodes/${adj.prev.slug}/`)} style="color:var(--ink-secondary);">
             ← {adj.prev[lang].title}
           </a>
         ) : <span />}
         {adj.next && (
-          <a href={`/${lang}/nodes/${adj.next.slug}/`} style="color:var(--accent-primary);margin-left:auto;">
+          <a href={withBase(`/${lang}/nodes/${adj.next.slug}/`)} style="color:var(--accent-primary);margin-left:auto;">
             {adj.next[lang].title} →
           </a>
         )}

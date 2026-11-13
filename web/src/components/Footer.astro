@@ -1,5 +1,5 @@
 ---
-import { UI, type Lang } from "../lib/i18n";
+import { UI, withBase, type Lang } from "../lib/i18n";
 import { CONCEPTS, NODES, getTotalHoursSaved } from "../lib/content";
 
 interface Props {
@@ -26,10 +26,10 @@ const surging = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 6);
           {lang === "zh" ? "核心视角导航" : "Perspectives"}
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;">
-          <a href={`/${lang}/timeline/`}>{t.navTimeline}</a>
-          <a href={`/${lang}/directory/`}>{t.navDirectory}</a>
-          <a href={`/${lang}/roadmap/`}>{t.navRoadmap}</a>
-          <a href={`/${lang}/vault/`}>{t.navVault}</a>
+          <a href={withBase(`/${lang}/timeline/`)}>{t.navTimeline}</a>
+          <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
+          <a href={withBase(`/${lang}/roadmap/`)}>{t.navRoadmap}</a>
+          <a href={withBase(`/${lang}/vault/`)}>{t.navVault}</a>
         </div>
       </div>
 
@@ -39,7 +39,7 @@ const surging = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 6);
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           {surging.map((c) => (
-            <a href={`/${lang}/concepts/${c.slug}/`} class="at-lineage-pill">
+            <a href={withBase(`/${lang}/concepts/${c.slug}/`)} class="at-lineage-pill">
               {c[lang].shortName}
             </a>
           ))}
@@ -51,9 +51,9 @@ const surging = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 6);
           {lang === "zh" ? "机器可读开放索引" : "Machine & Open Index"}
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;" class="at-mono">
-          <a href="/llms.txt">/llms.txt</a>
-          <a href="/llms-full.txt">/llms-full.txt</a>
-          <a href="/sitemap.xml">/sitemap.xml</a>
+          <a href={withBase("/llms.txt")}>/llms.txt</a>
+          <a href={withBase("/llms-full.txt")}>/llms-full.txt</a>
+          <a href={withBase("/sitemap.xml")}>/sitemap.xml</a>
         </div>
       </div>
     </div>

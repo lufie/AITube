@@ -1,6 +1,6 @@
 ---
 import { getConcept, getWaveformBars, type MediaNode } from "../lib/content";
-import { LIFECYCLE_META, ROLE_META, formatSliceMinutes, formatTime, type Lang } from "../lib/i18n";
+import { LIFECYCLE_META, ROLE_META, formatSliceMinutes, formatTime, withBase, type Lang } from "../lib/i18n";
 
 interface Props {
   node: MediaNode;
@@ -40,7 +40,7 @@ const lifeMeta = concept ? LIFECYCLE_META[concept.lifecycle] : null;
   data-stacks={node.facets.stacks.join(",")}
   data-platform={s.isShort ? "shorts" : s.platform}
 >
-  <a href={`/${lang}/nodes/${node.slug}/`} style="display:flex;flex-direction:column;flex:1;">
+  <a href={withBase(`/${lang}/nodes/${node.slug}/`)} style="display:flex;flex-direction:column;flex:1;">
     <div class="at-card-poster">
       {ytThumb && (
         <img

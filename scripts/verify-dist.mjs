@@ -5,11 +5,20 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "web", "dist");
+const RAW_BASE = process.env.BASE_PATH || "/";
+const BASE_PREFIX = RAW_BASE === "/" ? "" : `/${RAW_BASE.replace(/^\/+|\/+$/g, "")}`;
 
 const errors = [];
 const assert = (cond, msg) => {
   if (!cond) errors.push(msg);
 };
+
+function stripBase(urlPath) {
+  if (!BASE_PREFIX) return urlPath;
+  if (urlPath === BASE_PREFIX || urlPath === `${BASE_PREFIX}/`) return "/";
+  if (urlPath.startsWith(`${BASE_PREFIX}/`)) return urlPath.slice(BASE_PREFIX.length);
+  return null;
+}
 
 function walkHtml(dir, out = []) {
   for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -43,8 +52,11 @@ for (const file of htmlFiles) {
   // 3. OG image exists on disk
   const ogMatch = html.match(/<meta\s+property="og:image"\s+content="https?:\/\/[^/]+(\/[^"]+)"/i);
   if (ogMatch) {
-    const ogDisk = path.join(DIST, ogMatch[1]);
-    assert(fs.existsSync(ogDisk), `${rel}: missing og:image file on disk (${ogMatch[1]})`);
+    const ogLocal = stripBase(ogMatch[1]);
+    assert(ogLocal !== null, `${rel}: og:image missing BASE_PREFIX (${ogMatch[1]})`);
+    if (ogLocal) {
+      assert(fs.existsSync(path.join(DIST, ogLocal)), `${rel}: missing og:image file on disk (${ogLocal})`);
+    }
   } else {
     errors.push(`${rel}: missing og:image meta tag`);
   }
@@ -64,15 +76,18 @@ for (const file of htmlFiles) {
   const htmlNoScripts = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
   const hrefs = [...htmlNoScripts.matchAll(/\shref="(\/[^"#?]*)/g)].map((m) => m[1]);
   for (const href of hrefs) {
-    if (href === "/") {
+    const localHref = stripBase(href);
+    assert(localHref !== null, `${rel}: link missing BASE_PREFIX '${BASE_PREFIX}' -> ${href}`);
+    if (localHref === null) continue;
+    if (localHref === "/") {
       assert(fs.existsSync(path.join(DIST, "index.html")), `${rel}: broken root link /`);
       continue;
     }
-    const candidateA = path.join(DIST, href);
-    const candidateB = path.join(DIST, href, "index.html");
+    const candidateA = path.join(DIST, localHref);
+    const candidateB = path.join(DIST, localHref, "index.html");
     assert(
       fs.existsSync(candidateA) || fs.existsSync(candidateB),
-      `${rel}: broken internal link -> ${href}`
+      `${rel}: broken internal link -> ${href} (resolved: ${localHref})`
     );
   }
 }
@@ -83,4 +98,6 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`[verify-dist] PASS — ${htmlFiles.length} static HTML pages, OG cards, JSON-LD, and internal links 100% verified.`);
+console.log(
+  `[verify-dist] PASS (BASE_PATH='${BASE_PREFIX || "/"}') — ${htmlFiles.length} static HTML pages, OG cards, JSON-LD, and internal links 100% verified.`
+);

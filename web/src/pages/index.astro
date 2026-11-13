@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import LogoMark from "../components/LogoMark.astro";
+import { withBase } from "../lib/i18n";
 import { absUrl } from "../lib/seo";
 import { CONCEPTS, NODES, ERAS } from "../lib/content";
 
@@ -21,7 +22,7 @@ const ogImage = absUrl("/og/home-zh.png");
     <link rel="alternate" hreflang="zh-CN" href={absUrl("/zh/")} />
     <link rel="alternate" hreflang="en" href={absUrl("/en/")} />
     <link rel="alternate" hreflang="x-default" href={absUrl("/zh/")} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="AITube — AI Concept Trend & Video Slice Index" />
     <meta property="og:description" content="5 Chronological Eras · 22 AI Concept Trajectories · 280 Verified Video Cuts." />
@@ -50,8 +51,8 @@ const ogImage = absUrl("/og/home-zh.png");
           顺着 2017–2026 概念演进脉络读懂现代 AI，直达每支长视频最值得看的核心几分钟。Choose your reading edition:
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:12px;">
-          <a href="/zh/" class="at-btn-primary">进入中文版（简体中文） →</a>
-          <a href="/en/" class="at-btn-ghost">Enter English Edition →</a>
+          <a href={withBase("/zh/")} class="at-btn-primary">进入中文版（简体中文） →</a>
+          <a href={withBase("/en/")} class="at-btn-ghost">Enter English Edition →</a>
         </div>
       </div>
     </main>

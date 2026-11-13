@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import MediaCard from "../../../components/MediaCard.astro";
-import { LANGS, LIFECYCLE_META, ROLE_META, UI, formatTime, type Lang } from "../../../lib/i18n";
+import { LANGS, LIFECYCLE_META, ROLE_META, UI, formatTime, withBase, type Lang } from "../../../lib/i18n";
 import {
   CONCEPTS,
   SERIES_LABELS,
@@ -48,7 +48,7 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
   <section style="padding:32px 0 28px;border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
       <nav class="at-mono" style="font-size:0.76rem;color:var(--ink-muted);margin-bottom:12px;">
-        <a href={`/${lang}/`}>AITube</a> / <a href={`/${lang}/timeline/`}>{t.navTimeline}</a> / <span>{loc.shortName}</span>
+        <a href={withBase(`/${lang}/`)}>AITube</a> / <a href={withBase(`/${lang}/timeline/`)}>{t.navTimeline}</a> / <span>{loc.shortName}</span>
       </nav>
 
       <div style="display:grid;grid-template-columns:1.25fr 0.85fr;gap:28px;align-items:start;" class="at-hero-grid">
@@ -56,7 +56,7 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
           <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
             <span class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);">CONCEPT #{String(concept.order).padStart(2, "0")}</span>
             {era && (
-              <a href={`/${lang}/timeline/#${era.id}`} class="at-lineage-pill at-mono" style="font-size:0.73rem;">
+              <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-lineage-pill at-mono" style="font-size:0.73rem;">
                 {era.period} · {era[lang].title}
               </a>
             )}
@@ -92,7 +92,7 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
               {concept.lineage.from.map((s) => {
                 const up = getConcept(s);
                 return up ? (
-                  <a href={`/${lang}/concepts/${up.slug}/`} class="at-lineage-pill">
+                  <a href={withBase(`/${lang}/concepts/${up.slug}/`)} class="at-lineage-pill">
                     ↖ {t.lineageFrom}: {up[lang].shortName}
                   </a>
                 ) : null;
@@ -100,7 +100,7 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
               {concept.lineage.into.map((s) => {
                 const dn = getConcept(s);
                 return dn ? (
-                  <a href={`/${lang}/concepts/${dn.slug}/`} class="at-lineage-pill">
+                  <a href={withBase(`/${lang}/concepts/${dn.slug}/`)} class="at-lineage-pill">
                     ↘ {t.lineageInto}: {dn[lang].shortName}
                   </a>
                 ) : null;
@@ -178,7 +178,7 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
       <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
         {allNodes.map((n, idx) => (
           <a
-            href={`/${lang}/nodes/${n.slug}/`}
+            href={withBase(`/${lang}/nodes/${n.slug}/`)}
             style="display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--border-subtle);font-size:0.86rem;"
           >
             <span>

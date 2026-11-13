@@ -1,14 +1,14 @@
 import type { APIRoute } from "astro";
-import { SITE_ORIGIN } from "../lib/seo";
+import { absUrl } from "../lib/seo";
 
 export const GET: APIRoute = () => {
   const body = [
     "User-agent: *",
     "Allow: /",
     "",
-    `Sitemap: ${SITE_ORIGIN}/sitemap.xml`,
-    `# LLMs Index: ${SITE_ORIGIN}/llms.txt`,
-    `# LLMs Full Corpus: ${SITE_ORIGIN}/llms-full.txt`,
+    `Sitemap: ${absUrl("/sitemap.xml")}`,
+    `# LLMs Index: ${absUrl("/llms.txt")}`,
+    `# LLMs Full Corpus: ${absUrl("/llms-full.txt")}`,
     "",
   ].join("\n");
 

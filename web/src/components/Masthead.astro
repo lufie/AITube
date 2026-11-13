@@ -1,6 +1,6 @@
 ---
 import LogoMark from "./LogoMark.astro";
-import { UI, otherLang, switchLangPath, type Lang } from "../lib/i18n";
+import { UI, otherLang, stripBase, switchLangPath, withBase, type Lang } from "../lib/i18n";
 import { NODES } from "../lib/content";
 
 interface Props {
@@ -11,17 +11,18 @@ const { lang, pathname } = Astro.props;
 const t = UI[lang];
 const altLang = otherLang(lang);
 const altHref = switchLangPath(pathname, altLang);
+const cleanPath = stripBase(pathname);
 
 const navItems = [
-  { href: `/${lang}/timeline/`, label: t.navTimeline, match: `/${lang}/timeline` },
-  { href: `/${lang}/directory/`, label: t.navDirectory, match: `/${lang}/directory` },
-  { href: `/${lang}/roadmap/`, label: t.navRoadmap, match: `/${lang}/roadmap` },
-  { href: `/${lang}/vault/`, label: t.navVault, match: `/${lang}/vault` },
+  { href: withBase(`/${lang}/timeline/`), label: t.navTimeline, match: `/${lang}/timeline` },
+  { href: withBase(`/${lang}/directory/`), label: t.navDirectory, match: `/${lang}/directory` },
+  { href: withBase(`/${lang}/roadmap/`), label: t.navRoadmap, match: `/${lang}/roadmap` },
+  { href: withBase(`/${lang}/vault/`), label: t.navVault, match: `/${lang}/vault` },
 ];
 ---
 <header class="at-masthead">
   <div class="at-container at-masthead-inner">
-    <a href={`/${lang}/`} class="at-brand" aria-label={t.siteName}>
+    <a href={withBase(`/${lang}/`)} class="at-brand" aria-label={t.siteName}>
       <LogoMark size={28} />
       <span>AITube</span>
       <span class="at-brand-sub">2017–2026 INDEX</span>
@@ -29,7 +30,7 @@ const navItems = [
 
     <nav class="at-nav" aria-label="Primary">
       {navItems.map((it) => {
-        const isCurrent = pathname.startsWith(it.match);
+        const isCurrent = cleanPath.startsWith(it.match);
         return (
           <a href={it.href} class="at-nav-link" aria-current={isCurrent ? "page" : undefined}>
             {it.label}
@@ -45,7 +46,7 @@ const navItems = [
       </button>
 
       <a
-        href={`/${lang}/roadmap/`}
+        href={withBase(`/${lang}/roadmap/`)}
         class="at-icon-btn at-mono"
         title={t.readProgressTitle}
         data-read-counter

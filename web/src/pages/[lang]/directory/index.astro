@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import MediaCard from "../../../components/MediaCard.astro";
-import { LANGS, LIFECYCLE_META, ROLE_META, UI, formatSliceMinutes, formatTime, type Lang, type Lifecycle } from "../../../lib/i18n";
+import { BASE_PREFIX, LANGS, LIFECYCLE_META, ROLE_META, UI, formatSliceMinutes, formatTime, type Lang, type Lifecycle } from "../../../lib/i18n";
 import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS, getConcept } from "../../../lib/content";
 import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
 
@@ -10,6 +10,7 @@ export function getStaticPaths() {
 }
 
 const lang = Astro.params.lang as Lang;
+const basePrefix = BASE_PREFIX;
 const t = UI[lang];
 const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
 const initialNodes = NODES.slice(0, 24);
@@ -182,7 +183,7 @@ const schema = {
   </div>
 
   <script type="application/json" id="dir-catalog-json" set:html={JSON.stringify(clientCatalog)} />
-  <script is:inline define:vars={{ lang, loadMoreLabel: t.loadMore, showingLabel: t.showingCount }}>
+  <script is:inline define:vars={{ lang, basePrefix, loadMoreLabel: t.loadMore, showingLabel: t.showingCount }}>
     (() => {
       const catalog = JSON.parse(document.getElementById("dir-catalog-json")?.textContent || "[]");
       const grid = document.getElementById("dir-grid");
@@ -202,7 +203,7 @@ const schema = {
         const img = it.ytId
           ? `<img src="https://i.ytimg.com/vi/${esc(it.ytId)}/hqdefault.jpg" alt="${esc(it.title)}" loading="lazy" class="at-card-thumb" onerror="this.style.display='none'"/>`
           : "";
-        return `<article class="at-card"><a href="/${lang}/nodes/${esc(it.slug)}/" style="display:flex;flex-direction:column;flex:1;">
+        return `<article class="at-card"><a href="${basePrefix}/${lang}/nodes/${esc(it.slug)}/" style="display:flex;flex-direction:column;flex:1;">
           <div class="at-card-poster">${img}<div class="at-card-badges"><span class="at-pill-dark">${esc(it.badgeLeft)}</span><span class="at-pill-dark">${esc(it.badgeRight)}</span></div></div>
           <div class="at-card-body">
             <div class="at-card-concept-row"><span>${esc(it.lifeIcon)} ${esc(it.conceptName)}</span><span style="color:var(--ink-muted);">${esc(it.roleName)}</span></div>

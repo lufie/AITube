@@ -1,5 +1,5 @@
 import { CONCEPTS, ERAS, NODES, SPINE_NODES } from "./content";
-import { SITE_ORIGIN } from "./seo";
+import { absUrl } from "./seo";
 import { formatTime } from "./i18n";
 
 export function buildLlmsSummary(): string {
@@ -9,14 +9,14 @@ export function buildLlmsSummary(): string {
     "> AITube organizes modern AI (2017–2026) along two orthogonal axes: a 5-Era, 22-Concept Trend Timeline Index and a Multi-Faceted Screening Directory of 280 verified implementation video cuts and primary monographs.",
     "",
     "## Core Entry Points",
-    `- Chinese Home: ${SITE_ORIGIN}/zh/`,
-    `- English Home: ${SITE_ORIGIN}/en/`,
-    `- Concept Trend Timeline (ZH): ${SITE_ORIGIN}/zh/timeline/`,
-    `- Concept Trend Timeline (EN): ${SITE_ORIGIN}/en/timeline/`,
-    `- Multi-Faceted Directory (ZH): ${SITE_ORIGIN}/zh/directory/`,
-    `- Multi-Faceted Directory (EN): ${SITE_ORIGIN}/en/directory/`,
-    `- 4-Stage Learning Roadmap (ZH): ${SITE_ORIGIN}/zh/roadmap/`,
-    `- Full Machine Corpus: ${SITE_ORIGIN}/llms-full.txt`,
+    `- Chinese Home: ${absUrl("/zh/")}`,
+    `- English Home: ${absUrl("/en/")}`,
+    `- Concept Trend Timeline (ZH): ${absUrl("/zh/timeline/")}`,
+    `- Concept Trend Timeline (EN): ${absUrl("/en/timeline/")}`,
+    `- Multi-Faceted Directory (ZH): ${absUrl("/zh/directory/")}`,
+    `- Multi-Faceted Directory (EN): ${absUrl("/en/directory/")}`,
+    `- 4-Stage Learning Roadmap (ZH): ${absUrl("/zh/roadmap/")}`,
+    `- Full Machine Corpus: ${absUrl("/llms-full.txt")}`,
     "",
     "## 22 Canonical AI Concepts (Chronological Evolution)",
   ];
@@ -25,14 +25,14 @@ export function buildLlmsSummary(): string {
     lines.push("", `### ${era.period} — ${era.en.title} / ${era.zh.title}`);
     for (const c of CONCEPTS.filter((x) => x.eraId === era.id)) {
       lines.push(
-        `- [${c.en.name} / ${c.zh.name}](${SITE_ORIGIN}/en/concepts/${c.slug}/) (${c.originQuarter} → ${c.inflectionQuarter}, ${c.lifecycle}): ${c.en.oneLiner}`
+        `- [${c.en.name} / ${c.zh.name}](${absUrl(`/en/concepts/${c.slug}/`)}) (${c.originQuarter} → ${c.inflectionQuarter}, ${c.lifecycle}): ${c.en.oneLiner}`
       );
     }
   }
 
   lines.push("", "## Flagship Spine Cuts (52 Primary Nodes)");
   for (const n of SPINE_NODES) {
-    lines.push(`- [${n.en.title}](${SITE_ORIGIN}/en/nodes/${n.slug}/) — ${n.source.channelName}: ${n.en.whyWatch}`);
+    lines.push(`- [${n.en.title}](${absUrl(`/en/nodes/${n.slug}/`)}) — ${n.source.channelName}: ${n.en.whyWatch}`);
   }
 
   return lines.join("\n") + "\n";
@@ -56,8 +56,8 @@ export function buildLlmsFull(): string {
     lines.push(
       "",
       `### ${n.order}. ${n.en.title} / ${n.zh.title}`,
-      `- URL (ZH): ${SITE_ORIGIN}/zh/nodes/${n.slug}/`,
-      `- URL (EN): ${SITE_ORIGIN}/en/nodes/${n.slug}/`,
+      `- URL (ZH): ${absUrl(`/zh/nodes/${n.slug}/`)}`,
+      `- URL (EN): ${absUrl(`/en/nodes/${n.slug}/`)}`,
       `- Primary Concept: \`${n.primaryConcept}\` (${n.conceptRole})`,
       `- Source: ${s.channelName} (${s.platform}, ${win}) — "${s.originalTitle}"`,
       `- Why Watch: ${n.en.whyWatch}`,

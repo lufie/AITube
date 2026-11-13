@@ -1,21 +1,20 @@
 import type { Lang } from "./i18n";
-import { switchLangPath } from "./i18n";
+import { stripBase, switchLangPath, withBase } from "./i18n";
 import type { Concept, MediaNode } from "./content";
 
-export const SITE_ORIGIN = (import.meta.env.SITE || "https://aitube.dev").replace(/\/+$/, "");
+export const SITE_ORIGIN = (import.meta.env.SITE || "https://lufie.github.io").replace(/\/+$/, "");
 
 export function absUrl(path: string): string {
-  const clean = path.startsWith("/") ? path : `/${path}`;
-  return `${SITE_ORIGIN}${clean}`;
+  if (/^https?:\/\//i.test(path)) return path;
+  return `${SITE_ORIGIN}${withBase(path)}`;
 }
 
 export function buildAlternates(pathname: string) {
-  const zhPath = switchLangPath(pathname, "zh");
-  const enPath = switchLangPath(pathname, "en");
+  const clean = stripBase(pathname);
   return {
-    zh: absUrl(zhPath),
-    en: absUrl(enPath),
-    xDefault: absUrl(zhPath),
+    zh: `${SITE_ORIGIN}${switchLangPath(clean, "zh")}`,
+    en: `${SITE_ORIGIN}${switchLangPath(clean, "en")}`,
+    xDefault: `${SITE_ORIGIN}${switchLangPath(clean, "zh")}`,
   };
 }
 
@@ -23,18 +22,18 @@ export function orgAndSiteGraph(lang: Lang) {
   return [
     {
       "@type": "Organization",
-      "@id": `${SITE_ORIGIN}/#organization`,
+      "@id": `${absUrl("/")}#organization`,
       name: "AITube",
-      url: SITE_ORIGIN,
-      logo: `${SITE_ORIGIN}/icon-512.png`,
+      url: absUrl("/"),
+      logo: absUrl("/icon-512.png"),
     },
     {
       "@type": "WebSite",
-      "@id": `${SITE_ORIGIN}/#website`,
+      "@id": `${absUrl("/")}#website`,
       name: "AITube",
-      url: `${SITE_ORIGIN}/${lang}/`,
+      url: absUrl(`/${lang}/`),
       inLanguage: lang === "zh" ? "zh-CN" : "en-US",
-      publisher: { "@id": `${SITE_ORIGIN}/#organization` },
+      publisher: { "@id": `${absUrl("/")}#organization` },
     },
   ];
 }

@@ -1,13 +1,14 @@
 ---
-import { UI, type Lang } from "../lib/i18n";
+import { UI, withBase, type Lang } from "../lib/i18n";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = UI[lang];
+const corpusUrl = withBase(`/search-corpus-${lang}.json`);
 ---
-<dialog class="at-dialog" id="at-search-dialog" data-lang={lang}>
+<dialog class="at-dialog" id="at-search-dialog" data-lang={lang} data-corpus-url={corpusUrl}>
   <div style="padding:14px 16px;border-bottom:1px solid var(--border-subtle);display:flex;gap:10px;align-items:center;">
     <span class="at-mono" style="color:var(--accent-primary);">⌕</span>
     <input
@@ -38,12 +39,13 @@ const t = UI[lang];
     const box = document.getElementById("at-search-results");
     if (!dialog || !input || !box) return;
     const lang = dialog.getAttribute("data-lang") || "zh";
+    const corpusUrl = dialog.getAttribute("data-corpus-url") || `/search-corpus-${lang}.json`;
     let corpus = null;
 
     async function ensureCorpus() {
       if (corpus) return corpus;
       try {
-        const res = await fetch(`/search-corpus-${lang}.json`);
+        const res = await fetch(corpusUrl);
         corpus = await res.json();
       } catch {
         corpus = [];

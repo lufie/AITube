@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { LANGS, UI, type Lang } from "../../../lib/i18n";
+import { LANGS, UI, withBase, type Lang } from "../../../lib/i18n";
 import { VAULT_ITEMS, getConcept } from "../../../lib/content";
 import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
 
@@ -65,7 +65,7 @@ const schema = {
               {v.code} · {loc.tag}
             </span>
             {concept && (
-              <a href={`/${lang}/concepts/${concept.slug}/`} class="at-lineage-pill at-mono" style="font-size:0.74rem;">
+              <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class="at-lineage-pill at-mono" style="font-size:0.74rem;">
                 {concept[lang].shortName} →
               </a>
             )}

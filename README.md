@@ -45,20 +45,26 @@ AITube/
 │   ├── brand/                # Pillow brand icon & 32 editorial Open Graph PNG renderer
 │   ├── validate-content.mjs  # Schema, slice window & taxonomy gate
 │   └── verify-dist.mjs       # Static HTML h1, canonical, OG file, JSON-LD & broken-link gate
-└── web/                      # Astro 5 static site (Vanilla CSS, zero Tailwind, Cloudflare Pages ready)
+└── web/                      # Astro 5 static site (Vanilla CSS, zero Tailwind, GitHub Pages & Cloudflare ready)
 ```
 
 ---
 
-## Local Development & Deterministic Verification
+## Local Development, GitHub Pages & Verification
 
 ```bash
 # 1. Install frontend dependencies
 npm --prefix web install
 
-# 2. Validate content schemas, run Astro typecheck, build static dist, and audit all 650+ HTML pages
+# 2. Validate content schemas, run Astro typecheck, build static dist (root '/'), and audit 656 HTML pages
 npm --prefix web run build
 
-# 3. Regenerate brand icons & Open Graph cards (optional)
+# 3. Build & verify for GitHub Pages project subpath (https://lufie.github.io/AITube/)
+SITE_URL=https://lufie.github.io BASE_PATH=/AITube npm --prefix web run build
+
+# 4. Regenerate brand icons & Open Graph cards (optional)
 uv run --with pillow python3 scripts/brand/render_assets.py
 ```
+
+Automated production deployment to **GitHub Pages** runs on pushes to `main` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
+

@@ -215,13 +215,13 @@ def main() -> None:
     manifest = {
         "name": "AITube — AI Concept Trend & Video Slice Index",
         "short_name": "AITube",
-        "start_url": "/zh/",
+        "start_url": "./zh/",
         "display": "standalone",
         "background_color": "#FAF8F3",
         "theme_color": "#1B5E6B",
         "icons": [
-            {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
-            {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"},
+            {"src": "./icon-192.png", "sizes": "192x192", "type": "image/png"},
+            {"src": "./icon-512.png", "sizes": "512x512", "type": "image/png"},
         ],
     }
     (PUBLIC / "site.webmanifest").write_text(json.dumps(manifest, indent=2) + "\n", "utf-8")

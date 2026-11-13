@@ -3,7 +3,7 @@ import "../styles/global.css";
 import Masthead from "../components/Masthead.astro";
 import Footer from "../components/Footer.astro";
 import SearchPalette from "../components/SearchPalette.astro";
-import { UI, type Lang } from "../lib/i18n";
+import { UI, withBase, type Lang } from "../lib/i18n";
 import { absUrl, buildAlternates } from "../lib/seo";
 
 interface Props {
@@ -42,9 +42,9 @@ const toastMsg = UI[lang].copyToast;
     <link rel="alternate" hreflang="en" href={alts.en} />
     <link rel="alternate" hreflang="x-default" href={alts.xDefault} />
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="apple-touch-icon" href={withBase("/apple-touch-icon.png")} />
+    <link rel="manifest" href={withBase("/site.webmanifest")} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="AITube" />

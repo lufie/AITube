@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { CONCEPTS, NODES, SYNONYMS, getConcept } from "../lib/content";
-import { LANGS, LIFECYCLE_META, formatTime, type Lang } from "../lib/i18n";
+import { LANGS, LIFECYCLE_META, formatTime, withBase, type Lang } from "../lib/i18n";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -16,7 +16,7 @@ export const GET: APIRoute = ({ params }) => {
       badge: `CONCEPT · ${c.originQuarter} → ${c.inflectionQuarter} · ${LIFECYCLE_META[c.lifecycle][lang]}`,
       title: c[lang].name,
       sub: c[lang].oneLiner,
-      href: `/${lang}/concepts/${c.slug}/`,
+      href: withBase(`/${lang}/concepts/${c.slug}/`),
       tags: `${c.en.name} ${c.zh.name} ${c[lang].paradigmShift} ${syn}`,
     });
   }
@@ -32,7 +32,7 @@ export const GET: APIRoute = ({ params }) => {
       badge: `${c ? c[lang].shortName : n.primaryConcept} · ${s.channelName} (${win})`,
       title: n[lang].title,
       sub: n[lang].whyWatch,
-      href: `/${lang}/nodes/${n.slug}/`,
+      href: withBase(`/${lang}/nodes/${n.slug}/`),
       tags: `${n[lang].searchQuestions.join(" ")} ${n.facets.stacks.join(" ")} ${n.facets.tasks.join(" ")}`,
     });
   }

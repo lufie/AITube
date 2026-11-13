@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import MediaCard from "../../components/MediaCard.astro";
 import ConceptTimelineCard from "../../components/ConceptTimelineCard.astro";
-import { LANGS, UI, type Lang } from "../../lib/i18n";
+import { LANGS, UI, withBase, type Lang } from "../../lib/i18n";
 import {
   CONCEPTS,
   ERAS,
@@ -71,8 +71,8 @@ const schema = {
         </div>
 
         <div class="at-hero-ctas">
-          <a href={`/${lang}/timeline/`} class="at-btn-primary">{t.ctaTimeline}</a>
-          <a href={`/${lang}/directory/`} class="at-btn-ghost">{t.ctaDirectory}</a>
+          <a href={withBase(`/${lang}/timeline/`)} class="at-btn-primary">{t.ctaTimeline}</a>
+          <a href={withBase(`/${lang}/directory/`)} class="at-btn-ghost">{t.ctaDirectory}</a>
         </div>
       </div>
 
@@ -113,7 +113,7 @@ const schema = {
           <div class="at-kicker">SIGNATURE PERSPECTIVE</div>
           <h2>{t.eraStripHeading}</h2>
         </div>
-        <a href={`/${lang}/timeline/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
           {t.ctaTimeline}
         </a>
       </div>
@@ -122,7 +122,7 @@ const schema = {
         {ERAS.map((era) => {
           const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
           return (
-            <a href={`/${lang}/timeline/#${era.id}`} class="at-era-card">
+            <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-era-card">
               <span class="at-mono" style="font-size:0.74rem;color:var(--accent-signal);font-weight:600;">
                 {era.period}
               </span>
@@ -150,7 +150,7 @@ const schema = {
           <div class="at-kicker" style="color:var(--accent-signal);">▲ SURGING MOMENTUM</div>
           <h2>{t.surgingHeading}</h2>
         </div>
-        <a href={`/${lang}/timeline/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
           {lang === "zh" ? "查看全部 22 个概念演进脉络 →" : "View all 22 concepts →"}
         </a>
       </div>
@@ -171,7 +171,7 @@ const schema = {
           <div class="at-kicker">SCREENING GALLERY</div>
           <h2>{t.flagshipHeading}</h2>
         </div>
-        <a href={`/${lang}/directory/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/directory/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
           {t.ctaDirectory} →
         </a>
       </div>
@@ -190,7 +190,7 @@ const schema = {
           <div class="at-kicker">STRUCTURED PROGRESSION</div>
           <h2>{t.roadmapHeading}</h2>
         </div>
-        <a href={`/${lang}/roadmap/`} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
+        <a href={withBase(`/${lang}/roadmap/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;">
           {lang === "zh" ? "打开完整四阶路线 →" : "Open full 4-stage roadmap →"}
         </a>
       </div>
@@ -199,7 +199,7 @@ const schema = {
         {STAGES.map((st) => {
           const cnt = SPINE_NODES.filter((n) => n.stageId === st.id).length;
           return (
-            <a href={`/${lang}/roadmap/#${st.id}`} class="at-era-card">
+            <a href={withBase(`/${lang}/roadmap/#${st.id}`)} class="at-era-card">
               <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.74rem;color:var(--accent-primary);">
                 <span>{st[lang].code}</span>
                 <span>{cnt} {lang === "zh" ? "必修精切" : "spine cuts"}</span>
@@ -218,7 +218,7 @@ const schema = {
         <div style="display:flex;flex-wrap:wrap;gap:8px;">
           {TAXONOMY_DIMS.flatMap((dim) =>
             dim.items.map((item) => (
-              <a href={`/${lang}/topics/${dim.key}/${item.slug}/`} class="at-lineage-pill">
+              <a href={withBase(`/${lang}/topics/${dim.key}/${item.slug}/`)} class="at-lineage-pill">
                 {item[lang].name}
               </a>
             ))

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/i18n";
 ---
 <BaseLayout
   title="404 — Page Not Found | AITube"
@@ -16,8 +17,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       请从概念趋势时间线或多维检索库重新定位。
     </p>
     <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
-      <a href="/zh/timeline/" class="at-btn-primary">概念趋势时间线 →</a>
-      <a href="/zh/directory/" class="at-btn-ghost">全部 280 支切片</a>
+      <a href={withBase("/zh/timeline/")} class="at-btn-primary">概念趋势时间线 →</a>
+      <a href={withBase("/zh/directory/")} class="at-btn-ghost">全部 280 支切片</a>
     </div>
   </section>
 </BaseLayout>

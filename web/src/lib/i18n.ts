@@ -23,11 +23,32 @@ export function formatSliceMinutes(startSec: number, endSec: number, lang: Lang)
   return lang === "zh" ? `${mins} 分钟精切` : `${mins}m cut`;
 }
 
-export function switchLangPath(pathname: string, target: Lang): string {
+export const BASE_PREFIX = (import.meta.env.BASE_URL || "/").replace(/\/+$/, "");
+
+export function withBase(path: string): string {
+  if (!path || path === "/") return `${BASE_PREFIX}/`;
+  if (/^(https?:|mailto:|tel:|#)/i.test(path)) return path;
+  const clean = path.startsWith("/") ? path : `/${path}`;
+  if (BASE_PREFIX && (clean === BASE_PREFIX || clean.startsWith(`${BASE_PREFIX}/`))) {
+    return clean;
+  }
+  return `${BASE_PREFIX}${clean}`;
+}
+
+export function stripBase(pathname: string): string {
   const clean = pathname.startsWith("/") ? pathname : `/${pathname}`;
+  if (BASE_PREFIX && clean === BASE_PREFIX) return "/";
+  if (BASE_PREFIX && clean.startsWith(`${BASE_PREFIX}/`)) {
+    return clean.slice(BASE_PREFIX.length) || "/";
+  }
+  return clean;
+}
+
+export function switchLangPath(pathname: string, target: Lang): string {
+  const clean = stripBase(pathname);
   const replaced = clean.replace(/^\/(zh|en)(\/|$)/, `/${target}/`);
-  if (replaced === clean) return `/${target}/`;
-  return replaced.endsWith("/") ? replaced : `${replaced}/`;
+  const rel = replaced === clean ? `/${target}/` : replaced.endsWith("/") ? replaced : `${replaced}/`;
+  return withBase(rel);
 }
 
 export const LIFECYCLE_META: Record<Lifecycle, { icon: string; en: string; zh: string }> = {
