@@ -12,6 +12,7 @@ import {
   getNodesForConcept,
   splitParadigmShift,
 } from "../../../lib/content";
+import { CONCEPT_AUDIENCE } from "../../../lib/personas";
 import { absUrl, buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
 
 export function getStaticPaths() {
@@ -24,14 +25,33 @@ const domainDim = TAXONOMY_DIMS.find((d) => d.key === "domain")!;
 const lifecycles: Lifecycle[] = ["surging", "mainstream", "foundational", "evolved"];
 const romanEras = ["I", "II", "III", "IV", "V"];
 
+const focusPresets =
+  lang === "zh"
+    ? [
+        { id: "all", label: `🌐 全部概念 (${CONCEPTS.length})`, desc: "完整展示 2017–2026 全部 22 个核心概念演进坐标。" },
+        { id: "surging", label: "🔥 只看 2026 前沿爆发 (6)", desc: "聚焦当前增速最快的 6 大新趋势：MCP、RLVR、上下文工程、CLI Harness、SKILL.md 与世界模型。" },
+        { id: "beginner", label: "🌱 小白必懂的 5 个基础词 (5)", desc: "过滤掉高阶工程细节，按顺序掌握现代 AI 最核心的 5 个基础概念（Transformer → 分词向量 → 提示词 → 知识库 → 工具调用）。" },
+        { id: "applied", label: "⚡ 落地应用高频技术 (6)", desc: "聚焦业务与产品直接能用的 6 项实用技术：长窗口多模态、可控生图、ComfyUI、Vibe Coding、混合检索与桌面智能体。" },
+        { id: "career", label: "🧭 工程从业核心底座 (5)", desc: "聚焦 AI 工程师面试与上线的硬核功底：Scaling 算力账、对齐微调、LoRA 本地部署、图编排与 Eval 评测飞轮。" },
+        { id: "evolved", label: "⚠️ 避坑：已被替代的旧做法 (4)", desc: "重点查看哪些 2022–2024 流行做法已被新范式演进替代，避免把时间花在过时套路上。" },
+      ]
+    : [
+        { id: "all", label: `🌐 All Concepts (${CONCEPTS.length})`, desc: "Showing all 22 core AI concepts from 2017 to 2026." },
+        { id: "surging", label: "🔥 2026 Surging Frontier (6)", desc: "Spotlight the 6 fastest-growing 2026 shifts: MCP, RLVR, Context Eng, CLI Harnesses, SKILL.md & World Models." },
+        { id: "beginner", label: "🌱 5 Beginner Core Terms (5)", desc: "Strip away advanced noise — learn the 5 essential building blocks in plain order." },
+        { id: "applied", label: "⚡ Hands-On Applied Tech (6)", desc: "Focus on the 6 highest-ROI practical capabilities for shipping products and media." },
+        { id: "career", label: "🧭 AI Engineering Core (5)", desc: "Focus on foundational engineering pillars: Scaling, alignment, LoRA, workflows & LLM Evals." },
+        { id: "evolved", label: "⚠️ Outdated / Evolved Habits (4)", desc: "See which 2022–2024 approaches were superseded by modern 2026 patterns." },
+      ];
+
 const title =
   lang === "zh"
-    ? "AI 概念趋势时间线索引（2017–2026）— AITube"
-    : "AI Concept Trend Timeline Index (2017–2026) — AITube";
+    ? "AI 概念趋势图谱与血缘时间线（2017–2026）— AITube"
+    : "AI Concept Trend Map & Lineage Timeline (2017–2026) — AITube";
 const desc =
   lang === "zh"
-    ? "按时间演进轴系统梳理 2017–2026 年 22 个 AI 核心概念的起源季度、爆发拐点、搜索热度曲线、范式跃迁与上下游血缘。"
-    : "Chronological index of 22 foundational and frontier AI concepts (2017–2026) with inflection quarters, momentum sparklines, paradigm shifts, and verified cuts.";
+    ? "按你的身份（小白扫盲 / 应用落地 / 工程从业 / 前沿追踪）一键圈出重点概念，串联 2017–2026 年 22 个 AI 核心概念的起源、拐点与因果血缘。"
+    : "Filter 22 foundational and frontier AI concepts (2017–2026) by reader goal, inflection quarters, momentum sparklines, and causal lineage.";
 
 const schema = {
   "@context": "https://schema.org",
@@ -66,15 +86,34 @@ const schema = {
 >
   <section style="padding:32px 0 26px;border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
-      <div class="at-kicker">CHRONOLOGICAL CONCEPT INDEX · 2017 Q2 → 2026 Q3</div>
-      <h1 style="font-size:clamp(1.85rem,3vw,2.6rem);margin:8px 0 10px;">
-        {lang === "zh" ? "AI 概念趋势时间线索引视角" : "AI Concept Trend Timeline Index"}
+      <div class="at-kicker">CHRONOLOGICAL CONCEPT MAP · 2017 Q2 → 2026 Q3</div>
+      <h1 style="font-size:clamp(1.85rem,3vw,2.55rem);margin:8px 0 10px;">
+        {lang === "zh" ? "AI 概念趋势图谱与演进时间线" : "AI Concept Trend Map & Evolution Timeline"}
       </h1>
-      <p style="max-width:74ch;color:var(--ink-secondary);font-size:0.97rem;margin-bottom:22px;">
+      <p style="max-width:72ch;color:var(--ink-secondary);font-size:0.96rem;margin-bottom:18px;">
         {lang === "zh"
-          ? `为什么刚学会 Prompt Engineering，行业已经在谈 Context Engineering、MCP 与 SKILL.md？上方全景泳道图按四层架构串联 ${CONCEPTS.length} 个核心概念的「起源 → 拐点 → 血缘弧线」，下方提供精读详卡与全景对比矩阵两种检阅密度（关联 ${NODES.length} 支核验切片）。`
-          : `Why did Prompt Engineering evolve into Context Engineering, MCP, and SKILL.md? Explore all ${CONCEPTS.length} concepts across the interactive 2017–2026 swimlane & causal lineage map above, then inspect detailed cards or compact matrix below (${NODES.length} verified cuts).`}
+          ? `觉得 22 个概念一次看不过来？先点下方「视角快筛」，图谱与下方卡片会立即只保留与你最相关的重点概念（关联 ${NODES.length} 支核验切片）。`
+          : `22 concepts feel like a lot at once? Click a Quick Lens below to spotlight only the concepts that match your current goal (${NODES.length} verified cuts).`}
       </p>
+
+      <!-- Audience Quick-Focus Lens Bar -->
+      <div class="at-preset-bar" role="group" aria-label="Audience quick lens">
+        <div class="at-filter-row">
+          {focusPresets.map((pr, idx) => (
+            <button
+              type="button"
+              class={`at-preset-pill ${idx === 0 ? "is-active" : ""}`}
+              data-tl-preset={pr.id}
+              data-preset-desc={pr.desc}
+            >
+              {pr.label}
+            </button>
+          ))}
+        </div>
+        <div id="tl-preset-banner" class="at-preset-desc">
+          {focusPresets[0].desc}
+        </div>
+      </div>
 
       <ConceptHorizonMap lang={lang} mode="timeline" />
     </div>
@@ -191,7 +230,7 @@ const schema = {
         <thead>
           <tr>
             <th>#</th>
-            <th>{lang === "zh" ? "概念与生命周期" : "Concept & Lifecycle"}</th>
+            <th>{lang === "zh" ? "概念与适合人群" : "Concept & Audience"}</th>
             <th>{lang === "zh" ? "起源 → ★ 拐点" : "Origin → ★ Inflection"}</th>
             <th>{lang === "zh" ? "范式跃迁（Before → After）" : "Paradigm Shift (Before → After)"}</th>
             <th>{lang === "zh" ? "趋势曲线 (22H2–26Q3)" : "Momentum (22H2–26Q3)"}</th>
@@ -202,6 +241,11 @@ const schema = {
           {CONCEPTS.map((c) => {
             const loc = c[lang];
             const lf = LIFECYCLE_META[c.lifecycle];
+            const aud = CONCEPT_AUDIENCE[c.slug] || {
+              role: "career",
+              zhBadge: "🧭 工程从业必修",
+              enBadge: "🧭 Engineering Core",
+            };
             const sh = splitParadigmShift(loc.paradigmShift);
             const sp = buildSparklineGeometry(c.trendSeries, 118, 30, 3);
             const infPt = sp.points[c.inflectionIndex] || sp.points[sp.points.length - 1];
@@ -212,18 +256,24 @@ const schema = {
                 data-era={c.eraId}
                 data-lifecycle={c.lifecycle}
                 data-domain={c.domain}
+                data-audience={aud.role}
                 data-search={`${c.en.name} ${c.zh.name} ${loc.oneLiner} ${loc.paradigmShift}`.toLowerCase()}
               >
                 <td class="at-mono" style="color:var(--ink-muted);font-size:0.76rem;">
                   #{String(c.order).padStart(2, "0")}
                 </td>
                 <td>
-                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} style="font-weight:600;color:var(--ink-primary);display:block;margin-bottom:3px;">
+                  <a href={withBase(`/${lang}/concepts/${c.slug}/`)} style="font-weight:600;color:var(--ink-primary);display:block;margin-bottom:4px;">
                     {loc.shortName}
                   </a>
-                  <span class={`at-life at-life-${c.lifecycle}`} style="font-size:0.66rem;padding:1px 6px;">
-                    {lf.icon} {lf[lang]}
-                  </span>
+                  <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                    <span class="at-audience-pill" style="font-size:0.66rem;padding:1px 6px;">
+                      {lang === "zh" ? aud.zhBadge : aud.enBadge}
+                    </span>
+                    <span class={`at-life at-life-${c.lifecycle}`} style="font-size:0.66rem;padding:1px 6px;">
+                      {lf.icon} {lf[lang]}
+                    </span>
+                  </div>
                 </td>
                 <td class="at-mono" style="font-size:0.75rem;white-space:nowrap;">
                   {c.originQuarter} → <strong style="color:var(--accent-signal);">{c.inflectionQuarter}</strong>
@@ -264,6 +314,7 @@ const schema = {
 
   <script is:inline>
     (() => {
+      let activePreset = "all";
       let activeEra = "all";
       let activeLife = "all";
       let activeDomain = "all";
@@ -278,13 +329,30 @@ const schema = {
       const searchIn = document.getElementById("tl-search");
       const edView = document.getElementById("tl-editorial-view");
       const mxView = document.getElementById("tl-matrix-view");
+      const presetBanner = document.getElementById("tl-preset-banner");
+
+      const presetFocusSlug = {
+        surging: "context-engineering",
+        beginner: "transformer-attention",
+        applied: "hybrid-agentic-rag",
+        career: "llm-evals-observability",
+        evolved: "prompt-cot",
+      };
+
+      function matchesPreset(el) {
+        if (activePreset === "all") return true;
+        if (activePreset === "surging") return el.getAttribute("data-lifecycle") === "surging";
+        if (activePreset === "evolved") return el.getAttribute("data-lifecycle") === "evolved";
+        return el.getAttribute("data-audience") === activePreset;
+      }
 
       function matches(el) {
+        const okPreset = matchesPreset(el);
         const okEra = activeEra === "all" || el.getAttribute("data-era") === activeEra;
         const okLife = activeLife === "all" || el.getAttribute("data-lifecycle") === activeLife;
         const okDom = activeDomain === "all" || el.getAttribute("data-domain") === activeDomain;
         const okQ = !query || (el.getAttribute("data-search") || "").includes(query);
-        return okEra && okLife && okDom && okQ;
+        return okPreset && okEra && okLife && okDom && okQ;
       }
 
       function apply() {
@@ -313,6 +381,45 @@ const schema = {
         if (countEl) countEl.textContent = `${shown}/${cards.length}`;
       }
 
+      function setPreset(id) {
+        activePreset = id || "all";
+        document.querySelectorAll("[data-tl-preset]").forEach((b) => {
+          const on = b.getAttribute("data-tl-preset") === activePreset;
+          b.classList.toggle("is-active", on);
+          if (on && presetBanner) {
+            presetBanner.textContent = b.getAttribute("data-preset-desc") || "";
+          }
+        });
+        const sync = window["__syncHorizon_hz-timeline"];
+        if (sync && typeof sync.focusConcept === "function") {
+          sync.focusConcept(presetFocusSlug[activePreset] || null);
+        }
+        apply();
+      }
+
+      function setView(mode) {
+        document.querySelectorAll("[data-tl-view]").forEach((b) =>
+          b.classList.toggle("is-active", b.getAttribute("data-tl-view") === mode)
+        );
+        if (edView && mxView) {
+          edView.style.display = mode === "matrix" ? "none" : "";
+          mxView.style.display = mode === "matrix" ? "block" : "none";
+        }
+      }
+
+      document.querySelectorAll("[data-tl-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const p = btn.getAttribute("data-tl-preset") || "all";
+          setPreset(p);
+          try {
+            const url = new URL(window.location.href);
+            if (p === "all") url.searchParams.delete("preset");
+            else url.searchParams.set("preset", p);
+            window.history.replaceState({}, "", url);
+          } catch {}
+        });
+      });
+
       document.querySelectorAll("[data-tl-era]").forEach((btn) => {
         btn.addEventListener("click", () => {
           activeEra = btn.getAttribute("data-tl-era") || "all";
@@ -336,17 +443,21 @@ const schema = {
         apply();
       });
 
-      // View Mode Switcher (Editorial Cards vs Compact Matrix)
       document.querySelectorAll("[data-tl-view]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const mode = btn.getAttribute("data-tl-view");
-          document.querySelectorAll("[data-tl-view]").forEach((b) => b.classList.toggle("is-active", b === btn));
-          if (edView && mxView) {
-            edView.style.display = mode === "matrix" ? "none" : "";
-            mxView.style.display = mode === "matrix" ? "block" : "none";
-          }
+          const mode = btn.getAttribute("data-tl-view") || "editorial";
+          setView(mode);
         });
       });
+
+      // Hydrate URL ?preset= and ?view=
+      try {
+        const sp = new URLSearchParams(window.location.search);
+        const qPreset = sp.get("preset");
+        const qView = sp.get("view");
+        if (qView === "matrix") setView("matrix");
+        if (qPreset) setPreset(qPreset);
+      } catch {}
 
       // Scroll-spy for Left Era Scrubber Rail
       const spyLinks = [...document.querySelectorAll("[data-era-spy]")];

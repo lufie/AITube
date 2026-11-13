@@ -14,9 +14,10 @@ const altHref = switchLangPath(pathname, altLang);
 const cleanPath = stripBase(pathname);
 
 const navItems = [
+  { href: withBase(`/${lang}/`), label: lang === "zh" ? "首页导览" : "Start Here", exact: `/${lang}/` },
+  { href: withBase(`/${lang}/roadmap/`), label: t.navRoadmap, match: `/${lang}/roadmap` },
   { href: withBase(`/${lang}/timeline/`), label: t.navTimeline, match: `/${lang}/timeline` },
   { href: withBase(`/${lang}/directory/`), label: t.navDirectory, match: `/${lang}/directory` },
-  { href: withBase(`/${lang}/roadmap/`), label: t.navRoadmap, match: `/${lang}/roadmap` },
   { href: withBase(`/${lang}/vault/`), label: t.navVault, match: `/${lang}/vault` },
 ];
 ---
@@ -25,14 +26,17 @@ const navItems = [
     <a href={withBase(`/${lang}/`)} class="at-brand" aria-label={t.siteName}>
       <LogoMark size={28} />
       <span>AITube</span>
-      <span class="at-brand-sub">2017–2026 INDEX</span>
     </a>
 
     <nav class="at-nav" aria-label="Primary">
       {navItems.map((it) => {
-        const isCurrent = cleanPath.startsWith(it.match);
+        const isCurrent = it.exact ? cleanPath === it.exact : it.match ? cleanPath.startsWith(it.match) : false;
         return (
-          <a href={it.href} class="at-nav-link" aria-current={isCurrent ? "page" : undefined}>
+          <a
+            href={it.href}
+            class={`at-nav-link ${it.exact ? "at-nav-home-link" : ""}`}
+            aria-current={isCurrent ? "page" : undefined}
+          >
             {it.label}
           </a>
         );

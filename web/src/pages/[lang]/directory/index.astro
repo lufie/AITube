@@ -13,6 +13,7 @@ import {
   type Lifecycle,
 } from "../../../lib/i18n";
 import { CONCEPTS, ERAS, NODES, TAXONOMY_DIMS, getConcept, getWaveformBars } from "../../../lib/content";
+import { DIRECTORY_SCENARIOS } from "../../../lib/personas";
 import { buildBreadcrumbSchema, orgAndSiteGraph } from "../../../lib/seo";
 
 export function getStaticPaths() {
@@ -52,6 +53,8 @@ const clientCatalog = NODES.map((n) => {
     slug: n.slug,
     order: n.order,
     isSpine: n.isSpine ? 1 : 0,
+    stage: n.stageId,
+    diff: n.facets.difficulty,
     era: c?.eraId || "",
     life: c?.lifecycle || "mainstream",
     lifeIcon: c ? LIFECYCLE_META[c.lifecycle].icon : "●",
@@ -78,12 +81,12 @@ const clientCatalog = NODES.map((n) => {
 
 const title =
   lang === "zh"
-    ? `AI 实战视频切片多维检索库（${NODES.length} 支核验切片）— AITube`
-    : `Multi-Faceted AI Video Slice Directory (${NODES.length} Cuts) — AITube`;
+    ? `AI 实战视频切片库（${NODES.length} 支核验精切 · 按场景直达）— AITube`
+    : `AI Video Cuts Directory (${NODES.length} Verified Slices) — AITube`;
 const desc =
   lang === "zh"
-    ? `按概念演进纪元、技术层、核心任务与工具栈交叉检索 ${NODES.length} 支核验 AI 视频切片与技术原典。`
-    : `Filter ${NODES.length} verified AI implementation video slices across concept eras, layers, tasks, and stacks.`;
+    ? `按 5 大高频应用场景（零基础科普、AI 编程、知识库与智能体、多模态创作、前沿评测）或多维标签检索 ${NODES.length} 支 AI 核心切片。`
+    : `Filter ${NODES.length} verified AI video slices by practical scenario or multi-faceted tags.`;
 
 const schema = {
   "@context": "https://schema.org",
@@ -104,17 +107,35 @@ const schema = {
   ogImage={`/og/directory-${lang}.png`}
   schema={schema}
 >
-  <section style="padding:30px 0 20px;border-bottom:1px solid var(--border-subtle);">
+  <section style="padding:30px 0 22px;border-bottom:1px solid var(--border-subtle);background:linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-canvas) 100%);">
     <div class="at-container">
-      <div class="at-kicker">MULTI-FACETED SCREENING DIRECTORY · {NODES.length} VERIFIED CUTS</div>
-      <h1 style="font-size:clamp(1.75rem,2.8vw,2.4rem);margin:6px 0 10px;">
-        {lang === "zh" ? "AI 实战视频切片多维检索库" : "Multi-Faceted AI Video Slice Directory"}
+      <div class="at-kicker">VERIFIED VIDEO CUTS · {NODES.length} SLICES</div>
+      <h1 style="font-size:clamp(1.75rem,2.8vw,2.35rem);margin:6px 0 8px;">
+        {lang === "zh" ? "AI 实战视频切片库：按目标一键筛片" : "AI Video Cuts: Filter by Your Goal"}
       </h1>
-      <p style="color:var(--ink-secondary);max-width:70ch;font-size:0.95rem;">
+      <p style="color:var(--ink-secondary);max-width:68ch;font-size:0.95rem;margin-bottom:18px;">
         {lang === "zh"
-          ? "按「概念纪元 × 技术层 × 核心任务 × 工具栈」正交交叉过滤，或直接输入真实工程问题（如“怎么避免 MCP 撑爆上下文”“DeepSeek GRPO 原理”）即时定位核心切片。"
-          : "Cross-filter 280 verified slices by Concept Era, AI Layer, Core Task, and Stack — or type a natural-language engineering question below."}
+          ? "不用面对密密麻麻的技术名词发愁：先点选下方你关心的场景卡片快速圈定好片；进阶用户也可以在左侧展开细分技术栈交叉筛选。"
+          : "Start with a high-signal scenario preset below — or use the left sidebar for granular stack and era cross-filtering."}
       </p>
+
+      <!-- 6 One-Click Scenario Cards -->
+      <div class="at-dir-scenarios" role="group" aria-label="Scenario presets">
+        {DIRECTORY_SCENARIOS.map((sc, idx) => (
+          <button
+            type="button"
+            class={`at-dir-scenario-btn ${idx === 0 ? "is-active" : ""}`}
+            data-d-preset={sc.id}
+          >
+            <div style="font-weight:650;font-size:0.9rem;color:var(--ink-primary);">
+              {lang === "zh" ? sc.zhTitle : sc.enTitle}
+            </div>
+            <div style="font-size:0.75rem;color:var(--ink-muted);margin-top:2px;">
+              {lang === "zh" ? sc.zhSub : sc.enSub}
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -132,45 +153,51 @@ const schema = {
 
       <aside class="at-dir-sidebar" id="dir-sidebar" aria-label="Faceted filters">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <span class="at-mono" style="font-size:0.76rem;font-weight:600;">FILTERS</span>
+          <span class="at-mono" style="font-size:0.75rem;font-weight:650;">
+            {lang === "zh" ? "高级细分筛选" : "ADVANCED FILTERS"}
+          </span>
           <button type="button" id="dir-reset" class="at-mono" style="border:0;background:transparent;color:var(--accent-primary);font-size:0.75rem;cursor:pointer;">
             {t.clearFilters}
           </button>
         </div>
 
-        <div class="at-facet-group">
-          <div class="at-facet-title">{lang === "zh" ? "概念演进纪元" : "Concept Era"}</div>
-          {ERAS.map((era) => {
-            const eraSlugs = new Set(CONCEPTS.filter((c) => c.eraId === era.id).map((c) => c.slug));
-            const cnt = NODES.filter((n) => eraSlugs.has(n.primaryConcept)).length;
-            return (
-              <button type="button" class="at-facet-btn" data-f-era={era.id} data-f-label={`${era.period} · ${era[lang].title}`}>
-                <span>{era.period} · {era[lang].title}</span>
-                <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {TAXONOMY_DIMS.map((dim) => (
-          <div class="at-facet-group">
-            <div class="at-facet-title">{dim[lang].label}</div>
-            {dim.items.map((item) => {
-              const cnt = NODES.filter((n) => n.facets[dim.prop].includes(item.slug)).length;
+        <details class="at-facet-details" open>
+          <summary class="at-facet-title">{lang === "zh" ? "概念演进纪元" : "Concept Era"}</summary>
+          <div style="margin-top:6px;">
+            {ERAS.map((era) => {
+              const eraSlugs = new Set(CONCEPTS.filter((c) => c.eraId === era.id).map((c) => c.slug));
+              const cnt = NODES.filter((n) => eraSlugs.has(n.primaryConcept)).length;
               return (
-                <button
-                  type="button"
-                  class="at-facet-btn"
-                  data-f-dim={dim.prop}
-                  data-f-val={item.slug}
-                  data-f-label={item[lang].name}
-                >
-                  <span>{item[lang].name}</span>
+                <button type="button" class="at-facet-btn" data-f-era={era.id} data-f-label={`${era.period} · ${era[lang].title}`}>
+                  <span>{era.period} · {era[lang].title}</span>
                   <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
                 </button>
               );
             })}
           </div>
+        </details>
+
+        {TAXONOMY_DIMS.map((dim, dIdx) => (
+          <details class="at-facet-details" open={dIdx === 0}>
+            <summary class="at-facet-title">{dim[lang].label}</summary>
+            <div style="margin-top:6px;">
+              {dim.items.map((item) => {
+                const cnt = NODES.filter((n) => n.facets[dim.prop].includes(item.slug)).length;
+                return (
+                  <button
+                    type="button"
+                    class="at-facet-btn"
+                    data-f-dim={dim.prop}
+                    data-f-val={item.slug}
+                    data-f-label={item[lang].name}
+                  >
+                    <span>{item[lang].name}</span>
+                    <span class="at-mono" style="font-size:0.73rem;color:var(--ink-muted);">{cnt}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </details>
         ))}
       </aside>
     </div>
@@ -249,12 +276,54 @@ const schema = {
       const mobileToggle = document.getElementById("dir-mobile-toggle");
       const sidebar = document.getElementById("dir-sidebar");
 
-      const state = { era: null, domains: null, tasks: null, stacks: null, life: "all", plat: "all", q: "", sort: "editorial", page: 1 };
+      const state = {
+        preset: "all",
+        era: null,
+        domains: null,
+        tasks: null,
+        stacks: null,
+        life: "all",
+        plat: "all",
+        q: "",
+        sort: "editorial",
+        page: 1,
+      };
       const PAGE_SIZE = 24;
+
+      function matchesScenario(it, preset) {
+        if (!preset || preset === "all") return true;
+        if (preset === "beginner") {
+          return it.stage === "stage-0" || it.diff === "intro";
+        }
+        if (preset === "coding" || preset === "applied") {
+          return (
+            it.tasks.includes("agentic-coding") ||
+            it.stacks.includes("cursor-ai-ide")
+          );
+        }
+        if (preset === "rag-agent") {
+          return (
+            it.tasks.includes("rag-knowledge") ||
+            it.tasks.includes("tool-mcp-skills") ||
+            it.tasks.includes("agent-orchestration")
+          );
+        }
+        if (preset === "multimodal") {
+          return it.tasks.includes("multimodal-creation") || it.stacks.includes("comfy-visual-gen");
+        }
+        if (preset === "frontier") {
+          return it.life === "surging" || it.tasks.includes("evals-finetuning");
+        }
+        return true;
+      }
 
       // Hydrate initial filters from URL query string if present
       try {
         const sp = new URLSearchParams(window.location.search);
+        if (sp.get("preset")) {
+          const rawP = sp.get("preset");
+          state.preset = rawP === "applied" ? "coding" : rawP;
+        }
         if (sp.get("era")) state.era = sp.get("era");
         if (sp.get("domains")) state.domains = sp.get("domains");
         if (sp.get("tasks")) state.tasks = sp.get("tasks");
@@ -318,19 +387,28 @@ const schema = {
       }
 
       function syncButtons() {
+        document.querySelectorAll("[data-d-preset]").forEach((b) =>
+          b.classList.toggle("is-active", b.getAttribute("data-d-preset") === state.preset)
+        );
         document.querySelectorAll("[data-f-era]").forEach((b) =>
           b.classList.toggle("is-active", b.getAttribute("data-f-era") === state.era)
         );
         ["domains", "tasks", "stacks"].forEach((dim) => {
-          document.querySelectorAll(`[data-f-dim="${dim}"]`).forEach((b) =>
-            b.classList.toggle("is-active", b.getAttribute("data-f-val") === state[dim])
-          );
+          document.querySelectorAll(`[data-f-dim="${dim}"]`).forEach((b) => {
+            const active = b.getAttribute("data-f-val") === state[dim];
+            b.classList.toggle("is-active", active);
+            if (active) {
+              const det = b.closest("details");
+              if (det) det.open = true;
+            }
+          });
         });
       }
 
       function syncURL() {
         try {
           const sp = new URLSearchParams();
+          if (state.preset && state.preset !== "all") sp.set("preset", state.preset);
           if (state.era) sp.set("era", state.era);
           if (state.domains) sp.set("domains", state.domains);
           if (state.tasks) sp.set("tasks", state.tasks);
@@ -344,6 +422,7 @@ const schema = {
 
       function render() {
         const filtered = catalog.filter((it) => {
+          if (!matchesScenario(it, state.preset)) return false;
           if (state.era && it.era !== state.era) return false;
           if (state.domains && !it.domains.includes(state.domains)) return false;
           if (state.tasks && !it.tasks.includes(state.tasks)) return false;
@@ -381,6 +460,15 @@ const schema = {
 
       mobileToggle?.addEventListener("click", () => {
         sidebar?.classList.toggle("is-open");
+      });
+
+      document.querySelectorAll("[data-d-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.preset = btn.getAttribute("data-d-preset") || "all";
+          state.page = 1;
+          syncButtons();
+          render();
+        });
       });
 
       document.querySelectorAll("[data-f-era]").forEach((btn) => {
@@ -440,6 +528,7 @@ const schema = {
       });
 
       resetBtn?.addEventListener("click", () => {
+        state.preset = "all";
         state.era = state.domains = state.tasks = state.stacks = null;
         state.life = state.plat = "all";
         state.q = "";
@@ -453,7 +542,7 @@ const schema = {
         render();
       });
 
-      if (state.era || state.domains || state.tasks || state.stacks || state.q) {
+      if (state.preset !== "all" || state.era || state.domains || state.tasks || state.stacks || state.q) {
         syncButtons();
         render();
       }

@@ -1,18 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import MediaCard from "../../components/MediaCard.astro";
-import ConceptHorizonMap from "../../components/ConceptHorizonMap.astro";
-import ConceptTimelineCard from "../../components/ConceptTimelineCard.astro";
+import PersonaCompass from "../../components/PersonaCompass.astro";
 import HeroWaveRadar from "../../components/HeroWaveRadar.astro";
 import { LANGS, UI, withBase, type Lang } from "../../lib/i18n";
-import {
-  CONCEPTS,
-  ERAS,
-  NODES,
-  SPINE_NODES,
-  STAGES,
-  TAXONOMY_DIMS,
-} from "../../lib/content";
+import { CONCEPTS, ERAS, NODES } from "../../lib/content";
+import { DIRECTORY_SCENARIOS, SHIFT_CHEATSHEET } from "../../lib/personas";
 import { orgAndSiteGraph } from "../../lib/seo";
 
 export function getStaticPaths() {
@@ -26,35 +18,19 @@ const romanEras = ["I", "II", "III", "IV", "V"];
 const heroPrompts =
   lang === "zh"
     ? [
-        { label: "MCP 撑爆上下文怎么办？", q: "Context Engineering MCP" },
-        { label: "Prompt vs Context 区别", q: "Context Engineering" },
-        { label: "DeepSeek R1 RLVR 原理", q: "RLVR DeepSeek" },
-        { label: "SKILL.md 渐进加载规范", q: "SKILL.md" },
+        { label: "🌱 大模型原理通俗解释", q: "Karpathy 预训练" },
+        { label: "⚡ 零幻觉搭个人知识库", q: "NotebookLM" },
+        { label: "🧭 智能体评测怎么做？", q: "Hamel Evals" },
+        { label: "🔭 Prompt 与 Context 区别", q: "Context Engineering" },
       ]
     : [
-        { label: "MCP bloating context?", q: "Context Engineering MCP" },
-        { label: "Prompt vs Context Eng", q: "Context Engineering" },
-        { label: "How RLVR works (o1 / R1)", q: "RLVR DeepSeek" },
-        { label: "SKILL.md progressive loading", q: "SKILL.md" },
+        { label: "🌱 How LLMs actually work", q: "Karpathy three stage" },
+        { label: "⚡ Zero-hallucination docs workflow", q: "NotebookLM" },
+        { label: "🧭 How to run LLM Evals", q: "Hamel Evals" },
+        { label: "🔭 Prompt vs Context Engineering", q: "Context Engineering" },
       ];
 
-const surgingConcepts = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 4);
-const featuredSlugs = [
-  "3b1b-transformer-overview",
-  "karpathy-deep-dive-llms",
-  "deepseek-r1-rlvr-paper",
-  "anthropic-context-engineering-digest",
-  "anthropic-mcp-workshop-mahesh",
-  "anthropic-effective-agents-digest",
-  "agent-skills-open-spec-digest",
-  "comfyui-flux-consistent-pipeline",
-];
-const featuredNodes = featuredSlugs
-  .map((s) => NODES.find((n) => n.slug === s))
-  .filter(Boolean)
-  .concat(SPINE_NODES.slice(0, 8))
-  .filter((v, idx, arr) => v && arr.findIndex((x) => x?.slug === v.slug) === idx)
-  .slice(0, 9);
+const scenarioCards = DIRECTORY_SCENARIOS.filter((s) => s.id !== "all");
 
 const schema = {
   "@context": "https://schema.org",
@@ -69,47 +45,44 @@ const schema = {
   ogImage={`/og/home-${lang}.png`}
   schema={schema}
 >
-  <section class="at-hero">
-    <div class="at-container at-hero-grid">
-      <div>
+  <!-- ZONE 1: Calm Centered Header + 4-Persona Interactive Triage Compass -->
+  <section class="at-home-hero">
+    <div class="at-container">
+      <div class="at-home-intro">
         <div class="at-kicker">{t.heroKicker}</div>
-        <h1>{t.heroTitle}</h1>
-        <p class="at-hero-lead">{t.heroSubtitle}</p>
+        <h1 class="at-home-h1">{t.heroTitle}</h1>
+        <p class="at-home-sub">{t.heroSubtitle}</p>
 
-        <button type="button" class="at-hero-search-btn" data-open-search>
-          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-            ⌕ {t.searchPlaceholder}
-          </span>
-          <span class="at-kbd">⌘K</span>
-        </button>
+        <div class="at-home-search-wrap">
+          <button type="button" class="at-hero-search-btn at-hero-search-centered" data-open-search>
+            <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+              ⌕ {t.searchPlaceholder}
+            </span>
+            <span class="at-kbd">⌘K</span>
+          </button>
 
-        <div class="at-prompt-row" aria-label="Suggested engineering queries">
-          <span class="at-mono" style="font-size:0.7rem;color:var(--ink-muted);">
-            {lang === "zh" ? "试搜:" : "TRY:"}
-          </span>
-          {heroPrompts.map((hp) => (
-            <button type="button" class="at-prompt-chip" data-open-search data-search-q={hp.q}>
-              {hp.label}
-            </button>
-          ))}
-        </div>
-
-        <div class="at-hero-ctas">
-          <a href={withBase(`/${lang}/timeline/`)} class="at-btn-primary">{t.ctaTimeline}</a>
-          <a href={withBase(`/${lang}/directory/`)} class="at-btn-ghost">{t.ctaDirectory}</a>
+          <div class="at-prompt-row" style="justify-content:center;margin-bottom:0;" aria-label="Suggested queries">
+            {heroPrompts.map((hp) => (
+              <button type="button" class="at-prompt-chip" data-open-search data-search-q={hp.q}>
+                {hp.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <HeroWaveRadar lang={lang} />
+      <PersonaCompass lang={lang} />
     </div>
   </section>
 
-  <!-- Signature Interactive Horizon Map + 5-Era Stepper -->
+  <!-- ZONE 2: "Learn New, Skip Old" 4-Row Paradigm Cheat Sheet + 4-Wave Radar -->
   <section class="at-section">
     <div class="at-container">
       <div class="at-section-head">
         <div>
-          <div class="at-kicker">SIGNATURE PERSPECTIVE · INTERACTIVE LINEAGE</div>
+          <div class="at-kicker" style="color:var(--accent-signal);">
+            {lang === "zh" ? "STEP 2 · 30 秒看清技术风向（避免花时间学过时套路）" : "STEP 2 · LEARN WHAT'S CURRENT, SKIP WHAT'S OUTDATED"}
+          </div>
           <h2>{t.eraStripHeading}</h2>
         </div>
         <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
@@ -117,27 +90,44 @@ const schema = {
         </a>
       </div>
 
-      <div style="margin-bottom:18px;">
-        <ConceptHorizonMap lang={lang} mode="home" />
+      <div class="at-cheatsheet-grid">
+        <div class="at-cheatsheet-card">
+          <div class="at-cheatsheet-head at-mono">
+            <span>{lang === "zh" ? "✕ 别再死磕的旧习惯（2023–2024）" : "✕ OUTDATED HABITS (2023–24)"}</span>
+            <span style="color:var(--accent-primary);">{lang === "zh" ? "✓ 2026 现在该掌握的重点" : "✓ FOCUS ON THIS IN 2026"}</span>
+          </div>
+
+          <div class="at-cheatsheet-list">
+            {SHIFT_CHEATSHEET.map((row) => (
+              <a href={withBase(`/${lang}/concepts/${row.conceptSlug}/`)} class="at-cheatsheet-row">
+                <div class="at-cheatsheet-old">
+                  {lang === "zh" ? row.zhOld : row.enOld}
+                </div>
+                <div class="at-mono" style="color:var(--accent-signal);font-weight:700;">→</div>
+                <div class="at-cheatsheet-new">
+                  <span>{lang === "zh" ? row.zhNew : row.enNew}</span>
+                  <span class="at-mono at-cheatsheet-tag">{row.tag}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <HeroWaveRadar lang={lang} />
       </div>
 
-      <div class="at-era-strip">
+      <!-- Clean 5-Era Macro Story Strip -->
+      <div class="at-era-strip" style="margin-top:20px;">
         {ERAS.map((era, idx) => {
-          const eraConcepts = CONCEPTS.filter((c) => c.eraId === era.id);
+          const cnt = CONCEPTS.filter((c) => c.eraId === era.id).length;
           return (
             <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-era-card">
-              <span class="at-mono" style="font-size:0.72rem;color:var(--accent-signal);font-weight:650;">
-                ERA {romanEras[idx]} · {era.period}
-              </span>
-              <strong style="font-family:var(--font-serif);font-size:1.08rem;">{era[lang].title}</strong>
-              <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.46;">{era[lang].subtitle}</p>
-              <div style="margin-top:auto;padding-top:8px;display:flex;flex-wrap:wrap;gap:4px;">
-                {eraConcepts.slice(0, 3).map((c) => (
-                  <span class="at-mono" style="font-size:0.67rem;padding:1px 5px;background:var(--bg-canvas);border:1px solid var(--border-subtle);border-radius:3px;">
-                    {c[lang].shortName}
-                  </span>
-                ))}
+              <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--accent-signal);font-weight:650;">
+                <span>ERA {romanEras[idx]} · {era.period}</span>
+                <span style="color:var(--ink-muted);">{cnt} {lang === "zh" ? "概念" : "concepts"}</span>
               </div>
+              <strong style="font-family:var(--font-serif);font-size:1.05rem;">{era[lang].title}</strong>
+              <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.45;">{era[lang].subtitle}</p>
             </a>
           );
         })}
@@ -145,88 +135,37 @@ const schema = {
     </div>
   </section>
 
-  <!-- Surging 2026 Concepts -->
-  <section class="at-section">
-    <div class="at-container">
-      <div class="at-section-head">
-        <div>
-          <div class="at-kicker" style="color:var(--accent-signal);">▲ SURGING MOMENTUM</div>
-          <h2>{t.surgingHeading}</h2>
-        </div>
-        <a href={withBase(`/${lang}/timeline/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
-          {lang === "zh" ? "查看全部 22 个概念演进脉络 →" : "View all 22 concepts →"}
-        </a>
-      </div>
-
-      <div class="at-concept-list">
-        {surgingConcepts.map((c) => (
-          <ConceptTimelineCard concept={c} lang={lang} />
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Flagship Cuts -->
-  <section class="at-section">
-    <div class="at-container">
-      <div class="at-section-head">
-        <div>
-          <div class="at-kicker">SCREENING GALLERY</div>
-          <h2>{t.flagshipHeading}</h2>
-        </div>
-        <a href={withBase(`/${lang}/directory/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
-          {t.ctaDirectory} →
-        </a>
-      </div>
-
-      <div class="at-grid-cards">
-        {featuredNodes.map((n) => n && <MediaCard node={n} lang={lang} />)}
-      </div>
-    </div>
-  </section>
-
-  <!-- 4-Stage Learning Roadmap & Topic Hubs -->
+  <!-- ZONE 3: Direct Scenario Doors (5 Clean Cards -> Filtered Directory) -->
   <section class="at-section" style="border-bottom:0;">
     <div class="at-container">
       <div class="at-section-head">
         <div>
-          <div class="at-kicker">STRUCTURED PROGRESSION</div>
-          <h2>{t.roadmapHeading}</h2>
+          <div class="at-kicker">
+            {lang === "zh" ? "STEP 3 · 按具体问题直接找实战切片" : "STEP 3 · JUMP DIRECTLY BY PRACTICAL GOAL"}
+          </div>
+          <h2>
+            {lang === "zh" ? "知道自己想解决什么问题？按场景一键筛出好片" : "Know Your Goal? Jump Straight Into Verified Cuts"}
+          </h2>
         </div>
-        <a href={withBase(`/${lang}/roadmap/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
-          {lang === "zh" ? "打开完整四阶路线 →" : "Open full 4-stage roadmap →"}
+        <a href={withBase(`/${lang}/directory/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
+          {lang === "zh" ? `浏览全库 ${NODES.length} 支切片 →` : `All ${NODES.length} cuts →`}
         </a>
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:34px;">
-        {STAGES.map((st) => {
-          const cnt = SPINE_NODES.filter((n) => n.stageId === st.id).length;
-          return (
-            <a href={withBase(`/${lang}/roadmap/#${st.id}`)} class="at-era-card">
-              <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.74rem;color:var(--accent-primary);">
-                <span>{st[lang].code}</span>
-                <span>{cnt} {lang === "zh" ? "必修精切" : "spine cuts"}</span>
-              </div>
-              <h3 style="font-size:1.14rem;">{st[lang].title}</h3>
-              <p style="font-size:0.84rem;color:var(--ink-secondary);">{st[lang].summary}</p>
-            </a>
-          );
-        })}
-      </div>
-
-      <div style="padding-top:22px;border-top:1px solid var(--border-subtle);">
-        <div class="at-kicker" style="margin-bottom:10px;">
-          {lang === "zh" ? "按专题分面直达（20 个细分专题页）" : "Browse by Topic Hubs (20 Curated Facets)"}
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          {TAXONOMY_DIMS.flatMap((dim) =>
-            dim.items.map((item) => (
-              <a href={withBase(`/${lang}/topics/${dim.key}/${item.slug}/`)} class="at-lineage-pill">
-                {item[lang].name}
-              </a>
-            ))
-          )}
-        </div>
+      <div class="at-scenario-doors">
+        {scenarioCards.map((sc) => (
+          <a href={withBase(`/${lang}/directory/?preset=${sc.id}`)} class="at-scenario-door">
+            <div style="font-weight:650;font-size:1.02rem;color:var(--ink-primary);">
+              {lang === "zh" ? sc.zhTitle : sc.enTitle}
+            </div>
+            <div style="font-size:0.82rem;color:var(--ink-secondary);margin-top:4px;">
+              {lang === "zh" ? sc.zhSub : sc.enSub}
+            </div>
+            <div class="at-mono" style="margin-top:12px;font-size:0.75rem;color:var(--accent-primary);font-weight:600;">
+              {lang === "zh" ? "进入精选片单 →" : "Open cuts →"}
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>

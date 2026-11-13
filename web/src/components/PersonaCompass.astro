@@ -1,0 +1,220 @@
+---
+import { NODES } from "../lib/content";
+import { formatSliceMinutes, formatTime, withBase, type Lang } from "../lib/i18n";
+import { PERSONAS } from "../lib/personas";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const nodeBySlug = new Map(NODES.map((n) => [n.slug, n]));
+---
+<div class="at-compass" id="persona-compass">
+  <div class="at-compass-header">
+    <span class="at-mono" style="font-size:0.74rem;color:var(--accent-primary);font-weight:600;">
+      {lang === "zh" ? "STEP 1 · 先选你的当前身份，页面立即只显示与你相关的重点" : "STEP 1 · CHOOSE YOUR LENS FOR INSTANT FOCUS"}
+    </span>
+  </div>
+
+  <!-- 4 Tactile Role Switcher Cards -->
+  <div class="at-role-grid" role="tablist" aria-label={lang === "zh" ? "选择阅读视角" : "Choose your reader lens"}>
+    {PERSONAS.map((p, idx) => {
+      const loc = p[lang];
+      const isDefault = idx === 0;
+      return (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={isDefault ? "true" : "false"}
+          class={`at-role-tab ${isDefault ? "is-active" : ""}`}
+          data-role-tab={p.id}
+          data-accent={p.accent}
+        >
+          <div class="at-role-icon" aria-hidden="true">
+            {p.id === "beginner" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21v-9" />
+                <path d="M12 13C7.5 13 5 9.5 5 5c4.5 0 7 2.5 7 8Z" />
+                <path d="M12 15c4 0 7-3 7-7.5-4 0-7 2.5-7 7.5Z" />
+                <path d="M8 21h8" />
+              </svg>
+            )}
+            {p.id === "applied" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 4 14 11 14 10 22 20 10 13 10 13 2" />
+              </svg>
+            )}
+            {p.id === "career" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <polygon points="15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5 15.5 8.5" />
+              </svg>
+            )}
+            {p.id === "frontier" && (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 16 12-9 3 4-12 9-3-4Z" />
+                <path d="m15 7 3-2 3 4-3 2" />
+                <path d="m9 16-2 5" />
+                <path d="m11 16 3 5" />
+              </svg>
+            )}
+          </div>
+          <div class="at-role-title">{loc.label}</div>
+          <div class="at-role-sub">{loc.sub}</div>
+          <div class="at-role-badge at-mono">{loc.badge}</div>
+        </button>
+      );
+    })}
+  </div>
+
+  <!-- Focused Prescription Panels (Only 1 visible at a time = Zero Clutter) -->
+  {PERSONAS.map((p, idx) => {
+    const loc = p[lang];
+    const isDefault = idx === 0;
+    return (
+      <div
+        role="tabpanel"
+        class="at-role-panel"
+        data-role-panel={p.id}
+        style={isDefault ? "" : "display:none;"}
+      >
+        <div class="at-role-panel-left">
+          <div class="at-mono" style="font-size:0.72rem;color:var(--accent-signal);font-weight:650;margin-bottom:6px;">
+            {lang === "zh" ? `★ 给「${loc.label}」的重点结论` : `★ KEY FOCUS FOR ${loc.label.toUpperCase()}`}
+          </div>
+          <h2 class="at-role-headline">{loc.headline}</h2>
+          <p class="at-role-takeaway">{loc.takeaway}</p>
+
+          <div class="at-role-steps">
+            {p.steps.map((st) => (
+              <a href={withBase(st.href(lang))} class="at-role-step-link">
+                <span>{lang === "zh" ? st.zhText : st.enText}</span>
+                <span class="at-mono" style="color:var(--accent-primary);flex-shrink:0;">→</span>
+              </a>
+            ))}
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;">
+            <a href={withBase(p.primaryHref(lang))} class="at-btn-primary">
+              {loc.primaryCta}
+            </a>
+            <a href={withBase(p.secondaryHref(lang))} class="at-btn-ghost" style="font-size:0.86rem;padding:9px 14px;">
+              {loc.secondaryCta}
+            </a>
+          </div>
+        </div>
+
+        <div class="at-role-panel-right">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <span class="at-mono" style="font-size:0.74rem;font-weight:650;color:var(--ink-primary);">
+              {lang === "zh" ? "为你精选的 3 支必看起点（点开直达核心几分钟）" : "YOUR TOP 3 MUST-WATCH STARTER CUTS"}
+            </span>
+            <span class="at-mono" style="font-size:0.7rem;color:var(--ink-muted);">
+              {lang === "zh" ? "已剔除废话铺垫" : "Zero fluff"}
+            </span>
+          </div>
+
+          <div class="at-starter-stack">
+            {p.picks.map((pk, pIdx) => {
+              const node = nodeBySlug.get(pk.slug);
+              if (!node) return null;
+              const s = node.source;
+              const ytThumb =
+                s.platform === "youtube" && s.videoId
+                  ? `https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg`
+                  : null;
+              const cutTag =
+                s.kind === "video-cut"
+                  ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} (${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)})`
+                  : `${s.readingMinutes || 10}m ${lang === "zh" ? "原典精读" : "digest"}`;
+              const saveTag =
+                lang === "zh" ? `省 ${s.hoursSaved}h` : `Save ${s.hoursSaved}h`;
+
+              return (
+                <a
+                  href={withBase(`/${lang}/nodes/${node.slug}/`)}
+                  class="at-starter-card"
+                  data-node-slug={node.slug}
+                >
+                  <div class="at-starter-poster">
+                    {ytThumb ? (
+                      <img
+                        src={ytThumb}
+                        alt={node[lang].title}
+                        loading="lazy"
+                        decoding="async"
+                        onerror="this.style.display='none'"
+                      />
+                    ) : (
+                      <div class="at-mono" style="font-size:0.72rem;color:#9edae5;">
+                        {s.kind === "article-digest" ? "MONOGRAPH" : "BILIBILI"}
+                      </div>
+                    )}
+                    <span class="at-starter-num at-mono">TOP 0{pIdx + 1}</span>
+                    <span class="at-starter-play" aria-hidden="true">▶</span>
+                  </div>
+
+                  <div class="at-starter-body">
+                    <div class="at-starter-meta at-mono">
+                      <span>{cutTag}</span>
+                      <span style="color:var(--accent-signal);font-weight:600;">⚡ {saveTag}</span>
+                    </div>
+                    <h3 class="at-starter-title">{node[lang].title}</h3>
+                    <p class="at-starter-reason">
+                      {lang === "zh" ? `推荐理由：${pk.zhReason}` : `Why start here: ${pk.enReason}`}
+                    </p>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.getElementById("persona-compass");
+    if (!root) return;
+    const tabs = [...root.querySelectorAll("[data-role-tab]")];
+    const panels = [...root.querySelectorAll("[data-role-panel]")];
+    const valid = new Set(["beginner", "applied", "career", "frontier"]);
+
+    function activate(role, persist = true) {
+      if (!valid.has(role)) return;
+      tabs.forEach((tb) => {
+        const on = tb.getAttribute("data-role-tab") === role;
+        tb.classList.toggle("is-active", on);
+        tb.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      panels.forEach((pn) => {
+        pn.style.display = pn.getAttribute("data-role-panel") === role ? "" : "none";
+      });
+      if (persist) {
+        try {
+          localStorage.setItem("aitube-role", role);
+          const url = new URL(window.location.href);
+          url.searchParams.set("role", role);
+          window.history.replaceState({}, "", url);
+        } catch {}
+      }
+    }
+
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const qRole = sp.get("role");
+      const saved = localStorage.getItem("aitube-role");
+      if (qRole && valid.has(qRole)) activate(qRole, false);
+      else if (saved && valid.has(saved)) activate(saved, false);
+    } catch {}
+
+    tabs.forEach((tb) => {
+      tb.addEventListener("click", () => {
+        const r = tb.getAttribute("data-role-tab");
+        if (r) activate(r, true);
+      });
+    });
+  })();
+</script>
