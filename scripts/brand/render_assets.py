@@ -213,7 +213,7 @@ def main() -> None:
     draw_icon(180, PUBLIC / "apple-touch-icon.png")
 
     manifest = {
-        "name": "AITube — AI Concept Trend & Video Slice Index",
+        "name": "AITube — 用大白话讲透 AI 概念与精选视频片段",
         "short_name": "AITube",
         "start_url": "./zh/",
         "display": "standalone",
@@ -228,16 +228,16 @@ def main() -> None:
 
     default_wave = [18, 28, 36, 48, 56, 68, 79, 88, 94, 98]
     core_cards = [
-        ("home-zh.png", "CONCEPT TIMELINE × CURATED CUTS", "AITube · 用概念演进脉络读懂 AI", "22 个核心概念趋势坐标 · 280 支核验高信噪比视频切片", "ZH / 2026 EDITION"),
-        ("home-en.png", "CONCEPT TIMELINE × CURATED CUTS", "AITube · Map AI by Concept Evolution", "22 concept trajectories & 280 verified implementation slices.", "EN / 2026 EDITION"),
-        ("timeline-zh.png", "SIGNATURE PERSPECTIVE · 2017–2026", "AI 概念趋势时间线索引", "从 Transformer 到 Context Engineering、MCP 与 Agent Skills", "5 ERAS · 22 CONCEPTS"),
-        ("timeline-en.png", "SIGNATURE PERSPECTIVE · 2017–2026", "AI Concept Trend Timeline Index", "From Self-Attention to RLVR, MCP, Context & Agent Skills.", "5 ERAS · 22 CONCEPTS"),
-        ("directory-zh.png", "FACETED SCREENING GALLERY", "AI 实战切片多维检索库", "按概念纪元、技术层、核心任务与工具栈精准直达关键分钟", "280 VERIFIED CUTS"),
-        ("directory-en.png", "FACETED SCREENING GALLERY", "Multi-Faceted AI Video Directory", "Filter 280 verified cuts by era, layer, task, and stack.", "280 VERIFIED CUTS"),
-        ("roadmap-zh.png", "4-STAGE CURRICULUM", "从底层直觉到生产级智能体学习路线", "52 支旗舰主干切片串联起的系统进阶路径", "STAGE 00 → 03"),
-        ("roadmap-en.png", "4-STAGE CURRICULUM", "From Model Intuition to Production Agents", "52 flagship spine cuts sequenced across 4 engineering stages.", "STAGE 00 → 03"),
-        ("vault-zh.png", "OPEN BLUEPRINTS", "开源智能体规范与评测蓝图箱", "即拿即用的 AGENTS.md、SKILL.md、混合检索与二元裁判模板", "5 OPEN SPECS"),
-        ("vault-en.png", "OPEN BLUEPRINTS", "Open Agent Harness & Eval Vault", "Drop-in AGENTS.md, SKILL.md, Hybrid RAG & LLM Judge specs.", "5 OPEN SPECS"),
+        ("home-zh.png", "PLAIN LANGUAGE × HAND-PICKED HIGHLIGHTS", "AITube · 用大白话讲透 AI 怎么工作、怎么用好", "22 个核心概念来龙去脉 · 280 支已跳过片头废话的精选视频片段", "ZH / 2026 EDITION"),
+        ("home-en.png", "PLAIN ENGLISH × HAND-PICKED HIGHLIGHTS", "AITube · AI Explained in Plain Language", "22 core AI topics & 280 fluff-free video highlights.", "EN / 2026 EDITION"),
+        ("timeline-zh.png", "2017 → 2026 TIMELINE", "一张图看懂 AI 22 个核心词是怎么火起来的", "从注意力机制到 MCP 万能插头、信息整理术与 SKILL.md 技能包", "5 STAGES · 22 TOPICS"),
+        ("timeline-en.png", "2017 → 2026 TIMELINE", "How 22 Core AI Ideas Connected (2017–2026)", "From Self-Attention to MCP, Context Engineering & SKILL.md.", "5 STAGES · 22 TOPICS"),
+        ("directory-zh.png", "VIDEO HIGHLIGHTS LIBRARY", "精选 AI 视频库：点开直达最干货的几分钟", "按你想解决的事（科普、写代码、喂资料、做视频）一键挑好片", "280 HIGHLIGHTS"),
+        ("directory-en.png", "VIDEO HIGHLIGHTS LIBRARY", "AI Video Library: Skip Straight to the Best Part", "Filter 280 hand-picked highlights by practical goal or tool.", "280 HIGHLIGHTS"),
+        ("roadmap-zh.png", "4-STAGE STEP-BY-STEP PATH", "分步学习单：从零基础小白到做出靠谱应用", "不用从头硬啃，每个台阶先看最关键的 3 支视频就够了", "STAGE 00 → 03"),
+        ("roadmap-en.png", "4-STAGE STEP-BY-STEP PATH", "4 Clear Steps: From Zero to Reliable AI Apps", "52 essential highlights organized into 4 bite-sized stages.", "STAGE 00 → 03"),
+        ("vault-zh.png", "READY-TO-USE TEMPLATES", "现成模板箱：别人踩完坑总结好的模板直接抄", "不用注册一键复制：AGENTS.md、SKILL.md、自动批改与双路搜索模板", "5 TEMPLATES"),
+        ("vault-en.png", "READY-TO-USE TEMPLATES", "Ready-to-Use AI Templates: Copy & Paste", "Zero-signup AGENTS.md, SKILL.md, Hybrid Search & Eval prompts.", "5 TEMPLATES"),
     ]
     for fname, kicker, title, sub, badge in core_cards:
         render_og_card(kicker, title, sub, badge, default_wave, 6, OG_DIR / fname)

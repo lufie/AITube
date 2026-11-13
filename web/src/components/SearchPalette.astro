@@ -9,8 +9,20 @@ const t = UI[lang];
 const corpusUrl = withBase(`/search-corpus-${lang}.json`);
 const quickTerms =
   lang === "zh"
-    ? ["Context Engineering", "MCP 协议", "SKILL.md", "RLVR 推理模型", "ComfyUI 工作流"]
-    : ["Context Engineering", "MCP Protocol", "SKILL.md", "RLVR Reasoning", "ComfyUI"];
+    ? [
+        { label: "怎么喂资料不瞎编", q: "NotebookLM" },
+        { label: "MCP 万能插头", q: "MCP" },
+        { label: "SKILL.md 技能包", q: "SKILL.md" },
+        { label: "慢思考推理模型", q: "慢思考" },
+        { label: "做视频主角不换脸", q: "ComfyUI" },
+      ]
+    : [
+        { label: "Private docs Q&A", q: "NotebookLM" },
+        { label: "What is MCP?", q: "MCP" },
+        { label: "SKILL.md Manuals", q: "SKILL.md" },
+        { label: "Reasoning Models", q: "RLVR" },
+        { label: "Consistent AI Video", q: "ComfyUI" },
+      ];
 ---
 <dialog class="at-dialog" id="at-search-dialog" data-lang={lang} data-corpus-url={corpusUrl}>
   <div style="padding:14px 16px;border-bottom:1px solid var(--border-subtle);display:flex;gap:10px;align-items:center;">
@@ -28,11 +40,11 @@ const quickTerms =
 
   <div style="padding:8px 16px;border-bottom:1px solid var(--border-subtle);display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:var(--bg-elevated);">
     <span class="at-mono" style="font-size:0.68rem;color:var(--ink-muted);">
-      {lang === "zh" ? "热门检索:" : "QUICK:"}
+      {lang === "zh" ? "大家常问：" : "TRY ASKING:"}
     </span>
     {quickTerms.map((qt) => (
-      <button type="button" class="at-prompt-chip" data-quick-term={qt} style="font-size:0.72rem;padding:2px 8px;">
-        {qt}
+      <button type="button" class="at-prompt-chip" data-quick-term={qt.q} style="font-size:0.72rem;padding:2px 8px;">
+        {qt.label}
       </button>
     ))}
   </div>
@@ -43,8 +55,8 @@ const quickTerms =
   >
     <p style="font-size:0.84rem;color:var(--ink-muted);">
       {lang === "zh"
-        ? "输入任意概念（如 Context Engineering、MCP、SKILL.md、RLVR）或实战问题即时直达。"
-        : "Type any concept (Context Engineering, MCP, SKILL.md, RLVR) or engineering question."}
+        ? "直接用大白话搜就行，比如「AI 怎么思考」「喂资料」「写代码」「MCP」「不换脸」。"
+        : "Type any question in plain English — e.g. how LLMs talk, private docs Q&A, MCP, SKILL.md, or ComfyUI."}
     </p>
   </div>
 </dialog>
@@ -83,6 +95,11 @@ const quickTerms =
     function renderHits(q) {
       if (!corpus) return;
       const term = q.trim().toLowerCase();
+      const cjkBigrams = [];
+      const cjkClean = term.replace(/[^\u4e00-\u9fff]/g, "");
+      for (let i = 0; i + 1 < cjkClean.length; i++) {
+        cjkBigrams.push(cjkClean.slice(i, i + 2));
+      }
       const hits = !term
         ? corpus.slice(0, 10)
         : corpus
@@ -94,6 +111,9 @@ const quickTerms =
               for (const tok of term.split(/\s+/)) {
                 if (tok && hay.includes(tok)) score += 1;
               }
+              for (const bg of cjkBigrams) {
+                if (hay.includes(bg)) score += 0.6;
+              }
               return { it, score };
             })
             .filter((x) => x.score > 0)
@@ -104,7 +124,7 @@ const quickTerms =
       activeIdx = 0;
       if (!hits.length) {
         box.innerHTML = `<p style="font-size:0.85rem;color:var(--ink-muted);">${
-          lang === "zh" ? "未找到匹配条目，试试搜 MCP、RAG、Agent Skills 或 Transformer。" : "No matches found. Try MCP, RAG, Agent Skills, or Transformer."
+          lang === "zh" ? "没搜到完全一致的词，换个日常词试试？比如搜「喂资料」「写代码」「MCP」或「画图」。" : "No exact matches yet — try broader words like MCP, docs, coding, or video."
         }</p>`;
         return;
       }

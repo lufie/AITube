@@ -14,7 +14,7 @@ const altHref = switchLangPath(pathname, altLang);
 const cleanPath = stripBase(pathname);
 
 const navItems = [
-  { href: withBase(`/${lang}/`), label: lang === "zh" ? "首页导览" : "Start Here", exact: `/${lang}/` },
+  { href: withBase(`/${lang}/`), label: t.navHome, exact: `/${lang}/` },
   { href: withBase(`/${lang}/roadmap/`), label: t.navRoadmap, match: `/${lang}/roadmap` },
   { href: withBase(`/${lang}/timeline/`), label: t.navTimeline, match: `/${lang}/timeline` },
   { href: withBase(`/${lang}/directory/`), label: t.navDirectory, match: `/${lang}/directory` },

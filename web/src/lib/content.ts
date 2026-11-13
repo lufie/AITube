@@ -298,10 +298,34 @@ export function buildHorizonLayout(lang: Lang) {
   const toX = (qStr: string) => +(LEFT_GUTTER + (quarterToNorm(qStr) / 100) * PLOT_W).toFixed(1);
 
   const laneDefs = [
-    { key: "foundations", zh: "底层架构底座", en: "Foundations", sub: "Attention · BPE · Scaling" },
-    { key: "frontier-models", zh: "基座与后训练", en: "Frontier & Post-Train", sub: "RLHF · 1M · RLVR · World" },
-    { key: "ai-engineering", zh: "智能体与工程系统", en: "Agentic Engineering", sub: "Prompt · RAG · MCP · Skills" },
-    { key: "coding-multimodal", zh: "自主编程与多模态", en: "Coding & Multimodal", sub: "Diffusion · Comfy · CLI" },
+    {
+      key: "foundations",
+      zh: "底层原理",
+      en: "Core Basics",
+      zhSub: "AI 怎么读字与思考",
+      enSub: "How AI Reads & Thinks",
+    },
+    {
+      key: "frontier-models",
+      zh: "大模型进化",
+      en: "Model Breakthroughs",
+      zhSub: "慢思考 · 本地跑 · 3D世界",
+      enSub: "Reasoning · Local · 3D Worlds",
+    },
+    {
+      key: "ai-engineering",
+      zh: "查资料与智能体",
+      en: "Docs, Tools & Agents",
+      zhSub: "知识库 · 万能插头 · 技能包",
+      enSub: "RAG · MCP Plugs · Skills",
+    },
+    {
+      key: "coding-multimodal",
+      zh: "写代码与做图视频",
+      en: "Coding & Visual Media",
+      zhSub: "自动写软件 · 控脸出大片",
+      enSub: "AI Coding · Images & Video",
+    },
   ];
 
   const TRACK_H = 26;
@@ -354,7 +378,7 @@ export function buildHorizonLayout(lang: Lang) {
     lanes.push({
       key: ld.key,
       title: ld[lang],
-      sub: ld.sub,
+      sub: lang === "zh" ? ld.zhSub : ld.enSub,
       yTop: curY,
       height: laneH,
     });

@@ -54,7 +54,9 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
       <div style="display:grid;grid-template-columns:1.22fr 0.88fr;gap:28px;align-items:start;" class="at-hero-grid">
         <div>
           <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
-            <span class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);">CONCEPT #{String(concept.order).padStart(2, "0")}</span>
+            <span class="at-mono" style="font-size:0.75rem;color:var(--ink-muted);">
+              {lang === "zh" ? `核心概念 #${String(concept.order).padStart(2, "0")}` : `TOPIC #${String(concept.order).padStart(2, "0")}`}
+            </span>
             {era && (
               <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-lineage-pill at-mono" style="font-size:0.73rem;">
                 {era.period} · {era[lang].title}
@@ -87,7 +89,7 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
           )}
 
           <p style="margin-top:12px;font-size:0.9rem;color:var(--ink-secondary);">
-            <strong style="color:var(--ink-primary);">2026 {lang === "zh" ? "现实意义" : "Relevance"}:</strong> {loc.whyNow}
+            <strong style="color:var(--ink-primary);">{lang === "zh" ? "为什么现在值得你花几分钟搞懂：" : "Why this matters right now:"}</strong> {loc.whyNow}
           </p>
 
           {(concept.lineage.from.length > 0 || concept.lineage.into.length > 0) && (
@@ -121,9 +123,9 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
           data-default-mom={concept.momentum}
           data-inflect-idx={concept.inflectionIndex}
         >
-          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.74rem;margin-bottom:8px;">
-            <span>{concept.originQuarter}</span>
-            <span style="color:var(--accent-signal);">★ {concept.inflectionQuarter}</span>
+          <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.74rem;margin-bottom:8px;gap:6px;flex-wrap:wrap;">
+            <span>{lang === "zh" ? `${concept.originQuarter} 首次提出` : `Born ${concept.originQuarter}`}</span>
+            <span style="color:var(--accent-signal);">★ {lang === "zh" ? `${concept.inflectionQuarter} 火起来` : `Took off ${concept.inflectionQuarter}`}</span>
             <span data-sp-mid style="color:var(--accent-primary);font-weight:650;">{concept.momentum}</span>
           </div>
           <svg
@@ -186,12 +188,12 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
     <div class="at-section-head">
       <h2>
         {lang === "zh"
-          ? `精选实战切片库（共 ${allNodes.length} 支核验切片）`
-          : `Verified Implementation Cuts (${allNodes.length} Total)`}
+          ? `帮你挑好的精华视频与好文（共 ${allNodes.length} 支，点开直达重点）`
+          : `Hand-Picked Video Highlights & Guides (${allNodes.length} Total)`}
       </h2>
       <div class="at-filter-row">
         <button type="button" class="at-chip is-active" data-role-filter="all">
-          {lang === "zh" ? "全部角色" : "All Roles"} ({galleryNodes.length})
+          {lang === "zh" ? "全部类型" : "All Types"} ({galleryNodes.length})
         </button>
         {(["origin", "practice", "frontier"] as const).map((r) => (
           <button type="button" class="at-chip" data-role-filter={r}>
@@ -238,11 +240,11 @@ const schema = buildConceptSchema(concept, allNodes, lang, pathname);
       <summary style="cursor:pointer;font-weight:580;">{t.faqHeading}</summary>
       <div style="margin-top:12px;display:flex;flex-direction:column;gap:12px;font-size:0.9rem;">
         <div>
-          <strong>{lang === "zh" ? `1. ${loc.shortName} 带来了什么核心范式跃迁？` : `1. What paradigm shift defines ${loc.shortName}?`}</strong>
+          <strong>{lang === "zh" ? `1. ${loc.shortName} 和以前的老办法比，到底改了什么？` : `1. What actually changed with ${loc.shortName}?`}</strong>
           <p style="color:var(--ink-secondary);margin-top:4px;">{loc.paradigmShift}</p>
         </div>
         <div>
-          <strong>{lang === "zh" ? `2. 为什么在 2026 年仍需深入 ${loc.shortName}？` : `2. Why does ${loc.shortName} matter in 2026?`}</strong>
+          <strong>{lang === "zh" ? `2. 为什么现在值得花几分钟搞懂 ${loc.shortName}？` : `2. Why is ${loc.shortName} worth learning in 2026?`}</strong>
           <p style="color:var(--ink-secondary);margin-top:4px;">{loc.whyNow}</p>
         </div>
       </div>

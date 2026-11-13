@@ -3,91 +3,91 @@
 - **Total Verified Nodes**: `280` (`52` Flagship Spine Cuts + `228` Curated Pool Cuts)
 - **Source Mix**: `267` YouTube (`oEmbed HTTP 200`) · `5` Bilibili (`API code=0`) · `8` Primary Technical Monographs
 - **Concept Trend Index**: `22` Concepts across `5` Chronological Eras (`2017–2026`)
-- **Cumulative Research Hours Saved**: `722.7h`
+- **Cumulative Research Hours Saved**: `742.8h`
 
 ## 1. Concept Trend Index Summary (22 Concepts)
 
 | # | Concept | Era | Origin → Inflection | Lifecycle | Primary Cuts |
 |---:|---|---|---|---|---:|
-| 1 | **Transformer 注意力** / Transformer & Attention (`transformer-attention`) | `era-2017-2022` | `2017 Q2 → 2022 Q4` | `foundational` | 15 |
-| 2 | **分词与向量嵌入** / Tokens & Embeddings (`tokenization-embeddings`) | `era-2017-2022` | `2018 Q4 → 2023 Q1` | `foundational` | 13 |
-| 3 | **Scaling 与预训练** / Scaling & Pre-Training (`scaling-pretraining`) | `era-2017-2022` | `2020 Q1 → 2023 Q2` | `foundational` | 6 |
-| 4 | **SFT 与 RLHF** / SFT & RLHF (`rlhf-post-training`) | `era-2017-2022` | `2022 Q1 → 2023 Q1` | `evolved` | 13 |
-| 5 | **提示词与 CoT** / Prompting & CoT (`prompt-cot`) | `era-2023` | `2022 Q2 → 2023 Q2` | `evolved` | 12 |
-| 6 | **经典向量 RAG** / Vector RAG (`rag-grounding`) | `era-2023` | `2020 Q2 → 2023 Q3` | `mainstream` | 13 |
-| 7 | **LoRA 与本地部署** / LoRA & Local LLMs (`lora-local-open-weights`) | `era-2023` | `2023 Q1 → 2023 Q4` | `mainstream` | 13 |
-| 8 | **扩散模型与可控生图** / Diffusion & ControlNet (`diffusion-controllable-image`) | `era-2023` | `2022 Q3 → 2023 Q3` | `mainstream` | 13 |
-| 9 | **结构化输出与工具调用** / Structured Tool Calling (`structured-tool-calling`) | `era-2024` | `2023 Q2 → 2024 Q1` | `mainstream` | 13 |
-| 10 | **工作流与图编排** / Workflows & Graph Agents (`agent-workflows-graphs`) | `era-2024` | `2023 Q4 → 2024 Q2` | `evolved` | 14 |
-| 11 | **长上下文与多模态** / Long Context & Omni (`long-context-multimodal`) | `era-2024` | `2024 Q1 → 2024 Q3` | `mainstream` | 12 |
-| 12 | **Eval 评测与链路分析** / LLM Evals & Traces (`llm-evals-observability`) | `era-2024` | `2023 Q4 → 2024 Q3` | `mainstream` | 13 |
-| 13 | **ComfyUI 与音视频流** / ComfyUI & Video/Voice (`comfyui-video-audio`) | `era-2024` | `2024 Q1 → 2024 Q4` | `mainstream` | 13 |
-| 14 | **MCP 协议** / MCP Protocol (`mcp-protocol`) | `era-2025` | `2024 Q4 → 2025 Q1` | `surging` | 14 |
-| 15 | **RLVR 推理强化学习** / RLVR & Reasoning (`rlvr-reasoning-models`) | `era-2025` | `2024 Q3 → 2025 Q1` | `surging` | 13 |
+| 1 | **Transformer 注意力** / Transformer (`transformer-attention`) | `era-2017-2022` | `2017 Q2 → 2022 Q4` | `foundational` | 15 |
+| 2 | **分词与向量** / Tokens & Vectors (`tokenization-embeddings`) | `era-2017-2022` | `2018 Q4 → 2023 Q1` | `foundational` | 13 |
+| 3 | **预训练与算力法则** / Pre-Training (`scaling-pretraining`) | `era-2017-2022` | `2020 Q1 → 2023 Q2` | `foundational` | 6 |
+| 4 | **对齐训练 RLHF** / SFT & RLHF (`rlhf-post-training`) | `era-2017-2022` | `2022 Q1 → 2023 Q1` | `evolved` | 13 |
+| 5 | **提示词技巧** / Prompting (`prompt-cot`) | `era-2023` | `2022 Q2 → 2023 Q2` | `evolved` | 12 |
+| 6 | **RAG 知识库** / Basic RAG (`rag-grounding`) | `era-2023` | `2020 Q2 → 2023 Q3` | `mainstream` | 13 |
+| 7 | **微调与本地运行** / LoRA & Local AI (`lora-local-open-weights`) | `era-2023` | `2023 Q1 → 2023 Q4` | `mainstream` | 13 |
+| 8 | **可控 AI 生图** / Controllable Art (`diffusion-controllable-image`) | `era-2023` | `2022 Q3 → 2023 Q3` | `mainstream` | 13 |
+| 9 | **结构化与调工具** / Tool Calling (`structured-tool-calling`) | `era-2024` | `2023 Q2 → 2024 Q1` | `mainstream` | 13 |
+| 10 | **工作流与智能体** / Workflows vs Agents (`agent-workflows-graphs`) | `era-2024` | `2023 Q4 → 2024 Q2` | `evolved` | 14 |
+| 11 | **超长窗口与多模态** / Long Context & Omni (`long-context-multimodal`) | `era-2024` | `2024 Q1 → 2024 Q3` | `mainstream` | 12 |
+| 12 | **自动测准确率 Evals** / AI Quality Evals (`llm-evals-observability`) | `era-2024` | `2023 Q4 → 2024 Q3` | `mainstream` | 13 |
+| 13 | **ComfyUI 与做视频** / ComfyUI & AI Video (`comfyui-video-audio`) | `era-2024` | `2024 Q1 → 2024 Q4` | `mainstream` | 13 |
+| 14 | **MCP 万能接口** / MCP Protocol (`mcp-protocol`) | `era-2025` | `2024 Q4 → 2025 Q1` | `surging` | 14 |
+| 15 | **慢思考推理模型** / Reasoning & RLVR (`rlvr-reasoning-models`) | `era-2025` | `2024 Q3 → 2025 Q1` | `surging` | 13 |
 | 16 | **Vibe Coding** / Vibe Coding (`vibe-coding`) | `era-2025` | `2025 Q1 → 2025 Q2` | `evolved` | 12 |
-| 17 | **浏览器与桌面智能体** / Computer & Browser Use (`computer-use-browser-agents`) | `era-2025` | `2024 Q4 → 2025 Q2` | `mainstream` | 11 |
-| 18 | **混合与自主检索** / Hybrid & Agentic RAG (`hybrid-agentic-rag`) | `era-2025` | `2024 Q4 → 2025 Q2` | `mainstream` | 12 |
+| 17 | **浏览器操作 AI** / Browser Agents (`computer-use-browser-agents`) | `era-2025` | `2024 Q4 → 2025 Q2` | `mainstream` | 11 |
+| 18 | **混合与多轮知识库** / Hybrid & Agentic RAG (`hybrid-agentic-rag`) | `era-2025` | `2024 Q4 → 2025 Q2` | `mainstream` | 12 |
 | 19 | **上下文工程** / Context Engineering (`context-engineering`) | `era-2026` | `2025 Q2 → 2025 Q3` | `surging` | 14 |
-| 20 | **自主编程与 Harness** / Agentic Coding CLI (`agentic-coding-cli`) | `era-2026` | `2025 Q1 → 2025 Q4` | `surging` | 14 |
-| 21 | **Agent Skills 与子智能体** / Agent Skills & Subagents (`agent-skills-subagents`) | `era-2026` | `2025 Q4 → 2026 Q1` | `surging` | 14 |
-| 22 | **世界模型与空间智能** / World Models & Spatial AI (`world-models-embodied-multimodal`) | `era-2026` | `2025 Q3 → 2026 Q2` | `surging` | 13 |
+| 20 | **终端自动编程** / AI Coding Agents (`agentic-coding-cli`) | `era-2026` | `2025 Q1 → 2025 Q4` | `surging` | 14 |
+| 21 | **SKILL.md 与子助手** / SKILL.md & Subagents (`agent-skills-subagents`) | `era-2026` | `2025 Q4 → 2026 Q1` | `surging` | 14 |
+| 22 | **世界模型与机器人** / World Models & Robots (`world-models-embodied-multimodal`) | `era-2026` | `2025 Q3 → 2026 Q2` | `surging` | 13 |
 
 ## 2. Flagship Spine Cuts (Nodes 01–52)
 
 | # | Slug | Concept | Platform | Creator | Window | ZH Title |
 |---:|---|---|---|---|---|---|
-| 1 | `3b1b-transformer-overview` | `transformer-attention` | `youtube` | 3Blue1Brown | `3:10–16:00` | 几何直觉拆解 Transformer 数据流 |
-| 2 | `3b1b-qkv-attention-mechanics` | `transformer-attention` | `youtube` | 3Blue1Brown | `2:00–15:40` | QKV 点积注意力与因果掩码逐帧精解 |
-| 3 | `karpathy-nano-gpt-from-scratch` | `transformer-attention` | `youtube` | Andrej Karpathy | `70:10–87:20` | 80 行 PyTorch 手写 GPT 自注意力与残差块 |
-| 4 | `limu-transformer-paper-bili` | `transformer-attention` | `bilibili` | 跟李沐学AI | `19:40–36:30` | 跟李沐精读《Attention Is All You Need》核心算力账 |
-| 5 | `karpathy-gpt-tokenizer-bpe` | `tokenization-embeddings` | `youtube` | Andrej Karpathy | `5:10–22:20` | 分词器真相：BPE 算法与大模型“低级怪病”根源 |
-| 6 | `embeddings-vector-geometry-explained` | `tokenization-embeddings` | `youtube` | AssemblyAI | `0:18–4:05` | 4 分钟看懂向量嵌入与 HNSW 近似最近邻索引 |
-| 7 | `stanford-cs336-pretraining-scaling` | `scaling-pretraining` | `youtube` | Stanford Online | `6:50–24:40` | 斯坦福 CS336：预训练算力账（`6ND`）与数据清洗工程 |
-| 8 | `karpathy-three-stage-llm-pipeline` | `rlhf-post-training` | `youtube` | Andrej Karpathy | `57:00–78:00` | Karpathy 全景拆解：预训练、SFT 与强化学习三阶段本质 |
-| 9 | `dpo-vs-rlhf-alignment-mechanics` | `rlhf-post-training` | `youtube` | AI Coffee Break with Letitia | `0:45–8:10` | DPO 对比 RLHF：省掉独立奖励模型的偏好对齐捷径 |
-| 10 | `anthropic-prompt-engineering-deep-dive` | `prompt-cot` | `youtube` | Anthropic | `8:40–24:20` | Anthropic 核心团队对谈：砍掉玄学咒语，把提示词写成工程契约 |
-| 11 | `every-rag-strategy-compared` | `rag-grounding` | `youtube` | Cole Medin | `0:35–12:15` | 12 分钟横评主流 RAG 进阶策略：切块、上下文前缀与重排 |
-| 12 | `bili-17-rag-architectures-benchmark` | `rag-grounding` | `bilibili` | AI敲代码的阿Q | `3:00–19:00` | 实测对比 17 种 RAG 优化方案：哪些真提分、哪些纯增延迟？ |
-| 13 | `umar-jamil-lora-math-pytorch` | `lora-local-open-weights` | `youtube` | Umar Jamil | `1:50–17:00` | 图解 + 代码手推 LoRA：低秩矩阵初始化、`alpha/r` 缩放与零延迟合并 |
-| 14 | `peft-qlora-distillation-workflow` | `lora-local-open-weights` | `youtube` | Sam Witteveen | `1:30–13:00` | 大小模型蒸馏实战：用前沿模型轨迹训练极速 8B 专有小模型 |
-| 15 | `latent-diffusion-visual-intuition` | `diffusion-controllable-image` | `youtube` | Computerphile | `2:25–14:40` | 潜空间扩散原理直觉：一次看懂 `VAE`、去噪步数与 `CFG` 引导系数 |
-| 16 | `flux-consistent-character-workflow` | `diffusion-controllable-image` | `youtube` | Mickmumpitz | `1:00–11:35` | Flux + ComfyUI 角色一致性工业流：从三视图设定卡到多镜头不崩脸 |
-| 17 | `structured-outputs-schema-engineering` | `structured-tool-calling` | `youtube` | Dave Ebbelaar | `2:00–14:50` | 结构化输出工程铁律：语法约束解码与 Schema 字段顺序玄机 |
-| 18 | `cursor-tool-calling-loop-anatomy` | `structured-tool-calling` | `youtube` | Cursor | `0:15–5:40` | 5 分钟扒开工具调用底裤：智能体本质就是一个 `while` 消息循环 |
-| 19 | `anthropic-building-effective-agents-digest` | `agent-workflows-graphs` | `web` | Anthropic Engineering (Erik Schluntz & Barry Zhang) | `12m read` | Anthropic 奠基长文精粹：分清 Workflows 与 Agents 的五大可组合模式 |
-| 20 | `barry-zhang-effective-agents-talk` | `agent-workflows-graphs` | `youtube` | AI Engineer | `1:45–13:55` | 站在模型的上下文窗口里思考：工具防呆设计远胜抠提示词 |
-| 21 | `lilian-weng-autonomous-agents-digest` | `agent-workflows-graphs` | `web` | Lilian Weng | `14m read` | 翁荔（Lilian Weng）万字综述精读：规划、记忆与工具三大支柱演进对照 |
-| 22 | `notebooklm-grounded-research-workflow` | `long-context-multimodal` | `youtube` | Jeff Su | `0:45–11:30` | 长上下文闭源精读流：11 分钟跑通 NotebookLM 零幻觉文献综述 |
-| 23 | `hamel-husain-llm-evals-mistakes` | `llm-evals-observability` | `youtube` | Hamel Husain | `2:20–18:00` | Hamel Husain 评测避坑指南：砍掉虚伪的 1–5 分通用指标，回归真实坏例归因 |
-| 24 | `hamel-your-ai-product-needs-evals-digest` | `llm-evals-observability` | `web` | Hamel Husain | `15m read` | 《你的 AI 产品急需 Evals》实战蓝图：三级评测与线上数据回流飞轮 |
-| 25 | `comfyui-modular-node-pipeline` | `comfyui-video-audio` | `youtube` | Sebastian Kamph | `3:00–17:00` | 14 分钟治好 ComfyUI 连线恐惧症：五色数据管道底层拆解 |
-| 26 | `comfyui-flux-keyframe-pipeline` | `comfyui-video-audio` | `youtube` | pixaroma | `4:50–18:00` | ComfyUI 跑通 Flux 双编码器管线：低显存 `GGUF/FP8` 与文字精准排版 |
-| 27 | `mcp-open-protocol-architecture` | `mcp-protocol` | `web` | Model Context Protocol (Anthropic) | `10m read` | MCP 开放协议精解：三大原语（Tools / Resources / Prompts）与传输选型 |
-| 28 | `anthropic-mcp-workshop-mahesh` | `mcp-protocol` | `youtube` | AI Engineer | `7:00–23:00` | Anthropic 官方工作坊：从零手写与排障生产级 MCP Server |
-| 29 | `bili-claude-code-mcp-workflow` | `mcp-protocol` | `bilibili` | 创哥的AI实验室 | `0:30–8:30` | 8 分钟吃透 Claude Code 挂载与管理 MCP：三级作用域与团队共享 |
-| 30 | `deepseek-r1-rlvr-paper-digest` | `rlvr-reasoning-models` | `web` | DeepSeek-AI | `16m read` | 《DeepSeek-R1》里程碑精读：可验证奖励强化学习（RLVR）与 GRPO 核心配方 |
-| 31 | `yannic-kilcher-grpo-math-derivation` | `rlvr-reasoning-models` | `youtube` | Yannic Kilcher | `14:40–29:50` | Yannic 逐公式推导 GRPO：组内基线优势函数与无偏 KL 惩罚项 |
-| 32 | `bili-deepseek-r1-infra-rl-teardown` | `rlvr-reasoning-models` | `bilibili` | ZOMI酱 | `3:30–18:00` | 系统视角拆透 DeepSeek-R1：为什么 MLA 显存压缩与稀疏 MoE 是长链强化的前提？ |
-| 33 | `karpathy-how-i-use-llms-workflows` | `vibe-coding` | `youtube` | Andrej Karpathy | `49:00–68:00` | Karpathy 私藏日常工作流：模型分级调度、代码打包喂上下文与 Vibe Coding |
-| 34 | `yc-disciplined-vibe-coding` | `vibe-coding` | `youtube` | Y Combinator | `1:15–14:00` | YC 合伙人亲授：不写出屎山代码的 6 条高纪律 Vibe Coding 军规 |
-| 35 | `computer-use-sandboxed-browser-agents` | `computer-use-browser-agents` | `youtube` | Y Combinator | `0:25–7:25` | 7 分钟拆解 Computer Use 与浏览器智能体：语义树快照 vs 视觉坐标点击 |
-| 36 | `stanford-bm25-to-agentic-rag` | `hybrid-agentic-rag` | `youtube` | Stanford Online | `10:40–28:00` | 斯坦福 CS329Z：从 BM25 词法匹配到多跳 Agentic RAG 的演进全脉络 |
-| 37 | `graphrag-when-knowledge-graphs-win` | `hybrid-agentic-rag` | `youtube` | AI Engineer | `2:10–14:20` | 理性拆解 GraphRAG：哪两类问题非图不可？何时千万别盲目上？ |
-| 38 | `anthropic-context-engineering-digest` | `context-engineering` | `web` | Anthropic Applied AI | `13m read` | Anthropic 官方圣经《智能体上下文工程》：对抗注意力腐化（Context Rot）的三大武器 |
-| 39 | `context-engineering-write-select-compress-isolate` | `context-engineering` | `youtube` | LangChain | `1:35–16:00` | 上下文工程四字诀：写（Write）、选（Select）、压（Compress）、隔（Isolate） |
-| 40 | `hung-yi-lee-context-engineering-lecture` | `context-engineering` | `youtube` | Hung-yi Lee | `3:00–18:40` | 李宏毅老师精讲上下文工程：大海捞针假象、中间遗忘与 KV Cache 复用铁律 |
-| 41 | `bili-harness-engineering-context-teardown` | `context-engineering` | `bilibili` | 博文博文 | `0:12–3:48` | 4 分钟看透「Harness 工程」：为什么同一个模型换套外壳能力差一倍？ |
-| 42 | `anthropic-mastering-claude-code` | `agentic-coding-cli` | `youtube` | Anthropic | `2:45–17:40` | Anthropic 官方大师课：Claude Code「探索 → 规划 → 编码 → 验证」四步标准流 |
-| 43 | `matt-pocock-ai-coding-typescript-workflow` | `agentic-coding-cli` | `youtube` | AI Engineer | `9:00–24:50` | Matt Pocock 现场实战：为什么强类型约束（Strict TypeScript）是编程智能体的最佳护栏？ |
-| 44 | `simon-willison-agentic-engineering-digest` | `agentic-coding-cli` | `web` | Simon Willison | `11m read` | Simon Willison 智能体工程实战手记：高产交付与「致命三要素」安全红线 |
-| 45 | `dont-build-agents-build-skills` | `agent-skills-subagents` | `youtube` | AI Engineer | `1:10–14:55` | 2026 必看封神演讲《别再重复造 Agent，去写 Skills！》深度精拆 |
-| 46 | `anthropic-agent-skills-engineering-digest` | `agent-skills-subagents` | `web` | Anthropic Engineering | `11m read` | 解剖生产级 `SKILL.md` 内部结构：何时拆 `references/`、何时下沉 `scripts/`？ |
-| 47 | `multi-agent-subagent-architecture-ships` | `agent-skills-subagents` | `youtube` | AI Engineer | `1:30–15:10` | 真正能上线的多智能体架构：砍掉“角色扮演群聊戏码”，用上下文隔离子智能体 |
-| 48 | `skills-vs-mcp-vs-rag-vs-memory` | `agent-skills-subagents` | `youtube` | IBM Technology | `0:25–8:35` | 8 分钟一张白板彻底分清：RAG、MCP、Skills 与 Memory 各自管哪一层？ |
-| 49 | `welch-labs-world-models-jepa` | `world-models-embodied-multimodal` | `youtube` | Welch Labs | `4:00–19:40` | Welch Labs 百万播放视觉神作：为什么世界模型（JEPA）不直接预测像素？ |
-| 50 | `fei-fei-li-spatial-intelligence` | `world-models-embodied-multimodal` | `youtube` | Y Combinator | `5:10–19:50` | 李飞飞深度对谈：空间智能（Spatial Intelligence）与持久化三维可交互世界 |
-| 51 | `vla-embodied-robotics-physical-ai` | `world-models-embodied-multimodal` | `youtube` | Google DeepMind | `0:08–2:52` | 3 分钟看懂具身智能 VLA（视觉-语言-动作模型）：双系统架构如何打通物理世界？ |
-| 52 | `claude-code-parallel-worktrees-tdd` | `agentic-coding-cli` | `youtube` | Anthropic | `3:30–18:10` | Code w/ Claude 高阶实战：智能体测试驱动开发（TDD）与无头批量重构（`-p`） |
+| 1 | `3b1b-transformer-overview` | `transformer-attention` | `youtube` | 3Blue1Brown | `3:10–16:00` | 3Blue1Brown 神级动画：不背公式，看懂大模型是怎么猜出下一个词的 |
+| 2 | `3b1b-qkv-attention-mechanics` | `transformer-attention` | `youtube` | 3Blue1Brown | `2:00–15:40` | 动画慢放拆解「注意力机制」：AI 是怎么在一大段话里抓准重点关系的？ |
+| 3 | `karpathy-nano-gpt-from-scratch` | `transformer-attention` | `youtube` | Andrej Karpathy | `70:10–87:20` | 跟着大神 Karpathy 敲 80 行代码：从空白文件亲手写出一个迷你 GPT |
+| 4 | `limu-transformer-paper-bili` | `transformer-attention` | `bilibili` | 跟李沐学AI | `19:40–36:30` | 跟李沐读开山论文《Attention Is All You Need》：为什么它能淘汰旧架构？ |
+| 5 | `karpathy-gpt-tokenizer-bpe` | `tokenization-embeddings` | `youtube` | Andrej Karpathy | `5:10–22:20` | 为什么早期 AI 数不对单词里有几个字母 r？揭秘「分词器」背后的真相 |
+| 6 | `embeddings-vector-geometry-explained` | `tokenization-embeddings` | `youtube` | AssemblyAI | `0:18–4:05` | 4 分钟零门槛看懂「向量数据库」：AI 怎么做到不靠同义词也能按意思搜东西？ |
+| 7 | `stanford-cs336-pretraining-scaling` | `scaling-pretraining` | `youtube` | Stanford Online | `6:50–24:40` | 斯坦福王牌课 CS336：花几千万训练大模型前，顶尖团队怎么在草稿纸上算清账？ |
+| 8 | `karpathy-three-stage-llm-pipeline` | `rlhf-post-training` | `youtube` | Andrej Karpathy | `57:00–78:00` | Karpathy 最火科普精选：像培养实习生一样，看懂炼成 ChatGPT 的「三大步」 |
+| 9 | `dpo-vs-rlhf-alignment-mechanics` | `rlhf-post-training` | `youtube` | AI Coffee Break with Letitia | `0:45–8:10` | 7 分钟理清一堆英文缩写：RLHF、DPO 和 GRPO 到底各自在干嘛？ |
+| 10 | `anthropic-prompt-engineering-deep-dive` | `prompt-cot` | `youtube` | Anthropic | `8:40–24:20` | Anthropic 官方大实话：别迷信“你是世界顶级大师”咒语了，像带聪明实习生一样把活交代清楚 |
+| 11 | `every-rag-strategy-compared` | `rag-grounding` | `youtube` | Cole Medin | `0:35–12:15` | 12 分钟治好企业知识库“答非所问”：哪几招升级最立竿见影？ |
+| 12 | `bili-17-rag-architectures-benchmark` | `rag-grounding` | `bilibili` | AI敲代码的阿Q | `3:00–19:00` | 真刀真枪实测 17 种知识库优化招式：哪些真管用、哪些纯属拖慢速度？ |
+| 13 | `umar-jamil-lora-math-pytorch` | `lora-local-open-weights` | `youtube` | Umar Jamil | `1:50–17:00` | 一张图讲透 LoRA 微调：为什么不用重训整个大模型，贴一层“小补丁”就够了？ |
+| 14 | `peft-qlora-distillation-workflow` | `lora-local-open-weights` | `youtube` | Sam Witteveen | `1:30–13:00` | 省下九成接口费的实用打法：拿顶尖大模型当老师，「带徒弟」训出极速 8B 小模型 |
+| 15 | `latent-diffusion-visual-intuition` | `diffusion-controllable-image` | `youtube` | Computerphile | `2:25–14:40` | AI 是怎么把“雪花噪点”变成高清大图的？一次看懂 「种子」、「步数」 和 「重绘幅度」 |
+| 16 | `flux-consistent-character-workflow` | `diffusion-controllable-image` | `youtube` | Mickmumpitz | `1:00–11:35` | 做漫剧、绘本和电商图不换脸：Flux + ComfyUI 锁死同一主角的实用套路 |
+| 17 | `structured-outputs-schema-engineering` | `structured-tool-calling` | `youtube` | Dave Ebbelaar | `2:00–14:50` | 让 AI 乖乖填表永不报错：结构化输出与「上下换个位置就涨分」的隐藏窍门 |
+| 18 | `cursor-tool-calling-loop-anatomy` | `structured-tool-calling` | `youtube` | Cursor | `0:15–5:40` | 5 分钟看穿智能体的真相：大模型根本不会自己跑代码，全靠一个简单循环 |
+| 19 | `anthropic-building-effective-agents-digest` | `agent-workflows-graphs` | `web` | Anthropic Engineering (Erik Schluntz & Barry Zhang) | `12m read` | Anthropic 必读长文精读：能用简单「三步流水线」搞定的事，千万别硬搞复杂智能体 |
+| 20 | `barry-zhang-effective-agents-talk` | `agent-workflows-graphs` | `youtube` | AI Engineer | `1:45–13:55` | Anthropic 实战复盘：改三天提示词没用，把工具改成「防呆设计」一秒就不犯错了 |
+| 21 | `lilian-weng-autonomous-agents-digest` | `agent-workflows-graphs` | `web` | Lilian Weng | `14m read` | 翁荔（Lilian Weng）智能体开山长文精读：规划、记忆与工具，三年后哪些成了真标配？ |
+| 22 | `notebooklm-grounded-research-workflow` | `long-context-multimodal` | `youtube` | Jeff Su | `0:45–11:30` | 零代码小白也能 5 分钟用起来：用 NotebookLM 读几十份资料，句句带原文角标不瞎编 |
+| 23 | `hamel-husain-llm-evals-mistakes` | `llm-evals-observability` | `youtube` | Hamel Husain | `2:20–18:00` | 做 AI 产品千万别搞“1 到 5 分模糊打分”：Hamel 手把手教你搭真正管用的错题本 |
+| 24 | `hamel-your-ai-product-needs-evals-digest` | `llm-evals-observability` | `web` | Hamel Husain | `15m read` | 《你的 AI 产品急需一套自动错题本》：告别“改一行提示词提心吊胆三天” |
+| 25 | `comfyui-modular-node-pipeline` | `comfyui-video-audio` | `youtube` | Sebastian Kamph | `3:00–17:00` | 14 分钟治好 ComfyUI“连线密集恐惧症”：其实翻来覆去就那五根颜色线 |
+| 26 | `comfyui-flux-keyframe-pipeline` | `comfyui-video-audio` | `youtube` | pixaroma | `4:50–18:00` | 家用显卡流畅跑 Flux 出海报级大图：说人话写提示词 + 避开新手头号参数坑 |
+| 27 | `mcp-open-protocol-architecture` | `mcp-protocol` | `web` | Model Context Protocol (Anthropic) | `10m read` | 把 MCP 协议当成「AI 界的 Type-C 万能插头」：10 分钟看懂它到底省了什么事 |
+| 28 | `anthropic-mcp-workshop-mahesh` | `mcp-protocol` | `youtube` | AI Engineer | `7:00–23:00` | MCP 创始人手把手带敲：16 分钟写出第一个插件，并避开新手必踩的「断连坑」 |
+| 29 | `bili-claude-code-mcp-workflow` | `mcp-protocol` | `bilibili` | 创哥的AI实验室 | `0:30–8:30` | 8 分钟搞定在 Claude Code 里装 MCP 插件：团队共享配置还不泄密 |
+| 30 | `deepseek-r1-rlvr-paper-digest` | `rlvr-reasoning-models` | `web` | DeepSeek-AI | `16m read` | DeepSeek-R1 爆火论文人话精读：不用人类手把手教，AI 是怎么靠刷题自己悟出「回头检查」的？ |
+| 31 | `yannic-kilcher-grpo-math-derivation` | `rlvr-reasoning-models` | `youtube` | Yannic Kilcher | `14:40–29:50` | 白板拆解 GRPO 算法：为什么让模型“同一题做十遍自己比高低”能省一半显卡？ |
+| 32 | `bili-deepseek-r1-infra-rl-teardown` | `rlvr-reasoning-models` | `bilibili` | ZOMI酱 | `3:30–18:00` | 算清慢思考背后的「省钱经济账」：为什么总参数 671B，每次说话只动用 37B？ |
+| 33 | `karpathy-how-i-use-llms-workflows` | `vibe-coding` | `youtube` | Andrej Karpathy | `49:00–68:00` | 大神 Karpathy 晒出自己的日常用法：平时怎么选模型、怎么喂资料、怎么随手造小工具？ |
+| 34 | `yc-disciplined-vibe-coding` | `vibe-coding` | `youtube` | Y Combinator | `1:15–14:00` | 为什么别人用 AI 三天做出产品，你改到第三天全崩了？YC 合伙人的 6 条防翻车铁律 |
+| 35 | `computer-use-sandboxed-browser-agents` | `computer-use-browser-agents` | `youtube` | Y Combinator | `0:25–7:25` | 7 分钟看懂「AI 自己操作电脑和网页」：怎么点得又快又准，还不怕账号被盗？ |
+| 36 | `stanford-bm25-to-agentic-rag` | `hybrid-agentic-rag` | `youtube` | Stanford Online | `10:40–28:00` | 斯坦福公开课（杨笛一）：为什么纯向量搜不准产品型号？怎么升级成「会追问的混合搜索」 |
+| 37 | `graphrag-when-knowledge-graphs-win` | `hybrid-agentic-rag` | `youtube` | AI Engineer | `2:10–14:20` | 别盲目跟风上 GraphRAG（知识图谱）：先看清哪两类问题非它不可、什么时候纯属花冤枉钱！ |
+| 38 | `anthropic-context-engineering-digest` | `context-engineering` | `web` | Anthropic Applied AI | `13m read` | Anthropic 揭秘《上下文工程》：为什么跟 AI 聊得越久它越糊涂？学会这三招让它一直清醒 |
+| 39 | `context-engineering-write-select-compress-isolate` | `context-engineering` | `youtube` | LangChain | `1:35–16:00` | 四个字记住「上下文工程」全部招式：写、选、压、隔 |
+| 40 | `hung-yi-lee-context-engineering-lecture` | `context-engineering` | `youtube` | Hung-yi Lee | `3:00–18:40` | 李宏毅老师幽默拆解：为什么号称能读百万字，塞进五万字就开始漏看中间的条件？ |
+| 41 | `bili-harness-engineering-context-teardown` | `context-engineering` | `bilibili` | 博文博文 | `0:12–3:48` | 4 分钟听懂今年大热的「Harness（运行支架）」：为什么同一款大模型换套工具壳，本事差一倍？ |
+| 42 | `anthropic-mastering-claude-code` | `agentic-coding-cli` | `youtube` | Anthropic | `2:45–17:40` | Anthropic 官方 170 万播放必修课：用好编程智能体的「先看、再定方案、再动手、自检收尾」四步法 |
+| 43 | `matt-pocock-ai-coding-typescript-workflow` | `agentic-coding-cli` | `youtube` | AI Engineer | `9:00–24:50` | 200 万播放现场实战：为什么「严格类型检查」就像给编程 AI 修了两条防撞护栏？ |
+| 44 | `simon-willison-agentic-engineering-digest` | `agentic-coding-cli` | `web` | Simon Willison | `11m read` | 传奇程序员 Simon Willison 的实战忠告：怎么用 AI 高产写代码，并防住「致命三合一」泄密陷阱 |
+| 45 | `dont-build-agents-build-skills` | `agent-skills-subagents` | `youtube` | AI Engineer | `1:10–14:55` | 今年最火的 150 万播放风向标演讲：《别再重复造一堆智能体了，去写 SKILL.md 技能说明书吧！》 |
+| 46 | `anthropic-agent-skills-engineering-digest` | `agent-skills-subagents` | `web` | Anthropic Engineering | `11m read` | 手把手拆解一份好用的 SKILL.md 技能包长啥样：别把它写成又臭又长的裹脚布！ |
+| 47 | `multi-agent-subagent-architecture-ships` | `agent-skills-subagents` | `youtube` | AI Engineer | `1:30–15:10` | 戳破花哨演示泡沫：为什么模拟“AI 产品经理跟 AI 程序员开会吵架”必翻车？真能干活的多助手该怎么配？ |
+| 48 | `skills-vs-mcp-vs-rag-vs-memory` | `agent-skills-subagents` | `youtube` | IBM Technology | `0:25–8:35` | 8 分钟一块白板彻底分清：RAG、MCP、Skills 和 「记忆」 到底各自管哪一摊事？ |
+| 49 | `welch-labs-world-models-jepa` | `world-models-embodied-multimodal` | `youtube` | Welch Labs | `4:00–19:40` | 电影级科普动画：为什么大模型能考过律师资格证，物理常识却不如四岁小孩？看懂「世界模型」之争 |
+| 50 | `fei-fei-li-spatial-intelligence` | `world-models-embodied-multimodal` | `youtube` | Y Combinator | `5:10–19:50` | 李飞飞深度访谈：什么是「空间智能」？从一张平面照片走进能自由走动的 3D 世界 |
+| 51 | `vla-embodied-robotics-physical-ai` | `world-models-embodied-multimodal` | `youtube` | Google DeepMind | `0:08–2:52` | 3 分钟实机演示看懂「具身智能（VLA）」：现在的机器人怎么听懂人话学会折纸、拉拉链的？ |
+| 52 | `claude-code-parallel-worktrees-tdd` | `agentic-coding-cli` | `youtube` | Anthropic | `3:30–18:10` | Anthropic 自家程序员压箱底的三招：先出考卷防作弊、脚本批量改两百个旧文件、双窗口背靠背挑刺 |
 
 ## 3. Verified YouTube Expansion Cuts (Nodes 53–280)
 

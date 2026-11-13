@@ -55,7 +55,9 @@ const schema = buildNodeSchema(node, concept, lang, pathname);
 const windowSpec =
   s.kind === "video-cut"
     ? `${formatTime(s.startSec || 0)}–${formatTime(s.endSec || 0)} (${formatSliceMinutes(s.startSec || 0, s.endSec || 60, lang)})`
-    : `${s.readingMinutes || 10}m ${lang === "zh" ? "原典精读" : "Monograph"}`;
+    : lang === "zh"
+      ? `约 ${s.readingMinutes || 10} 分钟读完`
+      : `${s.readingMinutes || 10}m Guide`;
 
 const start = s.startSec || 0;
 const end = s.endSec || 60;
@@ -112,7 +114,7 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
         </span>
         {node.isSpine && (
           <span class="at-lineage-pill at-mono" style="font-size:0.73rem;color:var(--accent-signal);">
-            ★ FLAGSHIP SPINE
+            {lang === "zh" ? "★ 口碑必看精选" : "★ ESSENTIAL PICK"}
           </span>
         )}
       </div>
@@ -122,23 +124,23 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
 
       <div class="at-spec-strip">
         <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">CREATOR / SOURCE</div>
+          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "作者 / 来源频道" : "CREATOR / SOURCE"}</div>
           <div style="font-weight:580;font-size:0.88rem;margin-top:2px;">{s.channelName}</div>
         </div>
         <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">VERIFIED WINDOW</div>
+          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "推荐只看这一段" : "BEST PART TO WATCH"}</div>
           <div class="at-mono" style="font-weight:580;font-size:0.84rem;margin-top:2px;color:var(--accent-primary);">
             {windowSpec}
           </div>
         </div>
         <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">DIFFICULTY</div>
+          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "上手难度" : "DIFFICULTY"}</div>
           <div style="font-weight:580;font-size:0.88rem;margin-top:2px;">
             {DIFFICULTY_META[node.facets.difficulty]?.[lang] || node.facets.difficulty}
           </div>
         </div>
         <div class="at-spec-cell">
-          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">ECOSYSTEM</div>
+          <div class="at-mono" style="font-size:0.69rem;color:var(--ink-muted);">{lang === "zh" ? "免费还是付费" : "COST / OPENNESS"}</div>
           <div style="font-weight:580;font-size:0.86rem;margin-top:2px;">
             {OPENNESS_META[node.facets.openness]?.[lang] || node.facets.openness}
           </div>
@@ -152,14 +154,14 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
 
       <section id="steps" data-spy-sec="steps" style="margin-bottom:24px;scroll-margin-top:80px;">
         <div class="at-kicker" style="margin-bottom:10px;">
-          {lang === "zh" ? "核心执行拆解（点击行内代码标签一键复制 · 点击时间戳即时跳播）" : "3-STEP IMPLEMENTATION BREAKDOWN"}
+          {lang === "zh" ? "三步抓准核心重点（点深色英文词可一键复制 · 点右侧时间直接跳过去看）" : "3 KEY TAKEAWAYS IN PLAIN ENGLISH (CLICK TIMESTAMPS TO JUMP)"}
         </div>
         {loc.steps.map((st, idx) => (
           <div class="at-step-card">
             <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;">
               <div style="display:flex;gap:10px;align-items:baseline;">
                 <span class="at-mono" style="color:var(--accent-primary);font-weight:650;font-size:0.86rem;">
-                  STEP 0{idx + 1}
+                  {lang === "zh" ? `第 ${idx + 1} 步` : `STEP 0${idx + 1}`}
                 </span>
                 <h2 style="font-size:1.12rem;"><InlineOpsText text={st.title} /></h2>
               </div>
@@ -170,7 +172,7 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
                   data-seek-sec={stepTimes[idx]}
                   style="font-size:0.72rem;padding:2px 8px;"
                 >
-                  ▶ {formatTime(stepTimes[idx])} {lang === "zh" ? "起播" : "Jump"}
+                  ▶ {formatTime(stepTimes[idx])} {lang === "zh" ? "跳到这看" : "Jump here"}
                 </button>
               )}
             </div>

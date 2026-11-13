@@ -28,30 +28,30 @@ const romanEras = ["I", "II", "III", "IV", "V"];
 const focusPresets =
   lang === "zh"
     ? [
-        { id: "all", label: `🌐 全部概念 (${CONCEPTS.length})`, desc: "完整展示 2017–2026 全部 22 个核心概念演进坐标。" },
-        { id: "surging", label: "🔥 只看 2026 前沿爆发 (6)", desc: "聚焦当前增速最快的 6 大新趋势：MCP、RLVR、上下文工程、CLI Harness、SKILL.md 与世界模型。" },
-        { id: "beginner", label: "🌱 小白必懂的 5 个基础词 (5)", desc: "过滤掉高阶工程细节，按顺序掌握现代 AI 最核心的 5 个基础概念（Transformer → 分词向量 → 提示词 → 知识库 → 工具调用）。" },
-        { id: "applied", label: "⚡ 落地应用高频技术 (6)", desc: "聚焦业务与产品直接能用的 6 项实用技术：长窗口多模态、可控生图、ComfyUI、Vibe Coding、混合检索与桌面智能体。" },
-        { id: "career", label: "🧭 工程从业核心底座 (5)", desc: "聚焦 AI 工程师面试与上线的硬核功底：Scaling 算力账、对齐微调、LoRA 本地部署、图编排与 Eval 评测飞轮。" },
-        { id: "evolved", label: "⚠️ 避坑：已被替代的旧做法 (4)", desc: "重点查看哪些 2022–2024 流行做法已被新范式演进替代，避免把时间花在过时套路上。" },
+        { id: "all", label: `🌐 看全部 ${CONCEPTS.length} 个词`, desc: "把 2017 到 2026 年最重要的 22 个 AI 概念按时间顺序摆在一张图上，一眼看清谁先谁后、谁带火了谁。" },
+        { id: "surging", label: "🔥 只看今年最火的 6 个新词", desc: "只看 2026 年大家讨论最多、变化最快的 6 个新方向：MCP 万能插头、慢思考推理模型、给 AI 整理信息、命令行编程助手、SKILL.md 技能包、懂物理的世界模型。" },
+        { id: "beginner", label: "🌱 小白先懂这 5 个词", desc: "先把复杂的工程词统统藏起来！顺着看懂这 5 个最基础的词（注意力机制 → 拆词与找近义词 → 怎么提问 → 喂外部资料 → 让 AI 用工具），别人聊 AI 你就听得懂了。" },
+        { id: "applied", label: "⚡ 干活最常用的 6 招", desc: "只看普通人和产品团队马上能拿来干活的 6 样本事：一次塞进整本书、控制画图姿势、搭生图流水线、说话写软件、双保险搜资料、让 AI 替你点电脑。" },
+        { id: "career", label: "🧭 转行必学的 5 项基本功", desc: "只看招 AI 工程师最看重的 5 项硬本事：算清模型成本账、把模型教听话、低成本微调与本地跑、画好防跑偏流程图、上线前自动打分测试。" },
+        { id: "evolved", label: "↻ 避坑：已有更好做法的老概念 (4)", desc: "看看哪些前两年很火的做法（比如死背提示词咒语、粗暴切碎文档），现在已经有了更省心的新办法，别再走弯路。" },
       ]
     : [
-        { id: "all", label: `🌐 All Concepts (${CONCEPTS.length})`, desc: "Showing all 22 core AI concepts from 2017 to 2026." },
-        { id: "surging", label: "🔥 2026 Surging Frontier (6)", desc: "Spotlight the 6 fastest-growing 2026 shifts: MCP, RLVR, Context Eng, CLI Harnesses, SKILL.md & World Models." },
-        { id: "beginner", label: "🌱 5 Beginner Core Terms (5)", desc: "Strip away advanced noise — learn the 5 essential building blocks in plain order." },
-        { id: "applied", label: "⚡ Hands-On Applied Tech (6)", desc: "Focus on the 6 highest-ROI practical capabilities for shipping products and media." },
-        { id: "career", label: "🧭 AI Engineering Core (5)", desc: "Focus on foundational engineering pillars: Scaling, alignment, LoRA, workflows & LLM Evals." },
-        { id: "evolved", label: "⚠️ Outdated / Evolved Habits (4)", desc: "See which 2022–2024 approaches were superseded by modern 2026 patterns." },
+        { id: "all", label: `🌐 All ${CONCEPTS.length} Topics`, desc: "See all 22 core AI ideas from 2017 to 2026 on one timeline — trace what came first and what unlocked what." },
+        { id: "surging", label: "🔥 6 Hottest in 2026", desc: "Spotlight the 6 fastest-rising 2026 shifts: MCP universal plug, think-before-answering models, Context Engineering, CLI coding agents, SKILL.md & World Models." },
+        { id: "beginner", label: "🌱 5 Beginner Basics", desc: "Hide advanced engineering noise — learn the 5 essential building blocks in plain order." },
+        { id: "applied", label: "⚡ 6 Everyday Work Skills", desc: "Focus on the 6 most practical skills for shipping work, docs Q&A, coding, and visual media today." },
+        { id: "career", label: "🧭 5 Core Dev Skills", desc: "Focus on core AI engineering fundamentals: model cost tradeoffs, post-training, local fine-tuning, workflows & automated testing." },
+        { id: "evolved", label: "↻ 4 Replaced Old Habits", desc: "See which 2022–2024 habits have been replaced by much smarter 2026 practices." },
       ];
 
 const title =
   lang === "zh"
-    ? "AI 概念趋势图谱与血缘时间线（2017–2026）— AITube"
-    : "AI Concept Trend Map & Lineage Timeline (2017–2026) — AITube";
+    ? "一张图看懂 AI 是怎么一步步发展到今天的（2017–2026 概念时间线）— AITube"
+    : "AI Concept Timeline: How 22 Key Ideas Connected (2017–2026) — AITube";
 const desc =
   lang === "zh"
-    ? "按你的身份（小白扫盲 / 应用落地 / 工程从业 / 前沿追踪）一键圈出重点概念，串联 2017–2026 年 22 个 AI 核心概念的起源、拐点与因果血缘。"
-    : "Filter 22 foundational and frontier AI concepts (2017–2026) by reader goal, inflection quarters, momentum sparklines, and causal lineage.";
+    ? "按你的需求（小白扫盲 / 日常干活 / 转行开发 / 看新趋势）一键圈出重点，用大白话讲清 2017–2026 年 22 个 AI 核心词的来龙去脉。"
+    : "Filter 22 core AI topics (2017–2026) by your goal, see when each idea took off, and understand what changed in plain English.";
 
 const schema = {
   "@context": "https://schema.org",
@@ -86,18 +86,20 @@ const schema = {
 >
   <section style="padding:32px 0 26px;border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
-      <div class="at-kicker">CHRONOLOGICAL CONCEPT MAP · 2017 Q2 → 2026 Q3</div>
+      <div class="at-kicker">
+        {lang === "zh" ? "2017 → 2026 发展时间线 · 看清每个新词从哪来、有什么用" : "2017 → 2026 TIMELINE · WHERE EVERY AI IDEA CAME FROM"}
+      </div>
       <h1 style="font-size:clamp(1.85rem,3vw,2.55rem);margin:8px 0 10px;">
-        {lang === "zh" ? "AI 概念趋势图谱与演进时间线" : "AI Concept Trend Map & Evolution Timeline"}
+        {lang === "zh" ? "AI 概念时间线：这 22 个词是怎么一步步火起来的" : "AI Concept Timeline: How 22 Key Ideas Grew (2017–2026)"}
       </h1>
       <p style="max-width:72ch;color:var(--ink-secondary);font-size:0.96rem;margin-bottom:18px;">
         {lang === "zh"
-          ? `觉得 22 个概念一次看不过来？先点下方「视角快筛」，图谱与下方卡片会立即只保留与你最相关的重点概念（关联 ${NODES.length} 支核验切片）。`
-          : `22 concepts feel like a lot at once? Click a Quick Lens below to spotlight only the concepts that match your current goal (${NODES.length} verified cuts).`}
+          ? `一下子看 22 个词容易眼花？先点下面一行按钮挑你的身份，上面的关系图和下面的讲解卡片就会只留下最适合你的那几个（共配好 ${NODES.length} 支精华视频片段）。`
+          : `22 topics feel like a lot at once? Pick a quick filter below and both the map and cards will spotlight just what matters for you (${NODES.length} video highlights).`}
       </p>
 
       <!-- Audience Quick-Focus Lens Bar -->
-      <div class="at-preset-bar" role="group" aria-label="Audience quick lens">
+      <div class="at-preset-bar" role="group" aria-label={lang === "zh" ? "按人群快筛" : "Quick audience filters"}>
         <div class="at-filter-row">
           {focusPresets.map((pr, idx) => (
             <button
@@ -155,8 +157,8 @@ const schema = {
           <input
             type="search"
             id="tl-search"
-            placeholder={lang === "zh" ? "过滤概念词条…" : "Filter concepts..."}
-            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.81rem;width:168px;"
+            placeholder={lang === "zh" ? "搜概念名字或大白话…" : "Search topics..."}
+            style="padding:5px 10px;border:1px solid var(--border-subtle);border-radius:4px;background:var(--bg-canvas);font-size:0.81rem;width:176px;"
           />
           <span class="at-mono" id="tl-count" style="font-size:0.78rem;color:var(--ink-muted);">
             {CONCEPTS.length}/{CONCEPTS.length}
@@ -179,15 +181,15 @@ const schema = {
     <!-- View 1: Dual-Column Editorial Cards Workspace -->
     <div class="at-tl-workspace" id="tl-editorial-view">
       <aside class="at-era-rail" aria-label="Era scrubber">
-        <div class="at-kicker" style="font-size:0.66rem;margin-bottom:4px;padding-left:8px;">
-          {lang === "zh" ? "纪元标尺" : "ERA SCRUBBER"}
+        <div class="at-kicker" style="font-size:0.68rem;margin-bottom:4px;padding-left:8px;">
+          {lang === "zh" ? "按年份阶段跳看" : "JUMP BY PERIOD"}
         </div>
         {ERAS.map((era, idx) => {
           const cnt = CONCEPTS.filter((c) => c.eraId === era.id).length;
           return (
             <a href={`#${era.id}`} class={`at-era-rail-link ${idx === 0 ? "is-current" : ""}`} data-era-spy={era.id}>
               <div class="at-mono" style="font-size:0.68rem;color:var(--accent-signal);">
-                ERA {romanEras[idx]} · {era.period}
+                {lang === "zh" ? `第 ${idx + 1} 阶段 · ${era.period}` : `STAGE ${romanEras[idx]} · ${era.period}`}
               </div>
               <div style="display:flex;justify-content:space-between;align-items:baseline;gap:6px;">
                 <span>{era[lang].title}</span>
@@ -206,7 +208,7 @@ const schema = {
               <div class="at-era-header">
                 <div>
                   <span class="at-mono" style="font-size:0.78rem;color:var(--accent-signal);font-weight:650;">
-                    ERA {romanEras[idx]} · {era.period}
+                    {lang === "zh" ? `第 ${idx + 1} 阶段 · ${era.period}` : `STAGE ${romanEras[idx]} · ${era.period}`}
                   </span>
                   <h2 style="font-size:1.55rem;margin-top:2px;">{era[lang].title}</h2>
                 </div>
@@ -230,11 +232,11 @@ const schema = {
         <thead>
           <tr>
             <th>#</th>
-            <th>{lang === "zh" ? "概念与适合人群" : "Concept & Audience"}</th>
-            <th>{lang === "zh" ? "起源 → ★ 拐点" : "Origin → ★ Inflection"}</th>
-            <th>{lang === "zh" ? "范式跃迁（Before → After）" : "Paradigm Shift (Before → After)"}</th>
-            <th>{lang === "zh" ? "趋势曲线 (22H2–26Q3)" : "Momentum (22H2–26Q3)"}</th>
-            <th>{lang === "zh" ? "切片" : "Cuts"}</th>
+            <th>{lang === "zh" ? "概念名字与适合谁看" : "Topic & Best For"}</th>
+            <th>{lang === "zh" ? "出现时间 → ★ 火起来" : "First Seen → ★ Took Off"}</th>
+            <th>{lang === "zh" ? "以前怎么做 → 现在怎么做" : "Old Way → Smarter Way Now"}</th>
+            <th>{lang === "zh" ? "近四年热度走势" : "4-Year Trend"}</th>
+            <th>{lang === "zh" ? "好视频" : "Videos"}</th>
           </tr>
         </thead>
         <tbody>
@@ -243,8 +245,8 @@ const schema = {
             const lf = LIFECYCLE_META[c.lifecycle];
             const aud = CONCEPT_AUDIENCE[c.slug] || {
               role: "career",
-              zhBadge: "🧭 工程从业必修",
-              enBadge: "🧭 Engineering Core",
+              zhBadge: "🧭 转行必学基本功",
+              enBadge: "🧭 Core Dev Skill",
             };
             const sh = splitParadigmShift(loc.paradigmShift);
             const sp = buildSparklineGeometry(c.trendSeries, 118, 30, 3);

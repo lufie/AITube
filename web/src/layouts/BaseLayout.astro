@@ -208,7 +208,8 @@ const toastMsg = UI[lang].copyToast;
           const val = chip.getAttribute("data-copy-op") || "";
           navigator.clipboard?.writeText(val).catch(() => {});
           if (toast) {
-            toast.textContent = `${msg}: ${val}`;
+            const preview = val.replace(/\s+/g, " ").trim();
+            toast.textContent = preview.length > 44 ? `${msg}: ${preview.slice(0, 44)}…` : `${msg}: ${preview}`;
             toast.style.opacity = "1";
             clearTimeout(window.__atToastTimer);
             window.__atToastTimer = setTimeout(() => {

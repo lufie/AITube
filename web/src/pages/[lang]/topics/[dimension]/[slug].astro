@@ -61,7 +61,9 @@ const schema = {
       <nav class="at-mono" style="font-size:0.76rem;color:var(--ink-muted);margin-bottom:10px;">
         <a href={withBase(`/${lang}/`)}>AITube</a> / <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a> / <span>{found.item[lang].name}</span>
       </nav>
-      <div class="at-kicker">{found.dim[lang].label} · {allNodes.length} VERIFIED CUTS</div>
+      <div class="at-kicker">
+        {found.dim[lang].label} · {lang === "zh" ? `共收录 ${allNodes.length} 支精选片段` : `${allNodes.length} HAND-PICKED HIGHLIGHTS`}
+      </div>
       <h1 style="font-size:clamp(1.8rem,2.8vw,2.45rem);margin:6px 0 10px;">{found.item[lang].name}</h1>
       <p style="color:var(--ink-secondary);max-width:68ch;">{desc}</p>
     </div>

@@ -17,25 +17,28 @@ const surging = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 6);
         <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">AITube · 2017–2026</div>
         <p style="line-height:1.55;">{t.footerNote}</p>
         <p class="at-mono" style="margin-top:8px;font-size:0.76rem;">
-          {CONCEPTS.length} Concepts · {NODES.length} Cuts · ~{hrs}h Saved
+          {lang === "zh"
+            ? `${CONCEPTS.length} 个核心词 · ${NODES.length} 支精华片段 · 替你省 ~${hrs} 小时`
+            : `${CONCEPTS.length} Topics · ${NODES.length} Highlights · ~${hrs}h Saved`}
         </p>
       </div>
 
       <div>
         <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
-          {lang === "zh" ? "核心视角导航" : "Perspectives"}
+          {lang === "zh" ? "快速找重点" : "Quick Links"}
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;">
+          <a href={withBase(`/${lang}/`)}>{t.navHome}</a>
+          <a href={withBase(`/${lang}/roadmap/`)}>{t.navRoadmap}</a>
           <a href={withBase(`/${lang}/timeline/`)}>{t.navTimeline}</a>
           <a href={withBase(`/${lang}/directory/`)}>{t.navDirectory}</a>
-          <a href={withBase(`/${lang}/roadmap/`)}>{t.navRoadmap}</a>
           <a href={withBase(`/${lang}/vault/`)}>{t.navVault}</a>
         </div>
       </div>
 
       <div>
         <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
-          {lang === "zh" ? "2026 前沿爆发概念" : "Surging 2026 Concepts"}
+          {lang === "zh" ? "今年最火的 6 个新方向" : "Hot in 2026"}
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
           {surging.map((c) => (
@@ -48,7 +51,7 @@ const surging = CONCEPTS.filter((c) => c.lifecycle === "surging").slice(0, 6);
 
       <div>
         <div class="at-mono" style="color:var(--ink-primary);font-weight:600;margin-bottom:8px;">
-          {lang === "zh" ? "机器可读开放索引" : "Machine & Open Index"}
+          {lang === "zh" ? "公开目录与站点地图" : "Open Index & Sitemap"}
         </div>
         <div style="display:flex;flex-direction:column;gap:5px;" class="at-mono">
           <a href={withBase("/llms.txt")}>/llms.txt</a>

@@ -1,137 +1,137 @@
 [
   {
     "id": "vault-repo-harness",
-    "code": "BLUEPRINT 01",
+    "code": "TEMPLATE 01",
     "conceptSlug": "agentic-coding-cli",
     "en": {
-      "title": "AGENTS.md / CLAUDE.md Repository Harness Spec",
-      "tag": "Open Markdown Template",
-      "summary": "Drop-in <120-line repository charter giving Claude Code, Codex, and Cursor exact build/test gates, architecture boundaries, and zero-fluff rules.",
+      "title": "AGENTS.md / CLAUDE.md — One-Page House Rules for Coding AI",
+      "tag": "Copy-Paste Project Rules",
+      "summary": "Drop this short file into your project folder so Claude Code, Cursor, or Codex immediately knows how to run tests, where files live, and what never to break.",
       "items": [
-        "1-command deterministic verification gate (typecheck + unit tests + dist audit)",
-        "Explicit architectural invariants & forbidden anti-patterns",
-        "Git worktree & PR hygiene rules for parallel subagents"
+        "Exact one-line commands to check types, run tests, and build the app",
+        "Clear folder rules so the AI doesn't hardcode text in random places",
+        "Safety guardrails: never touch secrets or push untested code"
       ],
-      "previewSnippet": "# AGENTS.md — Repository Harness\n\n## 1. Fast Verification Gate (Run Before Every Commit)\n- Typecheck & lint: `npm run check`\n- Targeted unit test: `npx vitest run src/path/to/file.test.ts`\n- Full build & link gate: `npm run build`\n\n## 2. Architecture Boundaries\n- Single source of truth lives in `content/*.json`; never hardcode copy in UI components.\n- Keep context lean: prefer `rg` over dumping full files; delegate broad exploration to read-only subagents.\n\n## 3. Non-Negotiable Constraints\n- Preserve public route parity (`/en/*` and `/zh/*`).\n- Never commit secrets, `.env` files, or unverified third-party URLs."
+      "previewSnippet": "# AGENTS.md — Project House Rules for AI\n\n## 1. Check Your Work Before Finishing\n- Check types & syntax: `npm run check`\n- Run a single test fast: `npx vitest run src/path/to/file.test.ts`\n- Full build & broken-link check: `npm run build`\n\n## 2. Where Things Live\n- Put data and copy in `content/*.json` — don't hardcode long text inside UI components.\n- Keep chat context clean: search specific lines first instead of reading huge files whole.\n\n## 3. Red Lines\n- Keep `/en/*` and `/zh/*` pages in sync.\n- Never commit `.env` secrets or unverified links."
     },
     "zh": {
-      "title": "AGENTS.md / CLAUDE.md 仓库级 Harness 规范模板",
-      "tag": "开源即用模板",
-      "summary": "控制在 120 行以内的项目根规范文件，让 Claude Code、Codex 与 Cursor 开箱即获确定性构建测试命令与架构红线。",
+      "title": "给编程 AI 立规矩的 AGENTS.md「项目家规」模板",
+      "tag": "复制放进项目根目录即可用",
+      "summary": "用 AI 写代码最怕它乱改一通还不自知。把这份不到百行的说明文件放进项目根目录，Claude Code、Cursor 和 Codex 一进项目就知道「文件放哪、改完跑哪条命令自检、哪些红线绝不能碰」。",
       "items": [
-        "一行命令跑通的确定性自检门禁（类型检查 + 单测 + 产物校验）",
-        "单一事实源目录边界与反模式禁令（防模型乱改全局样式或硬编码）",
-        "多 Git Worktree 并行子智能体协作与分支提交纪律"
+        "写清一行就能跑通的自检命令（改完代码让 AI 自己跑测试修报错）",
+        "划清目录规矩（防止 AI 把数据硬编码在页面里或者乱改全局样式）",
+        "立好安全底线（严禁泄露密钥、严禁塞入没验证过的失效链接）"
       ],
-      "previewSnippet": "# AGENTS.md — 仓库智能体工程约束\n\n## 1. 确定性自检门禁（每次提交前必跑）\n- 类型与语法检查：`npm run check`\n- 单文件极速测试：`npx vitest run src/xxx.test.ts`\n- 全量静态构建守门：`npm run build`\n\n## 2. 架构事实源与上下文纪律\n- 所有结构化数据唯一存放在 `content/*.json`，严禁在视图组件内硬编码业务文案。\n- 保持上下文干净：优先用 `rg` 精准定位行号，宽泛调研交由只读子智能体隔离执行。\n\n## 3. 合规红线\n- 严格保持 `/zh/*` 与 `/en/*` 双语路由 100% 对称。\n- 严禁写入任何密钥或未经校验的外部死链。"
+      "previewSnippet": "# AGENTS.md — 给编程 AI 看的项目家规\n\n## 1. 每次改完代码必须跑这三步自检\n- 检查语法和类型报错：`npm run check`\n- 单独跑刚刚修改的测试：`npx vitest run src/xxx.test.ts`\n- 完整打包并检查死链：`npm run build`\n\n## 2. 目录规矩（别乱放东西）\n- 所有数据统一放在 `content/*.json`，不要把大段文字直接写死在页面组件里。\n- 省着点用上下文：先用 `rg` 搜索定位具体行号，别一口气把几千行大文件全读进来。\n\n## 3. 绝对不能碰的红线\n- 中文（`/zh/*`）与英文（`/en/*`）页面必须保持同步。\n- 严禁提交任何密码密钥（`.env`）或打不开的外部链接。"
     }
   },
   {
     "id": "vault-agent-skill",
-    "code": "BLUEPRINT 02",
+    "code": "TEMPLATE 02",
     "conceptSlug": "agent-skills-subagents",
     "en": {
-      "title": "Progressive SKILL.md Capability Bundle",
-      "tag": "Agent Skill Standard",
-      "summary": "Three-tier progressive disclosure layout (frontmatter router → step playbook → deterministic helper scripts) saving 90%+ idle context tokens.",
+      "title": "SKILL.md — On-Demand Playbook Folder for AI Agents",
+      "tag": "Reusable Skill Template",
+      "summary": "Turn any repeatable workflow into a neat folder. Your AI only reads the 2-line summary upfront and opens the full step-by-step instructions when actually needed — saving 90%+ context space.",
       "items": [
-        "Trigger-sharp YAML `description` so the agent activates only when relevant",
-        "Self-contained `scripts/` CLI helpers returning compact JSON instead of raw dumps",
-        "On-demand `references/` schemas loaded only for edge cases"
+        "Clear description telling the AI exactly when to use this skill",
+        "Put exact checks and math inside scripts/ so AI doesn't guess",
+        "Keep long edge-case docs in references/ to load only when needed"
       ],
-      "previewSnippet": "---\nname: release-audit\ndescription: Verify static build output, broken links, JSON-LD schemas, and bilingual route symmetry before opening a PR. Use whenever shipping UI or content changes.\n---\n# Release Audit Skill\n\n## Workflow\n1. Run `node scripts/validate-content.mjs` and fix any schema or timestamp errors.\n2. Execute `npm --prefix web run build`.\n3. Inspect only failing routes reported by `scripts/verify-dist.mjs`; never dump full HTML into context.\n4. Capture light/dark + mobile 390px screenshots before summarizing results."
+      "previewSnippet": "---\nname: release-check\ndescription: Run content checks, build the static site, scan for broken links, and take mobile/desktop screenshots before shipping UI changes.\n---\n# Pre-Release Check Skill\n\n## Steps\n1. Run `node scripts/validate-content.mjs` to catch data mistakes.\n2. Run `npm --prefix web run build` to verify all pages build cleanly.\n3. Read only the error summary if something fails — don't paste giant HTML files into chat.\n4. Check both desktop and 390px phone views before wrapping up."
     },
     "zh": {
-      "title": "渐进式 SKILL.md 智能体技能包骨架",
-      "tag": "2026 技能标准",
-      "summary": "采用「YAML 摘要路由 → 主流程手册 → 确定性脚本资源」三级按需披露结构，在挂载数十项能力时节省 90% 以上闲置上下文。",
+      "title": "让 AI 按需翻阅的 SKILL.md「工作说明书」模板",
+      "tag": "省 Token 的技能包标准",
+      "summary": "如果你把十几份长篇操作手册一股脑塞进提示词，AI 又贵又容易看串行。做成 SKILL.md 文件夹后，AI 平时只看两行目录，真遇到对应任务才翻开这本说明书照着一步步做，省下 90% 脑容量。",
       "items": [
-        "高区分度触发条件描述（`description` 写清何时激活、何时不激活）",
-        "把易错计算与校验下沉到 `scripts/` 确定性脚本，只向上下文返回精简结论",
-        "长篇边缘规范拆分至 `references/`，仅在命中特定分支时按需读取"
+        "开头两行写清「遇到什么情况才翻开这本说明书」（不乱触发）",
+        "把算账、格式检查写成现成小脚本放在 scripts/ 里，不让 AI 瞎猜",
+        "生僻的细节放在 references/ 附录，只有真遇到特殊情况才去翻"
       ],
-      "previewSnippet": "---\nname: release-audit\ndescription: 在提 PR 或交付前端/内容变更前，自动执行数据校验、静态构建、死链扫描与 JSON-LD 合规检查。\n---\n# 发布前全链路验收技能（Release Audit）\n\n## 标准执行步骤\n1. 运行 `node scripts/validate-content.mjs` 确认零越界时间戳与分类错误。\n2. 运行 `npm --prefix web run build` 完成类型检查与死链门禁。\n3. 仅读取报错摘要定位问题文件，禁止把整份构建 HTML 塞入上下文窗口。\n4. 对桌面端深浅色与手机 `390px` 视口做实机渲染巡检后输出简报。"
+      "previewSnippet": "---\nname: release-check\ndescription: 当需要发布网页改动或更新内容前，自动检查数据格式、打包整站、排查死链并截图验收。\n---\n# 上线前自动体检技能（Release Check）\n\n## 照这 4 步依次执行\n1. 先跑 `node scripts/validate-content.mjs`，确认数据没填漏、视频时间没越界。\n2. 再跑 `npm --prefix web run build`，打包整站并自动扫描有没有死链。\n3. 如果报错，只看报错提示对应的那几行文件，别把整页网页代码全塞进对话框。\n4. 最后分别看一眼电脑端和手机窄屏（`390px`）排版有没有挤歪，确认清爽再收工。"
     }
   },
   {
     "id": "vault-eval-rubric",
-    "code": "BLUEPRINT 03",
+    "code": "TEMPLATE 03",
     "conceptSlug": "llm-evals-observability",
     "en": {
-      "title": "Trace Error-Analysis & Binary LLM Judge Kit",
-      "tag": "Eval & QA Rubric",
-      "summary": "Hamel Husain & Shreya Shankar style eval loop: 100 real traces, axial failure taxonomy, and binary PASS/FAIL judge prompt with critique-first JSON.",
+      "title": "Pass/Fail AI Quality Checker (Stop Guessing with 1–5 Stars)",
+      "tag": "Auto-Grading Prompt",
+      "summary": "Don't ask AI to rate answers from 1 to 5 — nobody knows what a '3.5' means. Collect 100 real questions, list common mistakes, and have a judge prompt mark strict PASS or FAIL with proof.",
       "items": [
-        "Spreadsheet schema for open coding -> axial failure mode clustering",
-        "Binary `PASS` / `FAIL` judge prompt (never vague 1–5 Likert scales)",
-        "Train/dev human-judge agreement check (>90% TPR/TNR target)"
+        "Simple spreadsheet method to group your top 4–6 real user complaints",
+        "Strict PASS / FAIL judge prompt that checks facts line by line first",
+        "Quick agreement check to make sure the AI judge matches your own judgment"
       ],
-      "previewSnippet": "{\n  \"judge_system_prompt\": \"You are evaluating whether the assistant response contains any unsupported factual claim relative to <retrieved_context>. First list exact claims and check each against <retrieved_context> in `reasoning`. Then output `verdict`: PASS only if 100% of claims are grounded; otherwise FAIL.\",\n  \"output_schema\": {\n    \"reasoning\": \"string (cite exact span or missing fact)\",\n    \"verdict\": \"PASS | FAIL\"\n  }\n}"
+      "previewSnippet": "{\n  \"judge_prompt\": \"Check whether the assistant's reply makes ANY factual claim not supported by <reference_docs>. First list each claim and its matching quote in `reasoning`. Output `verdict`: PASS only if every single claim is backed by the docs; otherwise output FAIL.\",\n  \"output_format\": {\n    \"reasoning\": \"string (quote exact source line or point out what was made up)\",\n    \"verdict\": \"PASS | FAIL\"\n  }\n}"
     },
     "zh": {
-      "title": "真实链路坏例归因与二元 LLM 裁判套件",
-      "tag": "评测工程模板",
-      "summary": "告别无效的 1–5 分主观打分：用 100 条真实业务 Trace 归纳失败模式，并为每个高频坏例配备高一致性的 PASS/FAIL 专用裁判。",
+      "title": "防 AI 胡说八道的「全对 / 有错」自动批改模板",
+      "tag": "测准确率必备模板",
+      "summary": "千万别让 AI 给自己的回答打「1 到 5 分」——打 3.8 分到底能不能上线？最管用的土办法是：攒 100 条真实用户提问，让裁判模型先逐句核对原文，全对才算过（PASS），有一句瞎编就算挂（FAIL）。",
       "items": [
-        "开放式坏例标注表结构（从原始报错归纳 4–6 类高频根因）",
-        "强制先写证据推理再给 `PASS / FAIL` 二元结论的裁判 JSON Schema",
-        "人工金标集与裁判模型的一致率校准清单（对齐率 >90%）"
+        "先用表格记下 50 条真实翻车回答，归拢出最常犯的 4 到 5 种毛病",
+        "强制裁判模型「先摆原文证据、最后再判 PASS 或 FAIL」，绝不和稀泥",
+        "拿 30 条你自己判过的题目对一下答案，确保裁判眼光和你一致"
       ],
-      "previewSnippet": "{\n  \"judge_system_prompt\": \"请严格核查助手回答中是否存在任何超出 <retrieved_context> 依据的事实断言。先在 `reasoning` 中逐条列出断言并核对原文出处；仅当全部断言均有明确依据时 `verdict` 输出 PASS，否则一律输出 FAIL。\",\n  \"output_schema\": {\n    \"reasoning\": \"string（指出具体原文片段或缺失依据的断言）\",\n    \"verdict\": \"PASS | FAIL\"\n  }\n}"
+      "previewSnippet": "{\n  \"judge_prompt\": \"请仔细检查助手的回答里，有没有哪句话超出了 <参考资料> 里写的内容。请先在 `reasoning` 里把回答提到的事实一条条列出来，核对原文出处；只有每一条都有明确出处时，`verdict` 才填 PASS；凡有一处瞎编或找不到依据，一律填 FAIL。\",\n  \"output_format\": {\n    \"reasoning\": \"string（写出对应的原文句子，或直接指出哪句话是瞎编的）\",\n    \"verdict\": \"PASS | FAIL\"\n  }\n}"
     }
   },
   {
     "id": "vault-hybrid-rag",
-    "code": "BLUEPRINT 04",
+    "code": "TEMPLATE 04",
     "conceptSlug": "hybrid-agentic-rag",
     "en": {
-      "title": "Contextual Hybrid RAG + Agentic Search Blueprint",
-      "tag": "Retrieval Architecture",
-      "summary": "Contextualized chunk headers + Reciprocal Rank Fusion (BM25 + dense embeddings) + cross-encoder rerank + iterative query rewrite.",
+      "title": "Hybrid Document Search Snippet (Keyword + Meaning Together)",
+      "tag": "20-Line Python Snippet",
+      "summary": "Pure vector search understands meaning but misses exact product codes, error numbers, and names. Combine exact keyword search (BM25) with vector search in 10 lines of Python.",
       "items": [
-        "Prepend 50-token document/section context header before indexing chunks",
-        "Fuse exact BM25 lexical hits with dense cosine recall via RRF (`k=60`)",
-        "Expose `search_docs` + `read_section` tools so the agent can refine queries"
+        "Add a 1-line title/date header to each paragraph before saving so context isn't lost",
+        "Merge keyword hits and semantic vector hits cleanly with RRF (k=60)",
+        "Let the AI search a second time with better keywords if the first try misses"
       ],
-      "previewSnippet": "def reciprocal_rank_fusion(bm25_ids: list[str], vec_ids: list[str], k: int = 60) -> list[str]:\n    scores: dict[str, float] = {}\n    for rank, doc_id in enumerate(bm25_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    for rank, doc_id in enumerate(vec_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    return sorted(scores, key=lambda d: scores[d], reverse=True)[:20]"
+      "previewSnippet": "def merge_keyword_and_vector_results(keyword_ids: list[str], vector_ids: list[str], k: int = 60) -> list[str]:\n    # Combine exact keyword matches (BM25) + meaning matches (vectors)\n    scores: dict[str, float] = {}\n    for rank, doc_id in enumerate(keyword_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    for rank, doc_id in enumerate(vector_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    return sorted(scores, key=lambda d: scores[d], reverse=True)[:20]"
     },
     "zh": {
-      "title": "上下文增强混合检索（Hybrid & Agentic RAG）蓝图",
-      "tag": "检索架构清单",
-      "summary": "结合 Anthropic Contextual Retrieval 切块前缀、BM25+向量倒数秩融合（RRF）、重排精筛与智能体多轮改写追问。",
+      "title": "搜得准、不漏型号的「关键词 + 语义」双路搜索代码模板",
+      "tag": "15 行 Python 核心代码",
+      "summary": "做知识库只用「向量搜索」，搜近义词很灵，但一搜具体的产品型号、报错代码或人名就经常抓瞎。用下面这十几行代码把「字面精确搜」和「按意思搜」合二为一，准确率立竿见影往上跳。",
       "items": [
-        "切块入库前自动注入 50 字文档全局背景头，消除指代不明丢召回",
-        "用 RRF（`k=60`）融合 BM25 精确专有名词匹配与稠密向量语义召回",
-        "将检索封装为可多轮调用的工具，允许模型在首轮证据不足时改写词条深挖"
+        "把长文章切段前，给每段开头补一句「来自哪篇文档、哪一章」，防止没头没尾",
+        "用十行排名合并代码（RRF），让精确词匹配和意思相近的结果强强联手",
+        "允许 AI 第一把没搜全时，自己换个近义词再搜一次"
       ],
-      "previewSnippet": "def reciprocal_rank_fusion(bm25_ids: list[str], vec_ids: list[str], k: int = 60) -> list[str]:\n    scores: dict[str, float] = {}\n    for rank, doc_id in enumerate(bm25_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    for rank, doc_id in enumerate(vec_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    return sorted(scores, key=lambda d: scores[d], reverse=True)[:20]"
+      "previewSnippet": "def merge_keyword_and_vector_results(keyword_ids: list[str], vector_ids: list[str], k: int = 60) -> list[str]:\n    # 把「精确关键词搜出来的结果」和「按意思相近搜出来的结果」合并打分\n    scores: dict[str, float] = {}\n    for rank, doc_id in enumerate(keyword_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    for rank, doc_id in enumerate(vector_ids, start=1):\n        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank)\n    return sorted(scores, key=lambda d: scores[d], reverse=True)[:20]"
     }
   },
   {
     "id": "vault-multimodal-storyboard",
-    "code": "BLUEPRINT 05",
+    "code": "TEMPLATE 05",
     "conceptSlug": "comfyui-video-audio",
     "en": {
-      "title": "Keyframe-Locked Multimodal Video Storyboard Spec",
-      "tag": "Creative Pipeline",
-      "summary": "Eliminate character drift in AI video: lock character sheet + first/last Flux frames in ComfyUI before driving DiT camera motion and voice sync.",
+      "title": "Consistent-Character AI Video Shot Card",
+      "tag": "Video & Image Prompt Spec",
+      "summary": "Stop AI videos from morphing faces every shot: generate a 3-angle character sheet and lock the first & last still frames first, then tell the video model only how the camera moves.",
       "items": [
-        "3-angle character turnaround sheet + fixed seed/IP-Adapter anchor",
-        "First-frame & last-frame Flux composition lock before video generation",
-        "Explicit camera-motion verb vocabulary (dolly-in, truck-left, rack-focus)"
+        "Keep one character reference sheet (front, side, 3/4 view) + fixed lighting",
+        "Approve the start frame and end frame as still images before rendering video",
+        "Use one simple camera direction per shot (slow push-in, pan left, locked tripod)"
       ],
-      "previewSnippet": "{\n  \"shot_id\": \"SC02_SH04\",\n  \"anchor_character_ref\": \"char_lin_v3_turnaround.png\",\n  \"first_frame_flux\": \"35mm medium close-up, warm tungsten desk lamp, subject inspecting brass lens, f/2.0 shallow depth of field\",\n  \"camera_motion_dit\": \"Slow 4-second dolly-in, subtle handheld breathing, subject glances up toward monitor glow, zero morphing\",\n  \"audio_layer\": \"Soft mechanical shutter click at 01.4s + room tone\"\n}"
+      "previewSnippet": "{\n  \"shot_id\": \"SCENE_02_SHOT_04\",\n  \"character_ref_image\": \"lin_character_3views.png\",\n  \"start_frame_image_prompt\": \"35mm medium close-up, warm desk lamp light, character checking an old brass camera, soft blurry background\",\n  \"video_camera_move\": \"Slow 4-second push-in, character looks up toward the screen at 1.5s, background stays completely steady\",\n  \"sound_effect\": \"Crisp camera shutter click at 1.4s + quiet room ambience\"\n}"
     },
     "zh": {
-      "title": "首尾帧锁定多模态视频分镜（ComfyUI + DiT）标准规格",
-      "tag": "多模态创作流",
-      "summary": "彻底解决 AI 视频角色变脸与镜头乱飘：先用 Flux + 参考图锁死三视图与首尾关键帧，再注入结构化运镜指令驱动视频与音效。",
+      "title": "AI 做视频「主角不换脸、镜头不乱晃」分镜脚本模板",
+      "tag": "生图与视频创作模板",
+      "summary": "直接拿一句话让 AI 生成视频，十有八九下一秒主角就变了个人。最稳的专业做法是：先用生图锁死「主角正侧三视图」和这一个镜头的「开头画面、结尾画面」，最后只让视频模型把中间 4 秒动起来。",
       "items": [
-        "角色三视图设定卡与固定光影色温锚点（杜绝跨镜头换脸）",
-        "首帧/尾帧构图先行锁定，把视频模型从“瞎编画面”收敛为“受控中间帧演绎”",
-        "标准影视运镜词表（推轨 Dolly-in、横移 Truck、焦点切换 Rack Focus）"
+        "先备好一张主角正脸/侧脸设定图，固定光线色调，跨镜头绝不换脸",
+        "先用图片搞定开头第一帧和结尾最后一帧（画图改起来快，别在慢吞吞的视频里碰运气）",
+        "每个镜头只给一个干净的镜头动作（比如：缓慢往前推近、固定三脚架不晃）"
       ],
-      "previewSnippet": "{\n  \"shot_id\": \"SC02_SH04\",\n  \"anchor_character_ref\": \"char_lin_v3_turnaround.png\",\n  \"first_frame_flux\": \"35mm 中近景，暖色台灯侧逆光，主角低头检视黄铜镜头结构，f/2.0 浅景深胶片颗粒\",\n  \"camera_motion_dit\": \"4 秒缓慢向前推轨（Dolly-in），微弱手持呼吸感，主角在 1.5 秒处抬头望向屏幕冷光，严禁背景形变\",\n  \"audio_layer\": \"01.4s 清脆机械快门声 + 安静暗房环境底噪\"\n}"
+      "previewSnippet": "{\n  \"镜头编号\": \"第2场_第4镜\",\n  \"锁定主角参考图\": \"主角小林_正侧三视图.png\",\n  \"开头第一帧画面描述\": \"35mm 电影中近景，暖黄色台灯侧光，主角低头检查手里的旧黄铜相机，背景柔和虚化\",\n  \"4秒镜头怎么动\": \"镜头缓慢向前推近（Dolly-in），1.5 秒处主角抬头看向屏幕亮光，背景墙壁和桌面保持稳定不变形\",\n  \"配音与音效\": \"1.4 秒处清脆的机械快门咔嚓声 + 安静的室内底噪\"\n}"
     }
   }
 ]

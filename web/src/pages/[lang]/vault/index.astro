@@ -13,12 +13,12 @@ const t = UI[lang];
 
 const title =
   lang === "zh"
-    ? "开源智能体工程与评测蓝图箱（Open Vault）— AITube"
-    : "Open Agent Harness & Eval Blueprint Vault — AITube";
+    ? "拿来就能用的现成模板箱（不用注册 · 一键复制）— AITube"
+    : "Ready-to-Use AI Templates & Checklists (Copy & Paste) — AITube";
 const desc =
   lang === "zh"
-    ? "免注册直接复制：AGENTS.md 仓库规范、渐进式 SKILL.md 模板、二元 LLM 裁判套件、上下文混合检索与多模态分镜标准规格。"
-    : "Zero-gate open blueprints: AGENTS.md repository charter, progressive SKILL.md bundle, binary LLM judge rubric, hybrid RAG, and multimodal storyboard specs.";
+    ? "不用填邮箱、不用登录，点一下就能复制带走：给编程 AI 立规矩的 AGENTS.md、按需翻阅的 SKILL.md、防胡说八道的自动批改提示词、双路搜索代码和 AI 视频不换脸分镜表。"
+    : "No sign-up or email wall — copy tested templates straight into your project: AGENTS.md project rules, SKILL.md manual, Pass/Fail grading prompt, hybrid search SQL, and AI video storyboard template.";
 
 const schema = {
   "@context": "https://schema.org",
@@ -41,9 +41,11 @@ const schema = {
 >
   <section style="padding:36px 0 24px;border-bottom:1px solid var(--border-subtle);">
     <div class="at-container">
-      <div class="at-kicker">ZERO-EMAIL OPEN BLUEPRINTS · {VAULT_ITEMS.length} PRODUCTION SPECS</div>
+      <div class="at-kicker">
+        {lang === "zh" ? `不用注册 · 点一下直接复制 · ${VAULT_ITEMS.length} 份实战检验过的好用模板` : `NO SIGN-UP · COPY & PASTE · ${VAULT_ITEMS.length} READY-TO-USE TEMPLATES`}
+      </div>
       <h1 style="font-size:clamp(1.85rem,3vw,2.5rem);margin:8px 0 12px;">
-        {lang === "zh" ? "开源智能体规范与评测蓝图箱" : "Open Agent Harness & Eval Vault"}
+        {lang === "zh" ? "现成模板箱：别人踩完坑总结好的模板，直接抄作业" : "Ready-to-Use AI Templates: Copy What Already Works"}
       </h1>
       <p style="max-width:68ch;color:var(--ink-secondary);">
         {desc}
@@ -62,11 +64,11 @@ const schema = {
         >
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px;">
             <span class="at-mono" style="font-size:0.76rem;color:var(--accent-primary);font-weight:600;">
-              {v.code} · {loc.tag}
+              {lang === "zh" ? v.code.replace("TEMPLATE", "现成模板") : v.code} · {loc.tag}
             </span>
             {concept && (
               <a href={withBase(`/${lang}/concepts/${concept.slug}/`)} class="at-lineage-pill at-mono" style="font-size:0.74rem;">
-                {concept[lang].shortName} →
+                {lang === "zh" ? `对应概念：${concept[lang].shortName} →` : `Related: ${concept[lang].shortName} →`}
               </a>
             )}
           </div>
@@ -85,11 +87,15 @@ const schema = {
               type="button"
               class="at-chip at-mono"
               data-copy-op={loc.previewSnippet}
-              style="position:absolute;top:10px;right:10px;font-size:0.72rem;"
+              style="position:absolute;top:10px;right:10px;font-size:0.72rem;display:inline-flex;align-items:center;gap:5px;"
             >
-              {lang === "zh" ? "复制模板" : "Copy Blueprint"} ⧉
+              <span>{lang === "zh" ? "一键复制全文" : "Copy Template"}</span>
+              <svg aria-hidden="true" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.75;flex-shrink:0;">
+                <rect x="5.5" y="5.5" width="8.5" height="8.5" rx="1.5" />
+                <path d="M10.5 5.5V3.5A1.5 1.5 0 0 0 9 2H3.5A1.5 1.5 0 0 0 2 3.5V9a1.5 1.5 0 0 0 1.5 1.5h2" />
+              </svg>
             </button>
-            <pre class="at-mono" style="margin:0;font-size:0.79rem;line-height:1.55;overflow-x:auto;white-space:pre-wrap;padding-right:92px;">{loc.previewSnippet}</pre>
+            <pre class="at-mono" style="margin:0;font-size:0.79rem;line-height:1.55;overflow-x:auto;white-space:pre-wrap;padding-right:118px;">{loc.previewSnippet}</pre>
           </div>
         </article>
       );

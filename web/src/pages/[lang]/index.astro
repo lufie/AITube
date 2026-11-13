@@ -18,16 +18,16 @@ const romanEras = ["I", "II", "III", "IV", "V"];
 const heroPrompts =
   lang === "zh"
     ? [
-        { label: "🌱 大模型原理通俗解释", q: "Karpathy 预训练" },
-        { label: "⚡ 零幻觉搭个人知识库", q: "NotebookLM" },
-        { label: "🧭 智能体评测怎么做？", q: "Hamel Evals" },
-        { label: "🔭 Prompt 与 Context 区别", q: "Context Engineering" },
+        { label: "🌱 AI 到底是怎么学会说话的？", q: "Karpathy" },
+        { label: "⚡ 几十份文档喂给 AI 怎么不瞎编？", q: "NotebookLM" },
+        { label: "🔌 大家都在聊的 MCP 是什么？", q: "MCP" },
+        { label: "🎬 怎么让 AI 做视频主角不换脸？", q: "ComfyUI" },
       ]
     : [
-        { label: "🌱 How LLMs actually work", q: "Karpathy three stage" },
-        { label: "⚡ Zero-hallucination docs workflow", q: "NotebookLM" },
-        { label: "🧭 How to run LLM Evals", q: "Hamel Evals" },
-        { label: "🔭 Prompt vs Context Engineering", q: "Context Engineering" },
+        { label: "🌱 How ChatGPT actually learns to talk", q: "Karpathy" },
+        { label: "⚡ Ask your PDFs with zero made-up facts", q: "NotebookLM" },
+        { label: "🔌 What is MCP in plain English?", q: "MCP" },
+        { label: "🎬 Keep the same character face in AI video", q: "ComfyUI" },
       ];
 
 const scenarioCards = DIRECTORY_SCENARIOS.filter((s) => s.id !== "all");
@@ -61,7 +61,7 @@ const schema = {
             <span class="at-kbd">⌘K</span>
           </button>
 
-          <div class="at-prompt-row" style="justify-content:center;margin-bottom:0;" aria-label="Suggested queries">
+          <div class="at-prompt-row" style="justify-content:center;margin-bottom:0;" aria-label={lang === "zh" ? "大家常搜的问题" : "Popular questions"}>
             {heroPrompts.map((hp) => (
               <button type="button" class="at-prompt-chip" data-open-search data-search-q={hp.q}>
                 {hp.label}
@@ -81,7 +81,7 @@ const schema = {
       <div class="at-section-head">
         <div>
           <div class="at-kicker" style="color:var(--accent-signal);">
-            {lang === "zh" ? "STEP 2 · 30 秒看清技术风向（避免花时间学过时套路）" : "STEP 2 · LEARN WHAT'S CURRENT, SKIP WHAT'S OUTDATED"}
+            {lang === "zh" ? "第 2 步 · 30 秒看清现在该学什么（别再把时间花在老办法上）" : "STEP 2 · 30-SECOND REALITY CHECK — SKIP OUTDATED HABITS"}
           </div>
           <h2>{t.eraStripHeading}</h2>
         </div>
@@ -93,8 +93,8 @@ const schema = {
       <div class="at-cheatsheet-grid">
         <div class="at-cheatsheet-card">
           <div class="at-cheatsheet-head at-mono">
-            <span>{lang === "zh" ? "✕ 别再死磕的旧习惯（2023–2024）" : "✕ OUTDATED HABITS (2023–24)"}</span>
-            <span style="color:var(--accent-primary);">{lang === "zh" ? "✓ 2026 现在该掌握的重点" : "✓ FOCUS ON THIS IN 2026"}</span>
+            <span>{lang === "zh" ? "✕ 以前费力不讨好的老办法" : "✕ OLD WAY (STOP OVERDOING THIS)"}</span>
+            <span style="color:var(--accent-primary);">{lang === "zh" ? "✓ 现在聪明人都在用的做法" : "✓ SMARTER WAY IN 2026"}</span>
           </div>
 
           <div class="at-cheatsheet-list">
@@ -123,8 +123,8 @@ const schema = {
           return (
             <a href={withBase(`/${lang}/timeline/#${era.id}`)} class="at-era-card">
               <div class="at-mono" style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--accent-signal);font-weight:650;">
-                <span>ERA {romanEras[idx]} · {era.period}</span>
-                <span style="color:var(--ink-muted);">{cnt} {lang === "zh" ? "概念" : "concepts"}</span>
+                <span>{lang === "zh" ? `第 ${idx + 1} 阶段 · ${era.period}` : `STAGE ${romanEras[idx]} · ${era.period}`}</span>
+                <span style="color:var(--ink-muted);">{cnt} {lang === "zh" ? "个核心词" : "topics"}</span>
               </div>
               <strong style="font-family:var(--font-serif);font-size:1.05rem;">{era[lang].title}</strong>
               <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.45;">{era[lang].subtitle}</p>
@@ -141,14 +141,14 @@ const schema = {
       <div class="at-section-head">
         <div>
           <div class="at-kicker">
-            {lang === "zh" ? "STEP 3 · 按具体问题直接找实战切片" : "STEP 3 · JUMP DIRECTLY BY PRACTICAL GOAL"}
+            {lang === "zh" ? "第 3 步 · 带着具体问题来的？按你想做的事直接挑视频" : "STEP 3 · HAVE A SPECIFIC GOAL? PICK BY USE CASE"}
           </div>
           <h2>
-            {lang === "zh" ? "知道自己想解决什么问题？按场景一键筛出好片" : "Know Your Goal? Jump Straight Into Verified Cuts"}
+            {lang === "zh" ? "不用管复杂分类，点你想解决的事，直接看精选片段" : "Skip the Jargon — Pick What You Want to Do Today"}
           </h2>
         </div>
         <a href={withBase(`/${lang}/directory/`)} class="at-mono" style="color:var(--accent-primary);font-size:0.86rem;font-weight:600;">
-          {lang === "zh" ? `浏览全库 ${NODES.length} 支切片 →` : `All ${NODES.length} cuts →`}
+          {lang === "zh" ? `逛逛全部 ${NODES.length} 支视频片段 →` : `All ${NODES.length} highlights →`}
         </a>
       </div>
 
@@ -162,7 +162,7 @@ const schema = {
               {lang === "zh" ? sc.zhSub : sc.enSub}
             </div>
             <div class="at-mono" style="margin-top:12px;font-size:0.75rem;color:var(--accent-primary);font-weight:600;">
-              {lang === "zh" ? "进入精选片单 →" : "Open cuts →"}
+              {lang === "zh" ? "看看这组精选片段 →" : "See highlights →"}
             </div>
           </a>
         ))}

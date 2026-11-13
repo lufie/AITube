@@ -11,14 +11,14 @@ import { withBase } from "../lib/i18n";
   schema={{ "@context": "https://schema.org", "@type": "WebPage", name: "404 Not Found" }}
 >
   <section class="at-container" style="padding:72px 24px;text-align:center;">
-    <div class="at-kicker">404 · NOT FOUND</div>
-    <h1 style="font-size:2.2rem;margin:10px 0 14px;">未找到该切片或概念坐标 / Page Not Found</h1>
+    <div class="at-kicker">404 · 没找到这个页面</div>
+    <h1 style="font-size:2.2rem;margin:10px 0 14px;">哎呀，这个链接好像走丢了 / Page Not Found</h1>
     <p style="color:var(--ink-secondary);margin-bottom:24px;">
-      请从概念趋势时间线或多维检索库重新定位。
+      你可以直接回首页按需求选方向，或者去视频库找你想看的片段。
     </p>
     <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
-      <a href={withBase("/zh/timeline/")} class="at-btn-primary">概念趋势时间线 →</a>
-      <a href={withBase("/zh/directory/")} class="at-btn-ghost">全部 280 支切片</a>
+      <a href={withBase("/zh/")} class="at-btn-primary">回首页选方向 →</a>
+      <a href={withBase("/zh/directory/")} class="at-btn-ghost">逛逛全部 280 支精选视频</a>
     </div>
   </section>
 </BaseLayout>

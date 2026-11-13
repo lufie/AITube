@@ -25,12 +25,12 @@ const stepTimes = [
   <div class="at-scrubber">
     <div class="at-mono" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:0.75rem;color:var(--ink-secondary);">
       <span>
-        {lang === "zh" ? "精选核心切片胶片轨" : "Precision Filmstrip Slice"}:{" "}
+        {lang === "zh" ? "已为你截取精华片段" : "Best Part Selected"}:{" "}
         <strong style="color:var(--ink-primary);">{formatTime(start)}–{formatTime(end)}</strong>{" "}
         <span style="color:var(--accent-primary);">({formatSliceMinutes(start, end, lang)})</span>
       </span>
       <span>
-        {lang === "zh" ? "原片全长" : "Full Source"}: {formatTime(total)}
+        {lang === "zh" ? "原视频总长" : "Full Video"}: {formatTime(total)}
       </span>
     </div>
 
@@ -43,7 +43,7 @@ const stepTimes = [
       </div>
       <span class="at-mono" style="font-size:0.68rem;color:var(--ink-muted);">{formatTime(total)}</span>
       <span class="at-saved-callout">
-        ⚡ {lang === "zh" ? `省 ${s.hoursSaved}h` : `Saved ${s.hoursSaved}h`}
+        ⚡ {lang === "zh" ? `省 ${s.hoursSaved} 小时` : `Saved ${s.hoursSaved}h`}
       </span>
     </div>
 

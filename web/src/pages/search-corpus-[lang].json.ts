@@ -13,7 +13,10 @@ export const GET: APIRoute = ({ params }) => {
   for (const c of CONCEPTS) {
     const syn = (SYNONYMS[c.slug] || []).join(" ");
     items.push({
-      badge: `CONCEPT · ${c.originQuarter} → ${c.inflectionQuarter} · ${LIFECYCLE_META[c.lifecycle][lang]}`,
+      badge:
+        lang === "zh"
+          ? `核心概念 · ${c.originQuarter} 提出 → ${c.inflectionQuarter} 火起来 · ${LIFECYCLE_META[c.lifecycle][lang]}`
+          : `TOPIC · ${c.originQuarter} → ${c.inflectionQuarter} · ${LIFECYCLE_META[c.lifecycle][lang]}`,
       title: c[lang].name,
       sub: c[lang].oneLiner,
       href: withBase(`/${lang}/concepts/${c.slug}/`),

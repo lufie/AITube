@@ -58,7 +58,7 @@ export function buildConceptSchema(concept: Concept, nodes: MediaNode[], lang: L
       ...orgAndSiteGraph(lang),
       buildBreadcrumbSchema([
         { name: "AITube", path: `/${lang}/` },
-        { name: lang === "zh" ? "概念趋势时间线" : "Concept Timeline", path: `/${lang}/timeline/` },
+        { name: lang === "zh" ? "概念时间线" : "Concept Timeline", path: `/${lang}/timeline/` },
         { name: loc.shortName, path: pathname },
       ]),
       {
@@ -90,12 +90,12 @@ export function buildConceptSchema(concept: Concept, nodes: MediaNode[], lang: L
         mainEntity: [
           {
             "@type": "Question",
-            name: lang === "zh" ? `${loc.shortName} 带来了什么核心范式跃迁？` : `What paradigm shift defines ${loc.shortName}?`,
+            name: lang === "zh" ? `有了「${loc.shortName}」之后，做法跟以前有什么不同？` : `What changed once ${loc.shortName} arrived?`,
             acceptedAnswer: { "@type": "Answer", text: loc.paradigmShift },
           },
           {
             "@type": "Question",
-            name: lang === "zh" ? `为什么在 2026 年仍需掌握 ${loc.shortName}？` : `Why does ${loc.shortName} matter in 2026?`,
+            name: lang === "zh" ? `现在（2026 年）普通人或开发者该怎么用好「${loc.shortName}」？` : `How should you use ${loc.shortName} in 2026?`,
             acceptedAnswer: { "@type": "Answer", text: loc.whyNow },
           },
         ],

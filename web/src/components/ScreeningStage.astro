@@ -39,7 +39,9 @@ const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/
         onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback;}else{this.style.display='none';}"
       />
       <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;">
-        <span class="at-pill-dark">YOUTUBE VERIFIED SLICE · {s.channelName}</span>
+        <span class="at-pill-dark">
+          {lang === "zh" ? `YouTube 精华片段 · ${s.channelName}` : `YOUTUBE HIGHLIGHT · ${s.channelName}`}
+        </span>
         <span class="at-pill-dark">
           {formatTime(s.startSec || 0)} – {formatTime(s.endSec || 0)} / {formatTime(s.totalDurationSec || 0)}
         </span>
@@ -55,7 +57,7 @@ const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/
           </span>
         </div>
         <div style="margin-top:8px;font-size:0.78rem;color:rgba(243,241,235,0.78);" class="at-mono">
-          youtube-nocookie.com · {lang === "zh" ? "点击即刻挂载原生无遮挡播放器" : "Click to mount unobstructed native player"}
+          youtube-nocookie.com · {lang === "zh" ? "点一下直接播放精华片段（已跳过片头废话，原生无遮挡）" : "Click to play clean highlight (fluff skipped, unobstructed native player)"}
         </div>
       </div>
 
@@ -68,7 +70,7 @@ const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/
   ) : s.kind === "video-cut" && s.platform === "bilibili" && s.videoId ? (
     <div style="position:absolute;inset:0;padding:28px;display:flex;flex-direction:column;justify-content:space-between;">
       <div style="display:flex;justify-content:space-between;">
-        <span class="at-pill-dark">BILIBILI VERIFIED · {s.videoId}</span>
+        <span class="at-pill-dark">{lang === "zh" ? `B 站精选片段 · ${s.videoId}` : `BILIBILI HIGHLIGHT · ${s.videoId}`}</span>
         <span class="at-pill-dark">
           {formatTime(s.startSec || 0)} – {formatTime(s.endSec || 0)}
         </span>
@@ -81,18 +83,18 @@ const ytFallback = s.platform === "youtube" && s.videoId ? `https://i.ytimg.com/
           rel="noopener noreferrer"
           class="at-btn-primary"
         >
-          ▶ {lang === "zh" ? `在 Bilibili 从 ${formatTime(s.startSec || 0)} 处精准起播 ↗` : `Open Bilibili at ${formatTime(s.startSec || 0)} ↗`}
+          ▶ {lang === "zh" ? `去 B 站直接从 ${formatTime(s.startSec || 0)} 看起 ↗` : `Open Bilibili at ${formatTime(s.startSec || 0)} ↗`}
         </a>
       </div>
       <div class="at-mono" style="font-size:0.76rem;color:rgba(243,241,235,0.68);">
-        UP: {s.channelName} · {formatTime(s.totalDurationSec || 0)}
+        {lang === "zh" ? `UP 主：${s.channelName} · 原视频总长 ${formatTime(s.totalDurationSec || 0)}` : `Creator: ${s.channelName} · Full length ${formatTime(s.totalDurationSec || 0)}`}
       </div>
     </div>
   ) : (
     <div style="position:absolute;inset:0;padding:30px;display:flex;flex-direction:column;justify-content:space-between;">
       <div style="display:flex;justify-content:space-between;">
-        <span class="at-pill-dark">PRIMARY TECHNICAL MONOGRAPH</span>
-        <span class="at-pill-dark">{s.readingMinutes || 12} MIN DIGEST</span>
+        <span class="at-pill-dark">{lang === "zh" ? "一手深度好文" : "PRIMARY WRITTEN GUIDE"}</span>
+        <span class="at-pill-dark">{lang === "zh" ? `约 ${s.readingMinutes || 12} 分钟读完` : `${s.readingMinutes || 12} MIN READ`}</span>
       </div>
       <div style="margin:auto;text-align:center;max-width:560px;">
         <p class="at-mono" style="font-size:0.78rem;color:#52adc0;margin-bottom:8px;">{s.channelName}</p>

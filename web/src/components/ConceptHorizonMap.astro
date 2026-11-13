@@ -52,7 +52,7 @@ const uid = `hz-${mode}`;
 <div class="at-horizon-shell" id={uid} data-horizon-root data-mode={mode}>
   <div class="at-horizon-head">
     <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
-      <span class="at-kicker">CONCEPT HORIZON MAP</span>
+      <span class="at-kicker">{lang === "zh" ? "概念关系全景图" : "CONCEPT CONNECTION MAP"}</span>
       <strong style="font-family:var(--font-serif);font-size:1.08rem;">{t.horizonTitle}</strong>
       <span style="font-size:0.78rem;color:var(--ink-muted);">{t.horizonHint}</span>
     </div>
@@ -60,11 +60,11 @@ const uid = `hz-${mode}`;
     <div class="at-mono" style="display:flex;align-items:center;gap:12px;font-size:0.71rem;color:var(--ink-secondary);flex-wrap:wrap;">
       <span style="display:inline-flex;align-items:center;gap:4px;">
         <span style="width:8px;height:8px;border-radius:50%;border:2px solid var(--accent-primary);display:inline-block;"></span>
-        {lang === "zh" ? "起源季度" : "Origin"}
+        {lang === "zh" ? "首次提出" : "First proposed"}
       </span>
       <span style="display:inline-flex;align-items:center;gap:4px;">
         <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-signal);display:inline-block;"></span>
-        {lang === "zh" ? "破圈拐点" : "Breakout"}
+        {lang === "zh" ? "真正火起来" : "Took off"}
       </span>
       <span style="color:var(--accent-primary);">┄▸ {t.lineageFrom}</span>
       <span style="color:var(--accent-signal);">━▸ {t.lineageInto}</span>
@@ -74,7 +74,7 @@ const uid = `hz-${mode}`;
         class="at-chip at-mono"
         style="padding:2px 8px;font-size:0.69rem;"
       >
-        {lang === "zh" ? "显示全览" : "Show All"}
+        {lang === "zh" ? "显示全部 22 个" : "Show All 22"}
       </button>
     </div>
   </div>

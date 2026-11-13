@@ -23,28 +23,28 @@ const waveDefs = [
     slug: "prompt-cot",
     color: "#6e7b85",
     dashed: true,
-    zh: "Prompt & CoT (2023)",
-    en: "Prompt & CoT (2023)",
+    zh: "死背提示词口诀 (2023)",
+    en: "Prompt Tricks (2023)",
   },
   {
     slug: "rag-grounding",
     color: "var(--accent-evergreen)",
     dashed: false,
-    zh: "RAG 知识挂载 (2023–24)",
-    en: "RAG Grounding (2023–24)",
+    zh: "外接私有资料库 (2023–24)",
+    en: "Private Docs Q&A (2023–24)",
   },
   {
     slug: "mcp-protocol",
     color: "var(--accent-primary)",
     dashed: false,
-    zh: "MCP 与推理模型 (2025)",
-    en: "MCP & RLVR (2025)",
+    zh: "MCP 插头与慢思考 (2025)",
+    en: "MCP & Reasoning (2025)",
   },
   {
     slug: "context-engineering",
     color: "var(--accent-signal)",
     dashed: false,
-    zh: "上下文与 Skills (2026)",
+    zh: "整理信息与技能包 (2026)",
     en: "Context & Skills (2026)",
   },
 ];
@@ -69,13 +69,13 @@ const xCoords = waves[0].geom.points.map((p) => p.x);
 <div class="at-radar-panel" data-wave-radar>
   <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
     <div>
-      <span class="at-kicker" style="font-size:0.68rem;">PARADIGM HANDOFF RADAR</span>
+      <span class="at-kicker" style="font-size:0.68rem;">{lang === "zh" ? "四年热度变化图" : "4-YEAR SHIFT RADAR"}</span>
       <div style="font-family:var(--font-serif);font-size:1.05rem;font-weight:600;">
-        {lang === "zh" ? "AI 四代技术浪潮接力曲线（2022–2026）" : "Four-Wave AI Paradigm Handoff (2022–2026)"}
+        {lang === "zh" ? "AI 四波热潮变化图：旧套路退潮，新方法接棒" : "Four Waves of AI Practice (2022–2026)"}
       </div>
     </div>
-    <span class="at-mono" data-radar-quarter style="font-size:0.74rem;color:var(--accent-signal);font-weight:650;">
-      26Q3 · LIVE
+    <span class="at-mono" data-radar-quarter data-live-suffix={lang === "zh" ? "最新" : "NOW"} style="font-size:0.74rem;color:var(--accent-signal);font-weight:650;">
+      26Q3 · {lang === "zh" ? "最新" : "NOW"}
     </span>
   </div>
 
@@ -99,7 +99,7 @@ const xCoords = waves[0].geom.points.map((p) => p.x);
       width="100%"
       style="display:block;height:auto;cursor:crosshair;background:var(--bg-canvas);border:1px solid var(--border-subtle);border-radius:4px;"
       role="img"
-      aria-label="Four-Wave AI Paradigm Handoff Chart"
+      aria-label="Four-Wave AI Practice Chart"
       data-radar-svg
     >
       {[0.25, 0.5, 0.75].map((r) => (
@@ -169,19 +169,19 @@ const xCoords = waves[0].geom.points.map((p) => p.x);
   <div class="at-telemetry-strip">
     <div class="at-telemetry-cell">
       <div class="at-telemetry-num">{ERAS.length}→{CONCEPTS.length}</div>
-      <div class="at-telemetry-lbl">{lang === "zh" ? "纪元与概念坐标" : "Eras & Concepts"}</div>
+      <div class="at-telemetry-lbl">{lang === "zh" ? "阶段与核心词" : "Stages & Topics"}</div>
     </div>
     <div class="at-telemetry-cell" style="border-left-color:var(--accent-signal);">
       <div class="at-telemetry-num">{NODES.length}</div>
-      <div class="at-telemetry-lbl">{lang === "zh" ? "核验实战精切" : "Verified Cuts"}</div>
+      <div class="at-telemetry-lbl">{lang === "zh" ? "挑好的精华片段" : "Video Highlights"}</div>
     </div>
     <div class="at-telemetry-cell">
       <div class="at-telemetry-num">{SPINE_NODES.length}</div>
-      <div class="at-telemetry-lbl">{lang === "zh" ? "四阶主干必修" : "Spine Curriculum"}</div>
+      <div class="at-telemetry-lbl">{lang === "zh" ? "口碑必看代表作" : "Essential Picks"}</div>
     </div>
     <div class="at-telemetry-cell" style="border-left-color:var(--accent-evergreen);">
       <div class="at-telemetry-num">~{totalHours}h</div>
-      <div class="at-telemetry-lbl">{lang === "zh" ? "累计节省时长" : "Hours Saved"}</div>
+      <div class="at-telemetry-lbl">{lang === "zh" ? "替你省掉废话" : "Fluff Skipped"}</div>
     </div>
   </div>
 
@@ -204,6 +204,7 @@ const xCoords = waves[0].geom.points.map((p) => p.x);
       const data = JSON.parse(payloadEl.textContent || "{}");
       const cursor = root.querySelector("[data-radar-cursor]");
       const qLabel = root.querySelector("[data-radar-quarter]");
+      const liveSuffix = qLabel?.getAttribute("data-live-suffix") || "NOW";
       const dots = [...root.querySelectorAll("[data-radar-dot]")];
       const vals = [...root.querySelectorAll("[data-radar-val]")];
 
@@ -215,7 +216,7 @@ const xCoords = waves[0].geom.points.map((p) => p.x);
           cursor.setAttribute("x2", String(x));
         }
         if (qLabel) {
-          qLabel.textContent = idx === data.labels.length - 1 ? `${data.labels[idx]} · LIVE` : data.labels[idx];
+          qLabel.textContent = idx === data.labels.length - 1 ? `${data.labels[idx]} · ${liveSuffix}` : data.labels[idx];
         }
         dots.forEach((d, wIdx) => {
           const pt = data.pts[wIdx][idx];

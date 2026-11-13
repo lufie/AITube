@@ -10,6 +10,7 @@ from pathlib import Path
 from concept_playbooks import CONCEPT_PLAYBOOKS
 from flagship_part1 import FLAGSHIP_PART1
 from flagship_part2 import FLAGSHIP_PART2
+from pool_zh_titles import POOL_ZH_TITLES
 
 ROOT = Path(__file__).resolve().parents[2]
 CONCEPTS_PATH = ROOT / "content" / "concepts.json"
@@ -101,20 +102,44 @@ def build_pool_node(item: dict, concept_map: dict, valid_facets: dict, role_idx:
     c_en_short = concept["en"]["shortName"]
     c_zh_short = concept["zh"]["shortName"]
 
+    if slug not in POOL_ZH_TITLES:
+        raise KeyError(f"Missing human Chinese title in POOL_ZH_TITLES for slug: {slug}")
+    zh_title = POOL_ZH_TITLES[slug]
+
     if has_cjk(orig_title):
-        zh_title = clean_title(orig_title)
-        en_title = f"{c_en_short} Walkthrough: {ch} Practical Cut"
+        en_title = f"{c_en_short} Explained: {ch} Walkthrough"
     else:
         en_title = en_clean
-        short_tag = "极速速览" if is_short else "实战精讲"
-        zh_title = f"{c_zh_short}{short_tag}：{ch} 拆解《{en_clean[:44]}》"
 
     rev_count = 12 + (abs(hash(vid)) % 9)
     hrs_saved = round(max(0.6, (total * rev_count * 0.28) / 3600), 1)
     tool_name, tool_url, tool_tag, tool_desc = pb["tool"]
+    zh_tool_name, zh_tool_url, zh_tool_tag, zh_tool_desc = pb.get("zh_tool", pb["tool"])
 
     en_steps = [{"title": t, "detail": d} for t, d in pb["en_steps"]]
     zh_steps = [{"title": t, "detail": d} for t, d in pb["zh_steps"]]
+
+    variant = role_idx % 3
+    if is_short:
+        zh_subtitle = f"来自 {ch} 的 {total} 秒快看短片：不绕弯子，一口气帮你抓准「{c_zh_short}」最核心的那层意思。"
+        zh_why = f"一共只有 {total} 秒：{ch} 用大白话把「{c_zh_short}」最关键的重点点透，零负担秒懂。"
+        en_subtitle = f"Quick {total}s breakdown from {ch} — get the core {c_en_short.lower()} idea in plain English."
+        en_why = f"Just {total}s from {ch}: grasp the core {c_en_short} takeaway in under 3 minutes."
+    elif variant == 0:
+        zh_subtitle = f"来自 {ch} 的实测分享（直接看 {fmt_mmss(start)}–{fmt_mmss(end)} 这一段就行），省去片头寒暄直奔干货。"
+        zh_why = f"原片长 {fmt_mmss(total)}，已帮你挑出最值得看的 {cut_mins} 分钟精华：手把手看懂「{c_zh_short}」到底怎么用。"
+        en_subtitle = f"From {ch} — jump straight to the {fmt_mmss(start)}–{fmt_mmss(end)} highlight without the intro fluff."
+        en_why = f"Best {cut_mins}m out of {fmt_mmss(total)} from {ch}: practical {c_en_short} walkthrough you can use right away."
+    elif variant == 1:
+        zh_subtitle = f"{ch} 出品（推荐直接拉到 {fmt_mmss(start)}–{fmt_mmss(end)}），用直观例子把「{c_zh_short}」讲得明明白白。"
+        zh_why = f"不用啃 {fmt_mmss(total)} 全片，只看这 {cut_mins} 分钟核心段落，就能搞懂「{c_zh_short}」的来龙去脉与常见坑。"
+        en_subtitle = f"{ch} explains {c_en_short.lower()} clearly — watch the {fmt_mmss(start)}–{fmt_mmss(end)} core segment."
+        en_why = f"Skip the {fmt_mmss(total)} full runtime — this {cut_mins}m cut covers the exact {c_en_short} mental model and pitfalls."
+    else:
+        zh_subtitle = f"精选 {ch} 最干货的 {cut_mins} 分钟（{fmt_mmss(start)}–{fmt_mmss(end)}），看完就能对「{c_zh_short}」建立清晰认识。"
+        zh_why = f"{cut_mins} 分钟重点片段（原视频 {fmt_mmss(total)}）：不堆术语，直接看懂 {ch} 是怎么拆解「{c_zh_short}」的。"
+        en_subtitle = f"Curated {cut_mins}m cut ({fmt_mmss(start)}–{fmt_mmss(end)}) from {ch} on how {c_en_short.lower()} works in practice."
+        en_why = f"{cut_mins}m focused segment ({fmt_mmss(total)} original): see how {ch} breaks down {c_en_short} step by step."
 
     return {
         "slug": slug,
@@ -145,50 +170,46 @@ def build_pool_node(item: dict, concept_map: dict, valid_facets: dict, role_idx:
         },
         "en": {
             "title": en_title,
-            "subtitle": f"{ch} on {c_en_short.lower()} — verified {fmt_mmss(start)}–{fmt_mmss(end)} implementation slice.",
-            "whyWatch": (
-                f"{total}s high-signal Short from {ch}: capture the core {c_en_short} takeaway in under 3 minutes."
-                if is_short
-                else f"{cut_mins}m focused cut from {ch} ({fmt_mmss(total)} full video): zero fluff, straight to {c_en_short} mechanics."
-            ),
+            "subtitle": en_subtitle,
+            "whyWatch": en_why,
             "steps": en_steps,
             "versionPatch": pb["en_patch"],
             "checklist": [
-                f"Jump to {fmt_mmss(start)}–{fmt_mmss(end)} and verify the core {c_en_short} workflow on a real test case",
-                f"Benchmark your setup against the {tool_name} reference pattern before shipping",
+                f"Watch the {fmt_mmss(start)}–{fmt_mmss(end)} segment and try one small {c_en_short} example on your own task",
+                f"Open {tool_name} alongside the video to test the idea hands-on",
             ],
             "tools": [{"name": tool_name, "url": tool_url, "tag": tool_tag, "desc": tool_desc}],
             "searchQuestions": [
-                f"{c_en_short.lower()} {ch.lower()} tutorial",
-                f"how to apply {c_en_short.lower()} in production",
+                f"{c_en_short.lower()} {ch.lower()} explained",
+                f"how to use {c_en_short.lower()} simply",
                 en_clean.lower()[:64],
             ],
         },
         "zh": {
             "title": zh_title,
-            "subtitle": f"精选自 {ch} 实测分享（直达 {fmt_mmss(start)}–{fmt_mmss(end)} 核心段落），省去铺垫直取 {c_zh_short} 关键解法。",
-            "whyWatch": (
-                f"{total} 秒高密竖屏速览：{ch} 用不到三分钟讲透 {c_zh_short} 的关键直觉与避坑要点。"
-                if is_short
-                else f"{cut_mins} 分钟高信噪比切片（原片 {fmt_mmss(total)}）：跳过寒暄，直接拆解 {c_zh_short} 可复用实操步骤。"
-            ),
+            "subtitle": zh_subtitle,
+            "whyWatch": zh_why,
             "steps": zh_steps,
             "versionPatch": pb["zh_patch"],
             "checklist": [
-                f"直达 {fmt_mmss(start)}–{fmt_mmss(end)} 核心演示区间，对照真实项目跑通 {c_zh_short} 最小闭环",
-                f"结合 {tool_name} 标准工作流复核成本、延迟与边界异常",
+                f"直接看 {fmt_mmss(start)}–{fmt_mmss(end)} 这一段，拿手头一个小例子照着试一遍",
+                f"点开旁边的「{zh_tool_name}」亲自上手试五分钟，加深手感",
             ],
-            "tools": [{"name": tool_name, "url": tool_url, "tag": tool_tag, "desc": tool_desc}],
+            "tools": [{"name": zh_tool_name, "url": zh_tool_url, "tag": zh_tool_tag, "desc": zh_tool_desc}],
             "searchQuestions": [
-                f"{c_zh_short}实战教程与最佳实践",
-                f"{ch} {c_zh_short}核心笔记",
-                f"2026 {c_zh_short}怎么落地避坑",
+                f"{c_zh_short}到底是什么意思怎么用",
+                f"{ch} {c_zh_short}通俗讲解",
+                zh_title[:36],
             ],
         },
     }
 
 
 def main() -> None:
+    prev_slugs: list[str] = []
+    if OUT_PATH.exists():
+        prev_slugs = [n["slug"] for n in json.loads(OUT_PATH.read_text("utf-8"))]
+
     concepts_data = json.loads(CONCEPTS_PATH.read_text("utf-8"))
     concept_map = {c["slug"]: c for c in concepts_data["concepts"]}
     tax_data = json.loads(TAXONOMY_PATH.read_text("utf-8"))
@@ -271,6 +292,34 @@ def main() -> None:
         p_node["order"] = len(nodes) + 1
         p_node["isSpine"] = False
         nodes.append(p_node)
+
+    def _clean_bt(val: str, is_zh: bool) -> str:
+        if "`" not in val:
+            return val
+        if is_zh:
+            return re.sub(
+                r"`([^`]+)`",
+                lambda m: f"「{m.group(1)}」" if re.search(r"[\u4e00-\u9fff]", m.group(1)) else m.group(1),
+                val,
+            )
+        return re.sub(r"`([^`]+)`", r"\1", val)
+
+    for nd in nodes:
+        for lang_key, is_zh in (("zh", True), ("en", False)):
+            loc = nd[lang_key]
+            for field in ("title", "subtitle", "whyWatch"):
+                if isinstance(loc.get(field), str):
+                    loc[field] = _clean_bt(loc[field], is_zh)
+            loc["searchQuestions"] = [_clean_bt(q, is_zh) for q in loc.get("searchQuestions", [])]
+            for tl in loc.get("tools", []):
+                for tf in ("name", "tag", "desc"):
+                    if isinstance(tl.get(tf), str):
+                        tl[tf] = _clean_bt(tl[tf], is_zh)
+
+    new_slugs = [n["slug"] for n in nodes]
+    if prev_slugs and new_slugs != prev_slugs:
+        diff = set(prev_slugs) ^ set(new_slugs)
+        raise RuntimeError(f"Slug mismatch detected ({len(diff)} diffs): {diff}")
 
     OUT_PATH.write_text(json.dumps(nodes, ensure_ascii=False, indent=2) + "\n", "utf-8")
     shorts = sum(1 for n in nodes if n["source"].get("isShort"))

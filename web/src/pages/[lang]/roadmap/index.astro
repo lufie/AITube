@@ -15,16 +15,16 @@ const t = UI[lang];
 const roleGuides =
   lang === "zh"
     ? [
-        { role: "beginner", stage: "stage-0", icon: "🌱", who: "我是零基础小白", tip: "直接看 Stage 00 的前 3 支先导课，35 分钟建立底层直觉" },
-        { role: "applied", stage: "stage-1", icon: "⚡", who: "我想直接应用提效", tip: "跳过底层数学，从 Stage 01（提示契约、知识库与多模态）切入" },
-        { role: "career", stage: "stage-2", icon: "🧭", who: "我想转型 AI 工程师", tip: "主攻 Stage 02 + Stage 03：工具循环、混合检索、MCP 与评测" },
-        { role: "frontier", stage: "stage-3", icon: "🔭", who: "我有基础追前沿", tip: "直奔 Stage 03：上下文工程、SKILL.md 渐进技能与子智能体隔离" },
+        { role: "beginner", stage: "stage-0", jump: "跳到第 0 阶 ↓", icon: "🌱", who: "我是纯小白", tip: "直接看「第 0 阶」前 3 支视频，半小时就能听懂 AI 到底是怎么回事" },
+        { role: "applied", stage: "stage-1", jump: "跳到第 1 阶 ↓", icon: "⚡", who: "我想直接拿来用", tip: "不用管底层公式，直接从「第 1 阶」学怎么提问、喂文档和做图视频" },
+        { role: "career", stage: "stage-2", jump: "跳到第 2 阶 ↓", icon: "🧭", who: "我想转行做开发", tip: "重点看「第 2 阶 + 第 3 阶」：让 AI 查资料、连工具、自动写代码和测准不准" },
+        { role: "frontier", stage: "stage-3", jump: "跳到第 3 阶 ↓", icon: "🔭", who: "我想看最新趋势", tip: "直接跳到「第 3 阶」：看今年最火的信息整理术、SKILL.md 技能包和自动防翻车测试" },
       ]
     : [
-        { role: "beginner", stage: "stage-0", icon: "🌱", who: "Complete Beginner", tip: "Watch the Top 3 starter cuts in Stage 00 for zero-math visual intuition" },
-        { role: "applied", stage: "stage-1", icon: "⚡", who: "Hands-On User", tip: "Start at Stage 01 for prompting contracts, NotebookLM & ComfyUI flows" },
-        { role: "career", stage: "stage-2", icon: "🧭", who: "Aspiring AI Engineer", tip: "Focus on Stage 02 + 03: tool loops, hybrid RAG, MCP & LLM Evals" },
-        { role: "frontier", stage: "stage-3", icon: "🔭", who: "Experienced Practitioner", tip: "Jump straight to Stage 03: Context Engineering, SKILL.md & Subagents" },
+        { role: "beginner", stage: "stage-0", jump: "Stage 00 ↓", icon: "🌱", who: "Starting from Zero", tip: "Watch the Top 3 highlights in Stage 00 — build visual intuition in 35 minutes" },
+        { role: "applied", stage: "stage-1", jump: "Stage 01 ↓", icon: "⚡", who: "Use AI at Work", tip: "Skip the math — start at Stage 01 for clear prompts, NotebookLM & ComfyUI" },
+        { role: "career", stage: "stage-2", jump: "Stage 02 ↓", icon: "🧭", who: "Move into AI Dev", tip: "Focus on Stage 02 + 03: tool calling, hybrid search, MCP & automated testing" },
+        { role: "frontier", stage: "stage-3", jump: "Stage 03 ↓", icon: "🔭", who: "Track What's New", tip: "Jump straight to Stage 03: Context Engineering, SKILL.md & Subagents" },
       ];
 
 const stageStarterMap: Record<string, string[]> = {
@@ -51,20 +51,20 @@ const stageStarterMap: Record<string, string[]> = {
 };
 
 const stageAudienceLabel: Record<string, { zh: string; en: string }> = {
-  "stage-0": { zh: "🌱 适合：零基础小白建立全景直觉", en: "🌱 Best for: Beginners building core intuition" },
-  "stage-1": { zh: "⚡ 适合：日常提问、知识库与视觉创作应用", en: "⚡ Best for: Applied workflows & multimodal creation" },
-  "stage-2": { zh: "🧭 适合：AI 应用开发、RAG、MCP 与自主编程", en: "🧭 Best for: Full-stack AI builders, RAG & MCP" },
-  "stage-3": { zh: "🔭 适合：生产级智能体架构、Skills 与自动化评测", en: "🔭 Best for: Senior engineers, Skills & Evals" },
+  "stage-0": { zh: "🌱 适合：完全没基础，想先听懂大白话原理", en: "🌱 Best for: Complete beginners building intuition" },
+  "stage-1": { zh: "⚡ 适合：日常办公提问、整理私有资料、画图做视频", en: "⚡ Best for: Everyday work, private docs & visuals" },
+  "stage-2": { zh: "🧭 适合：想自己动手做 AI 工具、接知识库和写代码", en: "🧭 Best for: Building AI apps, search & coding tools" },
+  "stage-3": { zh: "🔭 适合：想把 AI 产品真正上线、不瞎编也不翻车", en: "🔭 Best for: Production reliability, Skills & Evals" },
 };
 
 const title =
   lang === "zh"
-    ? `对号入座：从零基础到 AI 工程师的四阶路线（${SPINE_NODES.length} 支必修）— AITube`
-    : `4-Stage AI Learning Paths (${SPINE_NODES.length} Spine Cuts) — AITube`;
+    ? `分步学习单：从零基础小白到做出靠谱 AI 应用的 4 个台阶（${SPINE_NODES.length} 支必看）— AITube`
+    : `Step-by-Step AI Path: 4 Clear Stages (${SPINE_NODES.length} Essential Highlights) — AITube`;
 const desc =
   lang === "zh"
-    ? "不用从头硬啃 280 支视频：先对号入座找到适合你的起跑阶段，每阶精选 3 支必看先导课，其余按需展开。"
-    : "Find your exact starting stage. Watch the Top 3 essential cuts per stage first, then expand deeper practice cuts on demand.";
+    ? "不用一口气看几百个视频：先选最像你的起点，每个台阶先看最关键的 3 支视频就够了，想深挖再展开。"
+    : "Don't binge hundreds of videos at once. Pick your starting stage, watch the Top 3 highlights first, and expand deeper tutorials anytime.";
 
 const schema = {
   "@context": "https://schema.org",
@@ -88,15 +88,15 @@ const schema = {
   <section style="padding:36px 0 26px;border-bottom:1px solid var(--border-subtle);background:linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-canvas) 100%);">
     <div class="at-container">
       <div class="at-kicker">
-        {lang === "zh" ? `STEP-BY-STEP PATHS · 不用一次看完 ${SPINE_NODES.length} 支，每阶先看前 3 支核心课` : `CURATED PATHS · START WITH TOP 3 CUTS PER STAGE`}
+        {lang === "zh" ? `分步学习单 · 不用从头硬啃 ${SPINE_NODES.length} 支视频，每个台阶先看前 3 支就够了` : `STEP-BY-STEP PATH · WATCH JUST 3 HIGHLIGHTS PER STAGE FIRST`}
       </div>
       <h1 style="font-size:clamp(1.8rem,2.9vw,2.45rem);margin:8px 0 10px;">
         {t.roadmapHeading}
       </h1>
       <p style="max-width:68ch;color:var(--ink-secondary);margin-bottom:20px;">
         {lang === "zh"
-          ? "不同背景不用从同一集看起。点选下方你的身份，直接跳到推荐你的起跑阶段；每个阶段默认只展示最关键的 3 支先导课，看完有余力再展开进阶课表。"
-          : "Different goals require different starting points. Pick your profile below to jump straight to your recommended stage — each stage highlights its Top 3 essential cuts first."}
+          ? "每个人的基础和目的不一样，千万别从同一集硬看。点选下面最像你的卡片，直接跳到适合你的那一级台阶；每一阶默认只摆出最关键的 3 支入门片，看完还想深挖再点展开。"
+          : "Everyone starts from a different place. Pick the card that sounds like you below to jump straight to the right stage — each stage shows just its Top 3 highlights first."}
       </p>
 
       <!-- 4-Persona Starting-Point Selector -->
@@ -108,7 +108,7 @@ const schema = {
                 {g.icon} {g.who}
               </strong>
               <span class="at-mono" style="font-size:0.72rem;color:var(--accent-primary);font-weight:650;">
-                {g.stage.toUpperCase().replace("-", " 0")} ↓
+                {g.jump}
               </span>
             </div>
             <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.45;">{g.tip}</p>
@@ -138,7 +138,7 @@ const schema = {
             <div>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
                 <span class="at-kicker" style="margin-bottom:0;">
-                  {st[lang].code} · {stageNodes.length} {lang === "zh" ? "支必修切片" : "SPINE CUTS"}
+                  {st[lang].code} · {lang === "zh" ? `共 ${stageNodes.length} 支必看片段` : `${stageNodes.length} ESSENTIAL HIGHLIGHTS`}
                 </span>
                 {audMeta && (
                   <span class="at-audience-pill">
@@ -146,7 +146,7 @@ const schema = {
                   </span>
                 )}
                 <span class="at-stage-rec-badge at-mono" data-rec-badge={st.id} style="display:none;">
-                  ★ {lang === "zh" ? "推荐你的起跑阶段" : "RECOMMENDED START"}
+                  ★ {lang === "zh" ? "最适合你从这里开始" : "YOUR RECOMMENDED START"}
                 </span>
               </div>
               <h2>{st[lang].title}</h2>
@@ -155,7 +155,7 @@ const schema = {
           </div>
 
           <div class="at-mono" style="font-size:0.75rem;color:var(--accent-signal);font-weight:650;margin-bottom:12px;">
-            ★ {lang === "zh" ? "本阶段必看前 3 支核心先导课（先看这 3 支即可掌握主干）" : "START HERE: TOP 3 ESSENTIAL CUTS FOR THIS STAGE"}
+            ★ {lang === "zh" ? "这一阶先看下面这 3 支就够了（每支都帮你掐好了最干货的几分钟）" : "START HERE: WATCH THESE 3 HIGHLIGHTS FIRST"}
           </div>
 
           <div class="at-grid-cards">
@@ -172,18 +172,18 @@ const schema = {
                 data-toggle-stage={st.id}
                 data-label-closed={
                   lang === "zh"
-                    ? `+ 展开本阶段其余 ${extraNodes.length} 支进阶实操课 ▾`
-                    : `+ Show ${extraNodes.length} more practice cuts in this stage ▾`
+                    ? `+ 展开这一阶另外 ${extraNodes.length} 支补充实操视频 ▾`
+                    : `+ Show ${extraNodes.length} more hands-on highlights in this stage ▾`
                 }
                 data-label-open={
                   lang === "zh"
-                    ? `− 收起其余 ${extraNodes.length} 支进阶课 ▴`
-                    : `− Collapse ${extraNodes.length} extra cuts ▴`
+                    ? `− 收起另外 ${extraNodes.length} 支补充视频 ▴`
+                    : `− Hide ${extraNodes.length} extra highlights ▴`
                 }
               >
                 {lang === "zh"
-                  ? `+ 展开本阶段其余 ${extraNodes.length} 支进阶实操课 ▾`
-                  : `+ Show ${extraNodes.length} more practice cuts in this stage ▾`}
+                  ? `+ 展开这一阶另外 ${extraNodes.length} 支补充实操视频 ▾`
+                  : `+ Show ${extraNodes.length} more hands-on highlights in this stage ▾`}
               </button>
 
               <div class="at-grid-cards" data-stage-extra={st.id} style="display:none;margin-top:16px;">
@@ -199,7 +199,7 @@ const schema = {
 
     <div style="padding-top:12px;text-align:center;">
       <a href={withBase(`/${lang}/directory/`)} class="at-btn-ghost">
-        {lang === "zh" ? "想按具体工具或问题自由搜索？进入实战切片库 →" : "Looking for a specific tool or workflow? Open Video Cuts →"}
+        {lang === "zh" ? "已经有具体想学的工具或问题？去精选视频库直接搜 →" : "Looking for a specific tool or question? Browse Video Library →"}
       </a>
     </div>
   </div>

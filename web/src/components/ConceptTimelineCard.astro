@@ -21,8 +21,8 @@ const t = UI[lang];
 const life = LIFECYCLE_META[concept.lifecycle];
 const aud = CONCEPT_AUDIENCE[concept.slug] || {
   role: "career",
-  zhBadge: "🧭 工程从业必修",
-  enBadge: "🧭 Engineering Core",
+  zhBadge: "🧭 转行必学基本功",
+  enBadge: "🧭 Core Dev Skill",
 };
 const spark = buildSparklineGeometry(concept.trendSeries, 202, 50, 6);
 const inflectPt = spark.points[concept.inflectionIndex] || spark.points[spark.points.length - 1];
@@ -197,7 +197,7 @@ const repCuts = getRepresentativeConceptCuts(concept.slug, 3);
                   <span class="at-mini-thumb-play">▶</span>
                 </>
               ) : (
-                <span>{s.kind === "article-digest" ? "DOC" : "BILI"}</span>
+                <span>{s.kind === "article-digest" ? (lang === "zh" ? "好文" : "DOC") : (lang === "zh" ? "B站" : "BILI")}</span>
               )}
             </div>
             <div style="min-width:0;flex:1;">

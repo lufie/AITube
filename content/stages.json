@@ -2,61 +2,61 @@
   {
     "id": "stage-0",
     "order": 0,
-    "badge": "Foundations",
+    "badge": "入门扫盲",
     "en": {
-      "code": "STAGE 00",
-      "title": "Model Intuition & Core Mechanics",
-      "summary": "Build unshakeable mental models of tokens, QKV attention, pre-training scaling, RLHF, and RLVR test-time reasoning."
+      "code": "STEP 00",
+      "title": "How AI Actually Works (Zero Math or Code)",
+      "summary": "Use simple visual animations to see how LLMs turn words into numbers, predict the next word, learn from feedback, and think step by step."
     },
     "zh": {
-      "code": "STAGE 00",
-      "title": "底层直觉与模型核心机制",
-      "summary": "不靠死记术语：用几何与代码直觉吃透分词、自注意力、预训练 Scaling、RLHF 与 RLVR 推理涌现。"
+      "code": "第 0 阶 · 零基础扫盲",
+      "title": "先搞懂 AI 到底是怎么工作的（不用懂数学和代码）",
+      "summary": "用最直观的 3D 动画和大白话看明白：大模型怎么把文字变成数字、怎么靠「猜下一个词」学会说话，以及为什么它有时候会一本正经地胡说八道。"
     }
   },
   {
     "id": "stage-1",
     "order": 1,
-    "badge": "Context & Multimodal",
+    "badge": "日常提效",
     "en": {
-      "code": "STAGE 01",
-      "title": "Context Engineering & Multimodal Workflows",
-      "summary": "Move beyond prompt folklore into structured context assembly, deep research synthesis, and controllable ComfyUI/video creation."
+      "code": "STEP 01",
+      "title": "Use AI Well Every Day: Asking, Reading Docs & Making Media",
+      "summary": "Stop hoarding magic prompt templates. Learn how to feed clean background info, build a zero-hallucination notebook, and generate consistent images and videos."
     },
     "zh": {
-      "code": "STAGE 01",
-      "title": "上下文工程与多模态创作流",
-      "summary": "告别碎片化提示词玄学，掌握动态上下文装配、深度文献研究流与角色可控的生图/音视频节点管线。"
+      "code": "第 1 阶 · 日常上手提效",
+      "title": "日常怎么把 AI 用顺手：提问、读资料与做图文视频",
+      "summary": "别再到处收藏「万能神级提示词」了。学会怎么把背景资料喂清楚、怎么搭一个绝不瞎编的个人资料库，以及怎么做出人物不换脸的图片和视频。"
     }
   },
   {
     "id": "stage-2",
     "order": 2,
-    "badge": "RAG, MCP & Coding",
+    "badge": "动手实战",
     "en": {
-      "code": "STAGE 02",
-      "title": "Hybrid RAG, MCP Protocols & Agentic Coding",
-      "summary": "Connect models to real codebases and knowledge via schema-safe tools, hybrid search, MCP servers, and CLI coding agents."
+      "code": "STEP 02",
+      "title": "Connect AI to Real Code, Private Docs & Tools",
+      "summary": "Go beyond web chat: use AI to build real apps, search internal company docs accurately (Hybrid RAG), and plug into external software via MCP."
     },
     "zh": {
-      "code": "STAGE 02",
-      "title": "混合检索、MCP 协议与自主编程",
-      "summary": "打通模型与真实业务系统：落地结构化输出、混合 Agentic RAG、标准 MCP 服务与仓库级自主编程工作流。"
+      "code": "第 2 阶 · 动手做产品",
+      "title": "让 AI 连上你的代码和真实业务数据（知识库 / MCP / 编程）",
+      "summary": "不满足于网页聊天？这一阶带你用 AI 写项目代码、让 AI 精准搜索内部文档（混合检索），并用通用插头（MCP）安全连接外部软件和数据库。"
     }
   },
   {
     "id": "stage-3",
     "order": 3,
-    "badge": "Agents, Skills & Evals",
+    "badge": "上线防翻车",
     "en": {
-      "code": "STAGE 03",
-      "title": "Production Agents, Skills & Eval Flywheels",
-      "summary": "Ship resilient long-horizon systems with progressive SKILL.md bundles, subagent sandboxes, trace evals, and distilled open models."
+      "code": "STEP 03",
+      "title": "Ship Reliable AI Products: Skills, Subagents & Auto-Testing",
+      "summary": "Why do cool AI demos break with real users? Package workflows into on-demand SKILL.md folders, split big jobs across subagents, and catch bugs early with simple pass/fail tests."
     },
     "zh": {
-      "code": "STAGE 03",
-      "title": "生产级智能体、Skills 与评测护栏",
-      "summary": "跨越 Demo 到生产的鸿沟：用渐进式 SKILL.md、子智能体沙盒、真实坏例 Eval 飞轮与小模型蒸馏压降成本并锁死可靠性。"
+      "code": "第 3 阶 · 真正上线干活",
+      "title": "做出不翻车的企业级 AI 应用（技能包、分工与自动测试）",
+      "summary": "为什么很多 AI 演示看着很神、一给真用户用就出丑？学会把工作流写成按需翻阅的说明书（SKILL.md），再配一套自动抓错题的测试表（Evals），又稳又省钱。"
     }
   }
 ]
