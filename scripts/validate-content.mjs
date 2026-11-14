@@ -119,6 +119,42 @@ for (const [fkey, cnt] of Object.entries(facetCounts)) {
   assert(cnt >= 3, `Topic facet ${fkey} has fewer than 3 nodes (${cnt})`);
 }
 
+// 4. Validate Ground-Truth Master Video Ledger Parity (`database/`)
+const ledgerJsonRel = 'database/master_video_ledger.json';
+const ledgerCsvRel = 'database/master_video_ledger.csv';
+const ledgerMdRel = 'database/MASTER_VIDEO_LEDGER.md';
+
+for (const rel of [ledgerJsonRel, ledgerCsvRel, ledgerMdRel]) {
+  assert(
+    fs.existsSync(path.join(ROOT, rel)),
+    `Missing ${rel} — run 'python3 scripts/sync_master_ledger.py'`
+  );
+}
+
+if (fs.existsSync(path.join(ROOT, ledgerJsonRel)) && fs.existsSync(path.join(ROOT, ledgerCsvRel))) {
+  const ledger = readJson(ledgerJsonRel);
+  const records = ledger.records || [];
+  assert(
+    records.length === nodes.length,
+    `Ledger count mismatch: database/master_video_ledger.json has ${records.length}, content/nodes.json has ${nodes.length}. Run 'python3 scripts/sync_master_ledger.py'.`
+  );
+  const ledgerSlugs = new Set(records.map((r) => r.slug));
+  for (const n of nodes) {
+    assert(
+      ledgerSlugs.has(n.slug),
+      `Node ${n.slug} missing from database/master_video_ledger.json — run 'python3 scripts/sync_master_ledger.py'.`
+    );
+  }
+  const csvLines = fs
+    .readFileSync(path.join(ROOT, ledgerCsvRel), 'utf8')
+    .trim()
+    .split(/\r?\n/);
+  assert(
+    csvLines.length === nodes.length + 1,
+    `CSV row mismatch: database/master_video_ledger.csv has ${csvLines.length - 1} data rows, expected ${nodes.length}.`
+  );
+}
+
 if (errors.length > 0) {
   console.error(`Validation failed with ${errors.length} error(s):`);
   for (const e of errors.slice(0, 25)) console.error(' -', e);
@@ -127,5 +163,5 @@ if (errors.length > 0) {
 
 const spineCount = nodes.filter((n) => n.isSpine).length;
 console.log(
-  `[validate-content] PASS — ${nodes.length} nodes (${spineCount} spine), ${conceptsDoc.concepts.length} concepts, ${Object.keys(facetCounts).length} topic facets verified.`
+  `[validate-content] PASS — ${nodes.length} nodes (${spineCount} spine), ${conceptsDoc.concepts.length} concepts, ${Object.keys(facetCounts).length} topic facets, and database/ master ledgers verified.`
 );

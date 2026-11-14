@@ -1,0 +1,3445 @@
+{
+  "cmp5y::methods_core": {
+    "keywords": [
+      "influencer marketing",
+      "affiliate marketing",
+      "email marketing",
+      "content marketing",
+      "growth hacking"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 2.1,
+        "first_12m": 1.0,
+        "last_12m": 5.3,
+        "last_3m": 3.7,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 1.0,
+          "2023": 1.0,
+          "2024": 1.0,
+          "2025": 2.5,
+          "2026": 5.4
+        }
+      },
+      "affiliate marketing": {
+        "mean_5y": 3.8,
+        "first_12m": 3.3,
+        "last_12m": 4.9,
+        "last_3m": 3.7,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 2.5,
+          "2022": 3.5,
+          "2023": 4.7,
+          "2024": 2.9,
+          "2025": 3.2,
+          "2026": 5.0
+        }
+      },
+      "email marketing": {
+        "mean_5y": 6.6,
+        "first_12m": 2.9,
+        "last_12m": 18.5,
+        "last_3m": 35.5,
+        "peak_week": "2026-10-18",
+        "yearly": {
+          "2021": 2.6,
+          "2022": 2.9,
+          "2023": 3.0,
+          "2024": 3.1,
+          "2025": 6.4,
+          "2026": 20.0
+        }
+      },
+      "content marketing": {
+        "mean_5y": 3.8,
+        "first_12m": 2.0,
+        "last_12m": 8.9,
+        "last_3m": 6.6,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 2.1,
+          "2022": 2.0,
+          "2023": 2.0,
+          "2024": 2.2,
+          "2025": 4.5,
+          "2026": 9.3
+        }
+      },
+      "growth hacking": {
+        "mean_5y": 0.2,
+        "first_12m": 0.0,
+        "last_12m": 1.2,
+        "last_3m": 0.9,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.1,
+          "2026": 1.4
+        }
+      }
+    }
+  },
+  "cmp5y::methods_emerging": {
+    "keywords": [
+      "influencer marketing",
+      "generative engine optimization",
+      "programmatic seo",
+      "ugc creator",
+      "cold email"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 17.7,
+        "first_12m": 7.4,
+        "last_12m": 46.2,
+        "last_3m": 33.2,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 6.0,
+          "2022": 7.6,
+          "2023": 8.4,
+          "2024": 8.9,
+          "2025": 22.1,
+          "2026": 47.4
+        }
+      },
+      "generative engine optimization": {
+        "mean_5y": 1.8,
+        "first_12m": 0.0,
+        "last_12m": 7.1,
+        "last_3m": 6.6,
+        "peak_week": "2026-07-05",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 2.2,
+          "2026": 7.8
+        }
+      },
+      "programmatic seo": {
+        "mean_5y": 0.3,
+        "first_12m": 0.0,
+        "last_12m": 1.2,
+        "last_3m": 0.5,
+        "peak_week": "2026-07-05",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.5,
+          "2026": 1.2
+        }
+      },
+      "ugc creator": {
+        "mean_5y": 4.2,
+        "first_12m": 0.5,
+        "last_12m": 9.8,
+        "last_3m": 10.2,
+        "peak_week": "2026-08-30",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.7,
+          "2023": 2.9,
+          "2024": 3.5,
+          "2025": 4.9,
+          "2026": 10.4
+        }
+      },
+      "cold email": {
+        "mean_5y": 9.8,
+        "first_12m": 3.4,
+        "last_12m": 27.8,
+        "last_3m": 19.9,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 2.2,
+          "2022": 3.7,
+          "2023": 4.1,
+          "2024": 4.2,
+          "2025": 11.7,
+          "2026": 29.1
+        }
+      }
+    }
+  },
+  "cmp5y::ai_search": {
+    "keywords": [
+      "generative engine optimization",
+      "answer engine optimization",
+      "ai seo",
+      "llm seo",
+      "ai search optimization"
+    ],
+    "series": {
+      "generative engine optimization": {
+        "mean_5y": 2.4,
+        "first_12m": 0.0,
+        "last_12m": 9.5,
+        "last_3m": 8.7,
+        "peak_week": "2026-07-05",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 3.0,
+          "2026": 10.3
+        }
+      },
+      "answer engine optimization": {
+        "mean_5y": 1.3,
+        "first_12m": 0.0,
+        "last_12m": 5.4,
+        "last_3m": 5.7,
+        "peak_week": "2026-05-17",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 1.6,
+          "2026": 5.9
+        }
+      },
+      "ai seo": {
+        "mean_5y": 18.5,
+        "first_12m": 1.0,
+        "last_12m": 57.7,
+        "last_3m": 43.3,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 1.1,
+          "2023": 4.2,
+          "2024": 6.8,
+          "2025": 28.5,
+          "2026": 60.6
+        }
+      },
+      "llm seo": {
+        "mean_5y": 0.9,
+        "first_12m": 0.0,
+        "last_12m": 3.5,
+        "last_3m": 2.5,
+        "peak_week": "2026-08-02",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 1.5,
+          "2026": 3.7
+        }
+      },
+      "ai search optimization": {
+        "mean_5y": 2.5,
+        "first_12m": 0.0,
+        "last_12m": 10.1,
+        "last_3m": 8.5,
+        "peak_week": "2026-06-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 3.3,
+          "2026": 11.0
+        }
+      }
+    }
+  },
+  "cmp5y::platforms_a": {
+    "keywords": [
+      "influencer marketing",
+      "tiktok marketing",
+      "instagram marketing",
+      "linkedin marketing",
+      "youtube marketing"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 9.2,
+        "first_12m": 3.9,
+        "last_12m": 24.3,
+        "last_3m": 17.5,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 3.1,
+          "2022": 4.0,
+          "2023": 4.2,
+          "2024": 4.6,
+          "2025": 11.6,
+          "2026": 24.9
+        }
+      },
+      "tiktok marketing": {
+        "mean_5y": 5.0,
+        "first_12m": 1.1,
+        "last_12m": 13.8,
+        "last_3m": 8.2,
+        "peak_week": "2026-05-10",
+        "yearly": {
+          "2021": 0.9,
+          "2022": 1.3,
+          "2023": 2.0,
+          "2024": 2.1,
+          "2025": 7.8,
+          "2026": 13.8
+        }
+      },
+      "instagram marketing": {
+        "mean_5y": 9.4,
+        "first_12m": 4.8,
+        "last_12m": 23.2,
+        "last_3m": 12.5,
+        "peak_week": "2026-05-10",
+        "yearly": {
+          "2021": 3.6,
+          "2022": 4.9,
+          "2023": 4.6,
+          "2024": 4.2,
+          "2025": 13.2,
+          "2026": 23.1
+        }
+      },
+      "linkedin marketing": {
+        "mean_5y": 12.3,
+        "first_12m": 5.3,
+        "last_12m": 35.1,
+        "last_3m": 35.5,
+        "peak_week": "2026-09-13",
+        "yearly": {
+          "2021": 3.2,
+          "2022": 5.5,
+          "2023": 5.4,
+          "2024": 5.8,
+          "2025": 11.7,
+          "2026": 38.3
+        }
+      },
+      "youtube marketing": {
+        "mean_5y": 9.7,
+        "first_12m": 3.2,
+        "last_12m": 26.4,
+        "last_3m": 11.2,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 2.0,
+          "2022": 3.4,
+          "2023": 3.4,
+          "2024": 3.1,
+          "2025": 17.1,
+          "2026": 24.8
+        }
+      }
+    }
+  },
+  "cmp5y::platforms_b": {
+    "keywords": [
+      "influencer marketing",
+      "reddit marketing",
+      "pinterest marketing",
+      "twitter marketing",
+      "product hunt"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 15.9,
+        "first_12m": 6.5,
+        "last_12m": 41.7,
+        "last_3m": 30.0,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 5.2,
+          "2022": 6.8,
+          "2023": 7.5,
+          "2024": 7.9,
+          "2025": 19.9,
+          "2026": 42.8
+        }
+      },
+      "reddit marketing": {
+        "mean_5y": 8.7,
+        "first_12m": 2.2,
+        "last_12m": 28.0,
+        "last_3m": 23.5,
+        "peak_week": "2026-05-10",
+        "yearly": {
+          "2021": 1.8,
+          "2022": 2.3,
+          "2023": 3.0,
+          "2024": 4.0,
+          "2025": 7.7,
+          "2026": 30.7
+        }
+      },
+      "pinterest marketing": {
+        "mean_5y": 2.2,
+        "first_12m": 1.1,
+        "last_12m": 3.7,
+        "last_3m": 2.5,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 1.2,
+          "2023": 2.0,
+          "2024": 1.9,
+          "2025": 2.6,
+          "2026": 3.7
+        }
+      },
+      "twitter marketing": {
+        "mean_5y": 2.6,
+        "first_12m": 2.2,
+        "last_12m": 5.1,
+        "last_3m": 3.4,
+        "peak_week": "2026-04-12",
+        "yearly": {
+          "2021": 1.8,
+          "2022": 2.2,
+          "2023": 1.9,
+          "2024": 1.3,
+          "2025": 2.7,
+          "2026": 5.3
+        }
+      },
+      "product hunt": {
+        "mean_5y": 4.5,
+        "first_12m": 1.3,
+        "last_12m": 11.8,
+        "last_3m": 6.5,
+        "peak_week": "2026-02-08",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 1.4,
+          "2023": 2.0,
+          "2024": 2.0,
+          "2025": 6.2,
+          "2026": 12.4
+        }
+      }
+    }
+  },
+  "cmp5y::biz_type": {
+    "keywords": [
+      "influencer marketing",
+      "saas marketing",
+      "app marketing",
+      "ecommerce marketing",
+      "b2b marketing"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 14.5,
+        "first_12m": 6.0,
+        "last_12m": 37.8,
+        "last_3m": 27.2,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 5.0,
+          "2022": 6.2,
+          "2023": 6.8,
+          "2024": 7.2,
+          "2025": 18.1,
+          "2026": 38.8
+        }
+      },
+      "saas marketing": {
+        "mean_5y": 3.4,
+        "first_12m": 1.0,
+        "last_12m": 9.4,
+        "last_3m": 7.2,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 1.0,
+          "2023": 1.3,
+          "2024": 1.5,
+          "2025": 4.6,
+          "2026": 9.8
+        }
+      },
+      "app marketing": {
+        "mean_5y": 16.2,
+        "first_12m": 4.0,
+        "last_12m": 49.3,
+        "last_3m": 28.2,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 3.5,
+          "2022": 4.1,
+          "2023": 4.3,
+          "2024": 4.0,
+          "2025": 24.7,
+          "2026": 50.8
+        }
+      },
+      "ecommerce marketing": {
+        "mean_5y": 5.1,
+        "first_12m": 2.6,
+        "last_12m": 13.0,
+        "last_3m": 12.8,
+        "peak_week": "2026-06-21",
+        "yearly": {
+          "2021": 2.0,
+          "2022": 2.8,
+          "2023": 2.9,
+          "2024": 2.5,
+          "2025": 4.9,
+          "2026": 13.9
+        }
+      },
+      "b2b marketing": {
+        "mean_5y": 10.7,
+        "first_12m": 5.9,
+        "last_12m": 22.1,
+        "last_3m": 17.4,
+        "peak_week": "2026-05-10",
+        "yearly": {
+          "2021": 5.5,
+          "2022": 5.9,
+          "2023": 6.7,
+          "2024": 7.1,
+          "2025": 13.2,
+          "2026": 23.2
+        }
+      }
+    }
+  },
+  "cmp5y::biz_type_b": {
+    "keywords": [
+      "saas marketing",
+      "mobile app marketing",
+      "shopify marketing",
+      "amazon marketing",
+      "dtc marketing"
+    ],
+    "series": {
+      "saas marketing": {
+        "mean_5y": 5.9,
+        "first_12m": 1.8,
+        "last_12m": 16.2,
+        "last_3m": 12.2,
+        "peak_week": "2026-04-26",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 2.0,
+          "2023": 2.4,
+          "2024": 2.6,
+          "2025": 8.0,
+          "2026": 16.9
+        }
+      },
+      "mobile app marketing": {
+        "mean_5y": 2.9,
+        "first_12m": 1.0,
+        "last_12m": 8.2,
+        "last_3m": 4.8,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 0.9,
+          "2022": 1.0,
+          "2023": 1.0,
+          "2024": 1.0,
+          "2025": 4.2,
+          "2026": 8.4
+        }
+      },
+      "shopify marketing": {
+        "mean_5y": 4.8,
+        "first_12m": 1.9,
+        "last_12m": 11.9,
+        "last_3m": 7.5,
+        "peak_week": "2026-04-12",
+        "yearly": {
+          "2021": 1.2,
+          "2022": 2.0,
+          "2023": 2.5,
+          "2024": 2.5,
+          "2025": 6.7,
+          "2026": 12.2
+        }
+      },
+      "amazon marketing": {
+        "mean_5y": 21.0,
+        "first_12m": 9.4,
+        "last_12m": 49.8,
+        "last_3m": 23.9,
+        "peak_week": "2026-05-10",
+        "yearly": {
+          "2021": 7.0,
+          "2022": 9.8,
+          "2023": 12.5,
+          "2024": 9.7,
+          "2025": 30.1,
+          "2026": 48.8
+        }
+      },
+      "dtc marketing": {
+        "mean_5y": 0.5,
+        "first_12m": 0.0,
+        "last_12m": 1.9,
+        "last_3m": 1.2,
+        "peak_week": "2026-04-12",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.7,
+          "2026": 1.9
+        }
+      }
+    }
+  },
+  "cmp5y::goals": {
+    "keywords": [
+      "how to get customers",
+      "how to get traffic to website",
+      "how to market an app",
+      "how to promote my business",
+      "how to get users"
+    ],
+    "series": {
+      "how to get customers": {
+        "mean_5y": 24.1,
+        "first_12m": 17.1,
+        "last_12m": 41.7,
+        "last_3m": 42.2,
+        "peak_week": "2026-09-20",
+        "yearly": {
+          "2021": 13.5,
+          "2022": 17.7,
+          "2023": 18.3,
+          "2024": 19.7,
+          "2025": 27.5,
+          "2026": 41.4
+        }
+      },
+      "how to get traffic to website": {
+        "mean_5y": 3.2,
+        "first_12m": 2.4,
+        "last_12m": 5.6,
+        "last_3m": 4.1,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 1.8,
+          "2022": 2.5,
+          "2023": 2.7,
+          "2024": 2.3,
+          "2025": 3.3,
+          "2026": 5.5
+        }
+      },
+      "how to market an app": {
+        "mean_5y": 5.3,
+        "first_12m": 1.4,
+        "last_12m": 15.5,
+        "last_3m": 8.4,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 0.6,
+          "2022": 1.6,
+          "2023": 1.6,
+          "2024": 1.9,
+          "2025": 9.9,
+          "2026": 13.6
+        }
+      },
+      "how to promote my business": {
+        "mean_5y": 2.1,
+        "first_12m": 1.9,
+        "last_12m": 2.4,
+        "last_3m": 3.0,
+        "peak_week": "2025-06-15",
+        "yearly": {
+          "2021": 1.5,
+          "2022": 1.9,
+          "2023": 2.0,
+          "2024": 1.8,
+          "2025": 2.3,
+          "2026": 2.5
+        }
+      },
+      "how to get users": {
+        "mean_5y": 25.2,
+        "first_12m": 17.2,
+        "last_12m": 43.7,
+        "last_3m": 30.2,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 12.8,
+          "2022": 17.9,
+          "2023": 18.7,
+          "2024": 19.8,
+          "2025": 32.3,
+          "2026": 41.7
+        }
+      }
+    }
+  },
+  "cmp5y::stage": {
+    "keywords": [
+      "product launch",
+      "go to market strategy",
+      "product market fit",
+      "build in public",
+      "waitlist"
+    ],
+    "series": {
+      "product launch": {
+        "mean_5y": 12.3,
+        "first_12m": 2.9,
+        "last_12m": 34.3,
+        "last_3m": 23.4,
+        "peak_week": "2025-08-31",
+        "yearly": {
+          "2021": 2.8,
+          "2022": 2.9,
+          "2023": 3.0,
+          "2024": 2.8,
+          "2025": 20.4,
+          "2026": 37.3
+        }
+      },
+      "go to market strategy": {
+        "mean_5y": 1.0,
+        "first_12m": 1.0,
+        "last_12m": 1.3,
+        "last_3m": 1.1,
+        "peak_week": "2025-08-10",
+        "yearly": {
+          "2021": 0.8,
+          "2022": 1.0,
+          "2023": 1.0,
+          "2024": 1.0,
+          "2025": 1.0,
+          "2026": 1.3
+        }
+      },
+      "product market fit": {
+        "mean_5y": 1.3,
+        "first_12m": 0.8,
+        "last_12m": 1.8,
+        "last_3m": 1.2,
+        "peak_week": "2025-08-31",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.9,
+          "2023": 1.0,
+          "2024": 1.0,
+          "2025": 2.0,
+          "2026": 1.8
+        }
+      },
+      "build in public": {
+        "mean_5y": 2.5,
+        "first_12m": 1.0,
+        "last_12m": 6.8,
+        "last_3m": 4.3,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 0.9,
+          "2022": 1.0,
+          "2023": 1.0,
+          "2024": 1.2,
+          "2025": 3.3,
+          "2026": 6.6
+        }
+      },
+      "waitlist": {
+        "mean_5y": 15.1,
+        "first_12m": 8.6,
+        "last_12m": 28.8,
+        "last_3m": 22.5,
+        "peak_week": "2026-03-22",
+        "yearly": {
+          "2021": 6.5,
+          "2022": 8.7,
+          "2023": 10.4,
+          "2024": 11.9,
+          "2025": 18.2,
+          "2026": 29.9
+        }
+      }
+    }
+  },
+  "cmp5y::zh_methods": {
+    "keywords": [
+      "红人营销",
+      "网红营销",
+      "SEO",
+      "独立站",
+      "海外推广"
+    ],
+    "series": {
+      "红人营销": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "网红营销": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "SEO": {
+        "mean_5y": 40.0,
+        "first_12m": 27.4,
+        "last_12m": 70.4,
+        "last_3m": 69.8,
+        "peak_week": "2026-07-19",
+        "yearly": {
+          "2021": 30.6,
+          "2022": 26.7,
+          "2023": 28.2,
+          "2024": 29.8,
+          "2025": 48.6,
+          "2026": 73.2
+        }
+      },
+      "独立站": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "海外推广": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      }
+    }
+  },
+  "cmp5y::zh_cross": {
+    "keywords": [
+      "出海",
+      "跨境电商",
+      "独立站",
+      "TikTok",
+      "亚马逊"
+    ],
+    "series": {
+      "出海": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "跨境电商": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "独立站": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "TikTok": {
+        "mean_5y": 61.3,
+        "first_12m": 54.5,
+        "last_12m": 73.2,
+        "last_3m": 73.9,
+        "peak_week": "2025-01-19",
+        "yearly": {
+          "2021": 50.5,
+          "2022": 55.6,
+          "2023": 61.1,
+          "2024": 54.5,
+          "2025": 65.2,
+          "2026": 73.7
+        }
+      },
+      "亚马逊": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      }
+    }
+  },
+  "rel12m::reddit marketing": {
+    "top": [
+      {
+        "query": "email marketing",
+        "value": 100
+      },
+      {
+        "query": "reddit digital marketing",
+        "value": 84
+      },
+      {
+        "query": "digital marketing",
+        "value": 80
+      },
+      {
+        "query": "marketing agency",
+        "value": 40
+      },
+      {
+        "query": "reddit marketing strategy",
+        "value": 28
+      },
+      {
+        "query": "content marketing",
+        "value": 28
+      },
+      {
+        "query": "social media marketing",
+        "value": 24
+      },
+      {
+        "query": "affiliate marketing",
+        "value": 17
+      },
+      {
+        "query": "hc andersen født",
+        "value": 15
+      },
+      {
+        "query": "influencer marketing",
+        "value": 13
+      }
+    ],
+    "rising": [
+      {
+        "query": "hc andersen født",
+        "value": 218350
+      },
+      {
+        "query": "email marketing",
+        "value": 150
+      },
+      {
+        "query": "reddit marketing strategy",
+        "value": 50
+      }
+    ]
+  },
+  "rel12m::influencer marketing": {
+    "top": [
+      {
+        "query": "what is influencer marketing",
+        "value": 100
+      },
+      {
+        "query": "influencer marketing news",
+        "value": 96
+      },
+      {
+        "query": "instagram influencer marketing",
+        "value": 86
+      },
+      {
+        "query": "social media influencer marketing",
+        "value": 67
+      },
+      {
+        "query": "influencer marketing agency",
+        "value": 66
+      },
+      {
+        "query": "influencer marketing platform",
+        "value": 58
+      },
+      {
+        "query": "tiktok influencer marketing",
+        "value": 57
+      },
+      {
+        "query": "influencer marketing services",
+        "value": 45
+      },
+      {
+        "query": "influencer marketing strategy",
+        "value": 33
+      },
+      {
+        "query": "influencer marketing software",
+        "value": 32
+      },
+      {
+        "query": "influencer marketing jobs",
+        "value": 31
+      },
+      {
+        "query": "influencer marketing platforms",
+        "value": 28
+      },
+      {
+        "query": "influencer marketing trends",
+        "value": 28
+      },
+      {
+        "query": "influencer marketing companies",
+        "value": 28
+      },
+      {
+        "query": "influencer marketing hub",
+        "value": 25
+      },
+      {
+        "query": "influencer marketing tools",
+        "value": 23
+      },
+      {
+        "query": "influencer marketing agencies",
+        "value": 22
+      },
+      {
+        "query": "b2b influencer marketing",
+        "value": 13
+      },
+      {
+        "query": "best influencer marketing platforms",
+        "value": 12
+      },
+      {
+        "query": "the influencer marketing factory",
+        "value": 5
+      },
+      {
+        "query": "influencer marketing and seo",
+        "value": 4
+      },
+      {
+        "query": "social commerce",
+        "value": 4
+      },
+      {
+        "query": "influencer marketing agency valueyournetwork",
+        "value": 4
+      },
+      {
+        "query": "tomoson influencer marketing",
+        "value": 4
+      },
+      {
+        "query": "walmart near me",
+        "value": 3
+      }
+    ],
+    "rising": [
+      {
+        "query": "lidl near me",
+        "value": 18900
+      },
+      {
+        "query": "agence web paris dualmedia",
+        "value": 5950
+      },
+      {
+        "query": "walmart near me",
+        "value": 5800
+      },
+      {
+        "query": "minimalist lifestyle trend",
+        "value": 5700
+      },
+      {
+        "query": "k-pop trending",
+        "value": 5700
+      },
+      {
+        "query": "trending beauty hacks",
+        "value": 5600
+      },
+      {
+        "query": "non-toxic air fryer",
+        "value": 5600
+      },
+      {
+        "query": "aura points / aura slang",
+        "value": 5500
+      },
+      {
+        "query": "influencer marketing agency theinfluencermarketingfactory.com",
+        "value": 5450
+      },
+      {
+        "query": "ai insights dualmedia",
+        "value": 5250
+      },
+      {
+        "query": "influencer marketing agency valueyournetwork",
+        "value": 1350
+      },
+      {
+        "query": "social commerce",
+        "value": 100
+      },
+      {
+        "query": "tomoson influencer marketing",
+        "value": 70
+      },
+      {
+        "query": "what is influencer marketing",
+        "value": 60
+      }
+    ]
+  },
+  "rel12m::generative engine optimization": {
+    "top": [
+      {
+        "query": "geo generative engine optimization",
+        "value": 100
+      },
+      {
+        "query": "geo",
+        "value": 87
+      },
+      {
+        "query": "answer engine optimization",
+        "value": 8
+      },
+      {
+        "query": "hc andersen født",
+        "value": 0
+      },
+      {
+        "query": "what is a roth ira",
+        "value": 0
+      },
+      {
+        "query": "best budget smartphone",
+        "value": 0
+      },
+      {
+        "query": "best pizza near me",
+        "value": 0
+      },
+      {
+        "query": "email marketing for restaurants",
+        "value": 0
+      },
+      {
+        "query": "top tourist attractions in paris",
+        "value": 0
+      },
+      {
+        "query": "best time to visit maldives",
+        "value": 0
+      },
+      {
+        "query": "how to make sushi",
+        "value": 0
+      },
+      {
+        "query": "cheapest flights to tokyo",
+        "value": 0
+      }
+    ],
+    "rising": [
+      {
+        "query": "hc andersen født",
+        "value": 10400
+      },
+      {
+        "query": "what is a roth ira",
+        "value": 9350
+      },
+      {
+        "query": "best budget smartphone",
+        "value": 9200
+      },
+      {
+        "query": "best pizza near me",
+        "value": 8700
+      },
+      {
+        "query": "email marketing for restaurants",
+        "value": 7300
+      },
+      {
+        "query": "top tourist attractions in paris",
+        "value": 5500
+      },
+      {
+        "query": "best time to visit maldives",
+        "value": 5300
+      },
+      {
+        "query": "how to make sushi",
+        "value": 4950
+      },
+      {
+        "query": "cheapest flights to tokyo",
+        "value": 4150
+      },
+      {
+        "query": "geo generative engine optimization",
+        "value": 80
+      },
+      {
+        "query": "geo",
+        "value": 40
+      }
+    ]
+  },
+  "rel12m::programmatic seo": {
+    "top": [
+      {
+        "query": "what is programmatic seo",
+        "value": 100
+      },
+      {
+        "query": "programmatic seo tools",
+        "value": 72
+      },
+      {
+        "query": "programmatic seo examples",
+        "value": 58
+      },
+      {
+        "query": "programmatic seo wordpress",
+        "value": 18
+      },
+      {
+        "query": "programmatic seo course",
+        "value": 16
+      },
+      {
+        "query": "walmart near me",
+        "value": 3
+      }
+    ],
+    "rising": [
+      {
+        "query": "walmart near me",
+        "value": 38650
+      }
+    ]
+  },
+  "rel12m::saas marketing": {
+    "top": [
+      {
+        "query": "b2b saas marketing",
+        "value": 100
+      },
+      {
+        "query": "what is saas marketing",
+        "value": 64
+      },
+      {
+        "query": "what is saas",
+        "value": 63
+      },
+      {
+        "query": "saas marketing company",
+        "value": 63
+      },
+      {
+        "query": "saas marketing agency",
+        "value": 48
+      },
+      {
+        "query": "saas marketing services",
+        "value": 40
+      },
+      {
+        "query": "saas marketing companies",
+        "value": 40
+      },
+      {
+        "query": "saas marketing strategy",
+        "value": 27
+      },
+      {
+        "query": "saas marketing agencies",
+        "value": 27
+      },
+      {
+        "query": "saas marketing seo",
+        "value": 19
+      },
+      {
+        "query": "saas marketing plan",
+        "value": 15
+      }
+    ],
+    "rising": []
+  },
+  "rel12m::app marketing": {
+    "top": [
+      {
+        "query": "digital marketing",
+        "value": 100
+      },
+      {
+        "query": "app store marketing",
+        "value": 84
+      },
+      {
+        "query": "mobile app marketing",
+        "value": 77
+      },
+      {
+        "query": "email marketing app",
+        "value": 74
+      },
+      {
+        "query": "email marketing",
+        "value": 72
+      },
+      {
+        "query": "marketing agency",
+        "value": 43
+      },
+      {
+        "query": "app marketing agency",
+        "value": 42
+      },
+      {
+        "query": "social media marketing",
+        "value": 38
+      },
+      {
+        "query": "app marketing strategy",
+        "value": 35
+      },
+      {
+        "query": "influencer marketing",
+        "value": 28
+      },
+      {
+        "query": "text marketing app",
+        "value": 25
+      },
+      {
+        "query": "affiliate marketing",
+        "value": 22
+      },
+      {
+        "query": "common app",
+        "value": 15
+      },
+      {
+        "query": "walmart near me",
+        "value": 3
+      },
+      {
+        "query": "hc andersen født",
+        "value": 2
+      },
+      {
+        "query": "lidl near me",
+        "value": 1
+      },
+      {
+        "query": "how to stop app tracking on iphone",
+        "value": 1
+      },
+      {
+        "query": "how to change app permissions android",
+        "value": 0
+      },
+      {
+        "query": "research dossier for target company",
+        "value": 0
+      },
+      {
+        "query": "høretelefoner løb",
+        "value": 0
+      },
+      {
+        "query": "node.js backend",
+        "value": 0
+      },
+      {
+        "query": "best time to visit maldives",
+        "value": 0
+      },
+      {
+        "query": "top tourist attractions in paris",
+        "value": 0
+      }
+    ],
+    "rising": [
+      {
+        "query": "hc andersen født",
+        "value": 24700
+      },
+      {
+        "query": "lidl near me",
+        "value": 18300
+      },
+      {
+        "query": "how to stop app tracking on iphone",
+        "value": 6600
+      },
+      {
+        "query": "research dossier for target company",
+        "value": 5450
+      },
+      {
+        "query": "høretelefoner løb",
+        "value": 4150
+      },
+      {
+        "query": "walmart near me",
+        "value": 2500
+      },
+      {
+        "query": "best time to visit maldives",
+        "value": 2050
+      },
+      {
+        "query": "how to change app permissions android",
+        "value": 1950
+      },
+      {
+        "query": "top tourist attractions in paris",
+        "value": 1700
+      },
+      {
+        "query": "node.js backend",
+        "value": 800
+      }
+    ]
+  },
+  "rel12m::tiktok marketing": {
+    "top": [
+      {
+        "query": "tiktok marketing api",
+        "value": 100
+      },
+      {
+        "query": "tiktok marketing strategy",
+        "value": 96
+      },
+      {
+        "query": "tiktok marketing agency",
+        "value": 96
+      },
+      {
+        "query": "tiktok marketing course",
+        "value": 32
+      },
+      {
+        "query": "tiktok marketing agencies",
+        "value": 29
+      },
+      {
+        "query": "python programming tutorial",
+        "value": 0
+      }
+    ],
+    "rising": [
+      {
+        "query": "python programming tutorial",
+        "value": 2650
+      }
+    ]
+  },
+  "rel12m::product hunt": {
+    "top": [
+      {
+        "query": "product hunt ai",
+        "value": 100
+      },
+      {
+        "query": "product hunt launch",
+        "value": 93
+      },
+      {
+        "query": "what is product hunt",
+        "value": 40
+      },
+      {
+        "query": "product hunt api",
+        "value": 20
+      },
+      {
+        "query": "reddit",
+        "value": 16
+      },
+      {
+        "query": "g2",
+        "value": 6
+      },
+      {
+        "query": "product hunt alternatives",
+        "value": 6
+      },
+      {
+        "query": "crunchbase",
+        "value": 6
+      },
+      {
+        "query": "hacker news",
+        "value": 5
+      },
+      {
+        "query": "indie hackers",
+        "value": 5
+      },
+      {
+        "query": "product hunt logo",
+        "value": 3
+      }
+    ],
+    "rising": [
+      {
+        "query": "product hunt launch",
+        "value": 400
+      },
+      {
+        "query": "crunchbase",
+        "value": 400
+      },
+      {
+        "query": "g2",
+        "value": 250
+      },
+      {
+        "query": "hacker news",
+        "value": 150
+      },
+      {
+        "query": "what is product hunt",
+        "value": 140
+      },
+      {
+        "query": "indie hackers",
+        "value": 140
+      },
+      {
+        "query": "product hunt ai",
+        "value": 70
+      },
+      {
+        "query": "reddit",
+        "value": 60
+      },
+      {
+        "query": "product hunt alternatives",
+        "value": 50
+      }
+    ]
+  },
+  "rel12m::affiliate marketing": {
+    "top": [
+      {
+        "query": "how to affiliate marketing",
+        "value": 100
+      },
+      {
+        "query": "what is affiliate marketing",
+        "value": 65
+      },
+      {
+        "query": "amazon affiliate marketing",
+        "value": 40
+      },
+      {
+        "query": "online affiliate marketing",
+        "value": 40
+      },
+      {
+        "query": "amazon affiliate",
+        "value": 38
+      },
+      {
+        "query": "affiliate marketing program",
+        "value": 36
+      },
+      {
+        "query": "affiliate marketing news",
+        "value": 36
+      },
+      {
+        "query": "digital marketing",
+        "value": 27
+      },
+      {
+        "query": "digital affiliate marketing",
+        "value": 27
+      },
+      {
+        "query": "tiktok affiliate marketing",
+        "value": 25
+      },
+      {
+        "query": "affiliate marketing software",
+        "value": 22
+      },
+      {
+        "query": "affiliate meaning",
+        "value": 22
+      },
+      {
+        "query": "affiliate marketing jobs",
+        "value": 21
+      },
+      {
+        "query": "instagram affiliate marketing",
+        "value": 21
+      },
+      {
+        "query": "affiliate marketing programs",
+        "value": 21
+      },
+      {
+        "query": "affiliate marketing meaning",
+        "value": 21
+      },
+      {
+        "query": "affiliate marketing services",
+        "value": 21
+      },
+      {
+        "query": "affiliate marketing platform",
+        "value": 17
+      },
+      {
+        "query": "affiliate marketing tools",
+        "value": 17
+      },
+      {
+        "query": "how to do affiliate marketing",
+        "value": 17
+      },
+      {
+        "query": "pinterest affiliate marketing",
+        "value": 16
+      },
+      {
+        "query": "how to start affiliate marketing",
+        "value": 14
+      },
+      {
+        "query": "affiliate marketing guide",
+        "value": 14
+      },
+      {
+        "query": "affiliate marketing for beginners",
+        "value": 14
+      },
+      {
+        "query": "affiliate marketing definition",
+        "value": 14
+      }
+    ],
+    "rising": [
+      {
+        "query": "lidl near me",
+        "value": 13850
+      },
+      {
+        "query": "affiliate marketing services",
+        "value": 100
+      },
+      {
+        "query": "affiliate marketing agency",
+        "value": 100
+      },
+      {
+        "query": "affiliate marketing software",
+        "value": 70
+      },
+      {
+        "query": "affiliate marketing seo",
+        "value": 70
+      },
+      {
+        "query": "affiliate marketing definition",
+        "value": 70
+      },
+      {
+        "query": "affiliate marketing guide",
+        "value": 50
+      },
+      {
+        "query": "affiliate marketing tools",
+        "value": 40
+      }
+    ]
+  },
+  "rel12m::cold email": {
+    "top": [
+      {
+        "query": "how to cold email",
+        "value": 100
+      },
+      {
+        "query": "what is cold email",
+        "value": 61
+      },
+      {
+        "query": "cold email outreach",
+        "value": 36
+      },
+      {
+        "query": "what is a cold email",
+        "value": 32
+      },
+      {
+        "query": "cold email marketing",
+        "value": 28
+      },
+      {
+        "query": "cold email meaning",
+        "value": 23
+      },
+      {
+        "query": "cold sales email",
+        "value": 22
+      },
+      {
+        "query": "cold email software",
+        "value": 19
+      },
+      {
+        "query": "cold email template",
+        "value": 16
+      },
+      {
+        "query": "cold email tools",
+        "value": 15
+      },
+      {
+        "query": "cold email examples",
+        "value": 14
+      },
+      {
+        "query": "cold email agency",
+        "value": 13
+      },
+      {
+        "query": "cold email automation",
+        "value": 10
+      },
+      {
+        "query": "cold email tool",
+        "value": 10
+      },
+      {
+        "query": "cold email personalization",
+        "value": 8
+      },
+      {
+        "query": "cold email subject line",
+        "value": 7
+      },
+      {
+        "query": "best cold email software",
+        "value": 6
+      },
+      {
+        "query": "cold email templates",
+        "value": 6
+      },
+      {
+        "query": "cold email campaign",
+        "value": 6
+      },
+      {
+        "query": "instantly",
+        "value": 5
+      },
+      {
+        "query": "wikipedia",
+        "value": 5
+      },
+      {
+        "query": "cold email prospecting",
+        "value": 4
+      },
+      {
+        "query": "walmart near me",
+        "value": 2
+      },
+      {
+        "query": "how to write an email professionally",
+        "value": 0
+      }
+    ],
+    "rising": [
+      {
+        "query": "walmart near me",
+        "value": 37300
+      },
+      {
+        "query": "how to write an email professionally",
+        "value": 10600
+      },
+      {
+        "query": "cold email prospecting",
+        "value": 150
+      },
+      {
+        "query": "wikipedia",
+        "value": 120
+      },
+      {
+        "query": "cold email personalization",
+        "value": 80
+      },
+      {
+        "query": "what is a cold email",
+        "value": 70
+      },
+      {
+        "query": "cold email agency",
+        "value": 60
+      },
+      {
+        "query": "what is cold email",
+        "value": 50
+      }
+    ]
+  },
+  "rel12m::instagram marketing": {
+    "top": [
+      {
+        "query": "marketing on instagram",
+        "value": 100
+      },
+      {
+        "query": "digital marketing",
+        "value": 76
+      },
+      {
+        "query": "instagram news",
+        "value": 74
+      },
+      {
+        "query": "instagram marketing company",
+        "value": 53
+      },
+      {
+        "query": "instagram influencer marketing",
+        "value": 51
+      },
+      {
+        "query": "influencer marketing",
+        "value": 51
+      },
+      {
+        "query": "instagram marketing services",
+        "value": 39
+      },
+      {
+        "query": "instagram marketing service",
+        "value": 37
+      },
+      {
+        "query": "instagram marketing agency",
+        "value": 36
+      },
+      {
+        "query": "instagram marketing strategy",
+        "value": 31
+      },
+      {
+        "query": "instagram marketing tools",
+        "value": 19
+      },
+      {
+        "query": "affiliate marketing",
+        "value": 17
+      },
+      {
+        "query": "instagram affiliate marketing",
+        "value": 17
+      },
+      {
+        "query": "instagram marketing tips",
+        "value": 14
+      },
+      {
+        "query": "instagram marketing course",
+        "value": 12
+      },
+      {
+        "query": "digital marketing agency",
+        "value": 9
+      },
+      {
+        "query": "walmart near me",
+        "value": 2
+      },
+      {
+        "query": "lidl near me",
+        "value": 1
+      }
+    ],
+    "rising": [
+      {
+        "query": "lidl near me",
+        "value": 13650
+      },
+      {
+        "query": "walmart near me",
+        "value": 6450
+      },
+      {
+        "query": "instagram marketing services",
+        "value": 80
+      },
+      {
+        "query": "digital marketing agency",
+        "value": 50
+      },
+      {
+        "query": "instagram marketing service",
+        "value": 50
+      },
+      {
+        "query": "instagram influencer marketing",
+        "value": 40
+      },
+      {
+        "query": "influencer marketing",
+        "value": 40
+      },
+      {
+        "query": "instagram marketing company",
+        "value": 40
+      }
+    ]
+  },
+  "rel12m::linkedin marketing": {
+    "top": [
+      {
+        "query": "digital marketing",
+        "value": 100
+      },
+      {
+        "query": "linkedin marketing services",
+        "value": 74
+      },
+      {
+        "query": "linkedin marketing agency",
+        "value": 48
+      },
+      {
+        "query": "linkedin marketing solutions",
+        "value": 41
+      },
+      {
+        "query": "linkedin marketing strategy",
+        "value": 35
+      },
+      {
+        "query": "social media marketing",
+        "value": 32
+      },
+      {
+        "query": "linkedin b2b marketing",
+        "value": 30
+      },
+      {
+        "query": "linkedin ads",
+        "value": 23
+      },
+      {
+        "query": "affiliate marketing",
+        "value": 11
+      },
+      {
+        "query": "linkedin marketing labs",
+        "value": 8
+      }
+    ],
+    "rising": [
+      {
+        "query": "linkedin marketing services",
+        "value": 110
+      },
+      {
+        "query": "linkedin marketing solutions",
+        "value": 60
+      },
+      {
+        "query": "affiliate marketing",
+        "value": 50
+      }
+    ]
+  },
+  "rel12m::how to get customers": {
+    "top": [
+      {
+        "query": "how to get new customers",
+        "value": 100
+      },
+      {
+        "query": "how to get more customers",
+        "value": 84
+      },
+      {
+        "query": "how to get customers for my business",
+        "value": 13
+      },
+      {
+        "query": "how to get feedback from customers",
+        "value": 8
+      },
+      {
+        "query": "how to get more customers for my business",
+        "value": 5
+      },
+      {
+        "query": "how to get new customers for my business",
+        "value": 5
+      },
+      {
+        "query": "fruit",
+        "value": 4
+      },
+      {
+        "query": "how to get rid of flies",
+        "value": 2
+      },
+      {
+        "query": "how to get rid of fruit flies",
+        "value": 1
+      },
+      {
+        "query": "how to get rid of ants",
+        "value": 1
+      },
+      {
+        "query": "how to get rid of dark circles",
+        "value": 1
+      }
+    ],
+    "rising": [
+      {
+        "query": "how to get rid of ants",
+        "value": 24000
+      },
+      {
+        "query": "how to get rid of dark circles",
+        "value": 14350
+      },
+      {
+        "query": "how to get rid of flies",
+        "value": 2000
+      },
+      {
+        "query": "how to get rid of fruit flies",
+        "value": 1200
+      },
+      {
+        "query": "fruit",
+        "value": 60
+      }
+    ]
+  },
+  "rel12m::ai seo": {
+    "top": [
+      {
+        "query": "ai for seo",
+        "value": 100
+      },
+      {
+        "query": "ai in seo",
+        "value": 77
+      },
+      {
+        "query": "seo and ai",
+        "value": 73
+      },
+      {
+        "query": "ai search seo",
+        "value": 40
+      },
+      {
+        "query": "ai seo tools",
+        "value": 31
+      },
+      {
+        "query": "seo with ai",
+        "value": 30
+      },
+      {
+        "query": "seo tools",
+        "value": 30
+      },
+      {
+        "query": "what is seo",
+        "value": 29
+      },
+      {
+        "query": "seo services",
+        "value": 20
+      },
+      {
+        "query": "ai seo services",
+        "value": 20
+      },
+      {
+        "query": "ai tools for seo",
+        "value": 16
+      },
+      {
+        "query": "ai seo software",
+        "value": 14
+      },
+      {
+        "query": "seo agency",
+        "value": 14
+      },
+      {
+        "query": "ai seo agency",
+        "value": 13
+      },
+      {
+        "query": "best ai seo tools",
+        "value": 12
+      },
+      {
+        "query": "ai seo tool",
+        "value": 12
+      },
+      {
+        "query": "seo ai agent",
+        "value": 9
+      },
+      {
+        "query": "seo meaning",
+        "value": 9
+      },
+      {
+        "query": "geo",
+        "value": 8
+      },
+      {
+        "query": "aeo",
+        "value": 5
+      },
+      {
+        "query": "hc andersen født",
+        "value": 0
+      },
+      {
+        "query": "best pizza near me",
+        "value": 0
+      },
+      {
+        "query": "what is a roth ira",
+        "value": 0
+      },
+      {
+        "query": "best budget smartphone",
+        "value": 0
+      },
+      {
+        "query": "email marketing for restaurants",
+        "value": 0
+      }
+    ],
+    "rising": [
+      {
+        "query": "hc andersen født",
+        "value": 6350
+      },
+      {
+        "query": "best time to visit maldives",
+        "value": 2600
+      },
+      {
+        "query": "how to make sushi",
+        "value": 2500
+      },
+      {
+        "query": "top tourist attractions in paris",
+        "value": 2150
+      },
+      {
+        "query": "email marketing for restaurants",
+        "value": 950
+      },
+      {
+        "query": "best budget smartphone",
+        "value": 500
+      },
+      {
+        "query": "how to bake a cake",
+        "value": 500
+      },
+      {
+        "query": "best pizza near me",
+        "value": 450
+      },
+      {
+        "query": "cheapest flights to tokyo",
+        "value": 400
+      },
+      {
+        "query": "ai insights dualmedia",
+        "value": 300
+      },
+      {
+        "query": "aeo",
+        "value": 200
+      },
+      {
+        "query": "what is a roth ira",
+        "value": 200
+      },
+      {
+        "query": "geo",
+        "value": 150
+      },
+      {
+        "query": "ai search seo",
+        "value": 90
+      },
+      {
+        "query": "seo agency",
+        "value": 60
+      },
+      {
+        "query": "seo ai agent",
+        "value": 60
+      },
+      {
+        "query": "ai seo agency",
+        "value": 40
+      }
+    ]
+  },
+  "rel12m::marketing for startups": {
+    "top": [
+      {
+        "query": "digital marketing for startups",
+        "value": 100
+      },
+      {
+        "query": "content marketing for startups",
+        "value": 42
+      },
+      {
+        "query": "social media marketing for startups",
+        "value": 29
+      },
+      {
+        "query": "influencer marketing for startups",
+        "value": 16
+      }
+    ],
+    "rising": []
+  },
+  "rel12m::ugc creator": {
+    "top": [
+      {
+        "query": "ugc content creator",
+        "value": 100
+      },
+      {
+        "query": "ugc content",
+        "value": 98
+      },
+      {
+        "query": "content creator",
+        "value": 97
+      },
+      {
+        "query": "what is ugc",
+        "value": 81
+      },
+      {
+        "query": "what is ugc creator",
+        "value": 80
+      },
+      {
+        "query": "ugc creator meaning",
+        "value": 38
+      },
+      {
+        "query": "what is a ugc creator",
+        "value": 37
+      },
+      {
+        "query": "ugc meaning",
+        "value": 37
+      },
+      {
+        "query": "ugc creator platform",
+        "value": 35
+      },
+      {
+        "query": "ugc jobs",
+        "value": 31
+      },
+      {
+        "query": "ugc creators",
+        "value": 31
+      },
+      {
+        "query": "ugc creator jobs",
+        "value": 30
+      },
+      {
+        "query": "ugc creator roblox",
+        "value": 29
+      },
+      {
+        "query": "ugc creator website",
+        "value": 14
+      },
+      {
+        "query": "ugc creator это",
+        "value": 13
+      },
+      {
+        "query": "what is ugc content creator",
+        "value": 12
+      },
+      {
+        "query": "become a ugc creator",
+        "value": 11
+      },
+      {
+        "query": "how to become ugc creator",
+        "value": 10
+      },
+      {
+        "query": "billo",
+        "value": 10
+      },
+      {
+        "query": "billo ugc",
+        "value": 10
+      },
+      {
+        "query": "insense ugc",
+        "value": 10
+      },
+      {
+        "query": "insense",
+        "value": 10
+      },
+      {
+        "query": "joinbrands",
+        "value": 6
+      },
+      {
+        "query": "sideshift",
+        "value": 3
+      },
+      {
+        "query": "new york times",
+        "value": 1
+      }
+    ],
+    "rising": [
+      {
+        "query": "new york times",
+        "value": 500
+      },
+      {
+        "query": "sideshift",
+        "value": 400
+      },
+      {
+        "query": "joinbrands",
+        "value": 300
+      },
+      {
+        "query": "insense ugc",
+        "value": 200
+      },
+      {
+        "query": "insense",
+        "value": 180
+      },
+      {
+        "query": "billo",
+        "value": 170
+      },
+      {
+        "query": "ugc creator platform",
+        "value": 170
+      },
+      {
+        "query": "billo ugc",
+        "value": 150
+      },
+      {
+        "query": "ugc creator website",
+        "value": 130
+      },
+      {
+        "query": "ugc creators",
+        "value": 100
+      },
+      {
+        "query": "what is ugc",
+        "value": 80
+      },
+      {
+        "query": "what is ugc creator",
+        "value": 80
+      },
+      {
+        "query": "what is ugc content creator",
+        "value": 70
+      },
+      {
+        "query": "what is a ugc creator",
+        "value": 60
+      }
+    ]
+  },
+  "rel12m::youtube marketing": {
+    "top": [
+      {
+        "query": "youtube marketing company",
+        "value": 100
+      },
+      {
+        "query": "youtube marketing services",
+        "value": 71
+      },
+      {
+        "query": "youtube marketing agency",
+        "value": 53
+      },
+      {
+        "query": "youtube marketing strategy",
+        "value": 51
+      },
+      {
+        "query": "youtube marketing tools",
+        "value": 38
+      }
+    ],
+    "rising": [
+      {
+        "query": "youtube marketing services",
+        "value": 50
+      }
+    ]
+  },
+  "rel12m::seo for saas": {
+    "top": [
+      {
+        "query": "seo for saas companies",
+        "value": 100
+      },
+      {
+        "query": "saas seo agency",
+        "value": 82
+      }
+    ],
+    "rising": []
+  },
+  "geo12m::reddit marketing": {
+    "St. Helena": 100,
+    "Denmark": 33,
+    "Singapore": 25,
+    "South Korea": 24,
+    "China": 19,
+    "Ireland": 17,
+    "Austria": 17,
+    "Czechia": 16,
+    "United States": 16,
+    "Netherlands": 15,
+    "Hungary": 15,
+    "Norway": 14,
+    "Romania": 14,
+    "Portugal": 14,
+    "Greece": 13
+  },
+  "cmp5y::control": {
+    "keywords": [
+      "influencer marketing",
+      "weather",
+      "recipe",
+      "calculator",
+      "translate"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "weather": {
+        "mean_5y": 67.2,
+        "first_12m": 67.9,
+        "last_12m": 76.2,
+        "last_3m": 74.1,
+        "peak_week": "2023-07-02",
+        "yearly": {
+          "2021": 63.0,
+          "2022": 67.8,
+          "2023": 68.8,
+          "2024": 59.5,
+          "2025": 64.0,
+          "2026": 78.0
+        }
+      },
+      "recipe": {
+        "mean_5y": 12.2,
+        "first_12m": 11.6,
+        "last_12m": 14.0,
+        "last_3m": 12.3,
+        "peak_week": "2025-12-21",
+        "yearly": {
+          "2021": 14.2,
+          "2022": 11.5,
+          "2023": 11.5,
+          "2024": 11.7,
+          "2025": 12.8,
+          "2026": 13.3
+        }
+      },
+      "calculator": {
+        "mean_5y": 12.1,
+        "first_12m": 11.8,
+        "last_12m": 10.5,
+        "last_3m": 9.1,
+        "peak_week": "2023-01-29",
+        "yearly": {
+          "2021": 9.8,
+          "2022": 12.1,
+          "2023": 12.7,
+          "2024": 13.2,
+          "2025": 12.1,
+          "2026": 10.5
+        }
+      },
+      "translate": {
+        "mean_5y": 43.5,
+        "first_12m": 50.8,
+        "last_12m": 28.9,
+        "last_3m": 26.6,
+        "peak_week": "2023-02-19",
+        "yearly": {
+          "2021": 47.1,
+          "2022": 51.8,
+          "2023": 54.1,
+          "2024": 44.6,
+          "2025": 36.0,
+          "2026": 28.4
+        }
+      }
+    }
+  },
+  "cmp5y::control_b": {
+    "keywords": [
+      "influencer marketing",
+      "marketing",
+      "seo",
+      "how to",
+      "news"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "marketing": {
+        "mean_5y": 1.3,
+        "first_12m": 1.0,
+        "last_12m": 2.1,
+        "last_3m": 1.9,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 1.0,
+          "2023": 1.0,
+          "2024": 1.0,
+          "2025": 1.4,
+          "2026": 2.1
+        }
+      },
+      "seo": {
+        "mean_5y": 0.3,
+        "first_12m": 0.0,
+        "last_12m": 0.9,
+        "last_3m": 0.8,
+        "peak_week": "2025-03-23",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.8,
+          "2026": 1.0
+        }
+      },
+      "how to": {
+        "mean_5y": 48.5,
+        "first_12m": 43.8,
+        "last_12m": 60.7,
+        "last_3m": 58.2,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 40.5,
+          "2022": 44.1,
+          "2023": 44.0,
+          "2024": 45.8,
+          "2025": 50.1,
+          "2026": 61.6
+        }
+      },
+      "news": {
+        "mean_5y": 13.7,
+        "first_12m": 15.6,
+        "last_12m": 13.3,
+        "last_3m": 9.8,
+        "peak_week": "2025-09-28",
+        "yearly": {
+          "2021": 16.2,
+          "2022": 15.1,
+          "2023": 13.6,
+          "2024": 11.5,
+          "2025": 15.2,
+          "2026": 12.5
+        }
+      }
+    }
+  },
+  "cmp5y::product_type": {
+    "keywords": [
+      "how to market an app",
+      "how to market a saas",
+      "how to market a game",
+      "how to market a book",
+      "how to market a product"
+    ],
+    "series": {
+      "how to market an app": {
+        "mean_5y": 2.6,
+        "first_12m": 0.9,
+        "last_12m": 7.5,
+        "last_3m": 4.1,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 0.4,
+          "2022": 1.0,
+          "2023": 0.9,
+          "2024": 1.0,
+          "2025": 4.7,
+          "2026": 6.6
+        }
+      },
+      "how to market a saas": {
+        "mean_5y": 0.9,
+        "first_12m": 0.0,
+        "last_12m": 3.5,
+        "last_3m": 1.9,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 1.9,
+          "2026": 3.2
+        }
+      },
+      "how to market a game": {
+        "mean_5y": 8.0,
+        "first_12m": 1.6,
+        "last_12m": 26.6,
+        "last_3m": 11.6,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 1.5,
+          "2022": 1.7,
+          "2023": 1.8,
+          "2024": 2.2,
+          "2025": 14.1,
+          "2026": 23.5
+        }
+      },
+      "how to market a book": {
+        "mean_5y": 8.3,
+        "first_12m": 2.7,
+        "last_12m": 25.4,
+        "last_3m": 12.1,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 2.0,
+          "2022": 2.8,
+          "2023": 2.7,
+          "2024": 3.3,
+          "2025": 13.1,
+          "2026": 22.7
+        }
+      },
+      "how to market a product": {
+        "mean_5y": 20.1,
+        "first_12m": 13.2,
+        "last_12m": 36.2,
+        "last_3m": 25.8,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 9.8,
+          "2022": 13.6,
+          "2023": 12.4,
+          "2024": 14.2,
+          "2025": 30.4,
+          "2026": 33.6
+        }
+      }
+    }
+  },
+  "cmp5y::product_type_b": {
+    "keywords": [
+      "how to market a product",
+      "how to sell digital products",
+      "how to market a shopify store",
+      "kickstarter campaign",
+      "how to sell on amazon"
+    ],
+    "series": {
+      "how to market a product": {
+        "mean_5y": 20.1,
+        "first_12m": 13.2,
+        "last_12m": 36.2,
+        "last_3m": 25.8,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 9.8,
+          "2022": 13.6,
+          "2023": 12.4,
+          "2024": 14.2,
+          "2025": 30.4,
+          "2026": 33.6
+        }
+      },
+      "how to sell digital products": {
+        "mean_5y": 3.1,
+        "first_12m": 1.3,
+        "last_12m": 5.7,
+        "last_3m": 4.5,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 1.0,
+          "2022": 1.4,
+          "2023": 2.0,
+          "2024": 2.8,
+          "2025": 4.6,
+          "2026": 5.4
+        }
+      },
+      "how to market a shopify store": {
+        "mean_5y": 0.1,
+        "first_12m": 0.0,
+        "last_12m": 0.5,
+        "last_3m": 0.0,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.2,
+          "2026": 0.4
+        }
+      },
+      "kickstarter campaign": {
+        "mean_5y": 1.7,
+        "first_12m": 0.9,
+        "last_12m": 4.1,
+        "last_3m": 2.3,
+        "peak_week": "2026-05-17",
+        "yearly": {
+          "2021": 0.4,
+          "2022": 0.9,
+          "2023": 1.0,
+          "2024": 0.9,
+          "2025": 2.2,
+          "2026": 4.2
+        }
+      },
+      "how to sell on amazon": {
+        "mean_5y": 19.0,
+        "first_12m": 20.8,
+        "last_12m": 20.7,
+        "last_3m": 17.1,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 15.4,
+          "2022": 21.8,
+          "2023": 20.2,
+          "2024": 16.7,
+          "2025": 17.7,
+          "2026": 19.1
+        }
+      }
+    }
+  },
+  "cmp5y::hardware": {
+    "keywords": [
+      "influencer marketing",
+      "amazon fba",
+      "kickstarter",
+      "consumer electronics marketing",
+      "product seeding"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 17.7,
+        "first_12m": 7.4,
+        "last_12m": 46.2,
+        "last_3m": 33.2,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 6.0,
+          "2022": 7.6,
+          "2023": 8.4,
+          "2024": 8.9,
+          "2025": 22.1,
+          "2026": 47.4
+        }
+      },
+      "amazon fba": {
+        "mean_5y": 16.4,
+        "first_12m": 17.0,
+        "last_12m": 19.1,
+        "last_3m": 12.8,
+        "peak_week": "2023-01-01",
+        "yearly": {
+          "2021": 14.9,
+          "2022": 17.6,
+          "2023": 17.4,
+          "2024": 13.5,
+          "2025": 15.2,
+          "2026": 18.9
+        }
+      },
+      "kickstarter": {
+        "mean_5y": 33.9,
+        "first_12m": 34.5,
+        "last_12m": 40.3,
+        "last_3m": 33.2,
+        "peak_week": "2022-02-27",
+        "yearly": {
+          "2021": 24.9,
+          "2022": 35.4,
+          "2023": 31.0,
+          "2024": 30.4,
+          "2025": 33.6,
+          "2026": 41.3
+        }
+      },
+      "consumer electronics marketing": {
+        "mean_5y": 0.2,
+        "first_12m": 0.0,
+        "last_12m": 0.6,
+        "last_3m": 0.2,
+        "peak_week": "2025-09-14",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.2,
+          "2026": 0.6
+        }
+      },
+      "product seeding": {
+        "mean_5y": 0.3,
+        "first_12m": 0.0,
+        "last_12m": 0.8,
+        "last_3m": 0.4,
+        "peak_week": "2025-08-24",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.7,
+          "2026": 0.8
+        }
+      }
+    }
+  },
+  "cmp5y::matrix": {
+    "keywords": [
+      "influencer marketing",
+      "faceless youtube",
+      "faceless tiktok",
+      "multiple tiktok accounts",
+      "ugc ads"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 17.7,
+        "first_12m": 7.4,
+        "last_12m": 46.2,
+        "last_3m": 33.2,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 6.0,
+          "2022": 7.6,
+          "2023": 8.4,
+          "2024": 8.9,
+          "2025": 22.1,
+          "2026": 47.4
+        }
+      },
+      "faceless youtube": {
+        "mean_5y": 2.4,
+        "first_12m": 0.0,
+        "last_12m": 7.2,
+        "last_3m": 6.0,
+        "peak_week": "2026-05-03",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.8,
+          "2024": 1.1,
+          "2025": 3.6,
+          "2026": 7.4
+        }
+      },
+      "faceless tiktok": {
+        "mean_5y": 0.4,
+        "first_12m": 0.0,
+        "last_12m": 1.8,
+        "last_3m": 1.7,
+        "peak_week": "2026-09-20",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.6,
+          "2026": 1.9
+        }
+      },
+      "multiple tiktok accounts": {
+        "mean_5y": 0.4,
+        "first_12m": 0.0,
+        "last_12m": 1.2,
+        "last_3m": 0.5,
+        "peak_week": "2025-07-27",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.8,
+          "2026": 1.2
+        }
+      },
+      "ugc ads": {
+        "mean_5y": 0.6,
+        "first_12m": 0.0,
+        "last_12m": 2.6,
+        "last_3m": 1.9,
+        "peak_week": "2026-03-08",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.8,
+          "2026": 2.7
+        }
+      }
+    }
+  },
+  "cmp5y::zh_only": {
+    "keywords": [
+      "出海",
+      "跨境电商",
+      "独立站",
+      "红人营销",
+      "海外推广"
+    ],
+    "series": {
+      "出海": {
+        "mean_5y": 18.0,
+        "first_12m": 5.1,
+        "last_12m": 55.5,
+        "last_3m": 46.6,
+        "peak_week": "2026-07-05",
+        "yearly": {
+          "2021": 4.0,
+          "2022": 5.2,
+          "2023": 7.3,
+          "2024": 9.6,
+          "2025": 16.3,
+          "2026": 59.3
+        }
+      },
+      "跨境电商": {
+        "mean_5y": 14.3,
+        "first_12m": 3.4,
+        "last_12m": 49.4,
+        "last_3m": 24.2,
+        "peak_week": "2026-05-24",
+        "yearly": {
+          "2021": 3.8,
+          "2022": 3.3,
+          "2023": 4.3,
+          "2024": 5.8,
+          "2025": 13.8,
+          "2026": 51.1
+        }
+      },
+      "独立站": {
+        "mean_5y": 4.7,
+        "first_12m": 2.0,
+        "last_12m": 10.5,
+        "last_3m": 7.9,
+        "peak_week": "2025-12-28",
+        "yearly": {
+          "2021": 1.9,
+          "2022": 2.0,
+          "2023": 2.7,
+          "2024": 4.4,
+          "2025": 5.4,
+          "2026": 10.4
+        }
+      },
+      "红人营销": {
+        "mean_5y": 0.2,
+        "first_12m": 0.0,
+        "last_12m": 0.9,
+        "last_3m": 0.5,
+        "peak_week": "2026-06-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.1,
+          "2026": 1.0
+        }
+      },
+      "海外推广": {
+        "mean_5y": 0.3,
+        "first_12m": 0.0,
+        "last_12m": 1.2,
+        "last_3m": 0.8,
+        "peak_week": "2025-12-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.1,
+          "2025": 0.2,
+          "2026": 1.2
+        }
+      }
+    }
+  },
+  "cmp5y::zh_only_b": {
+    "keywords": [
+      "独立开发",
+      "SaaS出海",
+      "TikTok运营",
+      "谷歌SEO",
+      "GEO优化"
+    ],
+    "series": {
+      "独立开发": {
+        "mean_5y": 4.4,
+        "first_12m": 0.1,
+        "last_12m": 17.4,
+        "last_3m": 9.4,
+        "peak_week": "2026-05-24",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.1,
+          "2023": 0.6,
+          "2024": 1.8,
+          "2025": 3.5,
+          "2026": 18.7
+        }
+      },
+      "SaaS出海": {
+        "mean_5y": 0.3,
+        "first_12m": 0.0,
+        "last_12m": 1.4,
+        "last_3m": 0.2,
+        "peak_week": "2026-07-05",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 1.6
+        }
+      },
+      "TikTok运营": {
+        "mean_5y": 3.5,
+        "first_12m": 0.2,
+        "last_12m": 14.0,
+        "last_3m": 13.5,
+        "peak_week": "2026-09-13",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.2,
+          "2023": 0.5,
+          "2024": 0.8,
+          "2025": 3.0,
+          "2026": 15.0
+        }
+      },
+      "谷歌SEO": {
+        "mean_5y": 2.3,
+        "first_12m": 0.9,
+        "last_12m": 3.3,
+        "last_3m": 2.5,
+        "peak_week": "2024-09-29",
+        "yearly": {
+          "2021": 0.5,
+          "2022": 0.9,
+          "2023": 2.0,
+          "2024": 3.5,
+          "2025": 2.4,
+          "2026": 3.3
+        }
+      },
+      "GEO优化": {
+        "mean_5y": 7.2,
+        "first_12m": 0.1,
+        "last_12m": 35.7,
+        "last_3m": 8.3,
+        "peak_week": "2026-07-12",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.1,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 4.2,
+          "2026": 37.2
+        }
+      }
+    }
+  },
+  "cmp5y::ai_answers": {
+    "keywords": [
+      "influencer marketing",
+      "chatgpt seo",
+      "ai overviews",
+      "perplexity seo",
+      "ai visibility"
+    ],
+    "series": {
+      "influencer marketing": {
+        "mean_5y": 17.7,
+        "first_12m": 7.4,
+        "last_12m": 46.2,
+        "last_3m": 33.2,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 6.0,
+          "2022": 7.6,
+          "2023": 8.4,
+          "2024": 8.9,
+          "2025": 22.1,
+          "2026": 47.4
+        }
+      },
+      "chatgpt seo": {
+        "mean_5y": 2.4,
+        "first_12m": 0.0,
+        "last_12m": 4.7,
+        "last_3m": 3.2,
+        "peak_week": "2025-08-03",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 2.0,
+          "2024": 2.0,
+          "2025": 3.8,
+          "2026": 4.6
+        }
+      },
+      "ai overviews": {
+        "mean_5y": 3.2,
+        "first_12m": 0.0,
+        "last_12m": 10.9,
+        "last_3m": 6.3,
+        "peak_week": "2025-09-14",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.3,
+          "2025": 6.3,
+          "2026": 11.0
+        }
+      },
+      "perplexity seo": {
+        "mean_5y": 0.3,
+        "first_12m": 0.0,
+        "last_12m": 1.1,
+        "last_3m": 0.5,
+        "peak_week": "2025-06-08",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.8,
+          "2026": 1.0
+        }
+      },
+      "ai visibility": {
+        "mean_5y": 6.3,
+        "first_12m": 0.0,
+        "last_12m": 25.3,
+        "last_3m": 24.2,
+        "peak_week": "2026-08-09",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 8.3,
+          "2026": 27.1
+        }
+      }
+    }
+  },
+  "cmp5y::first_users": {
+    "keywords": [
+      "how to get first customers",
+      "first 100 users",
+      "how to validate a business idea",
+      "how to price saas",
+      "landing page"
+    ],
+    "series": {
+      "how to get first customers": {
+        "mean_5y": 0.1,
+        "first_12m": 0.0,
+        "last_12m": 0.6,
+        "last_3m": 0.6,
+        "peak_week": "2022-01-09",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.1,
+          "2026": 0.6
+        }
+      },
+      "first 100 users": {
+        "mean_5y": 0.1,
+        "first_12m": 0.0,
+        "last_12m": 0.5,
+        "last_3m": 0.1,
+        "peak_week": "2026-01-25",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.5
+        }
+      },
+      "how to validate a business idea": {
+        "mean_5y": 0.0,
+        "first_12m": 0.0,
+        "last_12m": 0.0,
+        "last_3m": 0.0,
+        "peak_week": "2021-11-07",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 0.0,
+          "2026": 0.0
+        }
+      },
+      "how to price saas": {
+        "mean_5y": 0.9,
+        "first_12m": 0.0,
+        "last_12m": 3.4,
+        "last_3m": 1.1,
+        "peak_week": "2025-11-30",
+        "yearly": {
+          "2021": 0.0,
+          "2022": 0.0,
+          "2023": 0.0,
+          "2024": 0.0,
+          "2025": 2.1,
+          "2026": 3.0
+        }
+      },
+      "landing page": {
+        "mean_5y": 26.1,
+        "first_12m": 17.7,
+        "last_12m": 46.7,
+        "last_3m": 33.5,
+        "peak_week": "2026-02-15",
+        "yearly": {
+          "2021": 12.4,
+          "2022": 18.5,
+          "2023": 20.4,
+          "2024": 20.6,
+          "2025": 27.6,
+          "2026": 48.6
+        }
+      }
+    }
+  },
+  "geo12m::generative engine optimization": {
+    "St. Helena": 100,
+    "Singapore": 42,
+    "South Korea": 37,
+    "China": 25,
+    "Netherlands": 22,
+    "United States": 21,
+    "Switzerland": 11,
+    "Germany": 11,
+    "Hong Kong": 10,
+    "Israel": 10,
+    "United Kingdom": 10,
+    "United Arab Emirates": 10,
+    "Canada": 9,
+    "Austria": 9,
+    "Czechia": 9
+  },
+  "geo12m::app marketing": {
+    "St. Helena": 100,
+    "South Korea": 60,
+    "Singapore": 48,
+    "Netherlands": 43,
+    "United States": 32,
+    "United Arab Emirates": 27,
+    "Germany": 22,
+    "United Kingdom": 22,
+    "Switzerland": 21,
+    "Canada": 20,
+    "Israel": 20,
+    "Czechia": 18,
+    "Spain": 17,
+    "Denmark": 16,
+    "Portugal": 16
+  },
+  "geo12m::influencer marketing": {
+    "St. Helena": 100,
+    "South Korea": 39,
+    "Singapore": 26,
+    "Netherlands": 21,
+    "United Kingdom": 20,
+    "United States": 19,
+    "United Arab Emirates": 17,
+    "Morocco": 16,
+    "Bangladesh": 16,
+    "Germany": 13,
+    "Israel": 13,
+    "Malaysia": 13,
+    "Vietnam": 13,
+    "Nepal": 13,
+    "Portugal": 12
+  }
+}

@@ -24,8 +24,10 @@ Plus **`/[lang]/vault/` (`实战蓝图箱`)**: Open-source, inspectable engineer
 
 ## 3. Canonical Documentation Index
 
-- [DESIGN.md](DESIGN.md) — Editorial Screening Gallery tokens, Prussian Mineral Teal & Signal Amber palette, Concept-Wave `A` mark.
-- [AGENTS.md](AGENTS.md) — Compliance rules, zero-cost static architecture, build & verification commands.
-- [docs/CONCEPT_TRENDS_AND_TAXONOMY.md](docs/CONCEPT_TRENDS_AND_TAXONOMY.md) — Empirical bilingual AI search behavior, vocabulary gaps, and 22-concept lifecycle taxonomy.
-- [docs/TIMELINE_AND_DIRECTORY_ARCHITECTURE.md](docs/TIMELINE_AND_DIRECTORY_ARCHITECTURE.md) — Three-perspective IA, schema design, and programmatic SEO/GEO hub rules.
-- [docs/CURATED_MEDIA_CATALOG.md](docs/CURATED_MEDIA_CATALOG.md) — Full auto-generated ledger of all verified YouTube cuts, Bilibili deep-links, and primary research digests.
+- [`docs/DESIGN.md`](DESIGN.md) — Calm Apple Liquid Glass & Editorial Screening Gallery visual system.
+- [`docs/ARCHITECTURE.md`](ARCHITECTURE.md) — Three-perspective IA, schema design, and programmatic SEO/GEO hub rules.
+- [`../AGENTS.md`](../AGENTS.md) — Compliance charter, video sourcing & research rules, and build commands.
+- [`../database/VIDEO_SOURCING_AND_INGESTION_SPEC.md`](../database/VIDEO_SOURCING_AND_INGESTION_SPEC.md) — Video discovery, 3-tier source whitelist, slicing, and 7-dimension tagging SOP.
+- [`../database/MASTER_VIDEO_LEDGER.md`](../database/MASTER_VIDEO_LEDGER.md) — Full auto-synced ground-truth ledger of all 280 verified video URLs, slice windows, and tags (`.md` / `.csv` / `.json`).
+- [`../research/GOOGLE_AND_AI_SEARCH_RESEARCH_SPEC.md`](../research/GOOGLE_AND_AI_SEARCH_RESEARCH_SPEC.md) — Google Trends anchor methodology, bot-inflation filtering, and AI Search (`AI SEO / GEO / AIO`) research SOP.
+- [`../research/GROWTHTUBE_AI_SEARCH_AND_GOOGLE_TRENDS_REPORT.md`](../research/GROWTHTUBE_AI_SEARCH_AND_GOOGLE_TRENDS_REPORT.md) & [`../research/AITUBE_CONCEPT_TRENDS_AND_TAXONOMY.md`](../research/AITUBE_CONCEPT_TRENDS_AND_TAXONOMY.md) — Empirical keyword & concept trend reports.

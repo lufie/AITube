@@ -17,7 +17,8 @@ import time
 import urllib.request
 from pathlib import Path
 
-OUT_JSON = Path(__file__).parent / "verified_ai_youtube_pool.json"
+ROOT = Path(__file__).resolve().parents[2]
+OUT_JSON = ROOT / "database" / "raw_verified_youtube_pool.json"
 
 SHORT_PARAMS = "EgIYAQ=="  # < 4 minutes filter for 1-3m tactical cuts / Shorts
 

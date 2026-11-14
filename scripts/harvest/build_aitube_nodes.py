@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "seed_data"))
 
 from concept_playbooks import CONCEPT_PLAYBOOKS
 from flagship_part1 import FLAGSHIP_PART1
@@ -15,7 +18,7 @@ from pool_zh_titles import POOL_ZH_TITLES
 ROOT = Path(__file__).resolve().parents[2]
 CONCEPTS_PATH = ROOT / "content" / "concepts.json"
 TAXONOMY_PATH = ROOT / "content" / "taxonomy.json"
-POOL_PATH = ROOT / "scripts" / "harvest" / "verified_ai_youtube_pool.json"
+POOL_PATH = ROOT / "database" / "raw_verified_youtube_pool.json"
 OUT_PATH = ROOT / "content" / "nodes.json"
 
 TARGET_TOTAL = 280

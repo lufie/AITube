@@ -1,7 +1,7 @@
 # AITube 概念趋势实证与分类词表报告（Concept Trends & Bilingual Taxonomy）
 
 **采集日期**：2026-11-12  
-**实证脚本与原始数据**：[`scripts/research/collect_ai_trends.py`](../scripts/research/collect_ai_trends.py) · [`scripts/research/ai_query_evidence.json`](../scripts/research/ai_query_evidence.json)  
+**实证脚本与原始数据**：[`scripts/research/collect_ai_trends.py`](../scripts/research/collect_ai_trends.py) · [`datasets/aitube_google_yt_suggest_104.json`](datasets/aitube_google_yt_suggest_104.json)  
 **目标读者**：AI 应用工程师、Agent 构建者、技术产品经理、独立开发者与多模态高频创作者
 
 ---

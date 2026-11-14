@@ -4,7 +4,7 @@ Empirical AI Concept & Search Query Research Collector for AITube.
 Collects:
 1. Live Google Web & YouTube Autocomplete suggestions (EN + ZH-CN) across 36 core AI concepts
 2. Optional Google Trends 5-year comparative trajectories (via pytrends when reachable)
-Saves structured JSON to scripts/research/ai_query_evidence.json for reproducible taxonomy & timeline design.
+Saves structured JSON to research/datasets/aitube_google_yt_suggest_104.json for reproducible taxonomy & timeline design.
 """
 from __future__ import annotations
 
@@ -15,7 +15,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-OUT_FILE = Path(__file__).parent / "ai_query_evidence.json"
+ROOT = Path(__file__).resolve().parents[2]
+OUT_FILE = ROOT / "research" / "datasets" / "aitube_google_yt_suggest_104.json"
 
 
 def fetch_google_suggest(q: str, hl: str = "en", ds: str | None = None) -> list[str]:

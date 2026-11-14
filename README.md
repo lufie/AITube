@@ -6,71 +6,77 @@
 > - **多维实战视频切片检索库 (`280` 支)**: [https://lufie.github.io/AITube/zh/directory/](https://lufie.github.io/AITube/zh/directory/)
 > - **English Edition**: [https://lufie.github.io/AITube/en/](https://lufie.github.io/AITube/en/)
 
-**AITube** is a bilingual (`简体中文` & `English`) static editorial screening gallery and concept evolution index for modern AI (`2017–2026`). Built as a sister publication to **Growthtube**, AITube pairs an archival editorial aesthetic with a signature **Concept Trend Timeline & Causal Lineage Horizon Map (`概念趋势时间线与血缘泳道图谱`)**.
+**AITube** is a bilingual (`简体中文` & `English`), zero-server-cost editorial screening gallery and chronological AI concept evolution index (`2017–2026`). Built as the AI-paradigm sister publication to **Growthtube**, AITube combines timestamp-sliced primary talks with a **Concept Trend Timeline & Causal Lineage Horizon Map**, backed by a ground-truth **Master Video & Tagging Database (`database/`)** and an empirical **Google & AI Search Research Archive (`research/`)**.
 
 ---
 
-## Core Architecture & Perspectives
-
-1. **Concept Trend Timeline & Horizon Map (`/[lang]/timeline/`)**
-   - Panoramic 4-Layer **Concept Horizon Swimlane** (`Foundations`, `Frontier & Post-Training`, `Agentic Engineering`, `Coding & Multimodal`) with interactive Bezier causal lineage arcs (`Origin ○ ──▸ ★ Inflection`) and live Inspector HUD.
-   - Dual-density workspace (`☷ Editorial Cards` with sticky Era Scrubber Rail ⇄ `▤ Full Comparison Matrix`) across **5 Chronological Eras** and **22 Canonical AI Concepts** with scrubbable 10-quarter momentum curves (`22H2–26Q3`), `Before → After` paradigm split panels, and 3 darkroom filmstrip cuts (`Origin`, `Practice`, `Frontier`).
-2. **Concept Hubs (`/[lang]/concepts/[slug]/`)**
-   - Dedicated bilingual hubs for all 22 concepts (`DefinedTerm` + `CollectionPage` + `FAQPage` JSON-LD).
-3. **Multi-Faceted Video Directory (`/[lang]/directory/`)**
-   - Cross-filter **280 verified implementation slices** across `Concept Era × AI Layer × Core Task × Stack`, lifecycle badges, and natural-language engineering questions.
-4. **4-Stage Learning Roadmap (`/[lang]/roadmap/`)**
-   - Sequences **52 Flagship Spine Cuts** from `Stage 00` Model Intuition to `Stage 03` Production Agents, `SKILL.md` Bundles & Eval Flywheels.
-5. **Single-Video Screening Room (`/[lang]/nodes/[slug]/`)**
-   - `16:9` darkroom poster that removes DOM overlays 100% on play to mount unobstructed `youtube-nocookie.com/embed/...` players, proportional `SliceTimeline` timestamp seek controls, 3-step SOP with 1-click copyable `.at-op-chip` inline operators, `2026 Version Patch`, and persistent read tracking.
-6. **Open Blueprint Vault (`/[lang]/vault/`) & LLM Discovery (`/llms.txt`, `/llms-full.txt`)**
-   - Zero-email copyable specs (`AGENTS.md`, `SKILL.md`, Binary LLM Judge Rubric, Contextual Hybrid RAG, Keyframe Multimodal Storyboard).
-
----
-
-## Repository Structure
+## Repository Directory Structure
 
 ```text
 AITube/
-├── AGENTS.md                 # Repository harness & build verification rules
-├── DESIGN.md                 # Editorial Screening Gallery design tokens (Prussian Mineral Teal + Signal Amber)
-├── PRODUCT.md                # Audience, editorial standards & anti-hype policy
-├── content/                  # Single source of truth JSON databases
-│   ├── concepts.json         # 5 Eras + 22 AI concepts with trendSeries & lineage
-│   ├── nodes.json            # 280 verified cuts (52 spine + 228 oEmbed-verified pool cuts)
-│   ├── taxonomy.json         # 3 orthogonal dimensions (20 topic facets) + synonyms
-│   ├── stages.json           # 4 progressive curriculum stages
-│   └── vault.json            # 5 open-source engineering blueprints
-├── docs/
-│   ├── CONCEPT_TRENDS_AND_TAXONOMY.md
-│   ├── TIMELINE_AND_DIRECTORY_ARCHITECTURE.md
-│   └── CURATED_MEDIA_CATALOG.md
-├── scripts/
-│   ├── research/             # Live Google & YouTube autocomplete evidence collector
-│   ├── harvest/              # YouTube oEmbed harvester & 280-node dataset builder
-│   ├── brand/                # Pillow brand icon & 32 editorial Open Graph PNG renderer
-│   ├── validate-content.mjs  # Schema, slice window & taxonomy gate
-│   └── verify-dist.mjs       # Static HTML h1, canonical, OG file, JSON-LD & broken-link gate
-└── web/                      # Astro 5 static site (Vanilla CSS, zero Tailwind, GitHub Pages & Cloudflare ready)
+├── AGENTS.md                        # Engineering, video sourcing, research & compliance charter
+├── README.md                        # Project overview, directory map & standard commands
+├── .agent/rules/                    # Always-on modular workspace rules
+│   ├── 01-video-discovery-and-ingestion.md
+│   ├── 02-search-trends-and-keyword-research.md
+│   └── 03-ui-copy-and-compliance.md
+├── .agents/skills/                  # Step-by-step operational skills for agents
+│   ├── discover-and-ingest-videos/SKILL.md
+│   └── research-search-trends/SKILL.md
+├── content/                         # Runtime Single Source of Truth (JSON)
+│   ├── concepts.json                # 5 Eras × 22 AI concepts (trendSeries, lifecycle, lineage)
+│   ├── nodes.json                   # 280 verified slices (52 spine + 228 practitioner/Shorts/digests)
+│   ├── taxonomy.json                # 3 orthogonal dimensions (20 topic facets) + bilingual synonyms
+│   ├── stages.json                  # 4 progressive zero-to-production roadmap stages
+│   └── vault.json                   # 5 copyable open-source engineering blueprints
+├── database/                        # Ground-Truth Video URL & Multi-Dimensional Tagging Database
+│   ├── README.md                    # Database architecture & 36-column field dictionary
+│   ├── VIDEO_SOURCING_AND_INGESTION_SPEC.md  # Video search SOP, Tier 1–3 whitelist & tagging spec
+│   ├── MASTER_VIDEO_LEDGER.md       # Human-readable ledger with timestamped watch links & tag stats
+│   ├── master_video_ledger.csv      # UTF-8-BOM spreadsheet (Excel / Feishu / Notion ready)
+│   ├── master_video_ledger.json     # Structured flat JSON ledger (enforced 1:1 with nodes.json)
+│   └── raw_verified_youtube_pool.json        # Raw oEmbed-verified YouTube candidate pool
+├── research/                        # AI Search (GEO/AIO) & Google Keyword Trends Archive
+│   ├── README.md                    # Research index & reproduction commands
+│   ├── GOOGLE_AND_AI_SEARCH_RESEARCH_SPEC.md # Anchor Trends, bot de-noising & 3-surface Suggest SOP
+│   ├── GROWTHTUBE_AI_SEARCH_AND_GOOGLE_TRENDS_REPORT.md # Empirical AI SEO/GEO/AIO & Trends report
+│   ├── AITUBE_CONCEPT_TRENDS_AND_TAXONOMY.md # 2023→2026 AI concept shift & taxonomy report
+│   └── datasets/                    # Raw empirical JSON datasets (540+ Suggest queries + 5y Trends)
+│       ├── aitube_google_yt_suggest_104.json
+│       ├── growthtube_google_trends_5y.json
+│       ├── growthtube_google_yt_suggest_367.json
+│       └── growthtube_baidu_suggest_69.json
+├── docs/                            # Product, Design & Information Architecture Specs
+│   ├── PRODUCT.md
+│   ├── DESIGN.md
+│   └── ARCHITECTURE.md
+├── scripts/                         # Automation, Sync, Harvest, Research & Gatekeepers
+│   ├── sync_master_ledger.py        # Generates database/{MASTER_VIDEO_LEDGER.md, .csv, .json}
+│   ├── validate-content.mjs         # Validates schemas, slice windows & 1:1 database parity
+│   ├── verify-dist.mjs              # Audits all 656 static HTML pages (H1, OG, JSON-LD, links)
+│   ├── harvest/                     # YouTube oEmbed harvester, node builder & seed_data/
+│   ├── research/                    # Live Google Trends anchor & Google/YT/Baidu Suggest collectors
+│   └── brand/                       # Brand icon & 1200×630 Open Graph card renderer
+└── web/                             # Astro 5 static frontend (Apple Liquid Glass, Vanilla CSS)
 ```
 
 ---
 
-## Local Development, GitHub Pages & Verification
+## Standard Workflow & Commands
 
 ```bash
 # 1. Install frontend dependencies
 npm --prefix web install
 
-# 2. Validate content schemas, run Astro typecheck, build static dist (root '/'), and audit 656 HTML pages
+# 2. Sync ground-truth video URL & tagging ledger (.md / .csv / .json) after editing content/*.json
+python3 scripts/sync_master_ledger.py
+
+# 3. Validate content schemas, timestamp bounds & 1:1 master ledger parity
+node scripts/validate-content.mjs
+
+# 4. Build & verify all 656 static HTML pages (root '/' or GitHub Pages '/AITube')
 npm --prefix web run build
-
-# 3. Build & verify for GitHub Pages project subpath (https://lufie.github.io/AITube/)
 SITE_URL=https://lufie.github.io BASE_PATH=/AITube npm --prefix web run build
-
-# 4. Regenerate brand icons & Open Graph cards (optional)
-uv run --with pillow python3 scripts/brand/render_assets.py
 ```
 
 Automated production deployment to **GitHub Pages** runs on pushes to `main` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
-
