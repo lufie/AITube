@@ -21,7 +21,12 @@ import {
   getNodesForConcept,
 } from "../../../lib/content";
 import { buildNodeSchema } from "../../../lib/seo";
-import { DONATE_COPY, DONATE_PRESETS } from "../../../lib/donate";
+import {
+  DONATE_COPY,
+  DONATE_DEFAULT_AMOUNT,
+  DONATE_PRESETS,
+  formatWatchDonateStory,
+} from "../../../lib/donate";
 
 export function getStaticPaths() {
   return LANGS.flatMap((lang) =>
@@ -38,6 +43,7 @@ const loc = node[lang];
 const s = node.source;
 const t = UI[lang];
 const d = DONATE_COPY[lang];
+const donateStory = formatWatchDonateStory(lang, s.videosReviewedCount, s.hoursSaved);
 
 const concept = getConcept(node.primaryConcept);
 const related = getNodesForConcept(node.primaryConcept)
@@ -152,6 +158,38 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
               </div>
             ))}
           </div>
+
+          <!-- Peak-Gratitude Inline Coffee Strip right below Takeaway #03 -->
+          <div class="at-takeaway-coffee-bar">
+            <span class="at-takeaway-coffee-text">{d.takeawayPrompt}</span>
+            <div class="at-takeaway-coffee-actions">
+              <button
+                type="button"
+                class="at-coffee-chip-primary"
+                data-open-donate
+                data-donate-amount={DONATE_DEFAULT_AMOUNT}
+                data-donate-context={`${node.slug}-takeaway`}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                  <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                  <line x1="6" x2="6" y1="2" y2="4" />
+                  <line x1="10" x2="10" y1="2" y2="4" />
+                  <line x1="14" x2="14" y1="2" y2="4" />
+                </svg>
+                <span>{d.takeawayCoffeeBtn}</span>
+              </button>
+              <button
+                type="button"
+                class="at-coffee-chip-ghost"
+                data-open-donate
+                data-donate-amount="custom"
+                data-donate-context={`${node.slug}-takeaway`}
+              >
+                {d.takeawayCustomBtn}
+              </button>
+            </div>
+          </div>
         </section>
 
         <aside class="at-side-card" data-chk-slug={node.slug}>
@@ -205,20 +243,26 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
             </div>
           )}
 
-          <!-- PayPal Donate Entry inside Every Video Detail Page -->
+          <!-- Coffee-First Donate Card with Dynamic Curation Effort Story -->
           <div class="at-watch-donate">
-            <span class="at-watch-donate-badge">♥ {d.watchBadge}</span>
-            <h3 style="font-size:0.92rem;font-weight:650;line-height:1.38;margin-bottom:4px;">
+            <span class="at-watch-donate-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+              </svg>
+              <span>{d.watchBadge}</span>
+            </span>
+            <h3 style="font-size:0.93rem;font-weight:650;line-height:1.4;margin-bottom:6px;">
               {d.watchTitle}
             </h3>
-            <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.52;">
-              {d.watchDesc}
+            <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.58;">
+              {donateStory}
             </p>
             <div class="at-watch-donate-pills">
               {DONATE_PRESETS.map((amt) => (
                 <button
                   type="button"
-                  class="at-watch-tier-pill at-mono"
+                  class={`at-watch-tier-pill at-mono ${amt === DONATE_DEFAULT_AMOUNT ? "is-popular" : ""}`}
                   data-open-donate
                   data-donate-amount={amt}
                   data-donate-context={node.slug}
@@ -241,13 +285,19 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
               class="at-donate-btn"
               style="width:100%;"
               data-open-donate
+              data-donate-amount={DONATE_DEFAULT_AMOUNT}
               data-donate-context={node.slug}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                <line x1="6" x2="6" y1="2" y2="4" />
+                <line x1="10" x2="10" y1="2" y2="4" />
+                <line x1="14" x2="14" y1="2" y2="4" />
               </svg>
               <span>{d.watchBtn}</span>
             </button>
+            <div class="at-watch-donate-reassure">{d.watchReassure}</div>
           </div>
         </aside>
       </div>

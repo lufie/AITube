@@ -1311,6 +1311,85 @@ html[data-theme="dark"] .at-era-rail-glider {
   transform: scale(0.98);
 }
 
+/* Peak-Gratitude Inline Coffee Bar right under Takeaway #03 */
+.at-takeaway-coffee-bar {
+  margin-top: 18px;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  background-color: var(--glass-fill);
+  background-image: var(--glass-luster);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--glass-rim), var(--shadow-xs);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 16px;
+  flex-wrap: wrap;
+}
+
+.at-takeaway-coffee-text {
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
+  line-height: 1.48;
+}
+
+.at-takeaway-coffee-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.at-coffee-chip-primary {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--accent-signal) 34%, var(--glass-border-strong));
+  background-color: var(--glass-droplet-fill);
+  background-image: var(--glass-droplet-luster);
+  box-shadow: var(--glass-rim), var(--shadow-xs);
+  color: var(--ink-primary);
+  font-family: inherit;
+  font-size: 0.79rem;
+  font-weight: 630;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    transform 0.24s var(--ease-spring);
+}
+
+.at-coffee-chip-primary svg {
+  color: var(--accent-signal);
+}
+
+.at-coffee-chip-primary:hover {
+  background-color: var(--bg-pill-active);
+  border-color: color-mix(in srgb, var(--accent-signal) 52%, var(--glass-border-strong));
+  transform: translate3d(0, -1px, 0);
+}
+
+.at-coffee-chip-ghost {
+  appearance: none;
+  padding: 6px 9px;
+  border-radius: var(--radius-pill);
+  border: 0;
+  background: transparent;
+  color: var(--ink-muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 560;
+  cursor: pointer;
+  transition: color 0.18s var(--ease-out);
+}
+
+.at-coffee-chip-ghost:hover {
+  color: var(--accent-primary);
+}
+
 /* Watch Page Side-Card Donate Entry */
 .at-watch-donate {
   margin-top: 22px;
@@ -1356,11 +1435,25 @@ html[data-theme="dark"] .at-era-rail-glider {
     transform 0.22s var(--ease-spring);
 }
 
+.at-watch-tier-pill.is-popular {
+  background-color: var(--glass-droplet-fill);
+  border-color: color-mix(in srgb, var(--accent-signal) 34%, var(--glass-border-strong));
+  box-shadow: var(--shadow-xs);
+}
+
 .at-watch-tier-pill:hover {
   background-color: var(--glass-droplet-fill);
   border-color: var(--accent-primary-border);
   color: var(--accent-primary);
   transform: translate3d(0, -1px, 0);
+}
+
+.at-watch-donate-reassure {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  text-align: center;
+  line-height: 1.45;
 }
 
 /* ==========================================================================
@@ -1432,6 +1525,7 @@ html[data-theme="dark"] .at-era-rail-glider {
   border-radius: 50%;
   background-color: var(--accent-signal-soft);
   color: var(--accent-signal);
+  font-size: 0.92rem;
 }
 
 .at-donate-body {
@@ -1509,7 +1603,18 @@ html[data-theme="dark"] .at-era-rail-glider {
   background-color: var(--glass-well);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--glass-well-rim);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+}
+
+.at-donate-reassure {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 12px;
+  margin-bottom: 12px;
+  font-size: 0.73rem;
+  color: var(--accent-evergreen);
+  font-weight: 560;
 }
 
 .at-donate-input-box {
