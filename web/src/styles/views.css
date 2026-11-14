@@ -1217,9 +1217,421 @@ html[data-theme="dark"] .at-era-rail-glider {
 .at-footer {
   border-top: 1px solid var(--border-subtle);
   background-color: var(--glass-fill);
-  padding: 40px 0 48px;
+  padding: 40px 0 52px;
   font-size: 0.83rem;
   color: var(--ink-muted);
+}
+
+.at-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.15fr) auto minmax(280px, 360px);
+  gap: 32px 40px;
+  align-items: start;
+}
+
+.at-footer-donate-link {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  color: var(--accent-signal);
+  font-weight: 580;
+  cursor: pointer;
+  transition: opacity 0.18s var(--ease-out), transform 0.2s var(--ease-spring);
+}
+
+.at-footer-donate-link:hover {
+  opacity: 0.82;
+  transform: translate3d(1px, 0, 0);
+}
+
+.at-footer-donate-card {
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background-color: var(--glass-fill-strong);
+  background-image: var(--glass-luster);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--glass-rim), var(--shadow-card);
+}
+
+.at-donate-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--accent-signal-soft);
+  color: var(--accent-signal);
+  font-size: 0.74rem;
+}
+
+.at-donate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--accent-signal) 30%, var(--glass-border-strong));
+  background-color: var(--glass-droplet-fill);
+  background-image: var(--glass-droplet-luster);
+  box-shadow: var(--glass-rim), var(--shadow-xs);
+  color: var(--ink-primary);
+  font-family: inherit;
+  font-size: 0.83rem;
+  font-weight: 630;
+  cursor: pointer;
+  transition:
+    background-color 0.22s var(--ease-out),
+    border-color 0.22s var(--ease-out),
+    box-shadow 0.24s var(--ease-out),
+    transform 0.26s var(--ease-spring);
+}
+
+.at-donate-btn svg {
+  color: var(--accent-signal);
+  transition: transform 0.26s var(--ease-spring);
+}
+
+.at-donate-btn:hover {
+  background-color: var(--bg-pill-active);
+  border-color: color-mix(in srgb, var(--accent-signal) 48%, var(--glass-border-strong));
+  box-shadow: var(--glass-rim), var(--shadow-seg);
+  transform: translate3d(0, -1px, 0);
+}
+
+.at-donate-btn:hover svg {
+  transform: scale(1.12);
+}
+
+.at-donate-btn:active {
+  transform: scale(0.98);
+}
+
+/* Watch Page Side-Card Donate Entry */
+.at-watch-donate {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.at-watch-donate-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background-color: var(--accent-signal-soft);
+  color: var(--accent-signal);
+  font-size: 0.73rem;
+  font-weight: 640;
+  margin-bottom: 8px;
+}
+
+.at-watch-donate-pills {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin: 12px 0 10px;
+}
+
+.at-watch-tier-pill {
+  appearance: none;
+  padding: 7px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--glass-well);
+  color: var(--ink-primary);
+  font-family: inherit;
+  font-size: 0.79rem;
+  font-weight: 610;
+  cursor: pointer;
+  transition:
+    background-color 0.18s var(--ease-out),
+    border-color 0.18s var(--ease-out),
+    color 0.18s var(--ease-out),
+    transform 0.22s var(--ease-spring);
+}
+
+.at-watch-tier-pill:hover {
+  background-color: var(--glass-droplet-fill);
+  border-color: var(--accent-primary-border);
+  color: var(--accent-primary);
+  transform: translate3d(0, -1px, 0);
+}
+
+/* ==========================================================================
+   Apple Liquid Glass PayPal Donate Checkout Modal
+   ========================================================================== */
+.at-donate-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+  background-color: rgba(10, 16, 28, 0.36);
+  backdrop-filter: blur(12px) saturate(135%);
+  -webkit-backdrop-filter: blur(12px) saturate(135%);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.at-donate-backdrop[hidden] {
+  display: none !important;
+}
+
+.at-donate-backdrop.is-open {
+  opacity: 1;
+}
+
+.at-donate-dialog {
+  position: relative;
+  margin: auto;
+  width: min(468px, 100%);
+  border-radius: var(--radius-xl);
+  background-color: var(--glass-fill-strong);
+  background-image: var(--glass-luster);
+  backdrop-filter: var(--blur-modal);
+  -webkit-backdrop-filter: var(--blur-modal);
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: var(--glass-rim), var(--shadow-float);
+  color: var(--ink-primary);
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(0.975);
+  transition:
+    opacity 0.22s var(--ease-out),
+    transform 0.28s var(--ease-spring);
+}
+
+.at-donate-backdrop.is-open .at-donate-dialog {
+  opacity: 1;
+  transform: none;
+}
+
+.at-donate-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 22px 13px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.at-donate-heart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--accent-signal-soft);
+  color: var(--accent-signal);
+}
+
+.at-donate-body {
+  padding: 20px 22px 22px;
+}
+
+.at-donate-body[hidden] {
+  display: none !important;
+}
+
+.at-donate-tiers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.at-donate-tier {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 6px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--glass-well);
+  color: var(--ink-primary);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background-color 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    box-shadow 0.22s var(--ease-out),
+    transform 0.24s var(--ease-spring);
+}
+
+.at-donate-tier:hover {
+  background-color: var(--glass-well-hover);
+  transform: translate3d(0, -1px, 0);
+}
+
+.at-donate-tier.is-active {
+  background-color: var(--glass-droplet-fill);
+  background-image: var(--glass-droplet-luster);
+  border-color: var(--accent-primary-border);
+  box-shadow: var(--glass-rim), var(--shadow-seg);
+}
+
+.at-donate-tier-amt {
+  font-size: 0.96rem;
+  font-weight: 680;
+  color: var(--ink-primary);
+}
+
+.at-donate-tier.is-active .at-donate-tier-amt {
+  color: var(--accent-primary);
+}
+
+.at-donate-tier-sub {
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+  line-height: 1.2;
+  text-align: center;
+}
+
+.at-donate-input-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background-color: var(--glass-well);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--glass-well-rim);
+  margin-bottom: 16px;
+}
+
+.at-donate-input-box {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-xs);
+  background-color: var(--glass-droplet-fill);
+  border: 1px solid var(--glass-border);
+}
+
+.at-donate-input {
+  width: 54px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-primary);
+  font-size: 1.06rem;
+  font-weight: 680;
+  text-align: right;
+  outline: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.at-donate-input::-webkit-outer-spin-button,
+.at-donate-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.at-paypal-stage {
+  min-height: 112px;
+  padding: 14px 16px 12px;
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Keep PayPal's white iframe canvas & inline card fields 100% seamless in Dark Mode */
+html[data-theme="dark"] .at-paypal-stage {
+  background-color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.20);
+  color: #151922;
+}
+
+.at-paypal-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 8px;
+  font-size: 0.82rem;
+  color: #4e5666;
+}
+
+.at-paypal-loading[hidden] {
+  display: none !important;
+}
+
+@keyframes at-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.at-paypal-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 102, 204, 0.22);
+  border-top-color: #0066cc;
+  animation: at-spin 0.75s linear infinite;
+}
+
+.at-paypal-buttons {
+  width: 100%;
+}
+
+.at-donate-error {
+  margin: 0 0 12px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background-color: rgba(214, 84, 8, 0.11);
+  color: var(--accent-signal);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.at-donate-error[hidden] {
+  display: none !important;
+}
+
+.at-donate-legal {
+  margin-top: 14px;
+  font-size: 0.73rem;
+  line-height: 1.5;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.at-donate-thanks {
+  text-align: center;
+  padding: 30px 26px 26px;
+}
+
+.at-donate-check {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background-color: var(--accent-evergreen-soft);
+  color: var(--accent-evergreen);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  font-weight: 700;
 }
 
 .at-lineage-pill {
@@ -1262,7 +1674,8 @@ html[data-theme="dark"] .at-era-rail-glider {
   .at-tl-workspace,
   .at-dir-layout,
   .at-watch-notes,
-  .at-concept-top {
+  .at-concept-top,
+  .at-footer-grid {
     grid-template-columns: 1fr;
   }
   .at-era-rail {
@@ -1354,5 +1767,14 @@ html[data-theme="dark"] .at-era-rail-glider {
   }
   .at-tl-bar-surface {
     border-radius: 18px;
+  }
+  .at-donate-tiers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .at-donate-body {
+    padding: 18px 16px 20px;
+  }
+  .at-donate-head {
+    padding: 14px 16px 12px;
   }
 }

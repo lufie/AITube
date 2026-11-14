@@ -1,17 +1,19 @@
 ---
 import { UI, withBase, type Lang } from "../lib/i18n";
 import { CONCEPTS, NODES } from "../lib/content";
+import { DONATE_COPY } from "../lib/donate";
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 const t = UI[lang];
+const d = DONATE_COPY[lang];
 ---
 <footer class="at-footer">
   <div class="at-container">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap;">
-      <div style="max-width:44ch;">
+    <div class="at-footer-grid">
+      <div style="max-width:40ch;">
         <div style="color:var(--ink-primary);font-weight:650;font-size:0.95rem;margin-bottom:6px;">AITube</div>
         <p style="line-height:1.55;">{t.footerNote}</p>
         <p style="margin-top:8px;font-size:0.78rem;">
@@ -21,7 +23,7 @@ const t = UI[lang];
         </p>
       </div>
 
-      <div style="display:flex;gap:40px;flex-wrap:wrap;">
+      <div style="display:flex;gap:38px;flex-wrap:wrap;">
         <div style="display:flex;flex-direction:column;gap:6px;">
           <span style="color:var(--ink-primary);font-weight:600;font-size:0.8rem;">
             {lang === "zh" ? "浏览" : "Explore"}
@@ -39,6 +41,39 @@ const t = UI[lang];
           <a href={withBase("/llms.txt")}>llms.txt</a>
           <a href={withBase("/llms-full.txt")}>llms-full.txt</a>
           <a href={withBase("/sitemap.xml")}>sitemap.xml</a>
+          <button
+            type="button"
+            class="at-footer-donate-link"
+            data-open-donate
+            data-donate-context="footer-nav"
+          >
+            Donate ♥
+          </button>
+        </div>
+      </div>
+
+      <!-- Editorial Support / Donate Card in Footer -->
+      <div class="at-footer-donate-card">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+          <span class="at-donate-dot" aria-hidden="true">♥</span>
+          <span style="color:var(--ink-primary);font-weight:630;font-size:0.84rem;">{d.footerHeading}</span>
+        </div>
+        <p style="font-size:0.8rem;line-height:1.52;color:var(--ink-secondary);margin-bottom:12px;">
+          {d.footerDesc}
+        </p>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <button
+            type="button"
+            class="at-donate-btn"
+            data-open-donate
+            data-donate-context="footer"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+            <span>{d.footerBtn}</span>
+          </button>
+          <span style="font-size:0.72rem;color:var(--ink-muted);">{d.footerMethods}</span>
         </div>
       </div>
     </div>

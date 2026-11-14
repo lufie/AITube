@@ -21,6 +21,7 @@ import {
   getNodesForConcept,
 } from "../../../lib/content";
 import { buildNodeSchema } from "../../../lib/seo";
+import { DONATE_COPY, DONATE_PRESETS } from "../../../lib/donate";
 
 export function getStaticPaths() {
   return LANGS.flatMap((lang) =>
@@ -36,6 +37,7 @@ const node = getNode(slug)!;
 const loc = node[lang];
 const s = node.source;
 const t = UI[lang];
+const d = DONATE_COPY[lang];
 
 const concept = getConcept(node.primaryConcept);
 const related = getNodesForConcept(node.primaryConcept)
@@ -202,6 +204,51 @@ const isYoutubeCut = s.kind === "video-cut" && s.platform === "youtube" && Boole
               </div>
             </div>
           )}
+
+          <!-- PayPal Donate Entry inside Every Video Detail Page -->
+          <div class="at-watch-donate">
+            <span class="at-watch-donate-badge">♥ {d.watchBadge}</span>
+            <h3 style="font-size:0.92rem;font-weight:650;line-height:1.38;margin-bottom:4px;">
+              {d.watchTitle}
+            </h3>
+            <p style="font-size:0.8rem;color:var(--ink-secondary);line-height:1.52;">
+              {d.watchDesc}
+            </p>
+            <div class="at-watch-donate-pills">
+              {DONATE_PRESETS.map((amt) => (
+                <button
+                  type="button"
+                  class="at-watch-tier-pill at-mono"
+                  data-open-donate
+                  data-donate-amount={amt}
+                  data-donate-context={node.slug}
+                >
+                  ${amt}
+                </button>
+              ))}
+              <button
+                type="button"
+                class="at-watch-tier-pill"
+                data-open-donate
+                data-donate-amount="custom"
+                data-donate-context={node.slug}
+              >
+                {d.watchCustom}
+              </button>
+            </div>
+            <button
+              type="button"
+              class="at-donate-btn"
+              style="width:100%;"
+              data-open-donate
+              data-donate-context={node.slug}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+              <span>{d.watchBtn}</span>
+            </button>
+          </div>
         </aside>
       </div>
 

@@ -1,0 +1,429 @@
+---
+import type { Lang } from "../lib/i18n";
+import {
+  PAYPAL_CLIENT_ID,
+  DONATE_CURRENCY,
+  DONATE_PRESETS,
+  DONATE_DEFAULT_AMOUNT,
+  DONATE_COPY,
+} from "../lib/donate";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = DONATE_COPY[lang];
+---
+
+<div
+  id="at-donate-backdrop"
+  class="at-donate-backdrop"
+  hidden
+  aria-hidden="true"
+  data-paypal-client-id={PAYPAL_CLIENT_ID}
+  data-donate-currency={DONATE_CURRENCY}
+  data-donate-default={DONATE_DEFAULT_AMOUNT}
+  data-msg-invalid={d.invalidAmountMsg}
+  data-msg-error={d.paymentErrorMsg}
+  data-msg-thank={d.thankTitle}
+>
+  <div
+    class="at-donate-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="at-donate-title"
+  >
+    <!-- Top Header -->
+    <div class="at-donate-head">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="at-donate-heart" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        </span>
+        <span class="at-kicker" style="letter-spacing:0.06em;font-size:0.7rem;">{d.modalKicker}</span>
+      </div>
+      <button
+        type="button"
+        class="at-icon-btn"
+        data-close-donate
+        aria-label="Close"
+        style="height:28px;padding:0 10px;font-size:0.74rem;"
+      >
+        ESC
+      </button>
+    </div>
+
+    <!-- Main Interactive Body -->
+    <div id="at-donate-form-view" class="at-donate-body">
+      <h2 id="at-donate-title" style="font-size:1.22rem;font-weight:680;letter-spacing:-0.018em;margin-bottom:6px;">
+        {d.modalTitle}
+      </h2>
+      <p style="font-size:0.86rem;color:var(--ink-secondary);line-height:1.55;margin-bottom:18px;">
+        {d.modalSubtitle}
+      </p>
+
+      <!-- Preset Tier Grid -->
+      <div class="at-donate-tiers" role="group" aria-label={d.amountLabel}>
+        {DONATE_PRESETS.map((amt, idx) => (
+          <button
+            type="button"
+            class={`at-donate-tier ${amt === DONATE_DEFAULT_AMOUNT ? "is-active" : ""}`}
+            data-donate-tier={amt}
+          >
+            <span class="at-donate-tier-amt at-mono">${amt}</span>
+            <span class="at-donate-tier-sub">{d.presetLabels[idx]}</span>
+          </button>
+        ))}
+        <button type="button" class="at-donate-tier" data-donate-tier="custom">
+          <span class="at-donate-tier-amt">{d.customPill}</span>
+          <span class="at-donate-tier-sub">USD</span>
+        </button>
+      </div>
+
+      <!-- Clean Live Amount Input Row -->
+      <label class="at-donate-input-wrap" for="at-donate-amount-input">
+        <span style="font-size:0.8rem;font-weight:580;color:var(--ink-secondary);">{d.amountLabel}</span>
+        <div class="at-donate-input-box">
+          <span class="at-mono" style="font-weight:650;color:var(--ink-muted);">$</span>
+          <input
+            id="at-donate-amount-input"
+            type="number"
+            inputmode="decimal"
+            min="1"
+            max="9999"
+            step="1"
+            value={String(DONATE_DEFAULT_AMOUNT)}
+            class="at-donate-input at-mono"
+          />
+          <span class="at-mono" style="font-size:0.76rem;font-weight:600;color:var(--ink-muted);">USD</span>
+        </div>
+      </label>
+
+      <p id="at-donate-error" class="at-donate-error" hidden></p>
+
+      <!-- Official PayPal Smart Payment Buttons Mount -->
+      <div class="at-paypal-stage">
+        <div id="at-paypal-loading" class="at-paypal-loading">
+          <span class="at-paypal-spinner" aria-hidden="true"></span>
+          <span>{d.loadingSdk}</span>
+        </div>
+        <div id="at-paypal-sdk-blocked" class="at-donate-error" hidden>
+          {d.sdkBlockedHint}
+        </div>
+        <div id="at-paypal-buttons" class="at-paypal-buttons"></div>
+      </div>
+
+      <p class="at-donate-legal">{d.legalNote}</p>
+    </div>
+
+    <!-- Thank-You Confirmation State -->
+    <div id="at-donate-thank-view" class="at-donate-body at-donate-thanks" hidden>
+      <div class="at-donate-check" aria-hidden="true">✓</div>
+      <h3 id="at-donate-thank-heading" style="font-size:1.2rem;font-weight:680;margin-bottom:8px;">
+        {d.thankTitle}
+      </h3>
+      <p id="at-donate-thank-detail" style="font-size:0.88rem;color:var(--ink-secondary);line-height:1.6;margin-bottom:20px;">
+        {d.thankBody}
+      </p>
+      <button type="button" class="at-btn-primary" data-close-donate style="width:100%;">
+        {d.thankDoneBtn}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const backdrop = document.getElementById("at-donate-backdrop");
+    if (!backdrop) return;
+
+    const clientId = backdrop.getAttribute("data-paypal-client-id") || "";
+    const currency = backdrop.getAttribute("data-donate-currency") || "USD";
+    const defaultAmt = Number(backdrop.getAttribute("data-donate-default") || "15");
+    const msgInvalid = backdrop.getAttribute("data-msg-invalid") || "Invalid amount";
+    const msgError = backdrop.getAttribute("data-msg-error") || "Payment error";
+    const msgThank = backdrop.getAttribute("data-msg-thank") || "Thank you!";
+
+    const formView = document.getElementById("at-donate-form-view");
+    const thankView = document.getElementById("at-donate-thank-view");
+    const thankHeading = document.getElementById("at-donate-thank-heading");
+    const amountInput = document.getElementById("at-donate-amount-input");
+    const errorEl = document.getElementById("at-donate-error");
+    const loadingEl = document.getElementById("at-paypal-loading");
+    const blockedEl = document.getElementById("at-paypal-sdk-blocked");
+    const buttonsBox = document.getElementById("at-paypal-buttons");
+    const tierBtns = [...backdrop.querySelectorAll("[data-donate-tier]")];
+
+    let contextSource = "site";
+    let sdkPromise = null;
+    let buttonsRendered = false;
+
+    function showError(text) {
+      if (!errorEl) return;
+      if (!text) {
+        errorEl.hidden = true;
+        errorEl.textContent = "";
+      } else {
+        errorEl.hidden = false;
+        errorEl.textContent = text;
+      }
+    }
+
+    function syncTierHighlight(val) {
+      const num = Number(val);
+      const matchedPreset = [5, 15, 50].includes(num) ? String(num) : "custom";
+      tierBtns.forEach((btn) => {
+        btn.classList.toggle("is-active", btn.getAttribute("data-donate-tier") === matchedPreset);
+      });
+    }
+
+    function setAmount(val, focusCustom) {
+      if (!amountInput) return;
+      if (val === "custom") {
+        tierBtns.forEach((btn) => {
+          btn.classList.toggle("is-active", btn.getAttribute("data-donate-tier") === "custom");
+        });
+        if (focusCustom) {
+          amountInput.focus();
+          amountInput.select();
+        }
+        return;
+      }
+      const clean = Math.max(1, Math.min(9999, Number(val) || defaultAmt));
+      amountInput.value = String(clean);
+      syncTierHighlight(clean);
+      showError("");
+    }
+
+    function getValidatedAmount() {
+      if (!amountInput) return null;
+      const raw = parseFloat(String(amountInput.value).trim());
+      if (!Number.isFinite(raw) || raw < 1 || raw > 9999) {
+        return null;
+      }
+      return raw.toFixed(2);
+    }
+
+    tierBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tier = btn.getAttribute("data-donate-tier");
+        if (tier === "custom") {
+          setAmount("custom", true);
+        } else {
+          setAmount(Number(tier), false);
+        }
+      });
+    });
+
+    if (amountInput) {
+      amountInput.addEventListener("input", () => {
+        showError("");
+        syncTierHighlight(amountInput.value);
+      });
+    }
+
+    function loadPayPalSdk() {
+      if (window.paypal && window.paypal.Buttons) {
+        return Promise.resolve(window.paypal);
+      }
+      if (sdkPromise) return sdkPromise;
+
+      sdkPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src =
+          "https://www.paypal.com/sdk/js?client-id=" +
+          encodeURIComponent(clientId) +
+          "&currency=" +
+          encodeURIComponent(currency) +
+          "&intent=capture&components=buttons&enable-funding=card&disable-funding=paylater";
+        script.async = true;
+        script.onload = () => {
+          if (window.paypal && window.paypal.Buttons) {
+            resolve(window.paypal);
+          } else {
+            reject(new Error("PayPal Buttons unavailable"));
+          }
+        };
+        script.onerror = () => reject(new Error("PayPal SDK blocked"));
+        document.head.appendChild(script);
+      });
+
+      return sdkPromise;
+    }
+
+    async function ensureButtonsMounted() {
+      if (buttonsRendered) return;
+      if (loadingEl) loadingEl.hidden = false;
+      if (blockedEl) blockedEl.hidden = true;
+
+      try {
+        const paypal = await loadPayPalSdk();
+        if (loadingEl) loadingEl.hidden = true;
+        if (!buttonsBox) return;
+        buttonsBox.innerHTML = "";
+
+        await paypal
+          .Buttons({
+            style: {
+              layout: "vertical",
+              color: "gold",
+              shape: "pill",
+              label: "pay",
+              height: 44,
+            },
+            onClick: (_data, actions) => {
+              const amt = getValidatedAmount();
+              if (!amt) {
+                showError(msgInvalid);
+                if (amountInput) amountInput.focus();
+                return actions.reject();
+              }
+              showError("");
+              return actions.resolve();
+            },
+            createOrder: (_data, actions) => {
+              const amt = getValidatedAmount() || String(defaultAmt.toFixed(2));
+              const desc =
+                contextSource && contextSource !== "site" && contextSource !== "footer"
+                  ? `Support AITube (${contextSource})`.slice(0, 120)
+                  : "Support AITube Independent Curation";
+
+              return actions.order.create({
+                intent: "CAPTURE",
+                application_context: {
+                  brand_name: "AITube",
+                  shipping_preference: "NO_SHIPPING",
+                  user_action: "PAY_NOW",
+                },
+                purchase_units: [
+                  {
+                    description: desc,
+                    custom_id: String(contextSource || "site").slice(0, 64),
+                    amount: {
+                      currency_code: currency,
+                      value: amt,
+                    },
+                  },
+                ],
+              });
+            },
+            onApprove: async (_data, actions) => {
+              if (!actions.order) return;
+              const details = await actions.order.capture();
+              const given =
+                details &&
+                details.payer &&
+                details.payer.name &&
+                details.payer.name.given_name
+                  ? details.payer.name.given_name
+                  : "";
+              if (formView) formView.hidden = true;
+              if (thankView) thankView.hidden = false;
+              if (thankHeading && given) {
+                thankHeading.textContent = `${msgThank} (${given})`;
+              }
+              const toast = document.getElementById("at-toast");
+              if (toast) {
+                toast.textContent = `♥ ${msgThank}`;
+                toast.classList.add("is-visible");
+                setTimeout(() => toast.classList.remove("is-visible"), 3200);
+              }
+            },
+            onError: () => {
+              showError(msgError);
+            },
+          })
+          .render("#at-paypal-buttons");
+
+        buttonsRendered = true;
+      } catch {
+        sdkPromise = null;
+        if (loadingEl) loadingEl.hidden = true;
+        if (blockedEl) blockedEl.hidden = false;
+      }
+    }
+
+    function openDonateModal(opts) {
+      const options = opts || {};
+      contextSource = options.context || "site";
+      if (formView) formView.hidden = false;
+      if (thankView) thankView.hidden = true;
+      showError("");
+
+      if (options.amount === "custom") {
+        setAmount(defaultAmt, false);
+        setTimeout(() => setAmount("custom", true), 60);
+      } else if (options.amount) {
+        setAmount(options.amount, false);
+      } else {
+        setAmount(defaultAmt, false);
+      }
+
+      backdrop.hidden = false;
+      backdrop.setAttribute("aria-hidden", "false");
+      document.documentElement.style.overflow = "hidden";
+      requestAnimationFrame(() => {
+        backdrop.classList.add("is-open");
+      });
+
+      ensureButtonsMounted();
+    }
+
+    function closeDonateModal() {
+      backdrop.classList.remove("is-open");
+      backdrop.setAttribute("aria-hidden", "true");
+      document.documentElement.style.overflow = "";
+      setTimeout(() => {
+        if (!backdrop.classList.contains("is-open")) {
+          backdrop.hidden = true;
+        }
+      }, 200);
+    }
+
+    window.__openDonateModal = openDonateModal;
+
+    // Warm up PayPal SDK on hover/focus over any donate trigger
+    document.addEventListener(
+      "pointerenter",
+      (e) => {
+        const t = e.target && e.target.closest ? e.target.closest("[data-open-donate]") : null;
+        if (t) loadPayPalSdk().catch(() => {});
+      },
+      { capture: true, passive: true }
+    );
+
+    // Global click delegation for all [data-open-donate] and [data-close-donate] buttons
+    document.addEventListener("click", (e) => {
+      const openBtn = e.target && e.target.closest ? e.target.closest("[data-open-donate]") : null;
+      if (openBtn) {
+        e.preventDefault();
+        const amt = openBtn.getAttribute("data-donate-amount");
+        const ctx = openBtn.getAttribute("data-donate-context") || "site";
+        openDonateModal({ amount: amt || undefined, context: ctx });
+        return;
+      }
+
+      const closeBtn = e.target && e.target.closest ? e.target.closest("[data-close-donate]") : null;
+      if (closeBtn || e.target === backdrop) {
+        closeDonateModal();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !backdrop.hidden) {
+        closeDonateModal();
+      }
+    });
+
+    // Support direct URL ?donate=1
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("donate") === "1") {
+        const amt = params.get("amount");
+        openDonateModal({ amount: amt || undefined, context: "url-param" });
+      }
+    } catch {}
+  })();
+</script>
